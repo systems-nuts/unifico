@@ -1,0 +1,196 @@
+%! Author = blackgeorge
+%! Date = 4/10/20
+
+% Preamble
+\documentclass[11pt]{article}
+
+% ==============
+% Packages
+\usepackage{amsmath}
+\usepackage{pbox}
+\usepackage{changepage}
+
+% For numbering rows of a tabular
+\usepackage{array,etoolbox}
+\preto\tabular{\setcounter{magicrownumbers}{0}}
+\newcounter{magicrownumbers}
+\def\rownumber{}
+% ==============
+
+% Document
+\begin{document}
+
+\begin{table}[ht]
+\caption{Comparison of x86-64 and Aarch64 general purpose registers}
+\begin{adjustwidth}{-4cm}{-4cm}
+\begin{tabular}{|l|l|l|l|}
+    \hline
+    \textbf{x86-64} & \textbf{Aarch64} & \textbf{Usage} & \textbf{Callee Saved} \\
+    \hline
+    \%rsp & SP & The Stack Pointer & Yes \\
+    \hline
+    - & r30 (LR) & The Link Register (optionally) & No \\
+    \hline
+    \%rbp & r29 (FP) & The Frame Pointer (optionally) & Yes \\
+    \hline
+    \%rbx, \%r12\ldots \%r14 & r19\ldots r28 & Callee Saved Registers & Yes \\
+    \hline
+    - & r18 & Temp register, The Platform Register & No \\
+    \hline
+    - & r17 (IP1) & \pbox{20cm}{The 2nd Intra-procedure-call temp register \\ (call veneer/PLT), temp register} & No \\
+    \hline
+    - & r16 (IP0) & \pbox{20cm}{The 1st Intra-procedure-call temp register \\ (call veneer/PLT), temp register} & No \\
+    \hline
+    \%r11 & r9\ldots r15 & Temp registers & No \\
+    \hline
+    - & r8 & Indirect Result Location Register & No \\
+    \hline
+    - & r0\ldots r7 & Parameter/Result Registers (r0-r5 for Kernel Args) & No \\
+    \hline
+    \%rax & - & \pbox{20cm}{Temp, \\  With var args passes info on how many of VRs used, \\ 1st Return Register} & No \\
+    \hline
+    \%rcx & - & 4th Integer Argument & No \\
+    \hline
+    \%rdx & - & 3rd Integer Argument (3rd Kernel Arg), 2nd Return Register & No \\
+    \hline
+    \%rsi & - & 2nd Argument  (2nd Kernel Arg)& No \\
+    \hline
+    \%rdi & - & 1st Argument (1st Kernel Arg) & No \\
+    \hline
+    \%r8 & - & 5th Argument (5th Kernel Arg) & No \\
+    \hline
+    \%r9 & - & 6th Argument (6th Kernel Arg) & No \\
+    \hline
+    \%r10 & - & Temp, 4th Kernel Arg, Passes the functions' Static Chain Pointer & No \\
+    \hline
+    \%r15 & - & Callee Saved Register, GOT Base Pointer (optionally) & Yes \\
+    \hline
+\end{tabular}
+\end{adjustwidth}\label{tab:comparison}
+\end{table}
+
+x86-64 General Purpose Registers: 16
+
+Aarch64 General Purpose Registers: 32
+
+\newpage
+
+\begin{table}[ht]
+    \caption{Maximum common register set for x86-64 and Aarch64}
+    \begin{adjustwidth}{-1cm}{-1cm}
+        \begin{tabular}{|@{\makebox[3em][r]{\rownumber\space}}|l|l|}
+            \hline
+            Register & Usage \\
+            \gdef\rownumber{\stepcounter{magicrownumbers}\arabic{magicrownumbers}} & \\
+            \hline
+            \$sp & Stack Pointer \\
+            \hline
+            \$lr & Link Register (optionally) \\
+            \hline
+            \$fp & Frame Pointer (optionally) \\
+            \hline
+            \$s0, \$s1 & Callee Saved Registers \\
+            \hline
+            \$pr & Platform Register (optionally) \\
+            \hline
+            \$ip0, \$ip1 & Intra-procedure-call Registers (optionally) \\
+            \hline
+            \$irl & Indirect Result Location Register \\
+            \hline
+            \$a0, \$a1, \$v1, \$a3-a5 & Integer Arguments \\
+            \hline
+            \$v0, \$v1 & Return Registers \\
+            \hline
+            \$v0 & Temp, With var args passes info on how many of VRs used \\
+            \hline
+            \$scp & Temp, Used to pass the functions' Static Chain Pointer \\
+            \hline
+            \$gbp & Callee Saved Register, GOT Base Pointer (optionally) \\
+            \hline
+        \end{tabular}
+        \end{adjustwidth}\label{tab:set}
+\end{table}
+
+Total Sum: 19
+
+\begin{table}[ht]
+\caption{Mapping}
+\begin{adjustwidth}{-3cm}{-3cm}
+\begin{tabular}{|l|l|l|l|}
+    \hline
+    \textbf{x86-64} & \textbf{Aarch64} & \textbf{Virtual Register} & \textbf{Usage} \\
+    \hline
+    \%rsp & SP & \$sp & The Stack Pointer \\
+    \hline
+    \%r11 & r30 (LR) & \$lr & The Link Register (optionally) \\
+    \hline
+    \%rbp & r29 (FP) & \$fp & The Frame Pointer (optionally) \\
+    \hline
+    \%rbx, \%r12 & r19, r20 & \$s0, \$s1 & Callee Saved Registers \\
+    \hline
+    ? & r18 & \$pr & Temp register, The Platform Register \\
+    \hline
+    ? & r17 (IP1) & \$ip1 & \pbox{20cm}{The 2nd Intra-procedure-call temp register \\ (call veneer/PLT), temp register} \\
+    \hline
+    ? & r16 (IP0) & \$ip0 & \pbox{20cm}{The 1st Intra-procedure-call temp register \\ (call veneer/PLT), temp register} \\
+    \hline
+    \%rax & r8 & \$v0 & \pbox{20cm}{Temp, \\  if var args info on how many of VRs used, \\ 1st Return Register \\ Indirect Result Location Register} \\
+    \hline
+    \%rcx & r7 & \$a3 & 4th Integer Argument (but not for kernel) \\
+    \hline
+    \%rdx & r2 & \$v1 & \pbox{20cm}{3rd Integer Argument \\ 2nd Return Register} \\
+    \hline
+    \%rsi & r1 & \$a1 & 2nd Argument \\
+    \hline
+    \%rdi & r0 & \$a0 & 1st Argument \\
+    \hline
+    \%r8 & r4 & \$a4 & 5th Argument \\
+    \hline
+    \%r9 & r5 & \$a5 & 6th Argument \\
+    \hline
+    \%r10 & r3 & \$scp & \pbox{20cm}{Temp, Used to pass the functions' Static Chain Pointer \\ 4th Kernel Argument} \\
+    \hline
+    \%r15 & r21 & \$gbp & Callee Saved Register, GOT Base Pointer (optionally) \\
+    \hline
+\end{tabular}
+\end{adjustwidth}\label{tab:mappings}
+\end{table}
+
+NOTE: Unsure about \%rax - r8 mapping
+
+\begin{table}[ht]
+\caption{Mapping per Functionality}
+\begin{adjustwidth}{-4.3cm}{-4.3cm}
+\begin{tabular}{|l|l|l|l|}
+    \hline
+    \textbf{x86-64} & \textbf{Aarch64} & \textbf{Virtual Register} & \textbf{Usage} \\
+    \hline
+    \%rsp & SP & \$sp & The Stack Pointer \\
+    \hline
+    \%r11 & r30 (LR) & \$lr & The Link Register (optionally) \\
+    \hline
+    \%rbp & r29 (FP) & \$fp & The Frame Pointer (optionally) \\
+    \hline
+    \%rbx & r19 & \$s0 & Callee Saved Registers \\
+    \hline
+    \%r12 & r18 & \$pr & \pbox{20cm}{Temp register \\ The Platform Register} \\
+    \hline
+    \%r13, \%r14 & r16, r17 & \$ip1, \$ip2 & \pbox{20cm}{Intra-procedure-call registers \\ temp registers} \\
+    \hline
+    \%rax & r8 & \$v0 & \pbox{20cm}{Temp, \\  Var args \\ 1st Return Register \\ Indirect Result Location} \\
+    \hline
+    \%rdi, \%rsi, \%rdx, \%rcx, \%r8, \%r9 & r0, r1, r2, r7, r4, r5 & \$a0, \$a1, \$v1, \$a3, \$a4, \$a5 & Functions Arguments \\
+    \hline
+    \%rdi, \%rsi, \%rdx, \%r10, \%r8, \%r9 & r0, r1, r2, r3, r4, r5 & \$a0, \$a1, \$v1, \$scp, \$a4, \$a5 & Kernel Arguments \\
+    \hline
+    \%rax, \%rdx & r8, r2 & \$v0, \$v1 & Return Registers \\
+    \hline
+    \%r10 & r3 & \$scp & \pbox{20cm}{Temp, Static Chain Pointer \\ 4th Kernel Argument} \\
+    \hline
+    \%r15 & r21 & \$gbp & \pbox{20cm}{Callee Saved Register \\ GOT Base Pointer (optionally)} \\
+    \hline
+\end{tabular}
+\end{adjustwidth}\label{tab:mappings_per_func}
+\end{table}
+
+\end{document}
