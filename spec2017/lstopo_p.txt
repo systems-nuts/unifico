@@ -1,0 +1,39 @@
+Machine (7838MB)
+  Package P#0 + L3 (12MB)
+    L2 (256KB) + L1d (32KB) + L1i (32KB) + Core P#0
+      PU P#0
+      PU P#6
+    L2 (256KB) + L1d (32KB) + L1i (32KB) + Core P#1
+      PU P#1
+      PU P#7
+    L2 (256KB) + L1d (32KB) + L1i (32KB) + Core P#2
+      PU P#2
+      PU P#8
+    L2 (256KB) + L1d (32KB) + L1i (32KB) + Core P#3
+      PU P#3
+      PU P#9
+    L2 (256KB) + L1d (32KB) + L1i (32KB) + Core P#4
+      PU P#4
+      PU P#10
+    L2 (256KB) + L1d (32KB) + L1i (32KB) + Core P#5
+      PU P#5
+      PU P#11
+  HostBridge P#0
+    PCIBridge
+      PCI 10de:1c91
+        GPU "card1"
+        GPU "renderD129"
+    PCI 8086:3e9b
+      GPU "renderD128"
+      GPU "controlD64"
+      GPU "card0"
+    PCI 8086:a353
+    PCIBridge
+      PCI 15b7:5005
+        Block(Disk) "nvme0n1"
+    PCIBridge
+      PCI 10ec:c821
+        Net "wlp7s0"
+    PCIBridge
+      PCI 10ec:8168
+        Net "enp8s0"
