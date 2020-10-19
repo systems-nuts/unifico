@@ -13,7 +13,7 @@ Benchmark,"Base # Copies","Est. Base Run Time","Est. Base Rate","Base Selected",
 525.x264_r,1,46.929126,--,1,S,,,,,,"test iteration #1"
 531.deepsjeng_r,1,7.427392,--,1,S,,,,,,"test iteration #1"
 541.leela_r,1,6.032208,--,1,S,,,,,,"test iteration #1"
-548.exchange2_r,1,--,--,0,CE,,,,,,"test iteration #1"
+548.exchange2_r,1,2.1,0,CE,,,,,,"test iteration #1"
 557.xz_r,1,10.252118,--,1,S,,,,,,"test iteration #1"
 
 "Selected Results Table"
