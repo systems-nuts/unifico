@@ -521,4 +521,4 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-spec2017/lstopo_p.txt
+utilities/lstopo_p.txt

@@ -1,6 +1,7 @@
 import argparse
-import time
+import shutil
 import os
+import subprocess
 
 from unified_abi.utilities.lstopo import digest_lstopo
 from unified_abi.utilities.switch_cpu import switch_cpu
@@ -8,10 +9,12 @@ from unified_abi.utilities.switch_cpu import switch_cpu
 
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser(description='Utility script for running SPEC2017 benchmarks for various numbers '
+    parser = argparse.ArgumentParser(description='Utility script for running PARSEC benchmarks for various numbers '
                                                  'of threads and cores.')
     parser.add_argument('--config-list', action="store", required=True,
                         help='comma separated list of config files; no blanks allowed')
+    parser.add_argument('--input', action="store", required=True,
+                        help='parsec input type')
     parser.add_argument('--threads', action="store", required=False,
                         help='comma separated list of threads for each experiment; no blanks allowed')
     parser.add_argument('--cores-only', action="store_true", required=False,
@@ -45,13 +48,23 @@ if __name__ == '__main__':
         parser.error('You must provide a comma-separated list of threads for each experiment or set --full-thread-run '
                      'or --full-core-run')
 
-    command = ''
+    os.chdir('/home/blackgeorge/Documents/phd/benchmarks/parsec-3.0')
+    subprocess.call(['/bin/bash', '-c', 'source env.sh'])
+
     for config_file in config_list:
         for thread_num in thread_list:
             cpus_to_deactivate = list(range(int(thread_num), pu_num))
             print(cpus_to_deactivate)
             switch_cpu(cpus_to_deactivate, '0')  # Deactivate rest of the cpus
-            command = 'runcpu -c {} --reportable --iterations=3 --threads {} -o csv intspeed'.format(config_file, thread_num)
-            print(command)
+            for bench_group in ['apps', 'kernels']:
+                for bench in os.listdir('pkgs/{}'.format(bench_group)):
+                    print('config/{}.bldconf'.format(config_file), 'pkgs/{}/{}/parsec'.format(bench_group, bench))
+                    shutil.copy('config/{}.bldconf'.format(config_file), 'pkgs/{}/{}/parsec'.format(bench_group, bench))
+
+                    build_cmd = './bin/parsecmgmt -a build -p {} -c {}'.format(bench, config_file)
+                    print(build_cmd)
+                    os.system(build_cmd)
+                    run_cmd = './bin/parsecmgmt -a run -p {} -c {} -i {}'.format(bench, config_file, args.input)
+                    print(run_cmd)
+                    os.system(run_cmd)
             switch_cpu(cpus_to_deactivate, '1')  # Reactivate
-            os.system(command)
