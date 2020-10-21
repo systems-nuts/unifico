@@ -51,7 +51,7 @@ if __name__ == '__main__':
             cpus_to_deactivate = list(range(int(thread_num), pu_num))
             print(cpus_to_deactivate)
             switch_cpu(cpus_to_deactivate, '0')  # Deactivate rest of the cpus
-            command = '/home/nikos/cpu2017/bin/runcpu -c {} --reportable --iterations=3 --threads {} -o csv intspeed'.format(config_file, thread_num)
+            command = '/home/nikos/cpu2017/bin/runcpu -c {} --reportable --threads {} -o csv intspeed'.format(config_file, thread_num)
             print(command)
             os.system(command)
             switch_cpu(cpus_to_deactivate, '1')  # Reactivate
