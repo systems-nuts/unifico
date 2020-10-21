@@ -48,7 +48,7 @@ if __name__ == '__main__':
         parser.error('You must provide a comma-separated list of threads for each experiment or set --full-thread-run '
                      'or --full-core-run')
 
-    os.chdir('/home/blackgeorge/Documents/phd/benchmarks/parsec-3.0')
+    os.chdir('/home/nikos/parsec-benchmark')
     subprocess.call(['/bin/bash', '-c', 'source env.sh'])
 
     for config_file in config_list:
