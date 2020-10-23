@@ -35,3 +35,7 @@ def switch_cpu(cpu_id_list, option):
                     exit(1)
     else:
         print('Unknown option.')
+
+
+if __name__ == '__main__':
+    switch_cpu()
