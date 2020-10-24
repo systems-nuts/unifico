@@ -6,25 +6,32 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-def extract_boxplots(csv_path_list, benchmark_num, iterations, start_line):
+def extract_boxplots(core_csv_list, thread_csv_list, benchmark_num, iterations, start_line):
     """
     Extract boxplot for the runtime of a SPEC report.
-    :param csv_path_list: list of location of csvs
+    :param core_csv_list: list of location of csvs for the cores execution
+    :param thread_csv_list: list of location of csvs for the threads execution
     :param benchmark_num: number of benchmarks
     :param iterations: parameter of benchmark execution
     :param start_line: beginning of csv
     :return:
     """
-    # fig, axs = plt.subplots(8)
-    df_list = []
-    for csv_path in csv_path_list:
+    df_core_list = []
+    for csv_path in core_csv_list:
         df = pd.read_csv(csv_path, skiprows=start_line - 1, nrows=benchmark_num * iterations)
-        df_list.append(df)
+        df_core_list.append(df)
 
-    df = pd.concat(df_list, ignore_index=True)
-    print(df)
-    for bench in set(df['Benchmark']):
-        sns.boxplot(x='Base # Threads', y='Base Run Time', data=df[df['Benchmark'] == bench], palette='Set3')
+    df_thread_list = []
+    for csv_path in thread_csv_list:
+        df = pd.read_csv(csv_path, skiprows=start_line - 1, nrows=benchmark_num * 1)
+        df_thread_list.append(df)
+
+    df_core = pd.concat(df_core_list, ignore_index=True)  # Results for the core experiment
+    df_thread = pd.concat(df_thread_list, ignore_index=True)  # Results for the thread experiment
+
+    for bench in set(df_core_list['Benchmark']):
+        sns.boxplot(x='Base # Threads', y='Base Run Time', data=df_core[df_core['Benchmark'] == bench], palette='Set3')
+        sns.boxplot(x='Base # Threads', y='Base Run Time', data=df_thread[df_thread['Benchmark'] == bench], palette='Set2')
         plt.title(bench)
         plt.show()
 
@@ -40,7 +47,9 @@ def extract_boxplots(csv_path_list, benchmark_num, iterations, start_line):
 
 if __name__ == '__main__':
     os.chdir('results')
-    csv_list = ['CPU2017.077.intspeed.csv', 'CPU2017.078.intspeed.csv', 'CPU2017.079.intspeed.csv',
-                'CPU2017.080.intspeed.csv', 'CPU2017.081.intspeed.csv', 'CPU2017.082.intspeed.csv',
-                'CPU2017.083.intspeed.csv', 'CPU2017.084.intspeed.csv', 'CPU2017.085.intspeed.csv']
-    extract_boxplots(csv_list, 10, 2, 7)
+    core_csv_list = ['CPU2017.077.intspeed.csv', 'CPU2017.078.intspeed.csv', 'CPU2017.079.intspeed.csv',
+                     'CPU2017.080.intspeed.csv', 'CPU2017.085.intspeed.csv']
+    thread_csv_list = ['CPU2017.125.intspeed.refspeed.csv', 'CPU2017.126.intspeed.refspeed.csv', 'CPU2017.127.intspeed.refspeed.csv',
+                       'CPU2017.128.intspeed.refspeed.csv', 'CPU2017.129.intspeed.refspeed.csv', 'CPU2017.130.intspeed.refspeed.csv',
+                       'CPU2017.131.intspeed.refspeed.csv', 'CPU2017.132.intspeed.refspeed.csv', 'CPU2017.133.intspeed.refspeed.csv']
+    extract_boxplots(core_csv_list, thread_csv_list, 10, 2, 7)
