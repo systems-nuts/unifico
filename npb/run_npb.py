@@ -31,10 +31,12 @@ if __name__ == '__main__':
         print('Set NBP_DIR environment first.')
         exit(0)
 
-    results_dir = os.getenv('NPB_RESULTS_DIR')
-    if npb_dir is None:
-        print('Set NBP_RESULTS_DIR environment first.')
+    scripts_dir = os.getenv('NPB_SCRIPT_DIR')
+    if scripts_dir is None:
+        print('Set NBP_SCRIPT_DIR environment first.')
         exit(0)
+    results_dir = '{}/results'.format(scripts_dir)
+    config_dir = '{}/config'.format(scripts_dir)
 
     parser = argparse.ArgumentParser(description='Utility script for running NPB_OMP benchmarks for various numbers '
                                                  'of threads and cores.')
@@ -42,6 +44,8 @@ if __name__ == '__main__':
                         help='comma separated list of suite files; no blanks allowed')
     parser.add_argument('--threads', action="store", required=False,
                         help='comma separated list of threads for each experiment; no blanks allowed')
+    parser.add_argument('--iterations', action="store", required=False,
+                        help='iterations for each experiment')
     parser.add_argument('--compact-affinity', action="store_true", required=False,
                         help='exploit hyperthreading; overridden by --full-core-run')
     parser.add_argument('--full-thread-run', action="store_true", required=False,
@@ -56,6 +60,7 @@ if __name__ == '__main__':
 
     others = ''.join(others)
     suite_list = args.suite_list.split(',')
+    iterations = int(args.iterations)
 
     thread_list = []
     topology = SystemTopology()
@@ -74,17 +79,17 @@ if __name__ == '__main__':
     for suite_file in suite_list:
         for thread_num in thread_list:
             # NPB OMP uses this env var for thread number
-            os.environ['OMP_RUN_THREADS'] = thread_num
-
-            topology.reset_cpus()  # Make sure all cpus are turned on
+            os.environ['OMP_RUN_THREADS'] = str(thread_num)
 
             if args.compact_affinity and not args.full_core_run:
                 affinity = 'compact'
             else:
                 affinity = 'scatter'
 
-            topology.switch_cpus(thread_num, affinity, '0')  # Switch off desired cpus
+            if not args.preview:
+                topology.switch_cpus(int(thread_num), affinity, '0')  # Switch off desired cpus
 
+            os.chdir(config_dir)
             name_class_list = parse_suite(suite_file)
             for name_class in name_class_list:
 
@@ -92,11 +97,18 @@ if __name__ == '__main__':
 
                 os.chdir(npb_dir)
                 make_command = 'make {} CLASS={}'.format(bench_name, bench_class)
-                os.system(make_command)
 
-                run_command_fmt = './bin/{0}.{1}.x > {2}/{3}.{1}_out.{4}'
-                run_command = run_command_fmt.format(bench_name, bench_class, results_dir,
-                                                     bench_name.upper(), thread_num)
-                os.system(run_command)
+                print(make_command)
+                if not args.preview:
+                    os.system(make_command)
 
-            topology.switch_cpus(thread_num, affinity, '1')  # Switch back on desired cpus
+                for iteration in range(iterations):
+
+                    run_command_fmt = './bin/{0}.{1}.x > {2}/{0}.{1}_out.{3}.{4}'
+                    run_command = run_command_fmt.format(bench_name, bench_class, results_dir,
+                                                         thread_num, iteration + 1)
+                    print(run_command)
+                    if not args.preview:
+                        os.system(run_command)
+
+            topology.switch_cpus(int(thread_num), affinity, '1')  # Switch back on desired cpus

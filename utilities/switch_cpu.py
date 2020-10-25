@@ -25,6 +25,9 @@ def switch_cpu(cpu_id_list, option):
     :param option: 0 or 1
     :return:
     """
+    if not cpu_id_list:  # Empty list
+        return
+
     if option in ['0', '1']:
         for cpu_id in cpu_id_list:
             with open('/sys/devices/system/cpu/cpu{}/online'.format(str(cpu_id)), 'w') as fp:
