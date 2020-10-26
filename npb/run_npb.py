@@ -81,7 +81,7 @@ if __name__ == '__main__':
             # NPB OMP uses this env var for thread number
             os.environ['OMP_RUN_THREADS'] = str(thread_num)
 
-            if args.compact_affinity and not args.full_core_run:
+            if (args.compact_affinity or args.full_thread_run) and not args.full_core_run:
                 affinity = 'compact'
             else:
                 affinity = 'scatter'
