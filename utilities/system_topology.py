@@ -83,7 +83,7 @@ class SystemTopology:
             cpus_to_deactivate = self.scattered_affinity_order[thread_num:]
         switch_cpu(cpus_to_deactivate, option)
 
-    def reset_cpus(self):
+    def reset_cpus(self):  # TODO: change
         """
         Switch all cpus on.
         Start from cpu1. Usually we can't mess with cpu0 anyway.
