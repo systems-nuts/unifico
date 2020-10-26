@@ -10,17 +10,17 @@ import seaborn as sns
 def verify_npb_output(out_path):
     """
     Verify that npb output file includes a successful run
-    :param out_path: npb output file path
+    @param out_path: npb output file path
     :return: boolean
     """
     with open(out_path, 'r') as fp:
         for line in fp:
-            if re.search('Verification\s+=\s+SUCCESSFUL', line):
+            if re.search(r'Verification\s+=\s+SUCCESSFUL', line):
                 return True
         return False
 
 
-def extract_npb_plots(experiment, commit_short_hash):
+def extract_csv(experiment, commit_short_hash):
     """
     Extract from NPB output files.
     :return:
@@ -70,11 +70,18 @@ def extract_npb_plots(experiment, commit_short_hash):
         }
 
         df = df.append(out_dict, ignore_index=True)
+        df['Threads'] = df['Threads'].astype(int)
 
-    print(df)
     output_csv = os.path.join(results_dir, experiment + '.csv')
     df.to_csv(output_csv, index=False)
 
+    return output_csv
+
+
+def dataframe_to_boxplot(df):
+    """
+    @param df: Pandas DataFrame
+    """
     for bench in set(df['Benchmark']):
         sns.boxplot(x='Threads', y='Time', hue='Affinity',
                     data=df[(df['Benchmark'] == bench)],
@@ -83,5 +90,32 @@ def extract_npb_plots(experiment, commit_short_hash):
         plt.show()
 
 
+def two_dataframes_boxplot(df1, df2):
+    """
+    @param df1: Pandas Dataframe
+    @param df2: Pandas Dataframe
+    """
+    df = df1.append(df2, ignore_index=True)
+    print(df)
+    df1 = df[df['Affinity'] == 'scatter']
+    df2 = df[df['Affinity'] == 'compact']
+    for bench in set(df['Benchmark']):
+        plt.subplot(1, 2, 1)
+        sns.boxplot(x='Threads', y='Time', hue='Experiment',
+                    data=df1[(df1['Benchmark'] == bench)],
+                    palette='Set3')
+        plt.title(bench)
+        plt.subplot(1, 2, 2)
+        sns.boxplot(x='Threads', y='Time', hue='Experiment',
+                    data=df2[(df2['Benchmark'] == bench)],
+                    palette='Set3')
+        plt.title(bench)
+        plt.show()
+
+
 if __name__ == '__main__':
-    extract_npb_plots('baseline', '2f63b22')
+
+    csv = extract_csv('baseline', '2f63b22')
+    df = pd.read_csv(csv)
+    # dataframe_to_boxplot(df)
+    two_dataframes_boxplot(df, df)
