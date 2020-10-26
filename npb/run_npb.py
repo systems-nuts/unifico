@@ -30,13 +30,12 @@ if __name__ == '__main__':
     if npb_dir is None:
         print('Set NBP_DIR environment first.')
         exit(0)
+    config_dir = os.path.join(npb_dir, 'config')
 
-    scripts_dir = os.getenv('NPB_SCRIPT_DIR')
-    if scripts_dir is None:
-        print('Set NBP_SCRIPT_DIR environment first.')
+    result_dir = os.getenv('NPB_RESULT_DIR')
+    if result_dir is None:
+        print('Set NBP_RESULT_DIR environment first.')
         exit(0)
-    results_dir = '{}/results'.format(scripts_dir)
-    config_dir = '{}/config'.format(scripts_dir)
 
     parser = argparse.ArgumentParser(description='Utility script for running NPB_OMP benchmarks for various numbers '
                                                  'of threads and cores.')
@@ -105,7 +104,7 @@ if __name__ == '__main__':
                 for iteration in range(iterations):
 
                     run_command_fmt = './bin/{0}.{1}.x > {2}/{0}.{1}_out.{3}.{4}.{5}'
-                    run_command = run_command_fmt.format(bench_name, bench_class, results_dir,
+                    run_command = run_command_fmt.format(bench_name, bench_class, result_dir,
                                                          thread_num, affinity, iteration + 1)
                     print(run_command)
                     if not args.preview:

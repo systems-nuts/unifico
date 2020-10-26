@@ -20,13 +20,13 @@ def verify_npb_output(out_path):
         return False
 
 
-def extract_npb_plots():
+def extract_npb_plots(experiment, commit_short_hash):
     """
     Extract from NPB output files.
     :return:
     """
     script_dir = os.getenv('NPB_SCRIPT_DIR')
-    results_dir = '{}/results'.format(script_dir)
+    results_dir = '{}/results/{}'.format(script_dir, commit_short_hash)
 
     df = pd.DataFrame()
 
@@ -42,7 +42,7 @@ def extract_npb_plots():
         iteration = match.group(5)
         print(bench, bench_class, threads, affinity, iteration)
 
-        output_abs_path = '{}/{}'.format(results_dir, output)
+        output_abs_path = os.path.join(results_dir, output)
 
         with open(output_abs_path, 'r') as fp:
             verified = False
@@ -60,6 +60,7 @@ def extract_npb_plots():
                 exit(1)
 
         out_dict = {
+            'Experiment': experiment,
             'Benchmark': bench,
             'Class': bench_class,
             'Threads': int(threads),
@@ -71,6 +72,8 @@ def extract_npb_plots():
         df = df.append(out_dict, ignore_index=True)
 
     print(df)
+    output_csv = os.path.join(results_dir, experiment + '.csv')
+    df.to_csv(output_csv, index=False)
 
     for bench in set(df['Benchmark']):
         sns.boxplot(x='Threads', y='Time', hue='Affinity',
@@ -81,4 +84,4 @@ def extract_npb_plots():
 
 
 if __name__ == '__main__':
-    extract_npb_plots()
+    extract_npb_plots('baseline', '2f63b22')

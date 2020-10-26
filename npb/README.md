@@ -30,3 +30,10 @@ make <benchmark> CLASS=<class> [VERSION=opt]
         --threads=12 --compact-affinity --iterations=1"`
 * Optionally: add the flag `--preview` to see the commands to be executed
 
+### Fetch results from nettuno
+
+* `ssh nikos@129.215.165.71`
+* `scp -r nikos@nettuno:phd/unified_abi/npb/results .`
+* `exit`
+* `cd /dest/of/results`
+* `scp nikos@129.215.165.71:results/* .`
