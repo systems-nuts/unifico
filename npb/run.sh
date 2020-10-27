@@ -7,6 +7,7 @@ do
   export NPB_RESULT_DIR=${NPB_SCRIPT_DIR}/results/${short_hash}
   git checkout "$short_hash"
   cp "${NPB_SCRIPT_DIR}"/config/make.def "${NPB_DIR}"/config
+  cp "${NPB_SCRIPT_DIR}"/config/suite.def "${NPB_DIR}"/config
   if [ ! -d "$NPB_RESULT_DIR" ];then
     echo
     mkdir "$NPB_RESULT_DIR"
