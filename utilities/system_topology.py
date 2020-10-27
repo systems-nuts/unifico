@@ -1,7 +1,7 @@
 import os
 import re
 
-from unified_abi.utilities.switch_cpu import switch_cpu
+from utilities.switch_cpu import switch_cpu
 
 
 class SystemTopology:
