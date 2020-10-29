@@ -2,7 +2,7 @@ import argparse
 import os
 import re
 
-from unified_abi.utilities.system_topology import SystemTopology
+from utilities.system_topology import SystemTopology
 
 
 def parse_suite(suite_file):
