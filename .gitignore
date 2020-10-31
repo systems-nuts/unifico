@@ -522,3 +522,5 @@ venv.bak/
 .mypy_cache/
 
 utilities/lstopo_p.txt
+*.s
+*.ll

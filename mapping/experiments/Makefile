@@ -1,8 +1,8 @@
 main.s: main.ll
-	llc-11 main.ll -o main.s
+	llc-3.9 main.ll -o main.s
 
 main.ll: main.c
-	clang-11 -emit-llvm -S -c main.c -o main.ll
+	clang-3.9 -emit-llvm -S -c main.c -o main.ll
 
 clean:
 	rm main.ll main.s
