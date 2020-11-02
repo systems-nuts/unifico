@@ -30,10 +30,7 @@
 # This is the fortran compiler used for Fortran programs
 #---------------------------------------------------------------------------
 F77 = gfortran
-
-#---------------------------------------------------------------------------
 # This links fortran programs; usually the same as ${F77}
-#---------------------------------------------------------------------------
 FLINK	= $(F77)
 
 #---------------------------------------------------------------------------
@@ -49,13 +46,13 @@ F_INC =
 #---------------------------------------------------------------------------
 # Global *compile time* flags for Fortran programs
 #---------------------------------------------------------------------------
-FFLAGS	= -O3 -mcmodel=medium -fopenmp
+FFLAGS	= -O3 -fopenmp -mcmodel=medium
 
 #---------------------------------------------------------------------------
 # Global *link time* flags. Flags for increasing maximum executable 
 # size usually go here. 
 #---------------------------------------------------------------------------
-FLINKFLAGS = -O3 -mcmodel=medium -fopenmp
+FLINKFLAGS = -O3 -fopenmp -mcmodel=medium
 
 
 #---------------------------------------------------------------------------
@@ -78,11 +75,8 @@ FLINKFLAGS = -O3 -mcmodel=medium -fopenmp
 #---------------------------------------------------------------------------
 # This is the C compiler used for C programs
 #---------------------------------------------------------------------------
-CC = /home/nikos/llvm-project/build/bin/clang
-
-#---------------------------------------------------------------------------
+CC = gcc
 # This links C programs; usually the same as ${CC}
-#---------------------------------------------------------------------------
 CLINK	= $(CC)
 
 #---------------------------------------------------------------------------
@@ -93,7 +87,7 @@ C_LIB  = -lm
 #---------------------------------------------------------------------------
 # These macros are passed to the compiler 
 #---------------------------------------------------------------------------
-C_INC = -I../common
+C_INC =
 
 #---------------------------------------------------------------------------
 # Global *compile time* flags for C programs
@@ -110,13 +104,13 @@ C_INC = -I../common
 # _LARGEFILE64_SOURCE - are standard compiler flags which allow to work with 
 # files larger than 2GB.
 #---------------------------------------------------------------------------
-CFLAGS	= -g -Wall -O3 -mcmodel=medium -fopenmp=libomp
+CFLAGS	= -O3 -fopenmp -mcmodel=medium
 
 #---------------------------------------------------------------------------
 # Global *link time* flags. Flags for increasing maximum executable 
 # size usually go here. 
 #---------------------------------------------------------------------------
-CLINKFLAGS = -O3 -mcmodel=medium -lomp
+CLINKFLAGS = -O3 -fopenmp -mcmodel=medium
 
 
 #---------------------------------------------------------------------------
@@ -126,7 +120,7 @@ CLINKFLAGS = -O3 -mcmodel=medium -lomp
 # this compiler go here also; typically there are few flags required; hence 
 # there are no separate macros provided for such flags.
 #---------------------------------------------------------------------------
-UCC	= /home/nikos/llvm-project/build/bin/clang
+UCC	= gcc
 
 
 #---------------------------------------------------------------------------
@@ -141,9 +135,9 @@ BINDIR	= ../bin
 # Use "randi8" unless there is a reason to use another one. 
 # Other allowed values are "randi8_safe", "randdp" and "randdpvec"
 #---------------------------------------------------------------------------
-#RAND   = randi8
+RAND   = randi8
 # The following is highly reliable but may be slow:
-RAND   = randdp
+# RAND   = randdp
 
 
 #---------------------------------------------------------------------------
@@ -156,7 +150,7 @@ WTIME  = wtime.c
 
 
 #---------------------------------------------------------------------------
-# Enable if either Cray or IBM: 
+# Enable if either Cray (not Cray-X1) or IBM: 
 # (no such flag for most machines: see common/wtime.h)
 # This is used by the C compiler to pass the machine name to common/wtime.h,
 # where the C/Fortran binding interface format is determined
