@@ -2,4 +2,4 @@
 
 * Benchmarks: SNU OMP C
 * Compiler: Clang
-* Remove r14
+* Baseline
