@@ -2,4 +2,4 @@
 
 * Benchmarks: SNU OMP C
 * Compiler: Clang
-* Baseline
+* Convert r13, r14 from calle-saved to temp
