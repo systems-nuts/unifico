@@ -78,7 +78,7 @@ FLINKFLAGS = -O3 -mcmodel=medium -fopenmp
 #---------------------------------------------------------------------------
 # This is the C compiler used for C programs
 #---------------------------------------------------------------------------
-CC = /home/nikos/llvm-project/build/bin/clang
+CC = clang
 
 #---------------------------------------------------------------------------
 # This links C programs; usually the same as ${CC}
@@ -110,13 +110,13 @@ C_INC = -I../common
 # _LARGEFILE64_SOURCE - are standard compiler flags which allow to work with 
 # files larger than 2GB.
 #---------------------------------------------------------------------------
-CFLAGS	= -g -Wall -O3 -mcmodel=medium -fopenmp=libomp
+CFLAGS	= -g -Wall -O3 -mcmodel=medium -fopenmp=libomp 
 
 #---------------------------------------------------------------------------
 # Global *link time* flags. Flags for increasing maximum executable 
 # size usually go here. 
 #---------------------------------------------------------------------------
-CLINKFLAGS = -O3 -mcmodel=medium -lomp
+CLINKFLAGS = -O3 -mcmodel=medium -lomp -Wl,-L$(llvm-config --libdir) -Wl,-rpath=$(llvm-config --libdir)
 
 
 #---------------------------------------------------------------------------
@@ -126,7 +126,7 @@ CLINKFLAGS = -O3 -mcmodel=medium -lomp
 # this compiler go here also; typically there are few flags required; hence 
 # there are no separate macros provided for such flags.
 #---------------------------------------------------------------------------
-UCC	= /home/nikos/llvm-project/build/bin/clang
+UCC	= clang
 
 
 #---------------------------------------------------------------------------

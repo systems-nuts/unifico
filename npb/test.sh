@@ -12,6 +12,8 @@ fi
 echo "Testing.." 
 echo "Result Directory: ${NPB_SCRIPT_DIR}/results/test"
 
+export PATH=~/toolchain1/bin/:$PATH
+export LD_LIBRARY_PATH=$(llvm-config --libdir)
 export NPB_RESULT_DIR=${NPB_SCRIPT_DIR}/results/test
 
 cp "${NPB_SCRIPT_DIR}"/config/make.def "${NPB_DIR}"/config
@@ -20,6 +22,7 @@ if [ ! -d "$NPB_RESULT_DIR" ]; then
 echo
 mkdir "$NPB_RESULT_DIR"
 fi
+rm -f "$NPB_RESULT_DIR"/*
 
 bash -c "$cmd1"
 bash -c "$cmd2"
