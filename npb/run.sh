@@ -26,6 +26,7 @@ do
     echo
     mkdir "$NPB_RESULT_DIR"
   fi
+  cp "${NPB_SCRIPT_DIR}"/config/README.md "${NPB_RESULT_DIR}"
 
   bash -c "$cmd1"
   bash -c "$cmd2"
