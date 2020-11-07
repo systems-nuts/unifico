@@ -14,7 +14,7 @@ do
   echo "Experiment: $short_hash"
   echo "Result Directory: ${NPB_SCRIPT_DIR}/results/${short_hash}"
 
-  export PATH=~/toolchain1/bin/:$PATH
+  export PATH=~/my_llvm/toolchain_exp/bin/:$PATH
   export LD_LIBRARY_PATH=$(llvm-config --libdir)
   export NPB_RESULT_DIR=${NPB_SCRIPT_DIR}/results/${short_hash}
 
