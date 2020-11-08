@@ -50,7 +50,6 @@ def extract_csv(commit_short_hash):
         threads = match.group(3)
         affinity = match.group(4)
         iteration = match.group(5)
-        print(bench, bench_class, threads, affinity, iteration)
 
         output_abs_path = os.path.join(results_dir, output)
 
@@ -64,7 +63,6 @@ def extract_csv(commit_short_hash):
                 match = time_pattern.search(line)
                 if match is not None:
                     time = match.group(1)
-                    print(time)
             if not verified:
                 print('Not verified: ', output)
                 exit(1)
@@ -80,9 +78,9 @@ def extract_csv(commit_short_hash):
         }
 
         df = df.append(out_dict, ignore_index=True)
-        df['Threads'] = df['Threads'].astype(int)
 
     output_csv = os.path.join(results_dir, commit_short_hash + '.csv')
+    df['Threads'] = df['Threads'].astype(int)
     df.to_csv(output_csv, index=False)
 
     return output_csv
@@ -106,7 +104,7 @@ def two_dataframes_boxplot(df1, df2):
     @param df2: Pandas Dataframe
     """
     df = df1.append(df2, ignore_index=True)
-    print(df)
+
     df1 = df[df['Affinity'] == 'scatter']
     df2 = df[df['Affinity'] == 'compact']
     for bench in set(df['Benchmark']):
@@ -153,5 +151,4 @@ def compare_experiments(hash1, hash2):
 
 
 if __name__ == '__main__':
-
-    compare_experiments('2f63b22', '2f63b22')
+    compare_experiments('fbbec41', '0cc5943')

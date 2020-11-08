@@ -1,0 +1,5 @@
+{
+	"benchmarks": "SNU OMP C",
+	"compiler": "clang",
+	"experiment": "clang"
+}
