@@ -49,13 +49,13 @@ F_INC =
 #---------------------------------------------------------------------------
 # Global *compile time* flags for Fortran programs
 #---------------------------------------------------------------------------
-FFLAGS	= -O3 -mcmodel=medium -fopenmp
+FFLAGS	= -O3 -mcmodel=medium
 
 #---------------------------------------------------------------------------
 # Global *link time* flags. Flags for increasing maximum executable 
 # size usually go here. 
 #---------------------------------------------------------------------------
-FLINKFLAGS = -O3 -mcmodel=medium -fopenmp
+FLINKFLAGS = -O3 -mcmodel=medium
 
 
 #---------------------------------------------------------------------------
@@ -78,6 +78,7 @@ FLINKFLAGS = -O3 -mcmodel=medium -fopenmp
 #---------------------------------------------------------------------------
 # This is the C compiler used for C programs
 #---------------------------------------------------------------------------
+#CC = /home/nikos/llvm-project/build/bin/clang
 CC = clang
 
 #---------------------------------------------------------------------------
@@ -116,7 +117,7 @@ CFLAGS	= -g -Wall -O3 -mcmodel=medium -fopenmp=libomp
 # Global *link time* flags. Flags for increasing maximum executable 
 # size usually go here. 
 #---------------------------------------------------------------------------
-CLINKFLAGS = -O3 -mcmodel=medium -lomp -Wl,-L$(llvm-config --libdir) -Wl,-rpath=$(llvm-config --libdir)
+CLINKFLAGS = -O3 -mcmodel=medium -lomp
 
 
 #---------------------------------------------------------------------------
@@ -126,6 +127,7 @@ CLINKFLAGS = -O3 -mcmodel=medium -lomp -Wl,-L$(llvm-config --libdir) -Wl,-rpath=
 # this compiler go here also; typically there are few flags required; hence 
 # there are no separate macros provided for such flags.
 #---------------------------------------------------------------------------
+#UCC	= /home/nikos/llvm-project/build/bin/clang
 UCC	= clang
 
 
@@ -156,7 +158,7 @@ WTIME  = wtime.c
 
 
 #---------------------------------------------------------------------------
-# Enable if either Cray or IBM:
+# Enable if either Cray or IBM: 
 # (no such flag for most machines: see common/wtime.h)
 # This is used by the C compiler to pass the machine name to common/wtime.h,
 # where the C/Fortran binding interface format is determined
