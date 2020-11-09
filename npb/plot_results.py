@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import re
+import json
 
 import matplotlib.pyplot as plt
 
@@ -20,13 +21,22 @@ def verify_npb_output(out_path):
         return False
 
 
-def extract_csv(experiment, commit_short_hash):
+def extract_csv(commit_short_hash):
     """
     Extract from NPB output files.
     :return:
     """
     script_dir = os.getenv('NPB_SCRIPT_DIR')
     results_dir = '{}/results/{}'.format(script_dir, commit_short_hash)
+
+    info_dict_path = '{}/info.json'.format(results_dir)
+    if not os.path.isfile(info_dict_path):
+        print('info.json not found')
+        exit(1)
+
+    with open(info_dict_path, 'r') as fp:
+        info_dict = json.load(fp)
+    experiment = info_dict['experiment']
 
     df = pd.DataFrame()
 
@@ -40,7 +50,6 @@ def extract_csv(experiment, commit_short_hash):
         threads = match.group(3)
         affinity = match.group(4)
         iteration = match.group(5)
-        print(bench, bench_class, threads, affinity, iteration)
 
         output_abs_path = os.path.join(results_dir, output)
 
@@ -54,7 +63,6 @@ def extract_csv(experiment, commit_short_hash):
                 match = time_pattern.search(line)
                 if match is not None:
                     time = match.group(1)
-                    print(time)
             if not verified:
                 print('Not verified: ', output)
                 exit(1)
@@ -70,9 +78,9 @@ def extract_csv(experiment, commit_short_hash):
         }
 
         df = df.append(out_dict, ignore_index=True)
-        df['Threads'] = df['Threads'].astype(int)
 
-    output_csv = os.path.join(results_dir, experiment + '.csv')
+    output_csv = os.path.join(results_dir, commit_short_hash + '.csv')
+    df['Threads'] = df['Threads'].astype(int)
     df.to_csv(output_csv, index=False)
 
     return output_csv
@@ -96,7 +104,7 @@ def two_dataframes_boxplot(df1, df2):
     @param df2: Pandas Dataframe
     """
     df = df1.append(df2, ignore_index=True)
-    print(df)
+
     df1 = df[df['Affinity'] == 'scatter']
     df2 = df[df['Affinity'] == 'compact']
     for bench in set(df['Benchmark']):
@@ -104,18 +112,46 @@ def two_dataframes_boxplot(df1, df2):
         sns.boxplot(x='Threads', y='Time', hue='Experiment',
                     data=df1[(df1['Benchmark'] == bench)],
                     palette='Set3')
+        plt.legend(loc=1, prop={'size': 8})
         plt.title(bench)
         plt.subplot(1, 2, 2)
         sns.boxplot(x='Threads', y='Time', hue='Experiment',
                     data=df2[(df2['Benchmark'] == bench)],
                     palette='Set3')
+        plt.legend(loc=1, prop={'size': 8})
         plt.title(bench)
+        plt.savefig(bench)
         plt.show()
 
 
-if __name__ == '__main__':
+def compare_experiments(hash1, hash2):
+    """
+    Plot the graphs of the two experiments
+    @param hash1: git commit short hash corresponding to first experiment
+    @param hash2: git commit short hash corresponding to second experiment
+    @return:
+    """
+    script_dir = os.getenv('NPB_SCRIPT_DIR')
+    results_dir = '{}/results'.format(script_dir)
+    os.chdir(results_dir)
 
-    csv = extract_csv('baseline', '2f63b22')
-    df = pd.read_csv(csv)
-    # dataframe_to_boxplot(df)
-    two_dataframes_boxplot(df, df)
+    if not os.path.isdir(hash1):
+        print('{} result directory does not exist.'.format(hash1))
+    elif not os.path.isdir(hash2):
+        print('{} result directory does not exist.'.format(hash2))
+
+    csv1 = os.path.join(hash1, hash1 + '.csv')
+    csv2 = os.path.join(hash2, hash2 + '.csv')
+
+    if not os.path.isfile(csv1):
+        extract_csv(hash1)
+    if not os.path.isfile(csv2):
+        extract_csv(hash2)
+
+    df1 = pd.read_csv(csv1)
+    df2 = pd.read_csv(csv2)
+    two_dataframes_boxplot(df1, df2)
+
+
+if __name__ == '__main__':
+    compare_experiments('fbbec41', '0e1e380')

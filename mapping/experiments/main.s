@@ -14,14 +14,20 @@ inc:                                    # @inc
 	pushq	%r15
 	pushq	%r14
 	pushq	%r13
+	pushq	%r12
+	pushq	%rbx
+	.cfi_offset %rbx, -56
+	.cfi_offset %r12, -48
 	.cfi_offset %r13, -40
 	.cfi_offset %r14, -32
 	.cfi_offset %r15, -24
-	movq	%rdi, -32(%rbp)
+	movq	%rdi, -48(%rbp)
 	#APP
 	#NO_APP
-	movq	-32(%rbp), %rax
+	movq	-48(%rbp), %rax
 	addq	$1, %rax
+	popq	%rbx
+	popq	%r12
 	popq	%r13
 	popq	%r14
 	popq	%r15
