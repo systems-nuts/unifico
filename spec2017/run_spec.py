@@ -6,9 +6,9 @@ from utilities.system_topology import SystemTopology
 # TODO: write tests
 if __name__ == '__main__':
 
-    spec_dir = os.getenv('SPEC')
+    spec_dir = os.getenv('SPEC_DIR')
     if spec_dir is None:
-        print('Set SPEC environment first (usually source a script inside SPEC dir).')
+        print('Set SPEC_DIR environment first (usually source a script inside SPEC dir).')
         exit(0)
 
     parser = argparse.ArgumentParser(description='Utility script for running SPEC2017 benchmarks for various numbers '
@@ -51,7 +51,9 @@ if __name__ == '__main__':
     if args.bench is None:
         bench = 'intspeed'
     else:
-        bench = args.bench
+        bench = args.bench.split(',')
+        bench = ' '.join(bench)
+        print(bench)
 
     command = ''
     for config_file in config_list:

@@ -3,7 +3,7 @@
 cmd1="python3.7 -m npb.run_npb --suite-list suite.def --full-core-run --iterations=3"
 cmd2="python3.7 -m npb.run_npb --suite-list suite.def --full-thread-run --iterations=3"
 
-if [ $1 = "preview" ]; then
+if [ "$1" = "preview" ]; then
 	cmd1+=" --preview"
 	cmd2+=" --preview"
 	shift
@@ -33,4 +33,4 @@ do
   bash -c "$cmd2"
 
 done
-git checkout npb_experiments
+git checkout development
