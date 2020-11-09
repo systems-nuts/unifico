@@ -53,7 +53,6 @@ if __name__ == '__main__':
     else:
         bench = args.bench.split(',')
         bench = ' '.join(bench)
-        print(bench)
 
     command = ''
     for config_file in config_list:
