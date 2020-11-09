@@ -1,5 +1,5 @@
 {
 	"benchmarks": "SNU OMP C",
 	"compiler": "clang",
-	"experiment": "clang"
+	"experiment": "baseline"
 }

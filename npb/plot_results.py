@@ -112,12 +112,15 @@ def two_dataframes_boxplot(df1, df2):
         sns.boxplot(x='Threads', y='Time', hue='Experiment',
                     data=df1[(df1['Benchmark'] == bench)],
                     palette='Set3')
+        plt.legend(loc=1, prop={'size': 8})
         plt.title(bench)
         plt.subplot(1, 2, 2)
         sns.boxplot(x='Threads', y='Time', hue='Experiment',
                     data=df2[(df2['Benchmark'] == bench)],
                     palette='Set3')
+        plt.legend(loc=1, prop={'size': 8})
         plt.title(bench)
+        plt.savefig(bench)
         plt.show()
 
 
@@ -151,4 +154,4 @@ def compare_experiments(hash1, hash2):
 
 
 if __name__ == '__main__':
-    compare_experiments('fbbec41', '0cc5943')
+    compare_experiments('fbbec41', '0e1e380')
