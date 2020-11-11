@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cmd1="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_base.cfg --threads=1 --bench=600,602,605,625 --iterations=3 --noreportable"
+cmd1="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_base.cfg --threads=1 --bench=600,602,605,625 --iterations=3 --noreportable --tune=base"
 cmd2="python3.7 -m spec2017.run_spec --config-list spec2017/config/base.cfg --full-thread-run --bench  600 602 605 625 657 --noreportable"
 
 if [ "$1" = "preview" ]; then
