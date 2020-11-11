@@ -33,6 +33,7 @@ do
   # TODO does not work for multithread runs
   EXPERIMENT_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)
   cp "$SPEC_DIR"/result/CPU2017."$EXPERIMENT_NUM".log "$SPEC_RESULT_DIR"
+  cp "$SPEC_DIR"/result/CPU2017."$EXPERIMENT_NUM".intspeed.refspeed.csv "$SPEC_RESULT_DIR"
 
   #bash -c "$cmd2"
   #EXPERIMENT_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)
