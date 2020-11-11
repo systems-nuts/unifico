@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cmd1="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_base.cfg --threads=1 --bench=600,602,605,625 --noreportable"
+cmd1="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_base.cfg --threads=1 --bench=600,602,605,625 --iterations=3 --noreportable"
 cmd2="python3.7 -m spec2017.run_spec --config-list spec2017/config/base.cfg --full-thread-run --bench  600 602 605 625 657 --noreportable"
 
 if [ "$1" = "preview" ]; then
@@ -30,7 +30,13 @@ do
   cp "${SPEC_SCRIPT_DIR}"/config/info.json "${SPEC_RESULT_DIR}"
 
   sudo -E bash -c "$cmd1"
+  # TODO does not work for multithread runs
+  EXPERIMENT_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)
+  cp "$SPEC_DIR"/result/CPU2017."$EXPERIMENT_NUM".log "$SPEC_RESULT_DIR"
+
   #bash -c "$cmd2"
+  #EXPERIMENT_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)
+  #cp "$SPEC_DIR"/result/CPU2017."$EXPERIMENT_NUM".log "$SPEC_RESULT_DIR"
 
 done
 git checkout development

@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
     args, others = parser.parse_known_args()
 
-    others = ''.join(others)
+    others = ' '.join(others)
     config_list = args.config_list.split(',')
 
     thread_list = []
