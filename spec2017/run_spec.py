@@ -54,7 +54,8 @@ if __name__ == '__main__':
         bench = args.bench.split(',')
         bench = ' '.join(bench)
 
-    command = ''
+    build_command = ''
+    run_command = ''
     for config_file in config_list:
         for thread_num in thread_list:
 
@@ -63,15 +64,20 @@ if __name__ == '__main__':
             else:
                 affinity = 'scatter'
 
-            command_fmt = '{}/bin/runcpu -c {} --threads {} -o csv {} {}'
-            command = command_fmt.format(spec_dir, config_file, thread_num, bench, others)
+            build_command_fmt = '{}/bin/runcpu -c {} -a build -o csv {} {}'
+            build_command = build_command_fmt.format(spec_dir, config_file, bench, others)
 
+            run_command_fmt = '{}/bin/runcpu -c {} --threads {} -o csv {} {}'
+            run_command = run_command_fmt.format(spec_dir, config_file, thread_num, bench, others)
+
+            print(build_command)
             if not args.preview:
+                os.system(build_command)
                 topology.switch_cpus(int(thread_num), affinity, '0')  # Switch off desired cpus
 
-            print(command)
+            print(run_command)
             if not args.preview:
-                os.system(command)  # Run benchmarks for the specific config file and the specific number of threads
+                os.system(run_command)  # Run benchmarks for the specific config file and the specific number of threads
 
             if not args.preview:
                 topology.switch_cpus(int(thread_num), affinity, '1')  # Switch back on desired cpus
