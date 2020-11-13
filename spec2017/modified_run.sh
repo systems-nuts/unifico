@@ -13,6 +13,9 @@ if [ "$1" = "preview" ]; then
 	cmd3+=" --preview"
 	shift
 fi
+
+echo "pass"
+read PW
 	
 for short_hash in "$@"
 do
@@ -39,7 +42,7 @@ do
 
   # First Experiment
   cp "${SPEC_SCRIPT_DIR}"/config/clang_modified.cfg "${SPEC_DIR}"/config/spec2017/config
-  sudo -E bash -c "$cmd1"
+  echo $PW | sudo -E bash -c "$cmd1"
 
   # SPEC auto increment number after one serial experiments
   FIRST_EXP_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)
@@ -54,7 +57,7 @@ do
   cp "${SPEC_SCRIPT_DIR}"/config/info.json "${RESULT_DIR}"
 
   # Second Experiment
-  sudo -E bash -c "$cmd2"
+  echo $PW | sudo -E bash -c "$cmd2"
 
   # SPEC auto increment number after some compact affinity experiments
   SECOND_EXP_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)
@@ -71,7 +74,7 @@ do
   done
 
   # Third experiment
-  sudo -E bash -c "$cmd3"
+  echo $PW | sudo -E bash -c "$cmd3"
 
   # SPEC auto increment number after some scatter affinity experiments
   THIRD_EXP_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)

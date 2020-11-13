@@ -13,7 +13,10 @@ if [ "$1" = "preview" ]; then
 	cmd3+=" --preview"
 	shift
 fi
-	
+
+echo "pass"
+read PW
+
 for short_hash in "$@"
 do
   echo "==============================================="
@@ -26,7 +29,8 @@ do
 
   cp "${SPEC_SCRIPT_DIR}"/config/clang_base.cfg "${SPEC_DIR}"/config/spec2017/config
 
-  sudo -E bash -c "$cmd1"
+  echo $PW | sudo -E bash -c "$cmd1"
+
   # SPEC auto increment number after one serial experiments
   FIRST_EXP_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)
   export RESULT_DIR=${SPEC_SCRIPT_DIR}/results/FIRST_EXP_NUM{short_hash}

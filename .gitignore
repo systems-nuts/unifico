@@ -524,3 +524,4 @@ venv.bak/
 utilities/lstopo_p.txt
 *.s
 *.ll
+spec2017/results/temp/
