@@ -1,10 +1,10 @@
 #!/bin/bash
 
-cmd1="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_base.cfg --threads=1 \
+cmd1="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_modified.cfg --threads=1 \
       --bench=600,602,605,625 --iterations=3 --noreportable --tune=base -i test,train,ref"
-cmd2="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_base.cfg --full-core-run \
+cmd2="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_modified.cfg --full-core-run \
       --bench 657 --noreportable --tune=base -i test,train,ref"
-cmd3="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_base.cfg --full-thread-run \
+cmd3="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_modified.cfg --full-thread-run \
       --bench 657 --noreportable --tune=base -i test,train,ref"
 
 if [ "$1" = "preview" ]; then
@@ -18,52 +18,77 @@ for short_hash in "$@"
 do
   echo "==============================================="
 
-  export PATH=~/toolchain1/bin/:$PATH
+  export PATH=~/my_llvm/toolchain_exp/bin/:$PATH
+  export X86_TARGET=~/llvm-project/llvm/lib/Target/X86
+  export BUILD_PATH=~/my_llvm/build_exp
   export LD_LIBRARY_PATH=$(llvm-config --libdir)
   export SPEC_DIR=/home/nikos/cpu2017
 
   git checkout "$short_hash"
 
-  cp "${SPEC_SCRIPT_DIR}"/config/clang_base.cfg "${SPEC_DIR}"/config/spec2017/config
+  # Apply changes to LLVM Target
+  cd "$X86_TARGET" || exit
+  git apply -- "${SPEC_SCRIPT_DIR}"/config/x86.patch
+  cd "$BUILD_PATH" || exit
+  ./build_exp.sh
+  cmake --build .
+  ninja install
 
+  cd "$SPEC_SCRIPT_DIR" || exit
+
+  # First Experiment
+  cp "${SPEC_SCRIPT_DIR}"/config/clang_modified.cfg "${SPEC_DIR}"/config/spec2017/config
   sudo -E bash -c "$cmd1"
+
   # SPEC auto increment number after one serial experiments
   FIRST_EXP_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)
-  export RESULT_DIR=${SPEC_SCRIPT_DIR}/results/FIRST_EXP_NUM{short_hash}
+  export RESULT_DIR=${SPEC_SCRIPT_DIR}/results/${FIRST_EXP_NUM}_${short_hash}
   if [ ! -d "$RESULT_DIR" ];then
     echo
     mkdir "$RESULT_DIR"
   fi
 
-  cp "${SPEC_SCRIPT_DIR}"/config/info.json "${RESULT_DIR}"
+  # First Experiment Results
   cp "$SPEC_DIR"/result/CPU2017."$FIRST_EXP_NUM".intspeed.refspeed.csv "$RESULT_DIR"
+  cp "${SPEC_SCRIPT_DIR}"/config/info.json "${RESULT_DIR}"
 
+  # Second Experiment
   sudo -E bash -c "$cmd2"
+
+  # SPEC auto increment number after some compact affinity experiments
+  SECOND_EXP_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)
   CORE_EXP_RESULT_DIR="$RESULT_DIR"/core_run/
   if [ ! -d "$CORE_EXP_RESULT_DIR" ];then
     echo
     mkdir "$CORE_EXP_RESULT_DIR"
   fi
-  # SPEC auto increment number after some compact affinity experiments
-  SECOND_EXP_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)
+
+  # Second experiment results
   for ((i=FIRST_EXP_NUM+1;i<=SECOND_EXP_NUM;i++))
   do
     cp "$SPEC_DIR"/result/CPU2017.$i.intspeed.refspeed.csv "$CORE_EXP_RESULT_DIR"
   done
 
- sudo -E bash -c "$cmd3"
+  # Third experiment
+  sudo -E bash -c "$cmd3"
+
+  # SPEC auto increment number after some scatter affinity experiments
+  THIRD_EXP_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)
   THREAD_EXP_RESULT_DIR="$RESULT_DIR"/thread_run/
   if [ ! -d "$THREAD_EXP_RESULT_DIR" ];then
     echo
     mkdir "$THREAD_EXP_RESULT_DIR"
   fi
-  # SPEC auto increment number after some scatter affinity experiments
-  THIRD_EXP_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)
+
+  # Third experiment results
   for ((i=SECOND_EXP_NUM+1;i<=THIRD_EXP_NUM;i++))
   do
     cp "$SPEC_DIR"/result/CPU2017.$i.intspeed.refspeed.csv "$THREAD_EXP_RESULT_DIR"
   done
 
+  # Revert changes to LLVM Target
+  cd "$X86_TARGET" || exit
+  git apply -R "${SPEC_SCRIPT_DIR}"/config/x86.patch
 echo "==============================================="
 done
 git checkout development
