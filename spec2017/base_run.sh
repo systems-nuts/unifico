@@ -48,9 +48,9 @@ do
     echo
     mkdir "$CORE_EXP_RESULT_DIR"
   fi
-  # SPEC auto increment number after some compact affinity experiments
-  SECOND_EXP_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)
-  for ((i=FIRST_EXP_NUM+1;i<=SECOND_EXP_NUM;i++))
+
+  # Second experiment results
+  for ((i=FIRST_EXP_NUM+2;i<=SECOND_EXP_NUM;i+=2))
   do
     cp "$SPEC_DIR"/result/CPU2017.$i.intspeed.refspeed.csv "$CORE_EXP_RESULT_DIR"
   done
@@ -61,9 +61,9 @@ do
     echo
     mkdir "$THREAD_EXP_RESULT_DIR"
   fi
-  # SPEC auto increment number after some scatter affinity experiments
-  THIRD_EXP_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)
-  for ((i=SECOND_EXP_NUM+1;i<=THIRD_EXP_NUM;i++))
+
+  # Third experiment results
+  for ((i=SECOND_EXP_NUM+2;i<=THIRD_EXP_NUM;i+=2))
   do
     cp "$SPEC_DIR"/result/CPU2017.$i.intspeed.refspeed.csv "$THREAD_EXP_RESULT_DIR"
   done
