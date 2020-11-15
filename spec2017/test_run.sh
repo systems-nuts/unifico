@@ -33,12 +33,12 @@ ninja install
 cd "$SPEC_SCRIPT_DIR" || exit
 cd .. || exit
 
-echo "enter the sudo password, please"
-read PW
+echo "Give pass:"
+read -s PW
 
 # First Experiment
 cp "${SPEC_SCRIPT_DIR}"/config/clang_modified.cfg "${SPEC_DIR}"/config/spec2017/config
-echo $PW | sudo -E bash -c "$cmd1"
+echo $PW | sudo -S -E bash -c "$cmd1"
 
 # SPEC auto increment number after one serial experiments
 FIRST_EXP_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)
@@ -53,7 +53,7 @@ cp "$SPEC_DIR"/result/CPU2017."$FIRST_EXP_NUM".intspeed.test.csv "$RESULT_DIR"
 cp "${SPEC_SCRIPT_DIR}"/config/info.json "${RESULT_DIR}"
 
 # Second Experiment
-echo $PW | sudo -E bash -c "$cmd2"
+echo $PW | sudo -S -E bash -c "$cmd2"
 
 # SPEC auto increment number after some compact affinity experiments
 SECOND_EXP_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)
@@ -70,7 +70,7 @@ cp "$SPEC_DIR"/result/CPU2017.$i.intspeed.test.csv "$CORE_EXP_RESULT_DIR"
 done
 
 # Third experiment
-echo $PW | sudo -E bash -c "$cmd3"
+echo $PW | sudo -S -E bash -c "$cmd3"
 
 # SPEC auto increment number after some scatter affinity experiments
 THIRD_EXP_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)

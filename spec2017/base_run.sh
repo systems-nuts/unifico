@@ -14,8 +14,8 @@ if [ "$1" = "preview" ]; then
 	shift
 fi
 
-echo "pass"
-read PW
+echo "Give pass:"
+read -s PW
 
 for short_hash in "$@"
 do
@@ -29,7 +29,7 @@ do
 
   cp "${SPEC_SCRIPT_DIR}"/config/clang_base.cfg "${SPEC_DIR}"/config/spec2017/config
 
-  echo $PW | sudo -E bash -c "$cmd1"
+  echo $PW | sudo -S -E bash -c "$cmd1"
 
   # SPEC auto increment number after one serial experiments
   FIRST_EXP_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)
@@ -42,7 +42,7 @@ do
   cp "${SPEC_SCRIPT_DIR}"/config/info.json "${RESULT_DIR}"
   cp "$SPEC_DIR"/result/CPU2017."$FIRST_EXP_NUM".intspeed.refspeed.csv "$RESULT_DIR"
 
-  sudo -E bash -c "$cmd2"
+  echo $PW | sudo -S -E bash -c "$cmd2"
   CORE_EXP_RESULT_DIR="$RESULT_DIR"/core_run/
   if [ ! -d "$CORE_EXP_RESULT_DIR" ];then
     echo
@@ -55,7 +55,7 @@ do
     cp "$SPEC_DIR"/result/CPU2017.$i.intspeed.refspeed.csv "$CORE_EXP_RESULT_DIR"
   done
 
- sudo -E bash -c "$cmd3"
+  echo $PW | sudo -S -E bash -c "$cmd3"
   THREAD_EXP_RESULT_DIR="$RESULT_DIR"/thread_run/
   if [ ! -d "$THREAD_EXP_RESULT_DIR" ];then
     echo
