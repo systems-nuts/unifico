@@ -98,4 +98,4 @@ do
 
 echo "==============================================="
 done
-git checkout split_build_run
+git checkout development
