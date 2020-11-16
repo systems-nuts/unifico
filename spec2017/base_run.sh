@@ -3,9 +3,9 @@
 cmd1="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_base.cfg --threads=1 \
       --bench=600,602,605,625 --iterations=3 --noreportable --tune=base -i test,train,ref"
 cmd2="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_base.cfg --full-core-run \
-      --bench 657 --noreportable --tune=base -i test,train,ref"
+      --bench 657 --iterations=3 --noreportable --tune=base -i test,train,ref"
 cmd3="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_base.cfg --full-thread-run \
-      --bench 657 --noreportable --tune=base -i test,train,ref"
+      --bench 657 --iterations=1 --noreportable --tune=base -i test,train,ref"
 
 if [ "$1" = "preview" ]; then
 	cmd1+=" --preview"
@@ -21,11 +21,11 @@ for short_hash in "$@"
 do
   echo "==============================================="
 
-  export PATH=~/toolchain1/bin/:$PATH
+  export PATH=~/base_llvm/toolchain/bin/:$PATH
   export LD_LIBRARY_PATH=$(llvm-config --libdir)
   export SPEC_DIR=/home/nikos/cpu2017
 
-  git checkout "$short_hash"
+  git checkout "$short_hash" -- spec2017/config/info.json spec2017/config/clang_base.cfg 
 
   cp "${SPEC_SCRIPT_DIR}"/config/clang_base.cfg "${SPEC_DIR}"/config/spec2017/config
 
@@ -33,7 +33,7 @@ do
 
   # SPEC auto increment number after one serial experiments
   FIRST_EXP_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)
-  export RESULT_DIR=${SPEC_SCRIPT_DIR}/results/FIRST_EXP_NUM{short_hash}
+  export RESULT_DIR=${SPEC_SCRIPT_DIR}/results/${FIRST_EXP_NUM}_${short_hash}
   if [ ! -d "$RESULT_DIR" ];then
     echo
     mkdir "$RESULT_DIR"
@@ -70,4 +70,4 @@ do
 
 echo "==============================================="
 done
-git checkout development
+git checkout development -- spec2017/config/info.json spec2017/config/clang_base.cfg 
