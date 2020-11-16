@@ -1,5 +1,5 @@
 {
 	"benchmarks": "SPEC2017",
 	"compiler": "clang",
-	"experiment": "r12_r13_r14_to_temp"
+	"experiment": "base"
 }

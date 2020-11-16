@@ -1,11 +1,11 @@
 #!/bin/bash
 
 cmd1="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_modified.cfg --threads=1 \
-      --bench=600,602,605,625 --iterations=3 --noreportable --tune=base -i test,train,refspeed"
+      --bench=600,602,605,625 --iterations=1 --noreportable --tune=base -i test,train,refspeed"
 cmd2="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_modified.cfg --full-core-run \
-      --bench 657 --noreportable --tune=base -i test,train,refspeed"
+      --bench 657 --iterations=1  --noreportable --tune=base -i test,train,refspeed"
 cmd3="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_modified.cfg --full-thread-run \
-      --bench 657 --noreportable --tune=base -i test,train,refspeed"
+      --bench 657 --iterations=1  --noreportable --tune=base -i test,train,refspeed"
 
 if [ "$1" = "preview" ]; then
 	cmd1+=" --preview"
@@ -27,7 +27,7 @@ do
   export LD_LIBRARY_PATH=$(llvm-config --libdir)
   export SPEC_DIR=/home/nikos/cpu2017
 
-  git checkout "$short_hash"
+  git checkout "$short_hash" -- spec2017/config/clang_modified.cfg spec2017/config/info.json spec2017/config/x86.patch
 
   # Apply changes to LLVM Target
   cd "$X86_TARGET" || exit
@@ -98,4 +98,4 @@ do
 
 echo "==============================================="
 done
-git checkout development
+git checkout development -- spec2017/config/clang_modified.cfg spec2017/config/info.json spec2017/config/x86.patch
