@@ -6,13 +6,14 @@ from utilities.switch_cpu import switch_cpu
 
 class SystemTopology:
 
-    def __init__(self):
+    def __init__(self, lstopo_out=None):
         """
         Class for representing the system's topology.
         Requires `lstopo-no-graphics` of Linux
         """
-        lstopo_out = '/tmp/lstopo_output.txt'
-        os.system('lstopo-no-graphics -p >{}'.format(lstopo_out))
+        if lstopo_out is None:
+            lstopo_out = '/tmp/lstopo_output.txt'
+            os.system('lstopo-no-graphics -p >{}'.format(lstopo_out))
 
         # Open file
         with open(lstopo_out, 'r') as fp:
@@ -21,12 +22,23 @@ class SystemTopology:
             core_pattern = re.compile("Core[ \t]+P#([0-9]+)")
             pu_pattern = re.compile("PU[ \t]+P#([0-9]+)")
 
+            cur_node = -1
             cur_package = -1  # TODO
             cur_core = -1
 
             # Scanning file
             self.packages = []
             for line in fp:
+
+                package_match = package_pattern.search(line)
+                if package_match:
+                    cur_package = package_match.group(1)
+                    package_dict = {
+                        'id': cur_package,
+                        'cores': []
+                    }
+                    self.packages.append(package_dict)
+                    continue
 
                 package_match = package_pattern.search(line)
                 if package_match:
@@ -93,5 +105,5 @@ class SystemTopology:
 
 
 if __name__ == '__main__':
-    system_topology = SystemTopology()
+    system_topology = SystemTopology('/home/blackgeorge/Documents/phd/unified_abi/utilities/temp.txt')
     print(system_topology)
