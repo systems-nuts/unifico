@@ -1,11 +1,11 @@
 #!/bin/bash
 
 cmd1="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_base.cfg --threads=1 \
-      --bench=600,602,605,625 --iterations=1 --noreportable --tune=base -i test,train,ref"
+      --bench=600,602,605,625 --iterations=3 --noreportable --tune=base -i test,train,ref"
 cmd2="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_base.cfg --full-core-run \
       --bench 657 --iterations=3 --noreportable --tune=base -i test,train,ref"
 cmd3="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_base.cfg --full-thread-run \
-      --bench 657 --iterations=1 --noreportable --tune=base -i test,train,ref"
+      --bench 657 --iterations=3 --noreportable --tune=base -i test,train,ref"
 
 if [ "$1" = "preview" ]; then
 	cmd1+=" --preview"
@@ -55,7 +55,7 @@ do
     cp "$SPEC_DIR"/result/CPU2017.$i.intspeed.refspeed.csv "$CORE_EXP_RESULT_DIR"
   done
 
-  echo $PW | sudo -S -E bash -c "$cmd3"
+  #echo $PW | sudo -S -E bash -c "$cmd3"
   THREAD_EXP_RESULT_DIR="$RESULT_DIR"/thread_run/
   if [ ! -d "$THREAD_EXP_RESULT_DIR" ];then
     echo

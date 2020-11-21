@@ -1,6 +1,6 @@
 {
 	"benchmarks": "SPEC2017",
 	"compiler": "clang",
-	"experiment": "base",
+	"experiment": "remove r28",
 	"target": "aarch64"
 }
