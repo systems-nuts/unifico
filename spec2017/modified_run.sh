@@ -2,8 +2,8 @@
 
 cmd1="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_modified.cfg --threads=1 \
       --bench=600,602,605,625 --iterations=3 --noreportable --tune=base -i test,train,refspeed"
-cmd2="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_modified.cfg --full-core-run \
-      --bench 657 --iterations=3 --noreportable --tune=base -i test,train,refspeed"
+cmd2="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_modified.cfg \
+      --threads=1,2,4,6,8 --bench 657 --iterations=3 --noreportable --tune=base -i test,train,refspeed"
 cmd3="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_modified.cfg --full-thread-run \
       --bench 657 --iterations=3 --noreportable --tune=base -i test,train,refspeed"
 
