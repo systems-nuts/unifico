@@ -9,10 +9,12 @@ if [ "$1" = "preview" ]; then
 	shift
 fi
 
+echo "Give pass:"
+read -s PW
+
 for short_hash in "$@"
 do
-  echo "Experiment: $short_hash"
-  echo "Result Directory: ${NPB_SCRIPT_DIR}/results/${short_hash}"
+  echo "==============================================="
 
   export PATH=~/my_llvm/toolchain_exp/bin/:$PATH
   export LD_LIBRARY_PATH=$(llvm-config --libdir)
