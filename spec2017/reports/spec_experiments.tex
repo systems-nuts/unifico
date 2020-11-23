@@ -1,0 +1,39 @@
+%! Author = blackgeorge
+%! Date = 28/10/20
+
+% Preamble
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{{./plots/}}
+
+% Document
+\begin{document}
+
+    \section{x86-64 Experiments}
+
+    \subsection*{SPEC - Baseline vs R14 to temp}
+
+    \includegraphics[width=0.8\textwidth]{r14_serial.png}\par\vspace{0,5cm}
+%    \includegraphics[width=0.8\textwidth]{r14_parallel.png}\par\vspace{0,5cm}
+
+    \subsection*{SPEC - Baseline vs R13\_R14 to temp}
+
+    \includegraphics[width=0.8\textwidth]{r13_r14_serial.png}\par\vspace{0,5cm}
+%    \includegraphics[width=0.8\textwidth]{r13_r14_parallel.png}\par\vspace{0,5cm}
+
+    \subsection*{SPEC - Baseline vs R12\_R13\_R14 to temp}
+
+    \includegraphics[width=0.8\textwidth]{r12_r13_r14_serial.png}\par\vspace{0,5cm}
+%    \includegraphics[width=0.8\textwidth]{r12_r13_r14_parallel.png}\par\vspace{0,5cm}
+
+    \section{AArch64 Experiments}
+
+    \subsection*{SPEC - Baseline}
+
+    \includegraphics[width=0.8\textwidth]{sole_serial.png}\par\vspace{0,5cm}
+    \includegraphics[width=0.8\textwidth]{sole_parallel.png}\par\vspace{0,5cm}
+
+\end{document}

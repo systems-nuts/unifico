@@ -1,0 +1,61 @@
+%! Author = blackgeorge
+%! Date = 4/10/20
+
+% Preamble
+\documentclass[11pt]{article}
+
+% ==============
+% Packages
+\usepackage{amsmath}
+\usepackage{pbox}
+\usepackage{changepage}
+
+% For numbering rows of a tabular
+\usepackage{array,etoolbox}
+\preto\tabular{\setcounter{magicrownumbers}{0}}
+\newcounter{magicrownumbers}
+\def\rownumber{}
+% ==============
+
+% Document
+\begin{document}
+
+NOTE: Unsure about \%rax - r8 mapping
+NOTE: maybe replace r19 with r20
+
+\begin{table}[ht]
+\caption{Mapping per Functionality}
+\begin{adjustwidth}{-4.3cm}{-4.3cm}
+\begin{tabular}{|l|l|l|l|}
+    \hline
+    \textbf{x86-64} & \textbf{Aarch64} & \textbf{Virtual Register} & \textbf{Usage} \\
+    \hline
+    \%rsp & SP & \$sp & The Stack Pointer \\
+    \hline
+    \%r11 & r30 (LR) & \$lr & The Link Register (optionally) \\
+    \hline
+    \%rbp & r29 (FP) & \$fp & The Frame Pointer (optionally) \\
+    \hline
+    \%rbx & r19 & \$s0 & Callee Saved Registers \\
+    \hline
+    \%r12 & r18 & \$pr & \pbox{20cm}{Temp register \\ The Platform Register} \\
+    \hline
+    \%r13, \%r14 & r16, r17 & \$ip1, \$ip2 & \pbox{20cm}{Intra-procedure-call registers \\ temp registers} \\
+    \hline
+    \%rax & r8 & \$v0 & \pbox{20cm}{Temp, \\  Var args \\ 1st Return Register \\ Indirect Result Location} \\
+    \hline
+    \%rdi, \%rsi, \%rdx, \%rcx, \%r8, \%r9 & r0, r1, r2, r7, r4, r5 & \$a0, \$a1, \$v1, \$a3, \$a4, \$a5 & Functions Arguments \\
+    \hline
+    \%rdi, \%rsi, \%rdx, \%r10, \%r8, \%r9 & r0, r1, r2, r3, r4, r5 & \$a0, \$a1, \$v1, \$scp, \$a4, \$a5 & Kernel Arguments \\
+    \hline
+    \%rax, \%rdx & r8, r2 & \$v0, \$v1 & Return Registers \\
+    \hline
+    \%r10 & r3 & \$scp & \pbox{20cm}{Temp, Static Chain Pointer \\ 4th Kernel Argument} \\
+    \hline
+    \%r15 & r21 & \$gbp & \pbox{20cm}{Callee Saved Register \\ GOT Base Pointer (optionally)} \\
+    \hline
+\end{tabular}
+\end{adjustwidth}\label{tab:mappings_per_func}
+\end{table}
+
+\end{document}
