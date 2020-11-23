@@ -2,10 +2,10 @@
 
 cmd1="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_modified.cfg --threads=1 \
       --bench=600,602,605,625 --iterations=3 --noreportable --tune=base -i test,train,refspeed"
-cmd2="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_modified.cfg --full-core-run \
-      --bench 657 --noreportable --tune=base -i test,train,refspeed"
+cmd2="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_modified.cfg \
+      --threads=1,2,4,6,8 --bench 657 --iterations=3 --noreportable --tune=base -i test,train,refspeed"
 cmd3="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_modified.cfg --full-thread-run \
-      --bench 657 --noreportable --tune=base -i test,train,refspeed"
+      --bench 657 --iterations=3 --noreportable --tune=base -i test,train,refspeed"
 
 if [ "$1" = "preview" ]; then
 	cmd1+=" --preview"
@@ -21,17 +21,17 @@ for short_hash in "$@"
 do
   echo "==============================================="
 
-  export PATH=~/my_llvm/toolchain_exp/bin/:$PATH
-  export X86_TARGET=~/llvm-project/llvm/lib/Target/X86
-  export BUILD_PATH=~/my_llvm/build_exp
+  export PATH=~/my_llvm/toolchain/bin/:$PATH
+  export AARCH64_TARGET=~/llvm-project/llvm/lib/Target/AArch64
+  export BUILD_PATH=~/my_llvm/build
   export LD_LIBRARY_PATH=$(llvm-config --libdir)
   export SPEC_DIR=/home/nikos/cpu2017
 
-  git checkout "$short_hash"
+  git checkout "$short_hash" -- spec2017/config/clang_modified.cfg spec2017/config/info.json spec2017/config/aarch64.patch
 
   # Apply changes to LLVM Target
-  cd "$X86_TARGET" || exit
-  git apply -- "${SPEC_SCRIPT_DIR}"/config/x86.patch
+  cd "$AARCH64_TARGET" || exit
+  git apply -- "${SPEC_SCRIPT_DIR}"/config/aarch64.patch
   cd "$BUILD_PATH" || exit
   ./build_exp.sh
   cmake --build .
@@ -68,13 +68,13 @@ do
   fi
 
   # Second experiment results
-  for ((i=FIRST_EXP_NUM+2;i<=SECOND_EXP_NUM;i+=2))
+  for ((i=${FIRST_EXP_NUM}+2;i<=SECOND_EXP_NUM;i+=2))
   do
     cp "$SPEC_DIR"/result/CPU2017.$i.intspeed.refspeed.csv "$CORE_EXP_RESULT_DIR"
   done
 
   # Third experiment
-  echo $PW | sudo -S -E bash -c "$cmd3"
+  #echo $PW | sudo -S -E bash -c "$cmd3"
 
   # SPEC auto increment number after some scatter affinity experiments
   THIRD_EXP_NUM=$(awk '{print $1; exit}' "$SPEC_DIR"/result/lock.CPU2017)
@@ -85,17 +85,17 @@ do
   fi
 
   # Third experiment results
-  for ((i=SECOND_EXP_NUM+2;i<=THIRD_EXP_NUM;i+=2))
+  for ((i=${SECOND_EXP_NUM}+2;i<=THIRD_EXP_NUM;i+=2))
   do
     cp "$SPEC_DIR"/result/CPU2017.$i.intspeed.refspeed.csv "$THREAD_EXP_RESULT_DIR"
   done
 
   # Revert changes to LLVM Target
-  cd "$X86_TARGET" || exit
-  git apply -R "${SPEC_SCRIPT_DIR}"/config/x86.patch
+  cd "$AARCH64_TARGET" || exit
+  git apply -R "${SPEC_SCRIPT_DIR}"/config/aarch64.patch
 
   cd "$SPEC_SCRIPT_DIR" || exit
 
 echo "==============================================="
 done
-git checkout split_build_run
+git checkout development -- config/clang_modified.cfg config/info.json config/aarch64.patch

@@ -1,5 +1,6 @@
 {
-	"benchmarks": "SPEC 2017",
+	"benchmarks": "SPEC2017",
 	"compiler": "clang",
-	"experiment": "r14_to_temp"
+	"experiment": "remove r21...r28",
+	"target": "aarch64"
 }
