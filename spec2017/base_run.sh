@@ -2,7 +2,7 @@
 
 cmd1="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_base.cfg --threads=1 \
       --bench=600,602,605,625 --iterations=3 --noreportable --tune=base -i test,train,ref"
-cmd2="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_base.cfg --full-core-run \
+cmd2="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_base.cfg --threads=1,2,4,6,8 \
       --bench 657 --iterations=3 --noreportable --tune=base -i test,train,ref"
 cmd3="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_base.cfg --full-thread-run \
       --bench 657 --iterations=3 --noreportable --tune=base -i test,train,ref"
@@ -50,7 +50,7 @@ do
   fi
 
   # Second experiment results
-  for ((i=FIRST_EXP_NUM+2;i<=SECOND_EXP_NUM;i+=2))
+  for ((i=${FIRST_EXP_NUM}+2;i<=SECOND_EXP_NUM;i+=2))
   do
     cp "$SPEC_DIR"/result/CPU2017.$i.intspeed.refspeed.csv "$CORE_EXP_RESULT_DIR"
   done
@@ -63,7 +63,7 @@ do
   fi
 
   # Third experiment results
-  for ((i=SECOND_EXP_NUM+2;i<=THIRD_EXP_NUM;i+=2))
+  for ((i=${SECOND_EXP_NUM}+2;i<=THIRD_EXP_NUM;i+=2))
   do
     cp "$SPEC_DIR"/result/CPU2017.$i.intspeed.refspeed.csv "$THREAD_EXP_RESULT_DIR"
   done

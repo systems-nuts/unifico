@@ -68,7 +68,7 @@ do
   fi
 
   # Second experiment results
-  for ((i=FIRST_EXP_NUM+2;i<=SECOND_EXP_NUM;i+=2))
+  for ((i=${FIRST_EXP_NUM}+2;i<=SECOND_EXP_NUM;i+=2))
   do
     cp "$SPEC_DIR"/result/CPU2017.$i.intspeed.refspeed.csv "$CORE_EXP_RESULT_DIR"
   done
@@ -85,7 +85,7 @@ do
   fi
 
   # Third experiment results
-  for ((i=SECOND_EXP_NUM+2;i<=THIRD_EXP_NUM;i+=2))
+  for ((i=${SECOND_EXP_NUM}+2;i<=THIRD_EXP_NUM;i+=2))
   do
     cp "$SPEC_DIR"/result/CPU2017.$i.intspeed.refspeed.csv "$THREAD_EXP_RESULT_DIR"
   done
