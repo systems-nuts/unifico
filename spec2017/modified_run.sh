@@ -98,4 +98,4 @@ do
 
 echo "==============================================="
 done
-git checkout development -- spec2017/config/clang_modified.cfg spec2017/config/info.json spec2017/config/aarch64.patch
+git checkout development -- config/clang_modified.cfg config/info.json config/aarch64.patch
