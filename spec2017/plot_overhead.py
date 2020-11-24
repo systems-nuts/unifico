@@ -1,11 +1,23 @@
 import pandas as pd
 import os
+import json
 
 import matplotlib.pyplot as plt
 
 import seaborn as sns
 
 BENCHMARK_NUM = 10
+
+
+def get_experiment(json_path):
+    """
+    Extract experiment info from json file
+    @param json_path:
+    @return:
+    """
+    with open(json_path, 'r') as fp:
+        d = json.load(fp)
+    return d['experiment']
 
 
 def df_from_file(csv_path, experiment, start_line, iterations):
@@ -115,6 +127,63 @@ def plot_core_vs_thread(core_csv_dir, thread_csv_dir, exp, out_plot):
         plt.show()
 
 
+def serial_experiments_overhead(csv1, csv2, exp1, exp2, out_plot='reports/plots/temp'):
+    """
+    Plot two SPEC serial experiments over some benchmarks.
+    @param csv1: path to first csv
+    @param csv2: path to second csv
+    @param exp1: first experiment name
+    @param exp2: second experiment name
+    @param out_plot:
+    @return:
+    """
+    df1 = df_from_file(csv1, exp1, 7, 3)
+    df2 = df_from_file(csv2, exp2, 7, 3)
+
+    df1 = df1.groupby(['Benchmark'], as_index=False).mean()
+    df2 = df2.groupby(['Benchmark'], as_index=False).mean()
+    df = pd.DataFrame(df1)
+    df['% Overhead'] = df['Est. Base Run Time'].combine(df2['Est. Base Run Time'], lambda x1, x2: (x2 / x1 - 1) * 100)
+
+    df.plot.bar(x='Benchmark', y='% Overhead')
+    plt.legend(loc=1, prop={'size': 8})
+    plt.title('Serial Benchmarks')
+    plt.xticks(rotation=45)
+    plt.savefig(out_plot, bbox_inches='tight')
+    plt.show()
+
+
+def parallel_experiments_overhead(csv_dir1, csv_dir2, exp1='First experiment', exp2='Second experiment',
+                                  out_plot='reports/plots/temp'):
+    """
+    Plot SPEC parallel experiment.
+    @param csv_dir1:
+    @param csv_dir2:
+    @param exp1:
+    @param exp2:
+    @param out_plot: Output dir
+    @return:
+    """
+    df1 = df_from_dir(csv_dir1, exp1, 7, 3)
+    df2 = df_from_dir(csv_dir2, exp2, 7, 3)
+
+    df1 = df1.groupby(['Benchmark', 'Base # Threads'], as_index=False).mean()
+    df2 = df2.groupby(['Benchmark', 'Base # Threads'], as_index=False).mean()
+    df = pd.DataFrame(df1)
+    df['% Overhead'] = df['Est. Base Run Time'].combine(df2['Est. Base Run Time'], lambda x1, x2: (x2 / x1 - 1) * 100)
+
+    for bench in set(df['Benchmark']):
+        bench_df = df[df['Benchmark'] == bench]
+        bench_df.plot.bar(x='Base # Threads', y='% Overhead', rot=0,
+                          color=(bench_df['% Overhead'] > 0).map({True: 'b', False: 'g'}))
+        plt.legend(loc=1, prop={'size': 8})
+        plt.xticks(rotation=45)
+        title = '{}: {} overhead to {}'.format(bench, exp2, exp1)
+        plt.title(title)
+        plt.savefig(out_plot)
+        plt.show()
+
+
 def compare_parallel_experiments(core_csv_dir1, core_csv_dir2, thread_csv_dir1, thread_csv_dir2,
                                  exp1, exp2, out_plot):
     """
@@ -160,10 +229,18 @@ if __name__ == '__main__':
     #             'base', 'reports/plots/sole_serial')
     # plot_core_vs_thread('results/FIRST_EXP_NUM_{short_hash}/core_run', 'results/FIRST_EXP_NUM_{short_hash}/thread_run',
     #                     'base', 'reports/plots/sole_parallel_2')
-    compare_serial_experiments('results/071_fc0f8f8/CPU2017.071.intspeed.refspeed.csv', '1',
-                               'results/085_da8e2c3/CPU2017.085.intspeed.refspeed.csv', '2',
-                               'reports/plots/temp')
-    compare_parallel_experiments('results/071_fc0f8f8/core_run', 'results/085_da8e2c3/core_run',
-                                 'results/071_fc0f8f8/thread_run', 'results/085_da8e2c3/thread_run',
-                                 '1', '2',
-                                 'reports/plots/temp')
+    # compare_serial_experiments('results/071_fc0f8f8/CPU2017.071.intspeed.refspeed.csv', '1',
+    #                            'results/085_da8e2c3/CPU2017.085.intspeed.refspeed.csv', '2',
+    #                            'reports/plots/temp')
+    # compare_parallel_experiments('results/071_fc0f8f8/core_run', 'results/085_da8e2c3/core_run',
+    #                              'results/071_fc0f8f8/thread_run', 'results/085_da8e2c3/thread_run',
+    #                              '1', '2',
+    #                              'reports/plots/temp')
+    # parallel_experiments_overhead('results/baseline/core_run', 'results/085_da8e2c3/core_run',
+    #                               exp1=get_experiment('results/baseline/info.json'),
+    #                               exp2=get_experiment('results/085_da8e2c3/info.json'))
+
+    serial_experiments_overhead('results/baseline/CPU2017.011.intspeed.refspeed.csv',
+                                'results/085_da8e2c3/CPU2017.085.intspeed.refspeed.csv',
+                                 exp1=get_experiment('results/baseline/info.json'),
+                                 exp2=get_experiment('results/085_da8e2c3/info.json'))
