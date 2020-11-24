@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cmd1="python3.7 -m npb.run_npb --suite-list suite.def --threads=1,2,4,6,8 --iterations=3"
-cmd2="python3.7 -m npb.run_npb --suite-list suite.def --full-thread-run --iterations=3"
+cmd2="python3.7 -m npb.run_npb --suite-list suite.def --threads=1,2,4,6,8,10,12,14,16 --iterations=3"
 
 if [ "$1" = "preview" ]; then
 	cmd1+=" --preview"
@@ -45,7 +45,7 @@ do
   cp "${NPB_SCRIPT_DIR}"/config/info.json "${RESULT_DIR}"
 
   echo $PW | sudo -S -E bash -c "$cmd1"
-  #echo $PW | sudo -S -E bash -c "$cmd2"
+  echo $PW | sudo -S -E bash -c "$cmd2"
 
   # Revert changes to LLVM Target
   cd "$LLVM_TARGET" || exit
@@ -55,4 +55,4 @@ do
 
 echo "==============================================="
 done
-git checkout development -- config/clang_modified.cfg config/info.json config/llvm.patch
+git checkout development -- config/make.def config/suite.def config/info.json
