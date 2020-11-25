@@ -16,21 +16,21 @@ read -s PW
 
 export PATH=~/toolchain/bin/:$PATH
 export LD_LIBRARY_PATH=$(llvm-config --libdir)
-export RESULT_DIR=${NPB_SCRIPT_DIR}/results/test
+export NPB_RESULT_DIR=${NPB_SCRIPT_DIR}/results/test
 
 cp "${NPB_SCRIPT_DIR}"/config/make.def "${NPB_DIR}"/config
 cp "${NPB_SCRIPT_DIR}"/config/test_suite.def "${NPB_DIR}"/config/suite.def
 
-if [ ! -d "$RESULT_DIR" ]; then
+if [ ! -d "$NPB_RESULT_DIR" ]; then
 echo
-mkdir "$RESULT_DIR"
+mkdir "$NPB_RESULT_DIR"
 fi
-rm -f "$RESULT_DIR"/*
+rm -f "$NPB_RESULT_DIR"/*
 
 echo $PW | sudo -S -E bash -c "$cmd1"
 echo $PW | sudo -S -E bash -c "$cmd2"
 
-for filename in "$RESULT_DIR"/*; do
+for filename in "$NPB_RESULT_DIR"/*; do
 	[ -e "$filename" ] || exit
 	if grep -q "UNSUCCESSFUL" "$filename"; then
 		echo "Not Verified!!!"

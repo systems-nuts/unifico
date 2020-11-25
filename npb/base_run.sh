@@ -18,18 +18,18 @@ do
 
   export PATH=~/base_llvm/toolchain/bin/:$PATH
   export LD_LIBRARY_PATH=$(llvm-config --libdir)
-  export RESULT_DIR=${NPB_SCRIPT_DIR}/results/${short_hash}
+  export NPB_RESULT_DIR=${NPB_SCRIPT_DIR}/results/${short_hash}
 
   git checkout "$short_hash" -- npb/config/make.def npb/config/suite.def npb/config/info.json
 
   cp "${NPB_SCRIPT_DIR}"/config/make.def "${NPB_DIR}"/config
   cp "${NPB_SCRIPT_DIR}"/config/suite.def "${NPB_DIR}"/config
-  if [ ! -d "$RESULT_DIR" ];then
+  if [ ! -d "$NPB_RESULT_DIR" ];then
     echo
-    mkdir "$RESULT_DIR"
+    mkdir "$NPB_RESULT_DIR"
   fi
 
-  cp "${NPB_SCRIPT_DIR}"/config/info.json "${RESULT_DIR}"
+  cp "${NPB_SCRIPT_DIR}"/config/info.json "${NPB_RESULT_DIR}"
 
   echo $PW | sudo -S -E bash -c "$cmd1"
   echo $PW | sudo -S -E bash -c "$cmd2"
