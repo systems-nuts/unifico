@@ -145,9 +145,11 @@ def serial_experiments_overhead(csv1, csv2, exp1, exp2, out_plot='reports/plots/
     df = pd.DataFrame(df1)
     df['% Overhead'] = df['Est. Base Run Time'].combine(df2['Est. Base Run Time'], lambda x1, x2: (x2 / x1 - 1) * 100)
 
-    df.plot.bar(x='Benchmark', y='% Overhead')
+    df.plot.bar(x='Benchmark', y='% Overhead',
+                color=(df['% Overhead'] > 0).map({True: 'orange', False: 'g'}))
     plt.legend(loc=1, prop={'size': 8})
-    plt.title('Serial Benchmarks')
+    title = '{}: {} overhead to {}'.format('Serial Benchmarks', exp2, exp1)
+    plt.title(title)
     plt.xticks(rotation=45)
     plt.savefig(out_plot, bbox_inches='tight')
     plt.show()
@@ -175,7 +177,7 @@ def parallel_experiments_overhead(csv_dir1, csv_dir2, exp1='First experiment', e
     for bench in set(df['Benchmark']):
         bench_df = df[df['Benchmark'] == bench]
         bench_df.plot.bar(x='Base # Threads', y='% Overhead', rot=0,
-                          color=(bench_df['% Overhead'] > 0).map({True: 'b', False: 'g'}))
+                          color=(bench_df['% Overhead'] > 0).map({True: 'orange', False: 'g'}))
         plt.legend(loc=1, prop={'size': 8})
         plt.xticks(rotation=45)
         title = '{}: {} overhead to {}'.format(bench, exp2, exp1)
@@ -236,11 +238,12 @@ if __name__ == '__main__':
     #                              'results/071_fc0f8f8/thread_run', 'results/085_da8e2c3/thread_run',
     #                              '1', '2',
     #                              'reports/plots/temp')
-    # parallel_experiments_overhead('results/baseline/core_run', 'results/085_da8e2c3/core_run',
-    #                               exp1=get_experiment('results/baseline/info.json'),
-    #                               exp2=get_experiment('results/085_da8e2c3/info.json'))
-
     serial_experiments_overhead('results/baseline/CPU2017.011.intspeed.refspeed.csv',
-                                'results/085_da8e2c3/CPU2017.085.intspeed.refspeed.csv',
-                                 exp1=get_experiment('results/baseline/info.json'),
-                                 exp2=get_experiment('results/085_da8e2c3/info.json'))
+                                'results/188_1e137a5/CPU2017.188.intspeed.refspeed.csv',
+                                exp1=get_experiment('results/baseline/info.json'),
+                                exp2=get_experiment('results/188_1e137a5/info.json'),
+                                out_plot='reports/plots/sole_remove_8_s')
+    parallel_experiments_overhead('results/baseline/core_run', 'results/188_1e137a5/core_run',
+                                  exp1=get_experiment('results/baseline/info.json'),
+                                  exp2=get_experiment('results/188_1e137a5/info.json'),
+                                  out_plot='reports/plots/sole_remove_8_p')
