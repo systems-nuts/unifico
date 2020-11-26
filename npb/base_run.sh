@@ -31,9 +31,17 @@ do
 
   cp "${NPB_SCRIPT_DIR}"/config/info.json "${NPB_RESULT_DIR}"
 
-  echo $PW | sudo -S -E bash -c "$cmd1"
-  echo $PW | sudo -S -E bash -c "$cmd2"
+  echo $PW | sudo -S -E PATH=$PATH LD_LIBRARY_PATH=$LD_LIBRARY_PATH bash -c "$cmd1"
+  echo $PW | sudo -S -E PATH=$PATH LD_LIBRARY_PATH=$LD_LIBRARY_PATH bash -c "$cmd2"
 
-  echo "==============================================="
+  for filename in "$NPB_RESULT_DIR"/*; do
+	  [ -e "$filename" ] || exit
+	  if grep -q "UNSUCCESSFUL" "$filename"; then
+	  	echo "Not Verified!!!"
+      git checkout development -- npb/config/make.def npb/config/suite.def npb/config/info.json
+	  	exit
+	  fi
+	done
+echo "==============================================="
 done
 git checkout development -- npb/config/make.def npb/config/suite.def npb/config/info.json
