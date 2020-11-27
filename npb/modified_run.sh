@@ -1,13 +1,38 @@
 #!/bin/bash
 
-cmd1="python3.7 -m npb.run_npb --suite-list suite.def --threads=1,2,4,6,8 --iterations=3"
-cmd2="python3.7 -m npb.run_npb --suite-list suite.def --threads=1,2,4,6,8,10,12,14,16 --iterations=3"
+############################################
+#
+# Must have NPB_DIR and NPB_SCRIPT_DIR set.
+#
+############################################
+
+WORKING_BRANCH=refactor_npb_run
+
+E_XCD=86 # Can't change directory?
+
+CMD1="python3.7 -m npb.run_npb --suite-list suite.def --threads=1,2,4,6,8 --iterations=3"
+CMD2="python3.7 -m npb.run_npb --suite-list suite.def --threads=1,2,4,6,8,10,12,14,16 --iterations=3"
 
 if [ "$1" = "preview" ]; then
-	cmd1+=" --preview"
-	cmd2+=" --preview"
+	CMD1+=" --preview"
+	CMD2+=" --preview"
 	shift
 fi
+
+# LLVM paths
+PATH=~/my_llvm/toolchain/bin/:$PATH
+LLVM_TARGET=~/llvm-project/llvm/lib/Target
+BUILD_PATH=~/my_llvm/build
+LD_LIBRARY_PATH=$(llvm-config --libdir)
+
+# NPB Benchmark paths
+NPB_CONF_DIR="$NPB_DIR"/config
+
+# NPB development script paths
+MAKE_CONF="$NPB_SCRIPT_DIR"/config/make.def
+SUITE_CONF="$NPB_SCRIPT_DIR"/config/suite.def
+EXPERIMENT_INFO="$NPB_SCRIPT_DIR"/config/info.json
+LLVM_PATCH="$NPB_SCRIPT_DIR"/config/llvm.patch
 
 echo "Give pass:"
 read -s PW
@@ -16,51 +41,77 @@ for short_hash in "$@"
 do
   echo "==============================================="
 
-  export PATH=~/my_llvm/toolchain/bin/:$PATH
-  export LLVM_TARGET=~/llvm-project/llvm/lib/Target
-  export BUILD_PATH=~/my_llvm/build
-  export LD_LIBRARY_PATH=$(llvm-config --libdir)
-  export NPB_RESULT_DIR=${NPB_SCRIPT_DIR}/results/${short_hash}
+  git checkout "$short_hash" -- "$MAKE_CONF" "$SUITE_CONF" "$EXPERIMENT_INFO" "$LLVM_PATCH"
 
-  git checkout "$short_hash" -- npb/config/make.def npb/config/suite.def npb/config/info.json npb/config/llvm.patch
+  # Create result dir
+  export RESULT_DIR="$NPB_SCRIPT_DIR"/results/$short_hash
 
   # Apply changes to LLVM Target
-  cd "$LLVM_TARGET" || exit
-  git apply -- "${NPB_SCRIPT_DIR}"/config/llvm.patch
-  cd "$BUILD_PATH" || exit
-  ./build_exp.sh
-  cmake --build .
-  ninja install
+  cd "$LLVM_TARGET" || {
+    echo "Cannot change to necessary directory." # >&2 TODO
+    exit $E_XCD;
+  }
+  git apply -- "$LLVM_PATCH"
 
-  cd "$NPB_SCRIPT_DIR" || exit
+  # Build LLVM Target
+  cd "$BUILD_PATH" || {
+    echo "Cannot change to necessary directory." # >&2 TODO
+    exit $E_XCD;
+  }
+  echo "Building..."
+  ./build_exp.sh 
+  cmake --build . 
+  ninja install 
+  echo "Done"
+
+  # Copy development config files to actual NPB Directory
+  cp "$MAKE_CONF" "$NPB_CONF_DIR"
+  cp "$SUITE_CONF" "$NPB_CONF_DIR"
+
+  # Create results directory for the specific experiment commit hash
+  if [ ! -d "$RESULT_DIR" ];then
+    echo
+    mkdir "$RESULT_DIR"
+  fi
+	
+  cp "$EXPERIMENT_INFO" "$RESULT_DIR"
+
+  # Return to working directory with NPB scripts
+  cd "$NPB_SCRIPT_DIR" || {
+    echo "Cannot change to necessary directory." # >&2 TODO
+    exit $E_XCD;
+  }
   cd .. || exit
 
-  cp "${NPB_SCRIPT_DIR}"/config/make.def "${NPB_DIR}"/config
-  cp "${NPB_SCRIPT_DIR}"/config/suite.def "${NPB_DIR}"/config
-  if [ ! -d "$NPB_RESULT_DIR" ];then
-    echo
-    mkdir "$NPB_RESULT_DIR"
-  fi
-
-  cp "${NPB_SCRIPT_DIR}"/config/info.json "${NPB_RESULT_DIR}"
-
-  echo $PW | sudo -S -E PATH=$PATH LD_LIBRARY_PATH=$LD_LIBRARY_PATH bash -c "$cmd1"
-  echo $PW | sudo -S -E PATH=$PATH LD_LIBRARY_PATH=$LD_LIBRARY_PATH bash -c "$cmd2"
+  echo "Running experiments..."
+  echo $PW | sudo -S -E PATH=$PATH LD_LIBRARY_PATH=$LD_LIBRARY_PATH bash -c "$CMD1"
+  #echo $PW | sudo -S -E PATH=$PATH LD_LIBRARY_PATH=$LD_LIBRARY_PATH bash -c "$CMD2"
+  echo "Done"
 
   # Revert changes to LLVM Target
-  cd "$LLVM_TARGET" || exit
-  git apply -R "${NPB_SCRIPT_DIR}"/config/llvm.patch
+  cd "$LLVM_TARGET" || {
+    echo "Cannot change to necessary directory." # >&2 TODO
+    exit $E_XCD;
+  }
+  git apply -R "$LLVM_PATCH"
 
-  cd "$NPB_SCRIPT_DIR" || exit
-
-  for filename in "$NPB_RESULT_DIR"/*; do
-	  [ -e "$filename" ] || exit
+  # Go to result dir and verify results
+  cd "$NPB_SCRIPT_DIR" || {
+    echo "Cannot change to necessary directory." # >&2 TODO
+    exit $E_XCD;
+  }
+  echo "Verifying..."
+  for filename in "$RESULT_DIR"/*; do
+	  [ -f "$filename" ] || continue
 	  if grep -q "UNSUCCESSFUL" "$filename"; then
 	  	echo "Not Verified!!!"
-      git checkout development -- npb/config/make.def npb/config/suite.def npb/config/info.json
 	  	exit
 	  fi
-	done
-echo "==============================================="
+  done
+  echo "Success!"
+
+echo "+++++++++++++++++++++++++++++++++++++++++++++++"
 done
-git checkout development -- npb/config/make.def npb/config/suite.def npb/config/info.json npb/config/llvm.patch
+
+# Get back previous config files
+git checkout $WORKING_BRANCH -- "$MAKE_CONF" "$SUITE_CONF" "$EXPERIMENT_INFO" "$LLVM_PATCH"
