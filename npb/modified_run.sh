@@ -84,7 +84,7 @@ do
   cd .. || exit
 
   echo "Running experiments..."
-  echo $PW | sudo -S -E PATH=$PATH LD_LIBRARY_PATH=$LD_LIBRARY_PATH bash -c "$CMD1"
+  echo "$PW" | sudo -S -E PATH="$PATH" LD_LIBRARY_PATH="$LD_LIBRARY_PATH" bash -c "$CMD1"
   #echo $PW | sudo -S -E PATH=$PATH LD_LIBRARY_PATH=$LD_LIBRARY_PATH bash -c "$CMD2"
   echo "Done"
 
