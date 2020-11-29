@@ -32,9 +32,9 @@ if __name__ == '__main__':
         exit(0)
     config_dir = os.path.join(npb_dir, 'config')
 
-    result_dir = os.getenv('NPB_RESULT_DIR')
+    result_dir = os.getenv('RESULT_DIR')
     if result_dir is None:
-        print('Set NBP_RESULT_DIR environment first.')
+        print('Set RESULT_DIR environment first.')
         exit(0)
 
     parser = argparse.ArgumentParser(description='Utility script for running NPB_OMP benchmarks for various numbers '
