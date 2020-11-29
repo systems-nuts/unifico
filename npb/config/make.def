@@ -110,13 +110,13 @@ C_INC = -I../common
 # _LARGEFILE64_SOURCE - are standard compiler flags which allow to work with 
 # files larger than 2GB.
 #---------------------------------------------------------------------------
-CFLAGS	= -g -Wall -O0 -mcmodel=small -fopenmp=libomp
+CFLAGS	= -g -Wall -O3 -mcmodel=small -fopenmp=libomp
 
 #---------------------------------------------------------------------------
 # Global *link time* flags. Flags for increasing maximum executable 
 # size usually go here. 
 #---------------------------------------------------------------------------
-CLINKFLAGS = -O0 -mcmodel=small -lomp -Wl,-L$(llvm-config --libdir) -Wl,-rpath=$(llvm-config --libdir)
+CLINKFLAGS = -O3 -mcmodel=small -lomp -Wl,-L$(llvm-config --libdir) -Wl,-rpath=$(llvm-config --libdir)
 
 
 #---------------------------------------------------------------------------

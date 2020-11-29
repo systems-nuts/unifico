@@ -1,7 +1,7 @@
 {
 	"benchmarks": "SNU OMP C",
 	"compiler": "clang",
-	"experiment": "remove r21...r28",
-	"flag": "-O0",
+	"experiment": "base",
+	"flag": "-O3",
 	"target": "aarch64"
 }
