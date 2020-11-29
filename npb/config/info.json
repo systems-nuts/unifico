@@ -2,6 +2,6 @@
 	"benchmarks": "SNU OMP C",
 	"compiler": "clang",
 	"experiment": "base",
-	"flag": "-O2",
+	"flag": "-O1",
 	"target": "aarch64"
 }
