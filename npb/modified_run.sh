@@ -43,9 +43,6 @@ do
 
   git checkout "$short_hash" -- "$MAKE_CONF" "$SUITE_CONF" "$EXPERIMENT_INFO" "$LLVM_PATCH"
 
-  # Create result dir
-  export RESULT_DIR="$NPB_SCRIPT_DIR"/results/$short_hash
-
   # Apply changes to LLVM Target
   cd "$LLVM_TARGET" || {
     echo "Cannot change to necessary directory." # >&2 TODO
@@ -68,20 +65,22 @@ do
   cp "$MAKE_CONF" "$NPB_CONF_DIR"
   cp "$SUITE_CONF" "$NPB_CONF_DIR"
 
-  # Create results directory for the specific experiment commit hash
+  # Create results directory for the specific experiment commit hash.
+  # Export it for the child processes to find
+  export RESULT_DIR="$NPB_SCRIPT_DIR"/results/$short_hash
   if [ ! -d "$RESULT_DIR" ];then
     echo
     mkdir "$RESULT_DIR"
   fi
 	
-  cp "$EXPERIMENT_INFO" "$RESULT_DIR"
-
   # Return to working directory with NPB scripts
   cd "$NPB_SCRIPT_DIR" || {
     echo "Cannot change to necessary directory." # >&2 TODO
     exit $E_XCD;
   }
   cd .. || exit
+
+  cp "$EXPERIMENT_INFO" "$RESULT_DIR"
 
   echo "Running experiments..."
   echo "$PW" | sudo -S -E PATH="$PATH" LD_LIBRARY_PATH="$LD_LIBRARY_PATH" bash -c "$CMD1"
