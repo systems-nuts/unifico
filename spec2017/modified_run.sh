@@ -26,8 +26,8 @@ LD_LIBRARY_PATH=$(llvm-config --libdir)
 
 # SPEC2017 Benchmark paths
 SPEC_DIR=/home/nikos/cpu2017
-SPEC_CONF_DIR=$"SPEC_DIR"/config
-SPEC_RESULT_DIR=$"SPEC_DIR"/result
+SPEC_CONF_DIR="$SPEC_DIR"/config
+SPEC_RESULT_DIR="$SPEC_DIR"/result
 
 # SPEC2017 development script paths
 CONFIG_FILE="$SPEC_SCRIPT_DIR"/config/clang_modified.cfg
