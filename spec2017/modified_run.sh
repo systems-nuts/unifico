@@ -129,6 +129,10 @@ do
   }
   git apply -R "$LLVM_PATCH"
 
+  cd "$SPEC_SCRIPT_DIR" || {
+    echo "Cannot change to necessary directory." # >&2 TODO
+    exit $E_XCD;
+  }
 echo "+++++++++++++++++++++++++++++++++++++++++++++++"
 done
 
