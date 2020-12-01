@@ -28,9 +28,6 @@ LD_LIBRARY_PATH=$(llvm-config --libdir)
 SPEC_DIR=/home/nikos/cpu2017
 SPEC_CONF_DIR=$"SPEC_DIR"/config
 SPEC_RESULT_DIR=$"SPEC_DIR"/result
-SERIAL_EXP_RESULT_DIR="$RESULT_DIR"/serial
-CORE_EXP_RESULT_DIR="$RESULT_DIR"/core
-THREAD_EXP_RESULT_DIR="$RESULT_DIR"/thread
 
 # SPEC2017 development script paths
 CONFIG_FILE="$SPEC_SCRIPT_DIR"/config/clang_modified.cfg
@@ -82,6 +79,10 @@ do
     echo
     mkdir "$RESULT_DIR"
   fi
+
+  SERIAL_EXP_RESULT_DIR="$RESULT_DIR"/serial
+  CORE_EXP_RESULT_DIR="$RESULT_DIR"/core
+  THREAD_EXP_RESULT_DIR="$RESULT_DIR"/thread
 
   # General info on the experiment
   cp "$EXPERIMENT_INFO" "$RESULT_DIR"
