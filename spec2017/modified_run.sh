@@ -87,6 +87,12 @@ do
   # General info on the experiment
   cp "$EXPERIMENT_INFO" "$RESULT_DIR"
 
+  # Serial experiment directory
+  if [ ! -d "$SERIAL_EXP_RESULT_DIR" ];then
+    echo
+    mkdir "$SERIAL_EXP_RESULT_DIR"
+  fi
+
   # First Experiment Results
   cp "$SPEC_RESULT_DIR"/CPU2017."$FIRST_EXP_NUM".intspeed.refspeed.csv "$SERIAL_EXP_RESULT_DIR"
 
