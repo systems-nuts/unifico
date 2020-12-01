@@ -525,4 +525,4 @@ utilities/lstopo_p.txt
 *.s
 *.ll
 spec2017/results/
-npb/results
+npb/results/
