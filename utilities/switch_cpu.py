@@ -32,7 +32,7 @@ def switch_cpu(cpu_id_list, option):
         for cpu_id in cpu_id_list:
             with open('/sys/devices/system/cpu/cpu{}/online'.format(str(cpu_id)), 'w') as fp:
                 fp.write(option)
-            time.sleep(1)
+            time.sleep(0.1)
             with open('/sys/devices/system/cpu/cpu{}/online'.format(str(cpu_id)), 'r') as fp:
                 if fp.read(1) != option:
                     exit(1)
