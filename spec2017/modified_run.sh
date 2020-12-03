@@ -4,11 +4,11 @@ WORKING_BRANCH=refactor_spec_run
 
 E_XCD=86 # Can't change directory?
 
-CMD1="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_modified.cfg --threads=1 \
+CMD1="python3.7 -m spec2017.run_spec --config-list clang_modified.cfg --threads=1 \
       --bench=600,602,605,625 --iterations=3 --noreportable --tune=base -i test,train,refspeed"
-CMD2="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_modified.cfg \
+CMD2="python3.7 -m spec2017.run_spec --config-list clang_modified.cfg \
       --threads=1,2,4,6,8 --bench 657 --iterations=3 --noreportable --tune=base -i test,train,refspeed"
-CMD3="python3.7 -m spec2017.run_spec --config-list spec2017/config/clang_modified.cfg --full-thread-run \
+CMD3="python3.7 -m spec2017.run_spec --config-list clang_modified.cfg --full-thread-run \
       --bench 657 --iterations=3 --noreportable --tune=base -i test,train,refspeed"
 
 if [ "$1" = "preview" ]; then
