@@ -2,6 +2,6 @@
 	"benchmarks": "SPEC2017",
 	"compiler": "clang",
 	"experiment": "remove r21...r28",
-	"flags": "-O3",
+	"flags": "-O2",
 	"target": "aarch64"
 }
