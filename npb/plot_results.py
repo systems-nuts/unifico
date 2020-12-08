@@ -8,6 +8,17 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
+def get_info(json_path):
+    """
+    Extract experiment info from json file
+    @param json_path:
+    @return:
+    """
+    with open(json_path, 'r') as fp:
+        d = json.load(fp)
+    return d
+
+
 def verify_npb_output(out_path):
     """
     Verify that npb output file includes a successful run
@@ -138,11 +149,12 @@ def two_dataframes_boxplot(df1, df2):
         plt.show()
 
 
-def compare_experiments(dir1, dir2, hue='Experiment', how='side'):
+def compare_experiments(dir1, dir2, out_plot, hue='Experiment', how='side'):
     """
     Plot the graphs of the two experiments in each directory
     @param dir1: Output files for first experiment
     @param dir2: Output files for first experiment
+    @param out_plot: Output dir
     @param hue: Comparison variable for boxplot
     @param how: Compare
     @return:
@@ -155,24 +167,42 @@ def compare_experiments(dir1, dir2, hue='Experiment', how='side'):
     df1 = df_from_dir(dir1)
     df2 = df_from_dir(dir2)
 
+    info1 = get_info(os.path.join(dir1, 'info.json'))
+    info2 = get_info(os.path.join(dir2, 'info.json'))
+
+    exp1 = info1['experiment']
+    exp2 = info2['experiment']
+    flag = info1['flag']
+
     if how == 'side':
         df = df1.append(df2, ignore_index=True)
         dataframe_to_boxplot(df, hue)
     elif how == 'overhead':
-        df1.sort_values(by=['Benchmark', 'Threads', 'Iteration'], inplace=True)
-        df2.sort_values(by=['Benchmark', 'Threads', 'Iteration'], inplace=True)
+        df1.sort_values(by=['Benchmark', 'Class', 'Threads', 'Iteration'], inplace=True)
+        df2.sort_values(by=['Benchmark', 'Class', 'Threads', 'Iteration'], inplace=True)
         df = pd.DataFrame(df1)
         df['% Overhead'] = df['Time'].combine(df2['Time'], lambda x1, x2: (x2 / x1 - 1) * 100)
         for bench in set(df['Benchmark']):
-            sns.boxplot(x='Threads', y='% Overhead', hue=hue,
+            sns.boxplot(x='Threads', y='% Overhead', hue=hue, hue_order=['A', 'B'],
                         data=df[(df['Benchmark'] == bench)],
                         palette='Set3')
-            plt.title(bench)
-            plt.ylabel('Time (s)')
+            title = '{} - "{}" vs "{}" {}'.format(bench, exp2, exp1, flag)
+            plt.title(title)
+            plt.ylabel('Overhead %')
+            bench_out_plot = '{}_{}'.format(out_plot, bench)
+            plt.savefig(bench_out_plot, bbox_inches='tight')
             plt.show()
 
 
 if __name__ == '__main__':
     # df = df_from_dir('results/1496895')
     # df = df_from_dir('results/1496895')
-    compare_experiments('results/1496895', 'results/b920081', hue='Flag', how='overhead')
+    compare_experiments('results/b779a20', 'results/c2660ad', 'reports/plots/sole_remove_8_O0_AB', hue='Class', how='overhead')
+    compare_experiments('results/1496895', 'results/b34df8c', 'reports/plots/sole_remove_8_O1_AB', hue='Class', how='overhead')
+    compare_experiments('results/b920081', 'results/b33c03f', 'reports/plots/sole_remove_8_O2_AB', hue='Class', how='overhead')
+    compare_experiments('results/fdb187b', 'results/e7547d1', 'reports/plots/sole_remove_8_O3_AB', hue='Class', how='overhead')
+
+    # compare_experiments('results/b779a20', 'results/c2660ad', 'reports/plots/sole_remove_8_O0', hue='Experiment', how='side')
+    # compare_experiments('results/1496895', 'results/b34df8c', 'reports/plots/sole_remove_8_O1', hue='Experiment', how='side')
+    # compare_experiments('results/b920081', 'results/b33c03f', 'reports/plots/sole_remove_8_O2', hue='Experiment', how='side')
+    # compare_experiments('results/fdb187b', 'results/e7547d1', 'reports/plots/sole_remove_8_O3', hue='Experiment', how='side')
