@@ -1,0 +1,113 @@
+%! Author = blackgeorge
+%! Date = 28/10/20
+
+% Preamble
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\graphicspath{{./plots/}}
+
+% Document
+\begin{document}
+
+    \section*{AArch64 Experiments}
+
+%    \subsection*{NPB - Baseline - Absolute Numbers}
+%
+%    \includegraphics[width=0.8\textwidth]{sole_serial.png}\par\vspace{0,5cm}
+%    \includegraphics[width=0.8\textwidth]{sole_parallel.png}\par\vspace{0,5cm}
+%
+%    \newpage
+
+    \subsection*{NPB - Remove registers r21...r28 - Overhead for different flags}
+
+    \begin{figure}[ht]
+        \begin{subfigure}{\linewidth}
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O0_bt.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O1_bt.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O2_bt.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O3_bt.png}\hfill
+        \end{subfigure}\par\medskip
+        \caption{BT overhead}
+        \label{fig:sole_figs_1}
+    \end{figure}
+
+    \begin{figure}[ht]
+        \begin{subfigure}{\linewidth}
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O0_cg.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O1_cg.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O2_cg.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O3_cg.png}\hfill
+        \end{subfigure}\par\medskip
+        \caption{CG overhead}
+        \label{fig:sole_figs_2}
+    \end{figure}
+\begin{figure}[ht]
+        \begin{subfigure}{\linewidth}
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O0_ep.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O1_ep.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O2_ep.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O3_ep.png}\hfill
+        \end{subfigure}\par\medskip
+        \caption{EP overhead}
+        \label{fig:sole_figs_3}
+    \end{figure}
+
+    \begin{figure}[ht]
+        \begin{subfigure}{\linewidth}
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O0_ft.png}
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O1_ft.png}
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O2_ft.png}
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O3_ft.png}
+        \end{subfigure}\par\medskip
+        \caption{FT overhead}
+        \label{fig:sole_figs_4}
+    \end{figure}
+\begin{figure}[ht]
+        \begin{subfigure}{\linewidth}
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O0_is.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O1_is.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O2_is.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O3_is.png}\hfill
+        \end{subfigure}\par\medskip
+        \caption{IS overhead}
+        \label{fig:sole_figs_5}
+    \end{figure}
+
+    \begin{figure}[ht]
+        \begin{subfigure}{\linewidth}
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O0_lu.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O1_lu.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O2_lu.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O3_lu.png}\hfill
+        \end{subfigure}\par\medskip
+        \caption{LU overhead}
+        \label{fig:sole_figs_6}
+    \end{figure}
+
+    \begin{figure}[ht]
+        \begin{subfigure}{\linewidth}
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O0_mg.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O1_mg.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O2_mg.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O3_mg.png}\hfill
+        \end{subfigure}\par\medskip
+        \caption{MG overhead}
+        \label{fig:sole_figs_7}
+    \end{figure}
+
+    \begin{figure}[ht]
+        \begin{subfigure}{\linewidth}
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O0_sp.png}
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O1_sp.png}
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O2_sp.png}
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_O3_sp.png}
+        \end{subfigure}\par\medskip
+        \caption{SP overhead}
+        \label{fig:sole_figs_8}
+    \end{figure}
+
+\end{document}

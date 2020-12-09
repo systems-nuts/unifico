@@ -1,0 +1,65 @@
+%! Author = blackgeorge
+%! Date = 28/10/20
+
+% Preamble
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\graphicspath{{./plots/}}
+
+% Document
+\begin{document}
+
+    \section{x86-64 Experiments}
+
+    \subsection*{SPEC - Baseline vs R14 to temp}
+
+    \includegraphics[width=0.8\textwidth]{r14_serial.png}\par\vspace{0,5cm}
+%    \includegraphics[width=0.8\textwidth]{r14_parallel.png}\par\vspace{0,5cm}
+
+    \subsection*{SPEC - Baseline vs R13\_R14 to temp}
+
+    \includegraphics[width=0.8\textwidth]{r13_r14_serial.png}\par\vspace{0,5cm}
+%    \includegraphics[width=0.8\textwidth]{r13_r14_parallel.png}\par\vspace{0,5cm}
+
+    \subsection*{SPEC - Baseline vs R12\_R13\_R14 to temp}
+
+    \includegraphics[width=0.8\textwidth]{r12_r13_r14_serial.png}\par\vspace{0,5cm}
+%    \includegraphics[width=0.8\textwidth]{r12_r13_r14_parallel.png}\par\vspace{0,5cm}
+
+    \section{AArch64 Experiments}
+
+    \subsection*{SPEC - Baseline}
+
+    \includegraphics[width=0.8\textwidth]{sole_serial.png}\par\vspace{0,5cm}
+    \includegraphics[width=0.8\textwidth]{sole_parallel.png}\par\vspace{0,5cm}
+
+    \subsection*{SPEC - Remove registers - Overhead}
+
+    \begin{figure}
+        \begin{subfigure}{\linewidth}
+            \includegraphics[width=0.60\textwidth]{sole_remove_1_p.png}\hfill
+            \includegraphics[width=0.60\textwidth]{sole_remove_3_p.png}\hfill
+            \includegraphics[width=0.60\textwidth]{sole_remove_6_p.png}\hfill
+            \includegraphics[width=0.60\textwidth]{sole_remove_8_p.png}
+            \caption{}
+        \end{subfigure}\par\medskip
+        \caption{Some grouped images}
+        \label{fig:sole_figs}
+    \end{figure}
+    \begin{figure}
+        \begin{subfigure}{\linewidth}
+            \includegraphics[width=0.6\textwidth]{sole_remove_1_s.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_3_s.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_6_s.png}\hfill
+            \includegraphics[width=0.6\textwidth]{sole_remove_8_s.png}
+            \caption{}
+        \end{subfigure}
+        \caption{Some grouped images}
+        \label{fig:sole_figs}
+    \end{figure}
+
+\end{document}

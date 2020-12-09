@@ -8,6 +8,17 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
+def get_info(json_path):
+    """
+    Extract experiment info from json file
+    @param json_path:
+    @return:
+    """
+    with open(json_path, 'r') as fp:
+        d = json.load(fp)
+    return d
+
+
 def verify_npb_output(out_path):
     """
     Verify that npb output file includes a successful run
@@ -21,14 +32,13 @@ def verify_npb_output(out_path):
         return False
 
 
-def extract_csv(commit_short_hash):
+# TODO: tests
+def df_from_dir(results_dir):
     """
-    Extract from NPB output files.
-    :return:
+    Extract DataFrame from multiple NPB results in a directory.
+    @param results_dir: Directory containing multiple csvs from SPEC runs
+    @return:
     """
-    script_dir = os.getenv('NPB_SCRIPT_DIR')
-    results_dir = '{}/results/{}'.format(script_dir, commit_short_hash)
-
     info_dict_path = '{}/info.json'.format(results_dir)
     if not os.path.isfile(info_dict_path):
         print('info.json not found')
@@ -37,6 +47,7 @@ def extract_csv(commit_short_hash):
     with open(info_dict_path, 'r') as fp:
         info_dict = json.load(fp)
     experiment = info_dict['experiment']
+    flag = info_dict['flag']
 
     df = pd.DataFrame()
 
@@ -69,6 +80,7 @@ def extract_csv(commit_short_hash):
 
         out_dict = {
             'Experiment': experiment,
+            'Flag': flag,
             'Benchmark': bench,
             'Class': bench_class,
             'Threads': int(threads),
@@ -79,22 +91,35 @@ def extract_csv(commit_short_hash):
 
         df = df.append(out_dict, ignore_index=True)
 
-    output_csv = os.path.join(results_dir, commit_short_hash + '.csv')
     df['Threads'] = df['Threads'].astype(int)
-    df.to_csv(output_csv, index=False)
 
-    return output_csv
+    return df
 
 
-def dataframe_to_boxplot(df):
+def dataframe_to_catplot(df):
     """
     @param df: Pandas DataFrame
     """
     for bench in set(df['Benchmark']):
-        sns.boxplot(x='Threads', y='Time', hue='Affinity',
+        sns.catplot(x='Threads', y='Time', hue='Experiment', col='Affinity',
+                    data=df[(df['Benchmark'] == bench)], kind='box',
+                    palette='Set3')
+        plt.title(bench)
+        plt.ylabel('Time (s)')
+        plt.show()
+
+
+def dataframe_to_boxplot(df, hue='Experiment'):
+    """
+    @param df: Pandas DataFrame
+    @param hue: Comparison variable for boxplot
+    """
+    for bench in set(df['Benchmark']):
+        sns.boxplot(x='Threads', y='Time', hue=hue,
                     data=df[(df['Benchmark'] == bench)],
                     palette='Set3')
         plt.title(bench)
+        plt.ylabel('Time (s)')
         plt.show()
 
 
@@ -124,34 +149,60 @@ def two_dataframes_boxplot(df1, df2):
         plt.show()
 
 
-def compare_experiments(hash1, hash2):
+def compare_experiments(dir1, dir2, out_plot, hue='Experiment', how='side'):
     """
-    Plot the graphs of the two experiments
-    @param hash1: git commit short hash corresponding to first experiment
-    @param hash2: git commit short hash corresponding to second experiment
+    Plot the graphs of the two experiments in each directory
+    @param dir1: Output files for first experiment
+    @param dir2: Output files for first experiment
+    @param out_plot: Output dir
+    @param hue: Comparison variable for boxplot
+    @param how: Compare
     @return:
     """
-    script_dir = os.getenv('NPB_SCRIPT_DIR')
-    results_dir = '{}/results'.format(script_dir)
-    os.chdir(results_dir)
+    if not os.path.isdir(dir1):
+        print('{} result directory does not exist.'.format(dir1))
+    elif not os.path.isdir(dir2):
+        print('{} result directory does not exist.'.format(dir2))
 
-    if not os.path.isdir(hash1):
-        print('{} result directory does not exist.'.format(hash1))
-    elif not os.path.isdir(hash2):
-        print('{} result directory does not exist.'.format(hash2))
+    df1 = df_from_dir(dir1)
+    df2 = df_from_dir(dir2)
 
-    csv1 = os.path.join(hash1, hash1 + '.csv')
-    csv2 = os.path.join(hash2, hash2 + '.csv')
+    info1 = get_info(os.path.join(dir1, 'info.json'))
+    info2 = get_info(os.path.join(dir2, 'info.json'))
 
-    if not os.path.isfile(csv1):
-        extract_csv(hash1)
-    if not os.path.isfile(csv2):
-        extract_csv(hash2)
+    exp1 = info1['experiment']
+    exp2 = info2['experiment']
+    flag = info1['flag']
 
-    df1 = pd.read_csv(csv1)
-    df2 = pd.read_csv(csv2)
-    two_dataframes_boxplot(df1, df2)
+    if how == 'side':
+        df = df1.append(df2, ignore_index=True)
+        dataframe_to_boxplot(df, hue)
+    elif how == 'overhead':
+        df1.sort_values(by=['Benchmark', 'Class', 'Threads', 'Iteration'], inplace=True)
+        df2.sort_values(by=['Benchmark', 'Class', 'Threads', 'Iteration'], inplace=True)
+        df = pd.DataFrame(df1)
+        df['% Overhead'] = df['Time'].combine(df2['Time'], lambda x1, x2: (x2 / x1 - 1) * 100)
+        for bench in set(df['Benchmark']):
+            sns.boxplot(x='Threads', y='% Overhead', hue=hue, hue_order=['A', 'B'],
+                        data=df[(df['Benchmark'] == bench)],
+                        palette='Set3')
+            title = '{} - "{}" vs "{}" {}'.format(bench, exp2, exp1, flag)
+            plt.title(title)
+            plt.ylabel('Overhead %')
+            bench_out_plot = '{}_{}'.format(out_plot, bench)
+            plt.savefig(bench_out_plot, bbox_inches='tight')
+            plt.show()
 
 
 if __name__ == '__main__':
-    compare_experiments('fbbec41', '0e1e380')
+    # df = df_from_dir('results/1496895')
+    # df = df_from_dir('results/1496895')
+    compare_experiments('results/b779a20', 'results/c2660ad', 'reports/plots/sole_remove_8_O0_AB', hue='Class', how='overhead')
+    compare_experiments('results/1496895', 'results/b34df8c', 'reports/plots/sole_remove_8_O1_AB', hue='Class', how='overhead')
+    compare_experiments('results/b920081', 'results/b33c03f', 'reports/plots/sole_remove_8_O2_AB', hue='Class', how='overhead')
+    compare_experiments('results/fdb187b', 'results/e7547d1', 'reports/plots/sole_remove_8_O3_AB', hue='Class', how='overhead')
+
+    # compare_experiments('results/b779a20', 'results/c2660ad', 'reports/plots/sole_remove_8_O0', hue='Experiment', how='side')
+    # compare_experiments('results/1496895', 'results/b34df8c', 'reports/plots/sole_remove_8_O1', hue='Experiment', how='side')
+    # compare_experiments('results/b920081', 'results/b33c03f', 'reports/plots/sole_remove_8_O2', hue='Experiment', how='side')
+    # compare_experiments('results/fdb187b', 'results/e7547d1', 'reports/plots/sole_remove_8_O3', hue='Experiment', how='side')

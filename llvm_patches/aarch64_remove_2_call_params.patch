@@ -1,0 +1,26 @@
+diff --git a/llvm/lib/Target/AArch64/AArch64CallingConvention.td b/llvm/lib/Target/AArch64/AArch64CallingConvention.td
+index fdcc890bf58..be3f500175b 100644
+--- a/llvm/lib/Target/AArch64/AArch64CallingConvention.td
++++ b/llvm/lib/Target/AArch64/AArch64CallingConvention.td
+@@ -86,8 +86,8 @@ def CC_AArch64_AAPCS : CallingConv<[
+   // Handle i1, i8, i16, i32, i64, f32, f64 and v2f64 by passing in registers,
+   // up to eight each of GPR and FPR.
+   CCIfType<[i1, i8, i16], CCPromoteToType<i32>>,
+-  CCIfType<[i32], CCAssignToRegWithShadow<[W0, W1, W2, W3, W4, W5, W6, W7],
+-                                          [X0, X1, X2, X3, X4, X5, X6, X7]>>,
++  CCIfType<[i32], CCAssignToRegWithShadow<[W0, W1, W2, W3, W4, W5],
++                                          [X0, X1, X2, X3, X4, X5]>>,
+   // i128 is split to two i64s, we can't fit half to register X7.
+   CCIfType<[i64], CCIfSplit<CCAssignToRegWithShadow<[X0, X2, X4, X6],
+                                                     [X0, X1, X3, X5]>>>,
+@@ -95,8 +95,8 @@ def CC_AArch64_AAPCS : CallingConv<[
+   // i128 is split to two i64s, and its stack alignment is 16 bytes.
+   CCIfType<[i64], CCIfSplit<CCAssignToStackWithShadow<8, 16, [X7]>>>,
+ 
+-  CCIfType<[i64], CCAssignToRegWithShadow<[X0, X1, X2, X3, X4, X5, X6, X7],
+-                                          [W0, W1, W2, W3, W4, W5, W6, W7]>>,
++  CCIfType<[i64], CCAssignToRegWithShadow<[X0, X1, X2, X3, X4, X5],
++                                          [W0, W1, W2, W3, W4, W5]>>,
+   CCIfType<[f16], CCAssignToRegWithShadow<[H0, H1, H2, H3, H4, H5, H6, H7],
+                                           [Q0, Q1, Q2, Q3, Q4, Q5, Q6, Q7]>>,
+   CCIfType<[bf16], CCAssignToRegWithShadow<[H0, H1, H2, H3, H4, H5, H6, H7],

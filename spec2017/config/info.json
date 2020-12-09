@@ -2,5 +2,6 @@
 	"benchmarks": "SPEC2017",
 	"compiler": "clang",
 	"experiment": "baseline",
+	"flags": "-O3",
 	"target": "aarch64"
 }

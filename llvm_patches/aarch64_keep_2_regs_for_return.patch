@@ -1,0 +1,19 @@
+diff --git a/llvm/lib/Target/AArch64/AArch64CallingConvention.td b/llvm/lib/Target/AArch64/AArch64CallingConvention.td
+index fdcc890bf58..f96bfee5f4c 100644
+--- a/llvm/lib/Target/AArch64/AArch64CallingConvention.td
++++ b/llvm/lib/Target/AArch64/AArch64CallingConvention.td
+@@ -137,10 +137,10 @@ def RetCC_AArch64_AAPCS : CallingConv<[
+                          CCBitConvertToType<f128>>>,
+ 
+   CCIfType<[i1, i8, i16], CCPromoteToType<i32>>,
+-  CCIfType<[i32], CCAssignToRegWithShadow<[W0, W1, W2, W3, W4, W5, W6, W7],
+-                                          [X0, X1, X2, X3, X4, X5, X6, X7]>>,
+-  CCIfType<[i64], CCAssignToRegWithShadow<[X0, X1, X2, X3, X4, X5, X6, X7],
+-                                          [W0, W1, W2, W3, W4, W5, W6, W7]>>,
++  CCIfType<[i32], CCAssignToRegWithShadow<[W8, W2],
++                                          [X8, X2]>>,
++  CCIfType<[i64], CCAssignToRegWithShadow<[X8, X2],
++                                          [W8, W2]>>,
+   CCIfType<[f16], CCAssignToRegWithShadow<[H0, H1, H2, H3, H4, H5, H6, H7],
+                                           [Q0, Q1, Q2, Q3, Q4, Q5, Q6, Q7]>>,
+   CCIfType<[bf16], CCAssignToRegWithShadow<[H0, H1, H2, H3, H4, H5, H6, H7],
