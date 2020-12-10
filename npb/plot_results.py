@@ -165,7 +165,9 @@ def compare_experiments(dir1, dir2, out_plot, hue='Experiment', how='side'):
         print('{} result directory does not exist.'.format(dir2))
 
     df1 = df_from_dir(dir1)
+    df1 = df1[df1['Class'] == 'B']
     df2 = df_from_dir(dir2)
+    df2 = df2[df2['Class'] == 'B']
 
     info1 = get_info(os.path.join(dir1, 'info.json'))
     info2 = get_info(os.path.join(dir2, 'info.json'))
@@ -174,35 +176,47 @@ def compare_experiments(dir1, dir2, out_plot, hue='Experiment', how='side'):
     exp2 = info2['experiment']
     flag = info1['flag']
 
-    if how == 'side':
-        df = df1.append(df2, ignore_index=True)
-        dataframe_to_boxplot(df, hue)
-    elif how == 'overhead':
-        df1.sort_values(by=['Benchmark', 'Class', 'Threads', 'Iteration'], inplace=True)
-        df2.sort_values(by=['Benchmark', 'Class', 'Threads', 'Iteration'], inplace=True)
-        df = pd.DataFrame(df1)
-        df['% Overhead'] = df['Time'].combine(df2['Time'], lambda x1, x2: (x2 / x1 - 1) * 100)
-        for bench in set(df['Benchmark']):
-            sns.boxplot(x='Threads', y='% Overhead', hue=hue, hue_order=['A', 'B'],
-                        data=df[(df['Benchmark'] == bench)],
-                        palette='Set3')
-            title = '{} - "{}" vs "{}" {}'.format(bench, exp2, exp1, flag)
-            plt.title(title)
-            plt.ylabel('Overhead %')
-            bench_out_plot = '{}_{}'.format(out_plot, bench)
-            plt.savefig(bench_out_plot, bbox_inches='tight')
-            plt.show()
+    total_df = df1.append(df2, ignore_index=True)
+    # total_df.sort_values(by=['Benchmark', 'Class', 'Threads', 'Iteration'], inplace=True)
+    df1.sort_values(by=['Benchmark', 'Class', 'Threads', 'Iteration'], inplace=True)
+    df1 = df1.reset_index(drop=True)
+    df2.sort_values(by=['Benchmark', 'Class', 'Threads', 'Iteration'], inplace=True)
+    df2 = df2.reset_index(drop=True)
+    df = pd.DataFrame(df1)
+    df['% Overhead'] = df['Time'].combine(df2['Time'], lambda x1, x2: (x2 / x1 - 1) * 100)
+    for bench in set(df['Benchmark']):
+        plt.figure(figsize=(10, 5))
+        plt.subplot(1, 2, 1)
+        sns.boxplot(x='Threads', y='Time', hue='Experiment',
+                    data=total_df[(total_df['Benchmark'] == bench)],
+                    palette='Set3')
+        plt.legend(loc=1, prop={'size': 8})
+        plt.ylabel('Time (s)')
+        plt.subplot(1, 2, 2)
+        sns.boxplot(x='Threads', y='% Overhead', hue='Class',
+                    data=df[(df['Benchmark'] == bench)],
+                    palette='Set3')
+        bench_out_plot = '{}_{}'.format(out_plot, bench)
+        title = '{} - "{}" vs "{}" {}'.format(bench, exp2, exp1, flag)
+        plt.suptitle(title)
+        plt.savefig(bench_out_plot, bbox_inches='tight')
+        plt.show()
 
 
 if __name__ == '__main__':
-    # df = df_from_dir('results/1496895')
-    # df = df_from_dir('results/1496895')
-    compare_experiments('results/b779a20', 'results/c2660ad', 'reports/plots/sole_remove_8_O0_AB', hue='Class', how='overhead')
-    compare_experiments('results/1496895', 'results/b34df8c', 'reports/plots/sole_remove_8_O1_AB', hue='Class', how='overhead')
-    compare_experiments('results/b920081', 'results/b33c03f', 'reports/plots/sole_remove_8_O2_AB', hue='Class', how='overhead')
-    compare_experiments('results/fdb187b', 'results/e7547d1', 'reports/plots/sole_remove_8_O3_AB', hue='Class', how='overhead')
 
-    # compare_experiments('results/b779a20', 'results/c2660ad', 'reports/plots/sole_remove_8_O0', hue='Experiment', how='side')
-    # compare_experiments('results/1496895', 'results/b34df8c', 'reports/plots/sole_remove_8_O1', hue='Experiment', how='side')
-    # compare_experiments('results/b920081', 'results/b33c03f', 'reports/plots/sole_remove_8_O2', hue='Experiment', how='side')
-    # compare_experiments('results/fdb187b', 'results/e7547d1', 'reports/plots/sole_remove_8_O3', hue='Experiment', how='side')
+    compare_experiments('results/b779a20', 'results/c2660ad', 'reports/plots/sole_remove_8_O0_B', hue='Experiment', how='side')
+    compare_experiments('results/1496895', 'results/b34df8c', 'reports/plots/sole_remove_8_O1_B', hue='Experiment', how='side')
+    compare_experiments('results/b920081', 'results/b33c03f', 'reports/plots/sole_remove_8_O2_B', hue='Experiment', how='side')
+    compare_experiments('results/fdb187b', 'results/e7547d1', 'reports/plots/sole_remove_8_O3_B', hue='Experiment', how='side')
+
+    compare_experiments('results/c2660ad', 'results/remove_14_regs/096c020', 'reports/plots/sole_remove_6_O0_B', hue='Experiment', how='side')
+    compare_experiments('results/b34df8c', 'results/remove_14_regs/ca1f7d6', 'reports/plots/sole_remove_6_O1_B', hue='Class', how='overhead')
+    compare_experiments('results/b33c03f', 'results/remove_14_regs/1d570f6', 'reports/plots/sole_remove_6_O2_B', hue='Class', how='overhead')
+    compare_experiments('results/e7547d1', 'results/remove_14_regs/9776cd6', 'reports/plots/sole_remove_6_O3_B', hue='Class', how='overhead')
+
+    compare_experiments('results/b779a20', 'results/remove_14_regs/096c020', 'reports/plots/sole_remove_14_O0_B', hue='Experiment', how='side')
+    compare_experiments('results/1496895', 'results/remove_14_regs/ca1f7d6', 'reports/plots/sole_remove_14_O1_B', hue='Class', how='overhead')
+    compare_experiments('results/b920081', 'results/remove_14_regs/1d570f6', 'reports/plots/sole_remove_14_O2_B', hue='Class', how='overhead')
+    compare_experiments('results/fdb187b', 'results/remove_14_regs/9776cd6', 'reports/plots/sole_remove_14_O3_B', hue='Class', how='overhead')
+
