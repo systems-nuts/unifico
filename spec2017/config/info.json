@@ -1,7 +1,8 @@
 {
 	"benchmarks": "SPEC2017",
 	"compiler": "clang",
-	"experiment": "baseline",
-	"flags": "-O3",
-	"target": "aarch64"
+	"experiment": "remove r9...r15 & r21...r28",
+	"flag": "-O3",
+	"target": "aarch64",
+	"machine": "129.215.90.141"
 }
