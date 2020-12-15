@@ -20,9 +20,6 @@
 % Document
 \begin{document}
 
-NOTE: Unsure about \%rax - r8 mapping
-NOTE: maybe replace r19 with r20
-
 \begin{table}[ht]
 \caption{Mapping per Functionality}
 \begin{adjustwidth}{-4.3cm}{-4.3cm}
@@ -61,6 +58,11 @@ NOTE: maybe replace r19 with r20
     \begin{itemize}
         \item Maybe leave kernel arguments for later.
         Otherwise need to have r0, r1, r2, r7, r4, r5 as arguments
+        \item Keep only r19, r20 as CSR
+        \item Unsure about \%rax - r8 mapping
+        \item What about r18?
+        \item What about r16/r17?
+        \item see "man syscall" for details on the kernel interface
     \end{itemize}
 
 \end{document}

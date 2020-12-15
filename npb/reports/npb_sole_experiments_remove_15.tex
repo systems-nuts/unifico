@@ -13,19 +13,16 @@
 % Document
 \begin{document}
 
-    \section*{AArch64 Experiments}
-
 %    \subsection*{NPB - Baseline - Absolute Numbers}
 %
 %    \includegraphics[width=0.8\textwidth]{sole_serial.png}\par\vspace{0,5cm}
 %    \includegraphics[width=0.8\textwidth]{sole_parallel.png}\par\vspace{0,5cm}
 %
 %    \newpage
-    \subsection*{NPB - Remove registers r20...r28 - Overhead for different flags}
+    \section*{Aarch64 - Sole experiments}
+%    \subsection*{NPB - Remove registers r20...r28 - Overhead for different flags}
 
-    Compared to
-
-    \begin{figure}[!htb]
+    \begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_8_O0_B_bt.png}\hfill
             \includegraphics[width=0.6\textwidth]{sole_remove_8_O1_B_bt.png}\hfill
@@ -35,7 +32,7 @@
         \caption{BT overhead}
     \end{figure}
 
-    \begin{figure}[!htb]
+    \begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_8_O0_B_cg.png}\hfill
             \includegraphics[width=0.6\textwidth]{sole_remove_8_O1_B_cg.png}\hfill
@@ -44,7 +41,7 @@
         \end{subfigure}\par\medskip
         \caption{CG overhead}
     \end{figure}
-\begin{figure}[!htb]
+\begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_8_O0_B_ep.png}\hfill
             \includegraphics[width=0.6\textwidth]{sole_remove_8_O1_B_ep.png}\hfill
@@ -54,7 +51,7 @@
         \caption{EP overhead}
 \end{figure}
 
-    \begin{figure}[!htb]
+    \begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_8_O0_B_ft.png}
             \includegraphics[width=0.6\textwidth]{sole_remove_8_O1_B_ft.png}
@@ -63,7 +60,7 @@
         \end{subfigure}\par\medskip
         \caption{FT overhead}
     \end{figure}
-\begin{figure}[!htb]
+\begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_8_O0_B_is.png}\hfill
             \includegraphics[width=0.6\textwidth]{sole_remove_8_O1_B_is.png}\hfill
@@ -73,7 +70,7 @@
         \caption{IS overhead}
 \end{figure}
 
-    \begin{figure}[!htb]
+    \begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_8_O0_B_lu.png}\hfill
             \includegraphics[width=0.6\textwidth]{sole_remove_8_O1_B_lu.png}\hfill
@@ -83,7 +80,7 @@
         \caption{LU overhead}
     \end{figure}
 
-    \begin{figure}[!htb]
+    \begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_8_O0_B_mg.png}\hfill
             \includegraphics[width=0.6\textwidth]{sole_remove_8_O1_B_mg.png}\hfill
@@ -93,7 +90,7 @@
         \caption{MG overhead}
     \end{figure}
 
-    \begin{figure}[!htb]
+    \begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_8_O0_B_sp.png}
             \includegraphics[width=0.6\textwidth]{sole_remove_8_O1_B_sp.png}
@@ -103,9 +100,11 @@
         \caption{SP overhead}
     \end{figure}
 
-    \subsection*{NPB - Remove registers r9...r15 \& r20...r28 - Overhead compared to removing only r20...r28}
+    \newpage
 
-    \begin{figure}[!htb]
+%    \subsection*{NPB - Remove registers r9...r15 \& r20...r28 - Overhead compared to removing only r20...r28}
+
+    \begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_6_O0_B_bt.png}\hfill
             \includegraphics[width=0.6\textwidth]{sole_remove_6_O1_B_bt.png}\hfill
@@ -115,7 +114,7 @@
         \caption{BT overhead}
     \end{figure}
 
-    \begin{figure}[!htb]
+    \begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_6_O0_B_cg.png}\hfill
             \includegraphics[width=0.6\textwidth]{sole_remove_6_O1_B_cg.png}\hfill
@@ -124,7 +123,7 @@
         \end{subfigure}\par\medskip
         \caption{CG overhead}
     \end{figure}
-\begin{figure}[!htb]
+\begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_6_O0_B_ep.png}\hfill
             \includegraphics[width=0.6\textwidth]{sole_remove_6_O1_B_ep.png}\hfill
@@ -134,7 +133,7 @@
         \caption{EP overhead}
 \end{figure}
 
-    \begin{figure}[!htb]
+    \begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_6_O0_B_ft.png}
             \includegraphics[width=0.6\textwidth]{sole_remove_6_O1_B_ft.png}
@@ -143,7 +142,7 @@
         \end{subfigure}\par\medskip
         \caption{FT overhead}
     \end{figure}
-\begin{figure}[!htb]
+\begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_6_O0_B_is.png}\hfill
             \includegraphics[width=0.6\textwidth]{sole_remove_6_O1_B_is.png}\hfill
@@ -153,7 +152,7 @@
         \caption{IS overhead}
 \end{figure}
 
-    \begin{figure}[!htb]
+    \begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_6_O0_B_lu.png}\hfill
             \includegraphics[width=0.6\textwidth]{sole_remove_6_O1_B_lu.png}\hfill
@@ -163,7 +162,7 @@
         \caption{LU overhead}
     \end{figure}
 
-    \begin{figure}[!htb]
+    \begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_6_O0_B_mg.png}\hfill
             \includegraphics[width=0.6\textwidth]{sole_remove_6_O1_B_mg.png}\hfill
@@ -173,7 +172,7 @@
         \caption{MG overhead}
     \end{figure}
 
-    \begin{figure}[!htb]
+    \begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_6_O0_B_sp.png}
             \includegraphics[width=0.6\textwidth]{sole_remove_6_O1_B_sp.png}
@@ -183,9 +182,11 @@
         \caption{SP overhead}
     \end{figure}
 
-    \subsection*{NPB - Remove registers r9...r15 \& r20...r28 - Overhead for different flags}
+    \newpage
 
-    \begin{figure}[!htb]
+%    \subsection*{NPB - Remove registers r9...r15 \& r20...r28 - Overhead for different flags}
+
+    \begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_14_O0_B_bt.png}\hfill
             \includegraphics[width=0.6\textwidth]{sole_remove_14_O1_B_bt.png}\hfill
@@ -195,7 +196,7 @@
         \caption{BT overhead}\label{fig:figure}
     \end{figure}
 
-    \begin{figure}[!htb]
+    \begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_14_O0_B_cg.png}\hfill
             \includegraphics[width=0.6\textwidth]{sole_remove_14_O1_B_cg.png}\hfill
@@ -204,7 +205,7 @@
         \end{subfigure}\par\medskip
         \caption{CG overhead}\label{fig:figure2}
     \end{figure}
-\begin{figure}[!htb]
+\begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_14_O0_B_ep.png}\hfill
             \includegraphics[width=0.6\textwidth]{sole_remove_14_O1_B_ep.png}\hfill
@@ -214,7 +215,7 @@
         \caption{EP overhead}\label{fig:figure3}
 \end{figure}
 
-    \begin{figure}[!htb]
+    \begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_14_O0_B_ft.png}
             \includegraphics[width=0.6\textwidth]{sole_remove_14_O1_B_ft.png}
@@ -223,7 +224,7 @@
         \end{subfigure}\par\medskip
         \caption{FT overhead}\label{fig:figure4}
     \end{figure}
-\begin{figure}[!htb]
+\begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_14_O0_B_is.png}\hfill
             \includegraphics[width=0.6\textwidth]{sole_remove_14_O1_B_is.png}\hfill
@@ -233,7 +234,7 @@
         \caption{IS overhead}\label{fig:figure5}
 \end{figure}
 
-    \begin{figure}[!htb]
+    \begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_14_O0_B_lu.png}\hfill
             \includegraphics[width=0.6\textwidth]{sole_remove_14_O1_B_lu.png}\hfill
@@ -243,7 +244,7 @@
         \caption{LU overhead}\label{fig:figure6}
     \end{figure}
 
-    \begin{figure}[!htb]
+    \begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_14_O0_B_mg.png}\hfill
             \includegraphics[width=0.6\textwidth]{sole_remove_14_O1_B_mg.png}\hfill
@@ -253,7 +254,7 @@
         \caption{MG overhead}\label{fig:figure7}
     \end{figure}
 
-    \begin{figure}[!htb]
+    \begin{figure}[!ht]
         \begin{subfigure}{\linewidth}
             \includegraphics[width=0.6\textwidth]{sole_remove_14_O0_B_sp.png}
             \includegraphics[width=0.6\textwidth]{sole_remove_14_O1_B_sp.png}
