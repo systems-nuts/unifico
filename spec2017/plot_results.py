@@ -7,20 +7,21 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 BENCHMARK_NUM = 10
+INFO_FILE = 'info.json'
 
 
-def get_experiment(json_path):
+def get_info(json_path):
     """
-    Extract experiment info from json file
+    Extract info from json file
     @param json_path:
     @return:
     """
     with open(json_path, 'r') as fp:
         d = json.load(fp)
-    return d['experiment']
+    return d
 
 
-def df_from_file(csv_path, experiment, start_line, iterations):
+def df_from_file(csv_path, start_line, iterations):
     """
     Extract DataFrame from SPEC results csv
     @param csv_path:
@@ -32,68 +33,36 @@ def df_from_file(csv_path, experiment, start_line, iterations):
     nrows = BENCHMARK_NUM * iterations
     df = pd.read_csv(csv_path, skiprows=start_line - 1, nrows=nrows)
     df = df.dropna(subset=['Est. Base Run Time'])
-    df['Experiment'] = pd.Series([experiment] * nrows)
     df['Base # Threads'] = df['Base # Threads'].astype(int)
     return df
 
 
-def df_from_dir(results_dir, experiment, start_line, iterations):
+def df_from_dir(result_dir, start_line, iterations):
     """
     Extract DataFrame from multiple SPEC results csv in a directory.
-    @param results_dir: Directory containing multiple csvs from SPEC runs
-    @param experiment: Short title
+    @param result_dir: Directory containing multiple csvs from SPEC runs
     @param start_line: Start of csv line for the result csv
     @param iterations:
     @return:
     """
     df_list = []
-    for csv in os.listdir(results_dir):
-        csv_path = os.path.join(results_dir, csv)
-        df = df_from_file(csv_path, experiment, start_line, iterations)
-        df_list.append(df)
+    for folder in os.listdir(result_dir):
+        folder_path = os.path.join(result_dir, folder)
+        if not os.path.isdir(folder_path):
+            continue
+        for csv in os.listdir(folder_path):
+            csv_path = os.path.join(folder_path, csv)
+            df = df_from_file(csv_path, start_line, iterations)
+            df['Execution Info'] = folder
+            df_list.append(df)
 
     df = pd.concat(df_list, ignore_index=True)  # Results for all the experiments
+
+    experiment_info = get_info(os.path.join(result_dir, INFO_FILE))
+    df['Experiment'] = experiment_info['experiment']
+    df['Flags'] = experiment_info['flags']
+
     return df
-
-
-def plot_serial(csv, exp, out_plot):
-    """
-    Plot two SPEC serial experiments over some benchmarks.
-    @param csv: path to first csv
-    @param exp: first experiment name
-    @param out_plot:
-    @return:
-    """
-    df = df_from_file(csv, exp, 7, 3)
-    sns.boxplot(x='Benchmark', y='Est. Base Run Time', hue='Experiment',
-                data=df, palette='Set3')
-    plt.legend(loc=1, prop={'size': 8})
-    plt.title('Serial Benchmarks')
-    plt.savefig(out_plot, bbox_inches='tight')
-    plt.show()
-
-
-def compare_serial_experiments(csv1, exp1, csv2, exp2, out_plot):
-    """
-    Plot two SPEC serial experiments over some benchmarks.
-    @param csv1: path to first csv
-    @param exp1: first experiment name
-    @param csv2: path to second csv
-    @param exp2: second experiment name
-    @param out_plot:
-    @return:
-    """
-    df1 = df_from_file(csv1, exp1, 7, 3)
-    df2 = df_from_file(csv2, exp2, 7, 3)
-
-    df = df1.append(df2, ignore_index=True)
-
-    sns.boxplot(x='Benchmark', y='Est. Base Run Time', hue='Experiment',
-                data=df, palette='Set3')
-    plt.legend(loc=1, prop={'size': 8})
-    plt.title('Serial Benchmarks')
-    plt.savefig(out_plot, bbox_inches='tight')
-    plt.show()
 
 
 def plot_core_vs_thread(core_csv_dir, thread_csv_dir, exp, out_plot):
@@ -127,47 +96,76 @@ def plot_core_vs_thread(core_csv_dir, thread_csv_dir, exp, out_plot):
         plt.show()
 
 
-def serial_experiments_overhead(csv1, csv2, exp1, exp2, out_plot='reports/plots/temp'):
+def serial_experiments_overhead(df1, df2, out_plot='reports/plots/temp'):
     """
     Plot two SPEC serial experiments over some benchmarks.
-    @param csv1: path to first csv
-    @param csv2: path to second csv
-    @param exp1: first experiment name
-    @param exp2: second experiment name
-    @param out_plot:
-    @return:
+    @param df1: Pandas Dataframe with the first experiment results
+    @param df2: Pandas Dataframe with the second experiment results
+    @param out_plot: Output dir
     """
-    df1 = df_from_file(csv1, exp1, 7, 3)
-    df2 = df_from_file(csv2, exp2, 7, 3)
+    df1 = df1[df1['Base # Threads'] == 1]
+    df2 = df2[df2['Base # Threads'] == 1]
+
+    df1.sort_values(by=['Benchmark'], inplace=True)
+    df1 = df1.reset_index(drop=True)
+    df2.sort_values(by=['Benchmark'], inplace=True)
+    df2 = df2.reset_index(drop=True)
+    total_df = df1.append(df2, ignore_index=True)
+
+    exp1 = df1['Experiment'].iloc[0]
+    exp2 = df2['Experiment'].iloc[0]
+    flag = df1['Flags'].iloc[0]
 
     df1 = df1.groupby(['Benchmark'], as_index=False).mean()
     df2 = df2.groupby(['Benchmark'], as_index=False).mean()
     df = pd.DataFrame(df1)
     df['% Overhead'] = df['Est. Base Run Time'].combine(df2['Est. Base Run Time'], lambda x1, x2: (x2 / x1 - 1) * 100)
 
-    df.plot.bar(x='Benchmark', y='% Overhead',
-                color=(df['% Overhead'] > 0).map({True: 'orange', False: 'g'}))
-    plt.legend(loc=1, prop={'size': 8})
-    title = '{}: {} overhead to {}'.format('Serial Benchmarks', exp2, exp1)
-    plt.title(title)
+    title = '{}: {} overhead to {} {}'.format('Serial Benchmarks', exp2, exp1, flag)
+
+    fig, axes = plt.subplots(nrows=1, ncols=2)
+    plt.figure(figsize=(8, 5))
+
+    # First subplot
+    sns.boxplot(x='Benchmark', y='Est. Base Run Time', hue='Experiment',
+                data=total_df, palette='Set3', ax=axes[0])
+    plt.sca(axes[0])
     plt.xticks(rotation=45)
-    plt.savefig(out_plot, bbox_inches='tight')
+    plt.legend(loc=0, prop={'size': 8})
+
+    # Second subplot
+    sns.boxplot(x='Benchmark', y='% Overhead',
+                data=df, palette='Set3', ax=axes[1])
+    plt.sca(axes[1])
+    plt.xticks(rotation=45)
+    plt.legend(loc=1, prop={'size': 6})
+
+    plt.suptitle(title)
+    flag = flag.replace('-', '')
+    out_file = '{}_serial_{}'.format(out_plot, flag)
+    plt.savefig(out_file, bbox_inches='tight')
     plt.show()
 
 
-def parallel_experiments_overhead(csv_dir1, csv_dir2, exp1='First experiment', exp2='Second experiment',
-                                  out_plot='reports/plots/temp'):
+def parallel_experiments_overhead(df1, df2, out_plot='reports/plots/temp'):
     """
-    Plot SPEC parallel experiment.
-    @param csv_dir1:
-    @param csv_dir2:
-    @param exp1:
-    @param exp2:
+    Plot two SPEC serial experiments over some benchmarks.
+    @param df1: Pandas Dataframe with the first experiment results
+    @param df2: Pandas Dataframe with the second experiment results
     @param out_plot: Output dir
-    @return:
     """
-    df1 = df_from_dir(csv_dir1, exp1, 7, 3)
-    df2 = df_from_dir(csv_dir2, exp2, 7, 3)
+    df1 = df1[df1['Execution Info'] == 'core']  # TODO add more cases
+    df2 = df2[df2['Execution Info'] == 'core']
+
+    df1.sort_values(by=['Benchmark', 'Base # Threads'], inplace=True)
+    df1 = df1.reset_index(drop=True)
+    df2.sort_values(by=['Benchmark', 'Base # Threads'], inplace=True)
+    df2 = df2.reset_index(drop=True)
+    total_df = df1.append(df2, ignore_index=True)
+
+    exp1 = df1['Experiment'].iloc[0]
+    exp2 = df2['Experiment'].iloc[0]
+    flag = df1['Flags'].iloc[0]
 
     df1 = df1.groupby(['Benchmark', 'Base # Threads'], as_index=False).mean()
     df2 = df2.groupby(['Benchmark', 'Base # Threads'], as_index=False).mean()
@@ -175,15 +173,46 @@ def parallel_experiments_overhead(csv_dir1, csv_dir2, exp1='First experiment', e
     df['% Overhead'] = df['Est. Base Run Time'].combine(df2['Est. Base Run Time'], lambda x1, x2: (x2 / x1 - 1) * 100)
 
     for bench in set(df['Benchmark']):
-        bench_df = df[df['Benchmark'] == bench]
-        bench_df.plot.bar(x='Base # Threads', y='% Overhead', rot=0,
-                          color=(bench_df['% Overhead'] > 0).map({True: 'orange', False: 'g'}))
-        plt.legend(loc=1, prop={'size': 8})
+
+        title = '{}: {} overhead to {} {}'.format(bench, exp2, exp1, flag)
+
+        fig, axes = plt.subplots(nrows=1, ncols=2)
+
+        # First subplot
+        sns.boxplot(x='Base # Threads', y='Est. Base Run Time', hue='Experiment',
+                    data=total_df, palette='Set3', ax=axes[0])
+        plt.sca(axes[0])
         plt.xticks(rotation=45)
-        title = '{}: {} overhead to {}'.format(bench, exp2, exp1)
-        plt.title(title)
-        plt.savefig(out_plot)
+        plt.legend(loc=0, prop={'size': 8})
+
+        # Second subplot
+        sns.boxplot(x='Base # Threads', y='% Overhead',
+                    data=df, palette='Set3', ax=axes[1])
+        plt.sca(axes[1])
+        plt.xticks(rotation=45)
+        plt.legend(loc=1, prop={'size': 6})
+
+        plt.suptitle(title)
+        bench = bench.replace('.', '')
+        bench = bench.replace('_', '')
+        flag = flag.replace('-', '')
+        out_file = '{}_parallel_{}_{}'.format(out_plot, bench, flag)
+        plt.savefig(out_file, bbox_inches='tight')
         plt.show()
+
+
+def compare_experiments(dir1, dir2, out_plot):
+    """
+    Compare SPEC experiments
+    @param dir1:
+    @param dir2:
+    @param out_plot:
+    @return:
+    """
+    df1 = df_from_dir(dir1, 7, 3)
+    df2 = df_from_dir(dir2, 7, 2)
+    serial_experiments_overhead(df1, df2, out_plot)
+    parallel_experiments_overhead(df1, df2, out_plot)
 
 
 def compare_parallel_experiments(core_csv_dir1, core_csv_dir2, thread_csv_dir1, thread_csv_dir2,
@@ -227,23 +256,19 @@ def compare_parallel_experiments(core_csv_dir1, core_csv_dir2, thread_csv_dir1, 
 
 
 if __name__ == '__main__':
-    # plot_serial('results/011_806b233/CPU2017.011.intspeed.refspeed.csv',
-    #             'base', 'reports/plots/sole_serial')
-    # plot_core_vs_thread('results/FIRST_EXP_NUM_{short_hash}/core_run', 'results/FIRST_EXP_NUM_{short_hash}/thread_run',
-    #                     'base', 'reports/plots/sole_parallel_2')
-    # compare_serial_experiments('results/071_fc0f8f8/CPU2017.071.intspeed.refspeed.csv', '1',
-    #                            'results/085_da8e2c3/CPU2017.085.intspeed.refspeed.csv', '2',
-    #                            'reports/plots/temp')
-    # compare_parallel_experiments('results/071_fc0f8f8/core_run', 'results/085_da8e2c3/core_run',
-    #                              'results/071_fc0f8f8/thread_run', 'results/085_da8e2c3/thread_run',
-    #                              '1', '2',
-    #                              'reports/plots/temp')
-    serial_experiments_overhead('results/baseline/CPU2017.011.intspeed.refspeed.csv',
-                                'results/188_1e137a5/CPU2017.188.intspeed.refspeed.csv',
-                                exp1=get_experiment('results/baseline/info.json'),
-                                exp2=get_experiment('results/188_1e137a5/info.json'),
-                                out_plot='reports/plots/sole_remove_8_s')
-    parallel_experiments_overhead('results/baseline/core_run', 'results/188_1e137a5/core_run',
-                                  exp1=get_experiment('results/baseline/info.json'),
-                                  exp2=get_experiment('results/188_1e137a5/info.json'),
-                                  out_plot='reports/plots/sole_remove_8_p')
+
+    compare_experiments('results/new_arm_baseline/027_e4b0249',
+                        'results/new_arm_remove_15/183_adc8c87',
+                        'reports/plots/new_arm_remove_15')
+
+    compare_experiments('results/new_arm_baseline/039_93c1db5',
+                        'results/new_arm_remove_15/195_336fc74',
+                        'reports/plots/new_arm_remove_15')
+
+    compare_experiments('results/new_arm_baseline/051_91a87c3',
+                        'results/new_arm_remove_15/207_29e6d22',
+                        'reports/plots/new_arm_remove_15')
+
+    compare_experiments('results/new_arm_baseline/063_bdbc5bb',
+                        'results/new_arm_remove_15/219_18fc7b3',
+                        'reports/plots/new_arm_remove_15')

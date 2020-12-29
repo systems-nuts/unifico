@@ -1,0 +1,42 @@
+%! Author = blackgeorge
+%! Date = 28/10/20
+
+% Preamble
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\graphicspath{{./plots/}}
+
+% Document
+\begin{document}
+
+    \section*{AArch64 Experiments - New ARM Machine}
+
+    \subsection*{SPEC - Remove registers r21...r28 - Overhead for different flags}
+
+    \begin{figure}[ht]
+        \begin{subfigure}{\linewidth}
+            \includegraphics[width=0.6\textwidth]{new_arm_remove_8_serial_O0.png}\hfill
+            \includegraphics[width=0.6\textwidth]{new_arm_remove_8_serial_O1.png}\hfill
+            \includegraphics[width=0.6\textwidth]{new_arm_remove_8_serial_O2.png}\hfill
+            \includegraphics[width=0.6\textwidth]{new_arm_remove_8_serial_O3.png}\hfill
+        \end{subfigure}\par\medskip
+        \caption{Serial Benchmarks}
+        \label{fig:new_arm_figs_1}
+    \end{figure}
+
+    \begin{figure}[ht]
+        \begin{subfigure}{\linewidth}
+            \includegraphics[width=0.6\textwidth]{new_arm_remove_8_parallel_657xzs_O0.png}\hfill
+            \includegraphics[width=0.6\textwidth]{new_arm_remove_8_parallel_657xzs_O1.png}\hfill
+            \includegraphics[width=0.6\textwidth]{new_arm_remove_8_parallel_657xzs_O2.png}\hfill
+            \includegraphics[width=0.6\textwidth]{new_arm_remove_8_parallel_657xzs_O3.png}\hfill
+        \end{subfigure}\par\medskip
+        \caption{657 Benchmark}
+        \label{fig:new_arm_figs_2}
+    \end{figure}
+
+\end{document}

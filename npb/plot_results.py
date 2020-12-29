@@ -186,7 +186,7 @@ def compare_experiments(dir1, dir2, out_plot, hue='Experiment', how='side'):
     df['% Overhead'] = df['Time'].combine(df2['Time'], lambda x1, x2: (x2 / x1 - 1) * 100)
     for bench in set(df['Benchmark']):
         plt.figure(figsize=(10, 5))
-        plt.subplot(1, 2, 1)
+        plt.subplot(1, 2, 2)
         sns.boxplot(x='Threads', y='Time', hue='Experiment',
                     data=total_df[(total_df['Benchmark'] == bench)],
                     palette='Set3')
