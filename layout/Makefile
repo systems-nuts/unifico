@@ -1,5 +1,5 @@
-fact: fact.c
-	clang -g -mno-omit-leaf-frame-pointer -fno-omit-frame-pointer fact.c -o fact
+fact.out: fact.c
+	clang -g -mno-omit-leaf-frame-pointer -fno-omit-frame-pointer fact.c -o fact.out
 
 fact.s: fact.c
 	clang -S -mno-omit-leaf-frame-pointer -fno-omit-frame-pointer fact.c -o fact.s
@@ -16,8 +16,8 @@ two_calls: two_calls.c
 two_calls.s: two_calls.c
 	clang -S -mno-omit-leaf-frame-pointer -fno-omit-frame-pointer two_calls.c -o two_calls.s
 
-call_leaf: call_leaf.c
-	clang -g -mno-omit-leaf-frame-pointer -fno-omit-frame-pointer call_leaf.c -o call_leaf
+call_leaf.out: call_leaf.c
+	clang -g -mno-omit-leaf-frame-pointer -fno-omit-frame-pointer call_leaf.c -o call_leaf.out
 
 call_leaf.s: call_leaf.c
 	clang -S -mno-omit-leaf-frame-pointer -fno-omit-frame-pointer call_leaf.c -o call_leaf.s

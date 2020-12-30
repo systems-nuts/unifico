@@ -20,6 +20,8 @@
 # SOFTWARE.
 
 import gdb
+import platform
+
 from collections import defaultdict
 
 class FramePrinter:
@@ -138,32 +140,45 @@ class FramePrinter:
                     symbolmap[int(saddr)].append(i.symbol())
         return symbolmap
 
+BORDER_LIMIT = 76
+STACK_BORDER = BORDER_LIMIT * '+'
+FRAME_BORDER = BORDER_LIMIT * '='
+
 # Now create a gdb command that prints the current stack:
-class PrintFrame (gdb.Command):
-    """Display the stack memory layout for the current frame"""
-
+class PrintFrame(gdb.Command):
+    """
+    Display the stack memory layout for all frames.
+    """
     def __init__ (self):
-        super (PrintFrame, self).__init__ ("frame_info", gdb.COMMAND_STACK)
+        super(PrintFrame, self).__init__ ("frame_info", gdb.COMMAND_STACK)
 
-    def invoke (self, arg, from_tty):
+    def invoke(self, arg, from_tty):
         try:
-            frame = gdb.newest_frame()
+            print(STACK_BORDER)
 
+            frame = gdb.newest_frame()
             while frame is not None:
 
-                rsp = frame.read_register('rsp')
-                rbp = frame.read_register('rbp')
+                if platform.machine() == 'x86-64':
+                    stack_pointer = frame.read_register('rsp')
+                    base_pointer = frame.read_register('rbp')
+                elif platform.machine() == 'aarch64':
+                    stack_pointer = frame.read_register('sp')
+                    base_pointer = frame.read_register('x29')
+                else:
+                    print('Unsupported architecture.')
+                    exit()
 
-                addr_diff = int(rbp) - int(rsp) + 16
+                addr_diff = int(base_pointer) - int(stack_pointer) + 16
                 words =  addr_diff / 4
 
-                x_cmd = 'x/{}x {}'.format(int(words), rsp)
+                x_cmd = 'x/{}x {}'.format(int(words), stack_pointer)
                 gdb.execute(x_cmd)
 
                 frame = frame.older()
-                print('===============')
+                print(FRAME_BORDER)
 
         except gdb.error:
             print("gdb got an error. Maybe we are not currently running?")
 
-PrintFrame ()
+PrintFrame()
