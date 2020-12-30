@@ -159,7 +159,7 @@ class PrintFrame(gdb.Command):
             frame = gdb.newest_frame()
             while frame is not None:
 
-                if platform.machine() == 'x86-64':
+                if platform.machine() == 'x86_64':
                     stack_pointer = frame.read_register('rsp')
                     base_pointer = frame.read_register('rbp')
                 elif platform.machine() == 'aarch64':
