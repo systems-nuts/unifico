@@ -16,6 +16,12 @@ two_calls: two_calls.c
 two_calls.s: two_calls.c
 	clang -S -mno-omit-leaf-frame-pointer -fno-omit-frame-pointer two_calls.c -o two_calls.s
 
+clobber_x86.out: clobber_x86.c
+	clang -g -mno-red-zone -mno-omit-leaf-frame-pointer -fno-omit-frame-pointer clobber_x86.c -o clobber_x86.out
+
+clobber_x86.s: clobber_x86.c
+	clang -S -mno-red-zone -mno-omit-leaf-frame-pointer -fno-omit-frame-pointer clobber_x86.c -o clobber_x86.s
+
 call_leaf.out: call_leaf.c
 	clang -g -mno-red-zone -mno-omit-leaf-frame-pointer -fno-omit-frame-pointer call_leaf.c -o call_leaf.out
 
