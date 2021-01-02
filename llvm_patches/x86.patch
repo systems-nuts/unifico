@@ -1,0 +1,13 @@
+diff --git a/llvm/lib/Target/X86/X86CallingConv.td b/llvm/lib/Target/X86/X86CallingConv.td
+index 802e694999b..9b87eb048cf 100644
+--- a/llvm/lib/Target/X86/X86CallingConv.td
++++ b/llvm/lib/Target/X86/X86CallingConv.td
+@@ -1068,7 +1068,7 @@ def CC_X86 : CallingConv<[
+ def CSR_NoRegs : CalleeSavedRegs<(add)>;
+ 
+ def CSR_32 : CalleeSavedRegs<(add ESI, EDI, EBX, EBP)>;
+-def CSR_64 : CalleeSavedRegs<(add RBX, R12, R13, R14, R15, RBP)>;
++def CSR_64 : CalleeSavedRegs<(add RBX, R15, RBP)>;
+ 
+ def CSR_64_SwiftError : CalleeSavedRegs<(sub CSR_64, R12)>;
+ 
