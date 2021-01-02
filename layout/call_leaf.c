@@ -4,6 +4,7 @@
 int add_7(int a, int b, int c, int d,
 		  int e, int f, int g)
 {
+	int x = 0;
 	return a + b + c + d + e + f + g;
 }
 

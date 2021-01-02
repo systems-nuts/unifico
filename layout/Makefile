@@ -17,10 +17,10 @@ two_calls.s: two_calls.c
 	clang -S -mno-omit-leaf-frame-pointer -fno-omit-frame-pointer two_calls.c -o two_calls.s
 
 call_leaf.out: call_leaf.c
-	clang -g -mno-omit-leaf-frame-pointer -fno-omit-frame-pointer call_leaf.c -o call_leaf.out
+	clang -g -mno-red-zone -mno-omit-leaf-frame-pointer -fno-omit-frame-pointer call_leaf.c -o call_leaf.out
 
 call_leaf.s: call_leaf.c
-	clang -S -mno-omit-leaf-frame-pointer -fno-omit-frame-pointer call_leaf.c -o call_leaf.s
+	clang -S -mno-red-zone -mno-omit-leaf-frame-pointer -fno-omit-frame-pointer call_leaf.c -o call_leaf.s
 
 main.s: main.ll
 	llc main.ll -o main.s
@@ -29,4 +29,4 @@ main.ll: main.c
 	clang -emit-llvm -S -c main.c -o main.ll
 
 clean:
-	rm *.ll *.s fact link_register ret_call two_calls call_leaf main
+	rm *.ll *.s fact link_register ret_call two_calls call_leaf.out main
