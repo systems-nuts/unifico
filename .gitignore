@@ -526,3 +526,5 @@ utilities/lstopo_p.txt
 *.ll
 spec2017/results/
 npb/results/
+temp_files/
+get_files.sh
