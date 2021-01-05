@@ -1,5 +1,5 @@
 
-FLAGS := -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone 
+FLAGS := -O1 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone
 DEBUG_FLAGS := $(FLAGS) -g
 ASSEMBLY_FLAGS := $(FLAGS) -S
 
