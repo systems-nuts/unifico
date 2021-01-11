@@ -1,3 +1,9 @@
+## Installing gdb
+
+* `sudo apt-get install texinfo`
+* `sudo apt-get install python-dev`
+* [Instructions](http://www.gdbtutorial.com/tutorial/how-install-gdb), but use `./configure --with-python instead`
+
 ## Observations
 
 ### fact.c 

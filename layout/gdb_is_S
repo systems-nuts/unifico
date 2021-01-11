@@ -1,0 +1,10 @@
+break main
+break rank
+run
+source frame.py
+frame_info
+c
+frame_info
+c
+frame_info
+quit
