@@ -1,7 +1,10 @@
 {
 	"benchmarks": "SNU OMP C",
 	"compiler": "clang",
-	"experiment": "remove r9...r15 & r21...r28",
+	"experiment": "total",
 	"flag": "-O3",
-	"target": "aarch64"
+	"target": "aarch64",
+	"machine": "dhcp-90-155",
+	"class": "C",
+	"benchmarks": "is"
 }
