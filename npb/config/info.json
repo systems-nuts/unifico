@@ -2,7 +2,7 @@
 	"benchmarks": "SNU OMP C",
 	"compiler": "clang",
 	"experiment": "total",
-	"flag": "-O3",
+	"flag": "-O2",
 	"target": "aarch64",
 	"machine": "dhcp-90-155",
 	"class": "C",
