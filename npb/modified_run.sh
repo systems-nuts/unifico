@@ -6,11 +6,11 @@
 #
 ############################################
 
-WORKING_BRANCH=refactor_npb_run
+WORKING_BRANCH=master
 
 E_XCD=86 # Can't change directory?
 
-CMD1="python3.7 -m npb.run_npb --suite-list suite2.def --threads=1,2,4,6,8 --iterations=3"
+CMD1="python3.7 -m npb.run_npb --suite-list suite.def --threads=1,2,4,6,8 --iterations=3"
 CMD2="python3.7 -m npb.run_npb --suite-list suite.def --threads=1,2,4,6,8,10,12,14,16 --iterations=3"
 
 if [ "$1" = "preview" ]; then
@@ -56,9 +56,9 @@ do
     exit $E_XCD;
   }
   echo "Building..."
-  ./build_exp.sh 
-  cmake --build . 
-  ninja install 
+  ./build_exp.sh >/dev/null
+  cmake --build . >/dev/null
+  ninja install >/dev/null
   echo "Done"
 
   # Copy development config files to actual NPB Directory
