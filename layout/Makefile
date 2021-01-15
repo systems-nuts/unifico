@@ -1,8 +1,8 @@
 
 OPT := -O0
-FLAGS := $(OPT) -mgeneral-regs-only -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone
+FLAGS := $(OPT) -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone
 DEBUG_FLAGS := $(FLAGS) -g
-ASSEMBLY_FLAGS := $(FLAGS) -S -g
+ASSEMBLY_FLAGS := $(FLAGS) -S
 
 fact.out: fact.c
 	clang $(DEBUG_FLAGS) fact.c -o fact.out
