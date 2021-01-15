@@ -23,18 +23,25 @@ class PrintFrame(gdb.Command):
             while frame is not None:
 
                 if platform.machine() == 'x86_64':
-                    stack_pointer = frame.read_register('rsp')
-                    base_pointer = frame.read_register('rbp')
+                    stack_pointer_name = 'rsp'
+                    base_pointer_name = 'rbp'
                 elif platform.machine() == 'aarch64':
-                    stack_pointer = frame.read_register('sp')
-                    base_pointer = frame.read_register('x29')
+                    stack_pointer_name = 'sp'
+                    base_pointer_name = 'x29'
                 else:
                     print('Unsupported architecture.')
                     exit()
 
-                addr_diff = int(base_pointer) - int(stack_pointer) + 16
-                words =  addr_diff / 4
+                stack_pointer = frame.read_register(stack_pointer_name)
+                base_pointer = frame.read_register(base_pointer_name)
 
+                if base_pointer == stack_pointer and frame.older() is not None:
+                    old_stack_pointer = frame.older().read_register(stack_pointer_name)
+                    addr_diff = int(old_stack_pointer) - int(stack_pointer) 
+                else:
+                    addr_diff = int(base_pointer) - int(stack_pointer) + 16
+
+                words =  addr_diff / 4
                 x_cmd = 'x/{}x {}'.format(int(words), stack_pointer)
                 gdb.execute(x_cmd)
 

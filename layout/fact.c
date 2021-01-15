@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+// %rbx is used strangely here.
+// it gets from popq the result from the previous call to fact.
 int fact(int n)
 {
 	if (n < 1) {

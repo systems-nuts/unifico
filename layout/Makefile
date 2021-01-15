@@ -2,13 +2,16 @@
 OPT := -O0
 FLAGS := $(OPT) -mgeneral-regs-only -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone
 DEBUG_FLAGS := $(FLAGS) -g
-ASSEMBLY_FLAGS := $(FLAGS) -S -g
+ASSEMBLY_FLAGS := $(FLAGS) -S 
 
 fact.out: fact.c
 	clang $(DEBUG_FLAGS) fact.c -o fact.out
 
 fact.s: fact.c
 	clang $(ASSEMBLY_FLAGS) fact.c -o fact.s
+
+fact.ll: fact.c
+	clang $(ASSEMBLY_FLAGS) -emit-llvm -S -c fact.c -o fact.ll
 
 clobber_x86.out: clobber_x86.c
 	clang $(DEBUG_FLAGS) clobber_x86.c -o clobber_x86.out
