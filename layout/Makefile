@@ -10,6 +10,9 @@ fact.out: fact.c
 fact.s: fact.c
 	clang $(ASSEMBLY_FLAGS) fact.c -o fact.s
 
+fact_ll.s: fact.c
+	llc fact.ll -o fact_ll.s
+
 fact.ll: fact.c
 	clang $(ASSEMBLY_FLAGS) -emit-llvm -S -c fact.c -o fact.ll
 

@@ -7,10 +7,9 @@ STACK_BORDER = BORDER_LIMIT * '+'
 FRAME_BORDER = BORDER_LIMIT * '='
 
 
-# Now create a gdb command that prints the current stack:
 class PrintFrame(gdb.Command):
     """
-    Display the stack memory layout for all frames.
+    Display the stack memory layout for all frames up to this point.
     """
     def __init__ (self):
         super(PrintFrame, self).__init__ ("frame_info", gdb.COMMAND_STACK)
@@ -35,8 +34,9 @@ class PrintFrame(gdb.Command):
                 stack_pointer = frame.read_register(stack_pointer_name)
                 base_pointer = frame.read_register(base_pointer_name)
 
-                if base_pointer == stack_pointer and frame.older() is not None:
-                    old_stack_pointer = frame.older().read_register(stack_pointer_name)
+                if base_pointer == stack_pointer: 
+                    gdb.execute('set $temp = {long int}$sp')
+                    old_stack_pointer = gdb.convenience_variable('temp')
                     addr_diff = int(old_stack_pointer) - int(stack_pointer) 
                 else:
                     addr_diff = int(base_pointer) - int(stack_pointer) + 16
@@ -46,6 +46,7 @@ class PrintFrame(gdb.Command):
                 gdb.execute(x_cmd)
 
                 frame = frame.older()
+                gdb.execute('up-silently 1')
                 print(FRAME_BORDER)
 
         except gdb.error:
