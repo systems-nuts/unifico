@@ -34,7 +34,7 @@ class PrintFrame(gdb.Command):
                 stack_pointer = frame.read_register(stack_pointer_name)
                 base_pointer = frame.read_register(base_pointer_name)
 
-                if base_pointer == stack_pointer: 
+                if base_pointer == stack_pointer and frame.older() is not None: 
                     gdb.execute('set $temp = {long int}$sp')
                     old_stack_pointer = gdb.convenience_variable('temp')
                     addr_diff = int(old_stack_pointer) - int(stack_pointer) 
