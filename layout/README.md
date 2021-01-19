@@ -7,7 +7,7 @@
 ## Observations
 
 ### fact.c 
-It seems to be going ok
+It seems to be going ok with `-O0`, but with `-O1` the `x29,x30` pair is put on the top of the stack, instead of the bottom.
 
 ### call_leaf.c 
 
