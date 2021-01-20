@@ -48,7 +48,7 @@ index 54b351fda05..434cf9233ff 100644
  // GPR register classes with the intersections of GPR32/GPR32sp and
  // GPR64/GPR64sp for use by the coalescer.
 -def GPR32common : RegisterClass<"AArch64", [i32], 32, (sequence "W%u", 0, 30)> {
-+def GPR32common : RegisterClass<"AArch64", [i32], 32, 
++def GPR32common : RegisterClass<"AArch64", [i32], 32,
 +                                (add (sequence "W%u", 0, 8), (sequence "W%u", 16, 20), W29, W30)> {
    let AltOrders = [(rotl GPR32common, 8)];
    let AltOrderSelect = [{ return 1; }];

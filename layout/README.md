@@ -21,7 +21,9 @@ x86 instructions allow arithmetic operations between memory and registers, where
 
 For example, in x86_64 you can do:
 
-```addl    16(%rbp), %eax```
+```
+addl    16(%rbp), %eax
+```
 
 To do the same thing with Aarch64 you must first load the mem value into an "intermediate" register and then use it. So, I have an example where this "intermediate" register is first loaded, then stored again (=>difference in stack) and then used for the computation:
 ```

@@ -1,6 +1,3 @@
-define hook-quit
-    set confirm off
-end
 break fact
 run
 source frame.py
