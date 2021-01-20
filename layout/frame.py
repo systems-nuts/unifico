@@ -34,9 +34,14 @@ class PrintFrame(gdb.Command):
                 stack_pointer = frame.read_register(stack_pointer_name)
                 base_pointer = frame.read_register(base_pointer_name)
 
-                if base_pointer == stack_pointer and frame.older() is not None: 
-                    gdb.execute('set $temp = {long int}$sp')
-                    old_stack_pointer = gdb.convenience_variable('temp')
+                gdb.execute('up-silently 1')
+                old_stack_pointer = gdb.parse_and_eval('${}'.format(stack_pointer_name))
+                gdb.execute('down-silently 1')
+
+                #print(stack_pointer)
+                #print(old_stack_pointer)
+
+                if base_pointer == stack_pointer and frame.older() is not None:# and old_stack_pointer > stack_pointer + 16: 
                     addr_diff = int(old_stack_pointer) - int(stack_pointer) 
                 else:
                     addr_diff = int(base_pointer) - int(stack_pointer) + 16
