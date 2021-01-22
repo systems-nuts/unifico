@@ -43,3 +43,8 @@ An optimization flag like `-O1` seems to have fixed this.
 
 ### Note on main()
 For the `main` function the frame may not always be fully shown, in the AArch64 case, if x29==sp
+
+## Optimization flags
+
+```
+llvm-as < /dev/null | opt -O1 -disable-output -debug-pass=Arguments 2>& O1.txt
