@@ -22,10 +22,10 @@ call_leaf_2.s: call_leaf.ll
 	llc call_leaf.ll -o call_leaf_2.s
 
 call_leaf_debug.ll: call_leaf.c
-	clang $(ASSEMBLY_FLAGS) -g -emit-llvm -c call_leaf.c -o call_leaf_debug.ll
+	clang $(ASSEMBLY_FLAGS) -g -emit-llvm call_leaf.c -o call_leaf_debug.ll
 
 call_leaf.ll: call_leaf.c
-	clang $(ASSEMBLY_FLAGS) -emit-llvm -c call_leaf.c -o call_leaf.ll
+	clang $(ASSEMBLY_FLAGS) -emit-llvm call_leaf.c -o call_leaf.ll
 
 fact.out: fact.c
 	clang $(DEBUG_FLAGS) fact.c -o fact.out

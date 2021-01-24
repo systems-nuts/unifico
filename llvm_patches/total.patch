@@ -40,7 +40,7 @@ index fdcc890bf58..241b2410a5f 100644
                                            [Q0, Q1, Q2, Q3, Q4, Q5, Q6, Q7]>>,
    CCIfType<[bf16], CCAssignToRegWithShadow<[H0, H1, H2, H3, H4, H5, H6, H7],
 diff --git a/llvm/lib/Target/AArch64/AArch64RegisterInfo.td b/llvm/lib/Target/AArch64/AArch64RegisterInfo.td
-index 54b351fda05..434cf9233ff 100644
+index 54b351fda05..46de66c898b 100644
 --- a/llvm/lib/Target/AArch64/AArch64RegisterInfo.td
 +++ b/llvm/lib/Target/AArch64/AArch64RegisterInfo.td
 @@ -138,12 +138,13 @@ def VG : AArch64Reg<0, "vg">, DwarfRegNum<[46]>;
@@ -59,6 +59,17 @@ index 54b351fda05..434cf9233ff 100644
    let AltOrders = [(rotl GPR64common, 8)];
    let AltOrderSelect = [{ return 1; }];
  }
+@@ -191,8 +192,8 @@ def GPR64z : RegisterOperand<GPR64> {
+ }
+ 
+ // GPR argument registers.
+-def GPR32arg : RegisterClass<"AArch64", [i32], 32, (sequence "W%u", 0, 7)>;
+-def GPR64arg : RegisterClass<"AArch64", [i64], 64, (sequence "X%u", 0, 7)>;
++def GPR32arg : RegisterClass<"AArch64", [i32], 32, (sequence "W%u", 0, 5)>;
++def GPR64arg : RegisterClass<"AArch64", [i64], 64, (sequence "X%u", 0, 5)>;
+ 
+ // GPR register classes which include WZR/XZR AND SP/WSP. This is not a
+ // constraint used by any instructions, it is used as a common super-class.
 diff --git a/llvm/lib/Target/X86/X86CallingConv.td b/llvm/lib/Target/X86/X86CallingConv.td
 index 802e694999b..9b87eb048cf 100644
 --- a/llvm/lib/Target/X86/X86CallingConv.td
