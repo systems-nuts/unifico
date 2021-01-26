@@ -1,10 +1,5 @@
-break fact
+break fact.c:9
 run
 source frame.py
-c
-c
-c
-c
-c
 frame_info
 quit
