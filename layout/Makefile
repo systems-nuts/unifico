@@ -1,49 +1,64 @@
 
 OPT := -O0
-FLAGS := $(OPT) -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone 
-DEBUG_FLAGS := $(FLAGS) -g
-ASSEMBLY_FLAGS := $(FLAGS) -S
+CFLAGS := $(OPT) -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone 
 
 c: call_leaf.out call_leaf.s call_leaf_2.out call_leaf_2.s
 
-call_leaf.out: call_leaf.c
-	clang $(DEBUG_FLAGS) call_leaf.c -o call_leaf.out
+f: fact.out fact.s fact_2.out fact_2.s 
 
-call_leaf.s: call_leaf.c
-	clang -v $(ASSEMBLY_FLAGS) call_leaf.c -o call_leaf.s
+######################################################
+
+call_leaf.out: call_leaf.c
+	clang $(CFLAGS) -g call_leaf.c -o call_leaf.out
 
 call_leaf_2.out: call_leaf_2.o
 	clang call_leaf_2.o -o call_leaf_2.out
 
 call_leaf_2.o: call_leaf_debug.ll
-	llc -filetype=obj call_leaf_debug.ll -o call_leaf_2.o
+	llc $(OPT) -filetype=obj call_leaf_debug.ll -o call_leaf_2.o
 
 call_leaf_2.s: call_leaf.ll
-	llc call_leaf.ll -o call_leaf_2.s
+	llc $(OPT) call_leaf.ll -o call_leaf_2.s
 
 call_leaf_debug.ll: call_leaf.c
-	clang $(ASSEMBLY_FLAGS) -g -emit-llvm call_leaf.c -o call_leaf_debug.ll
+	clang $(CFLAGS) -g -S -emit-llvm call_leaf.c -o call_leaf_debug.ll
 
 call_leaf.ll: call_leaf.c
-	clang $(ASSEMBLY_FLAGS) -emit-llvm call_leaf.c -o call_leaf.ll
+	clang $(CFLAGS) -S -emit-llvm call_leaf.c -o call_leaf.ll
+
+call_leaf.s: call_leaf.c
+	clang $(CFLAGS) -S call_leaf.c -o call_leaf.s
+
+######################################################
 
 fact.out: fact.c
-	clang $(DEBUG_FLAGS) fact.c -o fact.out
+	clang $(CFLAGS) -g fact.c -o fact.out
 
-fact.s: fact.c
-	clang $(ASSEMBLY_FLAGS) fact.c -o fact.s
+fact_2.out: fact_2.o
+	clang fact_2.o -o fact_2.out
 
-fact_ll.s: fact.c
-	llc fact.ll -o fact_ll.s
+fact_2.o: fact_debug.ll
+	llc $(OPT) -filetype=obj fact_debug.ll -o fact_2.o
+
+fact_2.s: fact.ll
+	llc $(OPT) fact.ll -o fact_2.s
+
+fact_debug.ll: fact.c
+	clang $(CFLAGS) -g -S -emit-llvm fact.c -o fact_debug.ll
 
 fact.ll: fact.c
-	clang $(ASSEMBLY_FLAGS) -emit-llvm -S -c fact.c -o fact.ll
+	clang $(CFLAGS) -S -emit-llvm fact.c -o fact.ll
+
+fact.s: fact.c
+	clang $(CFLAGS) -S fact.c -o fact.s
+
+######################################################
 
 clobber_x86.out: clobber_x86.c
-	clang $(DEBUG_FLAGS) clobber_x86.c -o clobber_x86.out
+	clang $(CFLAGS) -g clobber_x86.c -o clobber_x86.out
 
 clobber_x86.s: clobber_x86.c
-	clang $(ASSEMBLY_FLAGS) clobber_x86.c -o clobber_x86.s
+	clang $(CFLAGS) -S clobber_x86.c -o clobber_x86.s
 
 main.s: main.ll
 	llc main.ll -o main.s
