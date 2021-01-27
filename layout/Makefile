@@ -1,5 +1,5 @@
 
-CFLAGS := -Xclang -disable-O0-optnone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone 
+CFLAGS := -O0 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone 
 OPT_FLAGS := -mem2reg
 LLC_FLAGS := -O0
 
@@ -28,23 +28,19 @@ call_leaf.s: call_leaf.c
 
 ######################################################
 
-fact.out: fact.c
-	clang $(CFLAGS) -g fact.c -o fact.out
-
-fact_2.out: fact_2.o
+fact_2.out: fact.c
+	clang $(CFLAGS) -g -S -emit-llvm fact.c -o fact_debug.ll
+	opt $(OPT_FLAGS) -S fact_debug.ll -o fact_debug_opt.ll
+	llc $(LLC_FLAGS) -filetype=obj fact_debug_opt.ll -o fact_2.o
 	clang fact_2.o -o fact_2.out
 
-fact_2.o: fact_debug.ll
-	llc $(OPT) -filetype=obj fact_debug.ll -o fact_2.o
-
-fact_2.s: fact.ll
-	llc $(OPT) fact.ll -o fact_2.s
-
-fact_debug.ll: fact.c
-	clang $(CFLAGS) -g -S -emit-llvm fact.c -o fact_debug.ll
-
-fact.ll: fact.c
+fact_2.s: fact.c
 	clang $(CFLAGS) -S -emit-llvm fact.c -o fact.ll
+	opt $(OPT_FLAGS) -S fact.ll -o fact_opt.ll
+	llc $(LLC_FLAGS) fact_opt.ll -o fact_2.s
+
+fact.out: fact.c
+	clang $(CFLAGS) -g fact.c -o fact.out
 
 fact.s: fact.c
 	clang $(CFLAGS) -S fact.c -o fact.s
