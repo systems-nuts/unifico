@@ -40,6 +40,7 @@ ARM creates more load instructions to "intermediate" registers -> greater regist
 #### Solution
 
 An optimization flag like `-O1` seems to have fixed this.
+`opt` flags: `-mem2reg, -sroa`
 
 ### Note on main()
 For the `main` function the frame may not always be fully shown, in the AArch64 case, if x29==sp
@@ -48,3 +49,4 @@ For the `main` function the frame may not always be fully shown, in the AArch64 
 
 ```
 llvm-as < /dev/null | opt -O1 -disable-output -debug-pass=Arguments 2>& O1.txt
+```
