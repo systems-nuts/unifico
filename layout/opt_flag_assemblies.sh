@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OPT_FLAGS_FILE=O1.txt
+OPT_FLAGS_FILE=opt_O1.txt
 
 flags=$(<$OPT_FLAGS_FILE)
 
