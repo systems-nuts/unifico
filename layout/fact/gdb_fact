@@ -1,0 +1,5 @@
+break fact.c:9
+run
+source frame.py
+frame_info
+quit
