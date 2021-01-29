@@ -9,6 +9,6 @@ rm *.s
 
 for flag in $flags
 do
-	make clean; make OPT_FLAGS=${flag:1}
+	make clean; make OPT_FLAGS=$flag
 	echo '================'
 done

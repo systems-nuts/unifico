@@ -40,7 +40,12 @@ ARM creates more load instructions to "intermediate" registers -> greater regist
 #### Solution
 
 An optimization flag like `-O1` seems to have fixed this.
-`opt` flags: `-mem2reg, -sroa`
+`opt` flags: `-mem2reg, -sroa`. Also, see `-early-cse, -early-cse-mmsa, -instcombine, -reassociate`
+`llc` flags: `-regalloc=basic,fast,greedy, -spiller`
+
+Combinations that almost work:
+* mem2reg + basic
+* mem2reg + fast
 
 ### Note on main()
 For the `main` function the frame may not always be fully shown, in the AArch64 case, if x29==sp

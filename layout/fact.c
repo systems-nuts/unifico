@@ -16,6 +16,6 @@ int fact(int n)
 
 int main()
 {
-	printf("fact(3)= %d\n", fact(3));
+	printf("fact(5)= %d\n", fact(5));
 	return 0;
 }

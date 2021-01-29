@@ -9,6 +9,6 @@ for regalloc in "basic" "fast" "greedy";do
 		echo $opt_flags
 		make clean
 		make OPT_FLAGS="$opt_flags" LLC_FLAGS="$llc_flags"
-		gdb -q fact.out -x ../gdb_fact
+		gdb -q call_leaf.out -x ../gdb_call_leaf
 	done
 done
