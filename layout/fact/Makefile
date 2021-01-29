@@ -1,7 +1,7 @@
 
 CFLAGS := -Xclang -disable-O0-optnone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone 
 OPT_FLAGS := -O0
-LLC_FLAGS := -O0
+LLC_FLAGS := -regalloc=fast
 
 ######################################################
 
@@ -20,7 +20,7 @@ fact.out: fact.c
 fact.s: fact.c
 	clang $(CFLAGS) -S -emit-llvm fact.c -o fact.ll
 	opt $(OPT_FLAGS) -S fact.ll -o fact_opt.ll
-	llc $(LLC_FLAGS) fact_opt.ll -o fact$(subst =,_,$(OPT_FLAGS))$(subst =,_,$(LLC_FLAGS)).s
+	llc $(LLC_FLAGS) fact_opt.ll -o $(PREFIX)_mem2reg.s
 
 ######################################################
 

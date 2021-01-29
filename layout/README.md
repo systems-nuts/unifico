@@ -44,8 +44,7 @@ An optimization flag like `-O1` seems to have fixed this.
 `llc` flags: `-regalloc=basic,fast,greedy, -spiller`
 
 Combinations that almost work:
-* mem2reg + basic
-* mem2reg + fast
+* mem2reg + fast (maybe search on more opt flags from here) -> Done for O1, go to O2 and more llc
 
 ### Note on main()
 For the `main` function the frame may not always be fully shown, in the AArch64 case, if x29==sp

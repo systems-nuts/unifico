@@ -1,6 +1,6 @@
 
 CFLAGS := -O0 -Xclang -disable-O0-optnone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone 
-OPT_FLAGS := -mem2reg
+OPT_FLAGS := -mem2reg -instcombine
 LLC_FLAGS := -regalloc=fast
 
 c: call_leaf.out call_leaf.s call_leaf_2.out call_leaf_2.s
