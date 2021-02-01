@@ -20,7 +20,7 @@ fact.out: fact.c
 fact.s: fact.c
 	clang $(CFLAGS) -S -emit-llvm fact.c -o fact.ll
 	opt $(OPT_FLAGS) -S fact.ll -o fact_opt.ll
-	llc $(LLC_FLAGS) fact_opt.ll -o $(PREFIX)_mem2reg.s
+	llc $(LLC_FLAGS) fact_opt.ll -o $(PREFIX)_fast.s
 
 ######################################################
 
