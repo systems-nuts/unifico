@@ -1,7 +1,8 @@
 
-CFLAGS := -O0 -g -Xclang -disable-O0-optnone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone 
-OPT_FLAGS := -mem2reg 
-LLC_FLAGS := -O2
+CFLAGS := -O0 -Xclang -disable-O0-optnone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone 
+OPT_FLAGS := -mem2reg
+LLC_FLAGS := -regalloc=fast -x86-asm-syntax=intel
+>>>>>>> Stashed changes
 
 c: call_leaf.out call_leaf.s call_leaf_2.out call_leaf_2.s
 
