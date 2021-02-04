@@ -109,6 +109,8 @@ X86_64_LDFLAGS := -m elf_x86_64 -L$(X86_64_POPCORN)/lib \
 #                                 Recipes                                     #
 ###############################################################################
 
+all: post_process
+
 ir: $(IR)
 
 check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
@@ -209,6 +211,6 @@ $(X86_64_SD): $(X86_64_SD_BUILD)/.dir $(X86_64_SD_OBJ)
 	@echo " [LD] $@ (stack depth)"
 	@$(CXX) -static -L$(POPCORN)/lib -o $@ $(X86_64_SD_OBJ) -lstack-depth
 
-.PHONY: clean \
+.PHONY: all post_process compress stack-depth clean \
         aligned aligned-aarch64 aligned-x86-64 \
         vanilla vanilla-aarch64 vanilla-x86-64

@@ -524,6 +524,9 @@ venv.bak/
 utilities/lstopo_p.txt
 *.s
 *.ll
+*.x
+*aarch64
+*x86-64
 spec2017/results/
 npb/results/
 temp_files/
