@@ -1,6 +1,6 @@
 
-CFLAGS := -O1 -Xclang -disable-O0-optnone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone 
-OPT_FLAGS := -O0
+CFLAGS := -O0 -Xclang -disable-O0-optnone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone 
+OPT_FLAGS := -O1
 LLC_FLAGS := -O0
 
 ifeq "$(gcc -dumpmachine)" "x86_64-linux-gnu"
