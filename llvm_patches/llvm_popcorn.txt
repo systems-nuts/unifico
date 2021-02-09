@@ -6,3 +6,4 @@ llvm/include/llvm/LinkAllPasses.h
 llvm/include/llvm/InitializePasses.h
 llvm/include/llvm/Transforms/Utils.h
 clang/lib/CodeGen/BackendUtil.cpp
+clang/include/clang/Basic/CodeGenOptions.def

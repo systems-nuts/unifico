@@ -1,5 +1,5 @@
 
-CFLAGS := -Xclang -disable-O0-optnone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone 
+CFLAGS := -Xclang -disable-O0-optnone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone -mllvm --name-string-literals
 OPT_FLAGS := -O0
 LLC_FLAGS := -O0
 
