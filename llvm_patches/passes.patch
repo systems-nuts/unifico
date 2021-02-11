@@ -1,0 +1,525 @@
+diff --git a/clang/include/clang/Basic/CodeGenOptions.def b/clang/include/clang/Basic/CodeGenOptions.def
+index cd7a84548765..b870fb707d7f 100644
+--- a/clang/include/clang/Basic/CodeGenOptions.def
++++ b/clang/include/clang/Basic/CodeGenOptions.def
+@@ -271,6 +271,12 @@ CODEGENOPT(DebugFwdTemplateParams, 1, 0) ///< Whether to emit complete
+ 
+ CODEGENOPT(EmitLLVMUseLists, 1, 0) ///< Control whether to serialize use-lists.
+ 
++/// Select places inside functions to instrument with migration points
++CODEGENOPT(PopcornMigratable, 1, 0)
++
++/// Adjust linkage of global values for symbol alignment
++CODEGENOPT(PopcornAlignment, 1, 0)
++
+ CODEGENOPT(WholeProgramVTables, 1, 0) ///< Whether to apply whole-program
+                                       ///  vtable optimization.
+ 
+diff --git a/clang/lib/CodeGen/BackendUtil.cpp b/clang/lib/CodeGen/BackendUtil.cpp
+old mode 100644
+new mode 100755
+index 497652e85b47..768e8946f89e
+--- a/clang/lib/CodeGen/BackendUtil.cpp
++++ b/clang/lib/CodeGen/BackendUtil.cpp
+@@ -18,6 +18,7 @@
+ #include "llvm/ADT/StringExtras.h"
+ #include "llvm/ADT/StringSwitch.h"
+ #include "llvm/ADT/Triple.h"
++#include "llvm/Analysis/Passes.h"
+ #include "llvm/Analysis/TargetLibraryInfo.h"
+ #include "llvm/Analysis/TargetTransformInfo.h"
+ #include "llvm/Bitcode/BitcodeReader.h"
+@@ -88,7 +89,12 @@ class EmitAssemblyHelper {
+ 
+   Timer CodeGenerationTime;
+ 
+-  std::unique_ptr<raw_pwrite_stream> OS;
++  legacy::PassManager *CodeGenPasses;
++  legacy::PassManager *PerModulePasses;
++  legacy::FunctionPassManager *PerFunctionPasses;
++  std::unique_ptr<llvm::ToolOutputFile> ThinLinkOS, DwoOS;
++
++  raw_pwrite_stream *OS;
+ 
+   TargetIRAnalysis getTargetIRAnalysis() const {
+     if (TM)
+@@ -97,6 +103,33 @@ class EmitAssemblyHelper {
+     return TargetIRAnalysis();
+   }
+ 
++  legacy::PassManager *getCodeGenPasses() {
++    if (!CodeGenPasses) {
++      CodeGenPasses = new legacy::PassManager();
++      CodeGenPasses->add(
++	  createTargetTransformInfoWrapperPass(getTargetIRAnalysis()));
++    }
++    return CodeGenPasses;
++  }
++
++  legacy::PassManager *getPerModulePasses() {
++    if (!PerModulePasses) {
++      PerModulePasses = new legacy::PassManager();
++      PerModulePasses->add(
++	  createTargetTransformInfoWrapperPass(getTargetIRAnalysis()));
++    }
++    return PerModulePasses;
++  }
++
++  legacy::FunctionPassManager *getPerFunctionPasses() {
++    if (!PerFunctionPasses) {
++      PerFunctionPasses = new legacy::FunctionPassManager(TheModule);
++      PerFunctionPasses->add(
++	  createTargetTransformInfoWrapperPass(getTargetIRAnalysis()));
++    }
++    return PerFunctionPasses;
++  }
++
+   void CreatePasses(legacy::PassManager &MPM, legacy::FunctionPassManager &FPM);
+ 
+   /// Generates the TargetMachine.
+@@ -134,20 +167,37 @@ public:
+                      const LangOptions &LOpts, Module *M)
+       : Diags(_Diags), HSOpts(HeaderSearchOpts), CodeGenOpts(CGOpts),
+         TargetOpts(TOpts), LangOpts(LOpts), TheModule(M),
+-        CodeGenerationTime("codegen", "Code Generation Time") {}
++        CodeGenerationTime("codegen", "Code Generation Time") {
++    CodeGenPasses = nullptr;
++    PerModulePasses = nullptr;
++    PerFunctionPasses = nullptr;
++  }
+ 
+   ~EmitAssemblyHelper() {
++    delete CodeGenPasses;
++    delete PerModulePasses;
++    delete PerFunctionPasses;
+     if (CodeGenOpts.DisableFree)
+       BuryPointer(std::move(TM));
+   }
+ 
+   std::unique_ptr<TargetMachine> TM;
+ 
++  /// Set up the assembly helper, including gathering passes
++  void SetupAssemblyHelper(BackendAction Action,
++			   raw_pwrite_stream *OS);
++
++  /// Run only IR optimization passes on a module
++  void ApplyIROptPasses(Module* TheModule);
++
++  /// Run backend passes to generate code
++  void ApplyCodegenPasses(Module* TheModule);
++
+   void EmitAssembly(BackendAction Action,
+-                    std::unique_ptr<raw_pwrite_stream> OS);
++                    raw_pwrite_stream *OS);
+ 
+   void EmitAssemblyWithNewPassManager(BackendAction Action,
+-                                      std::unique_ptr<raw_pwrite_stream> OS);
++                                      raw_pwrite_stream *OS);
+ };
+ 
+ // We need this wrapper to access LangOpts and CGOpts from extension functions
+@@ -364,6 +414,18 @@ static void addSymbolRewriterPass(const CodeGenOptions &Opts,
+   MPM->add(createRewriteSymbolsPass(DL));
+ }
+ 
++static void addPopcornMigPointPasses(const PassManagerBuilder &Builder,
++				     legacy::PassManagerBase &PM) {
++  PM.add(createPopcornCompatibilityPass());
++  PM.add(createSelectMigrationPointsPass());
++}
++
++static void addPopcornAlignmentPasses(const PassManagerBuilder &Builder,
++				      legacy::PassManagerBase &PM) {
++  PM.add(createNameStringLiteralsPass());
++  PM.add(createStaticVarSectionsPass());
++}
++
+ static CodeGenOpt::Level getCGOptLevel(const CodeGenOptions &CodeGenOpts) {
+   switch (CodeGenOpts.OptimizationLevel) {
+   default:
+@@ -396,7 +458,7 @@ getCodeModel(const CodeGenOptions &CodeGenOpts) {
+ }
+ 
+ static TargetMachine::CodeGenFileType getCodeGenFileType(BackendAction Action) {
+-  if (Action == Backend_EmitObj)
++  if (Action == Backend_EmitObj || Action == Backend_EmitMultiObj)
+     return TargetMachine::CGFT_ObjectFile;
+   else if (Action == Backend_EmitMCNull)
+     return TargetMachine::CGFT_Null;
+@@ -717,6 +779,29 @@ void EmitAssemblyHelper::CreatePasses(legacy::PassManager &MPM,
+   if (!CodeGenOpts.SampleProfileFile.empty())
+     PMBuilder.PGOSampleUse = CodeGenOpts.SampleProfileFile;
+ 
++  // Popcorn Compiler Toolchain passes -- add after IR optimization passes
++  // Select migration points.
++  if (CodeGenOpts.PopcornMigratable) {
++    if (CodeGenOpts.OptimizationLevel > 0)
++      PMBuilder.addExtension(PassManagerBuilder::EP_OptimizerLast,
++			     addPopcornMigPointPasses);
++    else {
++      MPM.add(createPopcornCompatibilityPass());
++      MPM.add(createSelectMigrationPointsPass());
++    }
++  }
++
++  // Adjust global symbol linkage for alignment.
++  if (CodeGenOpts.PopcornAlignment) {
++    if (CodeGenOpts.OptimizationLevel > 0)
++      PMBuilder.addExtension(PassManagerBuilder::EP_OptimizerLast,
++			     addPopcornAlignmentPasses);
++    else {
++      MPM.add(createNameStringLiteralsPass());
++      MPM.add(createStaticVarSectionsPass());
++    }
++  }
++
+   PMBuilder.populateFunctionPassManager(FPM);
+   PMBuilder.populateModulePassManager(MPM);
+ }
+@@ -789,8 +874,8 @@ bool EmitAssemblyHelper::AddEmitPasses(legacy::PassManager &CodeGenPasses,
+   return true;
+ }
+ 
+-void EmitAssemblyHelper::EmitAssembly(BackendAction Action,
+-                                      std::unique_ptr<raw_pwrite_stream> OS) {
++void EmitAssemblyHelper::SetupAssemblyHelper(BackendAction Action,
++					     raw_pwrite_stream *OS) {
+   TimeRegion Region(FrontendTimesIsEnabled ? &CodeGenerationTime : nullptr);
+ 
+   setCommandLineOpts(CodeGenOpts);
+@@ -805,22 +890,17 @@ void EmitAssemblyHelper::EmitAssembly(BackendAction Action,
+   if (TM)
+     TheModule->setDataLayout(TM->createDataLayout());
+ 
+-  legacy::PassManager PerModulePasses;
+-  PerModulePasses.add(
++  getPerModulePasses()->add(
+       createTargetTransformInfoWrapperPass(getTargetIRAnalysis()));
+ 
+-  legacy::FunctionPassManager PerFunctionPasses(TheModule);
+-  PerFunctionPasses.add(
++  getPerFunctionPasses()->add(
+       createTargetTransformInfoWrapperPass(getTargetIRAnalysis()));
+ 
+-  CreatePasses(PerModulePasses, PerFunctionPasses);
++  CreatePasses(*getPerModulePasses(), *getPerFunctionPasses());
+ 
+-  legacy::PassManager CodeGenPasses;
+-  CodeGenPasses.add(
++  getCodeGenPasses()->add(
+       createTargetTransformInfoWrapperPass(getTargetIRAnalysis()));
+ 
+-  std::unique_ptr<llvm::ToolOutputFile> ThinLinkOS, DwoOS;
+-
+   switch (Action) {
+   case Backend_EmitNothing:
+     break;
+@@ -833,9 +913,9 @@ void EmitAssemblyHelper::EmitAssembly(BackendAction Action,
+           return;
+       }
+       TheModule->addModuleFlag(Module::Error, "EnableSplitLTOUnit",
+-                               CodeGenOpts.EnableSplitLTOUnit);
+-      PerModulePasses.add(createWriteThinLTOBitcodePass(
+-          *OS, ThinLinkOS ? &ThinLinkOS->os() : nullptr));
++			       CodeGenOpts.EnableSplitLTOUnit);
++      getPerModulePasses()->add(createWriteThinLTOBitcodePass(
++	  *OS, ThinLinkOS ? &ThinLinkOS->os() : nullptr));
+     } else {
+       // Emit a module summary by default for Regular LTO except for ld64
+       // targets
+@@ -851,14 +931,14 @@ void EmitAssemblyHelper::EmitAssembly(BackendAction Action,
+                                  CodeGenOpts.EnableSplitLTOUnit);
+       }
+ 
+-      PerModulePasses.add(createBitcodeWriterPass(
+-          *OS, CodeGenOpts.EmitLLVMUseLists, EmitLTOSummary));
++      getPerModulePasses()->add(createBitcodeWriterPass(
++	  *OS, CodeGenOpts.EmitLLVMUseLists, EmitLTOSummary));
+     }
+     break;
+ 
+   case Backend_EmitLL:
+-    PerModulePasses.add(
+-        createPrintModulePass(*OS, "", CodeGenOpts.EmitLLVMUseLists));
++    getPerModulePasses()->add(
++	createPrintModulePass(*OS, "", CodeGenOpts.EmitLLVMUseLists));
+     break;
+ 
+   default:
+@@ -867,35 +947,39 @@ void EmitAssemblyHelper::EmitAssembly(BackendAction Action,
+       if (!DwoOS)
+         return;
+     }
+-    if (!AddEmitPasses(CodeGenPasses, Action, *OS,
+-                       DwoOS ? &DwoOS->os() : nullptr))
++    if (!AddEmitPasses(*getCodeGenPasses(), Action, *OS,
++		       DwoOS ? &DwoOS->os() : nullptr))
+       return;
+   }
+ 
+   // Before executing passes, print the final values of the LLVM options.
+   cl::PrintOptionValues();
++}
+ 
++void EmitAssemblyHelper::ApplyIROptPasses(Module* TheModule) {
+   // Run passes. For now we do all passes at once, but eventually we
+   // would like to have the option of streaming code generation.
+ 
+   {
+     PrettyStackTraceString CrashInfo("Per-function optimization");
+ 
+-    PerFunctionPasses.doInitialization();
++    getPerFunctionPasses()->doInitialization();
+     for (Function &F : *TheModule)
+       if (!F.isDeclaration())
+-        PerFunctionPasses.run(F);
+-    PerFunctionPasses.doFinalization();
++	getPerFunctionPasses()->run(F);
++    getPerFunctionPasses()->doFinalization();
+   }
+ 
+   {
+     PrettyStackTraceString CrashInfo("Per-module optimization passes");
+-    PerModulePasses.run(*TheModule);
++    getPerModulePasses()->run(*TheModule);
+   }
++}
+ 
++void EmitAssemblyHelper::ApplyCodegenPasses(Module* TheModule) {
+   {
+     PrettyStackTraceString CrashInfo("Code generation");
+-    CodeGenPasses.run(*TheModule);
++    getCodeGenPasses()->run(*TheModule);
+   }
+ 
+   if (ThinLinkOS)
+@@ -904,6 +988,16 @@ void EmitAssemblyHelper::EmitAssembly(BackendAction Action,
+     DwoOS->keep();
+ }
+ 
++void EmitAssemblyHelper::EmitAssembly(BackendAction Action,
++				      raw_pwrite_stream *OS) {
++  SetupAssemblyHelper(Action, OS);
++  ApplyIROptPasses(TheModule);
++  ApplyCodegenPasses(TheModule);
++
++  if (OS)
++    OS->flush();
++}
++
+ static PassBuilder::OptimizationLevel mapToLevel(const CodeGenOptions &Opts) {
+   switch (Opts.OptimizationLevel) {
+   default:
+@@ -978,7 +1072,7 @@ static void addSanitizersAtO0(ModulePassManager &MPM,
+ /// This API is planned to have its functionality finished and then to replace
+ /// `EmitAssembly` at some point in the future when the default switches.
+ void EmitAssemblyHelper::EmitAssemblyWithNewPassManager(
+-    BackendAction Action, std::unique_ptr<raw_pwrite_stream> OS) {
++    BackendAction Action, raw_pwrite_stream *OS) {
+   TimeRegion Region(FrontendTimesIsEnabled ? &CodeGenerationTime : nullptr);
+   setCommandLineOpts(CodeGenOpts);
+ 
+@@ -1253,6 +1347,7 @@ void EmitAssemblyHelper::EmitAssemblyWithNewPassManager(
+   case Backend_EmitAssembly:
+   case Backend_EmitMCNull:
+   case Backend_EmitObj:
++  case Backend_EmitMultiObj:
+     NeedCodeGen = true;
+     CodeGenPasses.add(
+         createTargetTransformInfoWrapperPass(getTargetIRAnalysis()));
+@@ -1317,7 +1412,7 @@ static void runThinLTOBackend(ModuleSummaryIndex *CombinedIndex, Module *M,
+                               const CodeGenOptions &CGOpts,
+                               const clang::TargetOptions &TOpts,
+                               const LangOptions &LOpts,
+-                              std::unique_ptr<raw_pwrite_stream> OS,
++                              raw_pwrite_stream *OS,
+                               std::string SampleProfile,
+                               std::string ProfileRemapping,
+                               BackendAction Action) {
+@@ -1372,7 +1467,8 @@ static void runThinLTOBackend(ModuleSummaryIndex *CombinedIndex, Module *M,
+     OwnedImports.push_back(std::move(*MBOrErr));
+   }
+   auto AddStream = [&](size_t Task) {
+-    return llvm::make_unique<lto::NativeObjectStream>(std::move(OS));
++    std::unique_ptr<raw_pwrite_stream> uOS = std::unique_ptr<raw_pwrite_stream>(OS);
++    return llvm::make_unique<lto::NativeObjectStream>(std::move(uOS));
+   };
+   lto::Config Conf;
+   if (CGOpts.SaveTempsFilePrefix != "") {
+@@ -1449,7 +1545,7 @@ void clang::EmitBackendOutput(DiagnosticsEngine &Diags,
+                               const LangOptions &LOpts,
+                               const llvm::DataLayout &TDesc, Module *M,
+                               BackendAction Action,
+-                              std::unique_ptr<raw_pwrite_stream> OS) {
++                              raw_pwrite_stream *OS) {
+ 
+   llvm::TimeTraceScope TimeScope("Backend", StringRef(""));
+ 
+@@ -1474,7 +1570,7 @@ void clang::EmitBackendOutput(DiagnosticsEngine &Diags,
+     if (CombinedIndex) {
+       if (!CombinedIndex->skipModuleByDistributedBackend()) {
+         runThinLTOBackend(CombinedIndex.get(), M, HeaderOpts, CGOpts, TOpts,
+-                          LOpts, std::move(OS), CGOpts.SampleProfileFile,
++                          LOpts, OS, CGOpts.SampleProfileFile,
+                           CGOpts.ProfileRemappingFile, Action);
+         return;
+       }
+@@ -1493,9 +1589,9 @@ void clang::EmitBackendOutput(DiagnosticsEngine &Diags,
+   EmitAssemblyHelper AsmHelper(Diags, HeaderOpts, CGOpts, TOpts, LOpts, M);
+ 
+   if (CGOpts.ExperimentalNewPassManager)
+-    AsmHelper.EmitAssemblyWithNewPassManager(Action, std::move(OS));
++    AsmHelper.EmitAssemblyWithNewPassManager(Action, OS);
+   else
+-    AsmHelper.EmitAssembly(Action, std::move(OS));
++    AsmHelper.EmitAssembly(Action, OS);
+ 
+   // Verify clang's TargetInfo DataLayout against the LLVM TargetMachine's
+   // DataLayout.
+@@ -1542,6 +1638,48 @@ static const char* getSectionNameForCommandline(const Triple &T) {
+   llvm_unreachable("Unimplemented ObjectFormatType");
+ }
+ 
++void clang::ApplyIROptimizations(DiagnosticsEngine &Diags,
++				 const HeaderSearchOptions &HeaderOpts,
++				 const CodeGenOptions &CGOpts,
++				 const clang::TargetOptions &TOpts,
++				 const LangOptions &LOpts, Module *M,
++				 BackendAction Action,
++				 raw_pwrite_stream *OS) {
++  EmitAssemblyHelper AsmHelper(Diags, HeaderOpts, CGOpts, TOpts, LOpts, M);
++  AsmHelper.SetupAssemblyHelper(Action, OS);
++  AsmHelper.ApplyIROptPasses(M);
++
++  if (OS)
++    OS->flush();
++}
++
++void clang::CodegenBackendOutput(DiagnosticsEngine &Diags,
++				 const HeaderSearchOptions &HeaderOpts,
++				 const CodeGenOptions &CGOpts,
++				 const clang::TargetOptions &TOpts,
++				 const LangOptions &LOpts, StringRef TDesc,
++				 Module *M, BackendAction Action,
++				 raw_pwrite_stream *OS) {
++  EmitAssemblyHelper AsmHelper(Diags, HeaderOpts, CGOpts, TOpts, LOpts, M);
++  AsmHelper.SetupAssemblyHelper(Action, OS);
++
++  // If an optional clang TargetInfo description string was passed in, use it to
++  // verify the LLVM TargetMachine's DataLayout.
++  if (AsmHelper.TM && !TDesc.empty()) {
++    std::string DLDesc =
++	AsmHelper.TM->createDataLayout().getStringRepresentation();
++    if (DLDesc != TDesc) {
++      unsigned DiagID = Diags.getCustomDiagID(
++	  DiagnosticsEngine::Error, "backend data layout '%0' does not match "
++				    "expected target description '%1'");
++      Diags.Report(DiagID) << DLDesc << TDesc;
++    }
++  }
++
++  AsmHelper.ApplyCodegenPasses(M);
++  OS->flush();
++}
++
+ // With -fembed-bitcode, save a copy of the llvm IR as data in the
+ // __LLVM,__bitcode section.
+ void clang::EmbedBitcode(llvm::Module *M, const CodeGenOptions &CGOpts,
+diff --git a/llvm/include/llvm/InitializePasses.h b/llvm/include/llvm/InitializePasses.h
+index 164d0be2855a..ac441d91867e 100644
+--- a/llvm/include/llvm/InitializePasses.h
++++ b/llvm/include/llvm/InitializePasses.h
+@@ -288,6 +288,7 @@ void initializeModuleDebugInfoPrinterPass(PassRegistry&);
+ void initializeModuleSummaryIndexWrapperPassPass(PassRegistry&);
+ void initializeMustExecutePrinterPass(PassRegistry&);
+ void initializeNameAnonGlobalLegacyPassPass(PassRegistry&);
++void initializeNameStringLiteralsPass(PassRegistry&);
+ void initializeNaryReassociateLegacyPassPass(PassRegistry&);
+ void initializeNewGVNLegacyPassPass(PassRegistry&);
+ void initializeObjCARCAAWrapperPassPass(PassRegistry&);
+@@ -383,6 +384,7 @@ void initializeStackProtectorPass(PassRegistry&);
+ void initializeStackSafetyGlobalInfoWrapperPassPass(PassRegistry &);
+ void initializeStackSafetyInfoWrapperPassPass(PassRegistry &);
+ void initializeStackSlotColoringPass(PassRegistry&);
++void initializeStaticVarSectionsPass(PassRegistry&);
+ void initializeStraightLineStrengthReducePass(PassRegistry&);
+ void initializeStripDeadDebugInfoPass(PassRegistry&);
+ void initializeStripDeadPrototypesLegacyPassPass(PassRegistry&);
+diff --git a/llvm/include/llvm/LinkAllPasses.h b/llvm/include/llvm/LinkAllPasses.h
+index 675d179eb22a..d49f2bf2f435 100644
+--- a/llvm/include/llvm/LinkAllPasses.h
++++ b/llvm/include/llvm/LinkAllPasses.h
+@@ -144,6 +144,7 @@ namespace {
+       (void) llvm::createLowerInvokePass();
+       (void) llvm::createLowerSwitchPass();
+       (void) llvm::createNaryReassociatePass();
++      (void) llvm::createNameStringLiteralsPass();
+       (void) llvm::createObjCARCAAWrapperPass();
+       (void) llvm::createObjCARCAPElimPass();
+       (void) llvm::createObjCARCExpandPass();
+@@ -167,6 +168,7 @@ namespace {
+       (void) llvm::createSafeStackPass();
+       (void) llvm::createSROAPass();
+       (void) llvm::createSingleLoopExtractorPass();
++      (void) llvm::createStaticVarSectionsPass();
+       (void) llvm::createStripSymbolsPass();
+       (void) llvm::createStripNonDebugSymbolsPass();
+       (void) llvm::createStripDeadDebugInfoPass();
+diff --git a/llvm/include/llvm/Transforms/Utils.h b/llvm/include/llvm/Transforms/Utils.h
+index 6e03453babf1..52ece9075ad4 100644
+--- a/llvm/include/llvm/Transforms/Utils.h
++++ b/llvm/include/llvm/Transforms/Utils.h
+@@ -119,6 +119,19 @@ ModulePass *createStripNonLineTableDebugInfoPass();
+ // number of conditional branches in the hot paths based on profiles.
+ //
+ FunctionPass *createControlHeightReductionLegacyPass();
++
++//===----------------------------------------------------------------------===//
++//
++// NameStringLiterals - Give symbol names to anonymous string literals so they
++// can be aligned at link-time
++//
++ModulePass *createNameStringLiteralsPass();
++
++//===----------------------------------------------------------------------===//
++//
++// StaticVarSections - Put static global variables into their own sections
++//
++ModulePass *createStaticVarSectionsPass();
+ }
+ 
+ #endif
+diff --git a/llvm/lib/Transforms/Utils/CMakeLists.txt b/llvm/lib/Transforms/Utils/CMakeLists.txt
+index c232aa6223cc..4d17f43a44d2 100644
+--- a/llvm/lib/Transforms/Utils/CMakeLists.txt
++++ b/llvm/lib/Transforms/Utils/CMakeLists.txt
+@@ -41,6 +41,7 @@ add_llvm_library(LLVMTransformUtils
+   Mem2Reg.cpp
+   MetaRenamer.cpp
+   ModuleUtils.cpp
++  NameStringLiterals.cpp
+   NameAnonGlobals.cpp
+   PredicateInfo.cpp
+   PromoteMemoryToRegister.cpp
+@@ -53,6 +54,7 @@ add_llvm_library(LLVMTransformUtils
+   SimplifyLibCalls.cpp
+   SizeOpts.cpp
+   SplitModule.cpp
++  StaticVarSections.cpp
+   StripNonLineTableDebugInfo.cpp
+   SymbolRewriter.cpp
+   UnifyFunctionExitNodes.cpp
+diff --git a/llvm/lib/Transforms/Utils/Utils.cpp b/llvm/lib/Transforms/Utils/Utils.cpp
+index 5272ab6e95d5..f11df0a73118 100644
+--- a/llvm/lib/Transforms/Utils/Utils.cpp
++++ b/llvm/lib/Transforms/Utils/Utils.cpp
+@@ -33,7 +33,9 @@ void llvm::initializeTransformUtils(PassRegistry &Registry) {
+   initializeLowerInvokeLegacyPassPass(Registry);
+   initializeLowerSwitchPass(Registry);
+   initializeNameAnonGlobalLegacyPassPass(Registry);
++  initializeNameStringLiteralsPass(Registry);
+   initializePromoteLegacyPassPass(Registry);
++  initializeStaticVarSectionsPass(Registry);
+   initializeStripNonLineTableDebugInfoPass(Registry);
+   initializeUnifyFunctionExitNodesPass(Registry);
+   initializeMetaRenamerPass(Registry);

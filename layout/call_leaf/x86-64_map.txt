@@ -1,0 +1,65 @@
+
+Discarded input sections
+
+ .note.GNU-stack
+                0x0000000000000000        0x0 call_leaf_x86_64.o
+
+Memory map
+
+ ** file header
+                0x0000000000400000       0x40
+ ** segment headers
+                0x0000000000400040       0xa8
+
+.note.gnu.build-id
+                0x00000000004000e8       0x24
+ ** note header
+                0x00000000004000e8       0x10
+ ** zero fill   0x00000000004000f8       0x14
+
+.text           0x0000000000400110       0xae
+ .text          0x0000000000400110       0xae call_leaf_x86_64.o
+                0x0000000000400110                add_7
+                0x0000000000400150                main
+
+.rodata         0x00000000004001be        0xa
+ ** merge strings
+                0x00000000004001be        0xa
+
+.eh_frame       0x00000000004001c8       0x58
+ ** eh_frame    0x00000000004001c8       0x58
+
+.debug_abbrev   0x0000000000000000       0x5b
+ .debug_abbrev  0x0000000000000000       0x5b call_leaf_x86_64.o
+
+.debug_info     0x0000000000000000      0x103
+ .debug_info    0x0000000000000000      0x103 call_leaf_x86_64.o
+
+.debug_str      0x0000000000000000       0xd0
+ ** merge strings
+                0x0000000000000000       0xd0
+
+.comment        0x0000000000000000       0x6a
+ ** merge strings
+                0x0000000000000000       0x6a
+
+.debug_line     0x0000000000000000       0x77
+ .debug_line    0x0000000000000000       0x77 call_leaf_x86_64.o
+
+.note.gnu.gold-version
+                0x0000000000000000       0x1c
+ ** note header
+                0x0000000000000000       0x10
+ ** fill        0x0000000000000010        0x9
+ ** zero fill   0x0000000000000019        0x3
+
+.symtab         0x0000000000000000       0xc0
+ ** symtab      0x0000000000000000       0xc0
+
+.strtab         0x0000000000000000       0x37
+ ** string table
+                0x0000000000000000       0x37
+
+.shstrtab       0x0000000000000000       0x97
+ ** string table
+                0x0000000000000000       0x97
