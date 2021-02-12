@@ -46,7 +46,7 @@ all: call_leaf.out call_leaf.s
 
 ######################################################
 
-call_leaf.out: call_leaf.c
+call_leaf_x86.ll: call_leaf.c
 	clang $(CFLAGS) -g -S -emit-llvm call_leaf.c -o call_leaf_debug.ll # 2 flags for ffunction-sections fdata-sections
 	opt $(OPT_FLAGS) -S call_leaf_debug.ll -o call_leaf_debug_opt.ll # 2 popcorn passes (if they work on opt)
 	llc $(LLC_FLAGS) -filetype=obj call_leaf_debug_opt.ll -o call_leaf_2.o

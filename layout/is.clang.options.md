@@ -1,0 +1,121 @@
+# `/usr/local/popcorn/bin/clang-9`
+-cc1
+	- `clang -cc1` invokes the compiler itself with its internal/undocumented set of options, etc. 
+	- https://stackoverflow.com/a/9004311
+-triple x86_64-unknown-linux-gnu 
+	- https://clang.llvm.org/docs/CrossCompilation.html#general-cross-compilation-options-in-clang
+-emit-obj 
+	- https://stackoverflow.com/a/13513986
+	- Use `llc -filetype=obj` to emit a linkable object file from your IR.
+-mrelax-all
+	- (integrated-as) Relax all machine instructions
+	- https://clang.llvm.org/docs/ClangCommandLineReference.html#cmdoption-clang-mrelax-all
+-disable-free 
+	- Disable freeing of memory on exit
+	- https://gist.github.com/masuidrive/5231110
+-main-file-name is.c 
+	- Main file name to use for debug info
+	- https://gist.github.com/masuidrive/5231110
+-mrelocation-model static 
+	- The relocation model to use
+	- https://gist.github.com/masuidrive/5231110
+-mthread-model posix 
+	- The thread model to use, e.g. posix, single (posix by default)
+	- https://clang.llvm.org/docs/ClangCommandLineReference.html#cmdoption-clang-mthread-model
+-mdisable-fp-elim 
+	- Disable frame pointer elimination optimization
+	- https://gist.github.com/masuidrive/5231110
+-fmath-errno 
+	- Require math functions to indicate errors by setting errno
+	- https://gist.github.com/masuidrive/5231110
+-masm-verbose 
+	- Generate verbose assembly output
+	- https://gist.github.com/masuidrive/5231110
+-mconstructor-aliases 
+	- Emit complete constructors and destructors as aliases when possible
+	- https://gist.github.com/masuidrive/5231110
+-munwind-tables 
+	- Generate unwinding tables for all functions
+	- https://gist.github.com/masuidrive/5231110
+-fuse-init-array 
+	- Use .init_array instead of .ctors
+	- https://gist.github.com/masuidrive/5231110
+-target-cpu x86-64 
+	- Target a specific cpu type
+	- https://gist.github.com/masuidrive/5231110
+-dwarf-column-info 
+	- Turn on column location information.
+	- clang/include/clang/Driver/CC1Options.td
+-debug-info-kind=limited 
+	- Limit generated debug info to reduce size (-fno-standalone-debug)
+	- https://clang.llvm.org/doxygen/DebugInfoOptions_8h_source.html
+-dwarf-version=4 
+-debugger-tuning=gdb 
+-v 
+-coverage-notes-file /home/amir/npb/is/is.gcno 
+-nostdsysteminc
+	- Disable standard system #include directories
+	- https://gist.github.com/masuidrive/5231110 
+-nobuiltininc 
+	- Disable builtin #include directories
+	- https://gist.github.com/masuidrive/5231110 
+-resource-dir /usr/local/popcorn/lib/clang/9.0.1 
+	- The directory which holds the compiler resource files
+	- https://gist.github.com/masuidrive/5231110
+-isystem /usr/local/popcorn/aarch64/include 
+	- Add directory to SYSTEM include search path
+	- https://gist.github.com/masuidrive/5231110
+-O0 
+	- Flags controlling how much optimization should be performed.
+	- https://clang.llvm.org/docs/ClangCommandLineReference.html#optimization-level
+-Wall 
+	- Some of the diagnostics controlled by this flag are enabled by default.
+	- https://stackoverflow.com/a/40812537
+-fdebug-compilation-dir /home/amir/npb/is 
+	- The compilation directory to embed in the debug info.
+-ferror-limit 19 
+	- Set the maximum number of errors to emit before stopping (0 = no limit).
+	- https://stackoverflow.com/a/40812537
+-fmessage-length 0 
+	- Format message diagnostics so that they fit within N columns or fewer, when possible.
+	- https://stackoverflow.com/a/40812537
+-ftls-model=initial-exec 
+	- Select which TLS model to use. 
+	- Valid values are: `global-dynamic`, `local-dynamic`, `initial-exec` and `local-exec`. The default value is `global-dynamic`. The compiler may use a different model if the selected model is not supported by the target, or if a more efficient model can be used. The TLS model can be overridden per variable using the `tls_model` attribute.
+	- https://clang.llvm.org/docs/UsersManual.html#cmdoption-ftls-model
+-fobjc-runtime=gcc 
+	- Specify the target Objective-C runtime kind and version
+	- https://stackoverflow.com/a/40812537
+-fno-common 
+	- Compile common globals like normal definitions
+	- https://gist.github.com/masuidrive/5231110
+	- Place uninitialized global variables in a common block
+- https://clang.llvm.org/docs/ClangCommandLineReference.html#cmdoption-clang-fcommon
+-fdiagnostics-show-option 
+	- Print option name with mappable diagnostics
+	- https://clang.llvm.org/docs/ClangCommandLineReference.html#cmdoption-clang-fdiagnostics-show-option
+-fcolor-diagnostics
+	- Use colors in diagnostics
+	- https://gist.github.com/masuidrive/5231110
+-ffunction-sections 
+	- Place each function in its own section (ELF Only)
+	- https://gist.github.com/masuidrive/5231110
+-fdata-sections 
+	- Place each data in its own section (ELF Only)
+	- https://gist.github.com/masuidrive/5231110
+
+## Forward Popcorn & other standard compiler flags to -cc1 to generate multi-ISA binaries
+-popcorn-alignment 
+-popcorn-migratable 
+-mllvm -popcorn-instrument=migration 
+-mllvm -optimize-regalloc 
+-mllvm -fast-isel=false 
+-mllvm -disable-machine-cse 
+-faddrsig 
+	- Emit an address-significance table
+	- https://clang.llvm.org/docs/ClangCommandLineReference.html#cmdoption-clang-faddrsig
+-o is.o 
+-x c 
+	- Treat subsequent input files as having type `language`
+	- https://gist.github.com/masuidrive/5231110
+is.c
