@@ -3,9 +3,15 @@
 BIN := call_leaf
 SRC := $(BIN).c
 POPCORN := /usr/local/popcorn
+X86_64_POPCORN := $(POPCORN)/x86_64
+ARM64_POPCORN := $(POPCORN)/aarch64
+LIBGCC  := --start-group -lgcc -lgcc_eh --end-group
+ARM64_LIBGCC := $(shell dirname \
+	                $(shell aarch64-linux-gnu-gcc -print-libgcc-file-name))
 
 # Tools
-LD := ld.gold
+# LD := ld.gold
+LD := /usr/local/popcorn/bin/x86_64-popcorn-linux-gnu-ld.gold
 ALIGN := $(POPCORN)/bin/pyalign
 
 # Flags
@@ -13,10 +19,18 @@ CFLAGS := -Xclang -disable-O0-optnone -fno-omit-frame-pointer -mno-omit-leaf-fra
 OPT_FLAGS := -O0
 LLC_FLAGS := -O0
 LDFLAGS := -z noexecstack -z relro --hash-style=gnu --build-id 
+LIBS    := /lib/crt1.o \
+	/lib/libc.a \
+	/lib/libelf.a \
+	/lib/libpthread.a \
+	/lib/libc.a \
+	/lib/libm.a
 
 X86_64_LDFLAGS := -m elf_x86_64 -L$(X86_64_POPCORN)/lib \
                   $(addprefix $(X86_64_POPCORN),$(LIBS)) \
                   --start-group --end-group
+ARM64_LDFLAGS := -m aarch64linux -L$(ARM64_POPCORN)/lib -L$(ARM64_LIBGCC) \
+	                 $(addprefix $(ARM64_POPCORN),$(LIBS)) $(LIBGCC)
 
 # X86-64
 X86_64_ALIGNED     := $(BIN)_x86-64_aligned
@@ -47,10 +61,25 @@ all: call_leaf.out call_leaf.s
 ######################################################
 
 call_leaf_x86.ll: call_leaf.c
-	clang $(CFLAGS) -g -S -emit-llvm call_leaf.c -o call_leaf_debug.ll # 2 flags for ffunction-sections fdata-sections
-	opt $(OPT_FLAGS) -S call_leaf_debug.ll -o call_leaf_debug_opt.ll # 2 popcorn passes (if they work on opt)
-	llc $(LLC_FLAGS) -filetype=obj call_leaf_debug_opt.ll -o call_leaf_2.o
-	clang call_leaf_2.o -o call_leaf.out
+	clang $(CFLAGS) -g -S -emit-llvm -ffunction-sections -fdata-sections call_leaf.c -o call_leaf_x86.ll 
+
+call_leaf_x86_opt.ll: call_leaf_x86.ll
+	opt $(OPT_FLAGS) -S call_leaf_x86.ll -o call_leaf_x86_opt.ll 
+
+call_leaf_x86.o: call_leaf_x86_opt.ll
+	llc $(LLC_FLAGS) -filetype=obj call_leaf_x86_opt.ll -o call_leaf_x86.o
+
+call_leaf_x86_unaligned.out: call_leaf_x86.o
+	$(LD) -o $@ $^ $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_MAP)
+
+call_leaf_aarch64.o: call_leaf_x86_opt.ll
+	llc $(LLC_FLAGS) -march=aarch64 -filetype=obj call_leaf_x86_opt.ll -o call_leaf_aarch64.o
+
+call_leaf_aarch64_unaligned.out: call_leaf_aarch64.o
+	$(LD) -o $@ $^ $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
+
+linker_scripts: call_leaf_x86_unaligned.out call_leaf_aarch64_unaligned.out
+	$(ALIGN) --compiler-inst /usr/local/popcorn --x86-bin call_leaf_x86_unaligned.out --arm-bin call_leaf_aarch64_unaligned.out --x86-map build_x86-64/map.txt --arm-map build_aarch64/map.txt --output-x86-ls build_x86-64/aligned_linker_script_x86.x --output-arm-ls build_aarch64/aligned_linker_script_arm.x
 
 ######################################################
 
@@ -60,27 +89,6 @@ call_leaf.s: call_leaf.c
 	llc $(LLC_FLAGS) call_leaf_opt.ll -o call_leaf$(subst =,_,$(OPT_FLAGS))$(subst =,_,$(LLC_FLAGS)).s
 
 ######################################################
-
-$(X86_64_OBJ): $(SRC)
-	clang $(CFLAGS) -g -S -emit-llvm $^ -o $(BIN)_debug.ll # 2 flags for ffunction-sections fdata-sections
-	opt $(OPT_FLAGS) -S $(BIN)_debug.ll -o $(BIN)_debug_opt.ll # 2 popcorn passes (if they work on opt)
-	llc $(LLC_FLAGS) -filetype=obj $(BIN)_debug_opt.ll -o $@
-
-$(X86_64_VANILLA): $(X86_64_OBJ)
-	@echo " [LD] $@ (vanilla)"
-	@$(LD) -o $@ $(X86_64_OBJ) $(LDFLAGS) -Map $(X86_64_MAP)
-
-$(X86_64_LD_SCRIPT): $(X86_64_VANILLA) $(ARM_64_VANILLA)
-	@echo " [ALIGN] $@"
-	@$(ALIGN) --compiler-inst $(POPCORN) \
-		--x86-bin $(X86_64_VANILLA) --arm-bin $(ARM64_VANILLA) \
-		--x86-map $(X86_64_MAP) --arm-map $(ARM64_MAP) \
-		--output-x86-ls $(X86_64_LD_SCRIPT)	--output-arm-ls $(ARM64_LD_SCRIPT)
-
-$(X86_64_ALIGNED): $(X86_64_LD_SCRIPT)
-	@echo " [LD] $@ (aligned)"
-	@$(LD) -o $@ $(X86_64_OBJ) $(LDFLAGS) $(X86_64_LDFLAGS) \
-		-Map $(X86_64_ALIGNED_MAP) -T $<
 
 clean:
 	rm *.o *.ll *.out

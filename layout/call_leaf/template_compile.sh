@@ -1,5 +1,3 @@
-cd ~/tmp/npb/is
-
 make clean
 
 mkdir -p build_aarch64/
@@ -29,28 +27,13 @@ cp x86_64.clang.no-popcorn.ll clang.no-popcorn.ll
 /usr/local/popcorn/bin/llc -relocation-model=pic --trap-unreachable --popcorn-instrument=migration -optimize-regalloc -fast-isel=false -disable-machine-cse -march=aarch64 -O0 -filetype=obj -o aarch64.llc.o opt-with-popcorn-passes.ll 
 
 # link (unaligned) -> map files
-/usr/local/popcorn/bin/aarch64-popcorn-linux-gnu-ld.bfd -o build_aarch64/is_aarch64 aarch64.llc.o -z noexecstack -z relro --hash-style=gnu --build-id -static -m aarch64linux -L/usr/local/popcorn/aarch64/lib -L/usr/lib/gcc-cross/aarch64-linux-gnu/8 /usr/local/popcorn/aarch64/lib/crt1.o /usr/local/popcorn/aarch64/lib/libc.a /usr/local/popcorn/aarch64/lib/libmigrate.a /usr/local/popcorn/aarch64/lib/libstack-transform.a /usr/local/popcorn/aarch64/lib/libelf.a /usr/local/popcorn/aarch64/lib/libpthread.a /usr/local/popcorn/aarch64/lib/libc.a /usr/local/popcorn/aarch64/lib/libm.a --start-group -lgcc -lgcc_eh --end-group -Map build_aarch64/map.txt
-/usr/local/popcorn/bin/x86_64-popcorn-linux-gnu-ld.bfd -o build_x86-64/is_x86-64 x86_64.llc.o -z noexecstack -z relro --hash-style=gnu --build-id -static -m elf_x86_64 -L/usr/local/popcorn/x86_64/lib /usr/local/popcorn/x86_64/lib/crt1.o /usr/local/popcorn/x86_64/lib/libc.a /usr/local/popcorn/x86_64/lib/libmigrate.a /usr/local/popcorn/x86_64/lib/libstack-transform.a /usr/local/popcorn/x86_64/lib/libelf.a /usr/local/popcorn/x86_64/lib/libpthread.a /usr/local/popcorn/x86_64/lib/libc.a /usr/local/popcorn/x86_64/lib/libm.a --start-group --end-group -Map build_x86-64/map.txt
+arm-linux-gnueabihf-ld -o build_aarch64/call_leaf_aarch64 aarch64.llc.o -z noexecstack -z relro --hash-style=gnu --build-id -static -m armelf_linux_eabi -L/usr/local/popcorn/aarch64/lib -L/usr/lib/gcc-cross/aarch64-linux-gnu/8 /usr/local/popcorn/aarch64/lib/crt1.o /usr/local/popcorn/aarch64/lib/libc.a /usr/local/popcorn/aarch64/lib/libmigrate.a /usr/local/popcorn/aarch64/lib/libstack-transform.a /usr/local/popcorn/aarch64/lib/libelf.a /usr/local/popcorn/aarch64/lib/libpthread.a /usr/local/popcorn/aarch64/lib/libc.a /usr/local/popcorn/aarch64/lib/libm.a --start-group -lgcc -lgcc_eh --end-group -Map build_aarch64/map.txt
+ld -o build_x86-64/call_leaf_x86-64 x86_64.llc.o -z noexecstack -z relro --hash-style=gnu --build-id -static -m elf_x86_64 -L/usr/local/popcorn/x86_64/lib /usr/local/popcorn/x86_64/lib/crt1.o /usr/local/popcorn/x86_64/lib/libc.a /usr/local/popcorn/x86_64/lib/libmigrate.a /usr/local/popcorn/x86_64/lib/libstack-transform.a /usr/local/popcorn/x86_64/lib/libelf.a /usr/local/popcorn/x86_64/lib/libpthread.a /usr/local/popcorn/x86_64/lib/libc.a /usr/local/popcorn/x86_64/lib/libm.a --start-group --end-group -Map build_x86-64/map.txt
 
 # pyalign -> link script
-/usr/local/popcorn/bin/pyalign --compiler-inst /usr/local/popcorn --x86-bin build_x86-64/is_x86-64 --arm-bin build_aarch64/is_aarch64 --x86-map build_x86-64/map.txt --arm-map build_aarch64/map.txt --output-x86-ls build_x86-64/aligned_linker_script_x86.x --output-arm-ls build_aarch64/aligned_linker_script_arm.x
+/usr/local/popcorn/bin/pyalign --compiler-inst /usr/local/popcorn --x86-bin build_x86-64/call_leaf_x86-64 --arm-bin build_aarch64/call_leaf_aarch64 --x86-map build_x86-64/map.txt --arm-map build_aarch64/map.txt --output-x86-ls build_x86-64/aligned_linker_script_x86.x --output-arm-ls build_aarch64/aligned_linker_script_arm.x
 
 # link (aligned)
-/usr/local/popcorn/bin/aarch64-popcorn-linux-gnu-ld.bfd -o is_aarch64 aarch64.llc.o -z noexecstack -z relro --hash-style=gnu --build-id -static -m aarch64linux -L/usr/local/popcorn/aarch64/lib -L/usr/lib/gcc-cross/aarch64-linux-gnu/8 /usr/local/popcorn/aarch64/lib/crt1.o /usr/local/popcorn/aarch64/lib/libc.a /usr/local/popcorn/aarch64/lib/libmigrate.a /usr/local/popcorn/aarch64/lib/libstack-transform.a /usr/local/popcorn/aarch64/lib/libelf.a /usr/local/popcorn/aarch64/lib/libpthread.a /usr/local/popcorn/aarch64/lib/libc.a /usr/local/popcorn/aarch64/lib/libm.a --start-group -lgcc -lgcc_eh --end-group -Map build_aarch64/aligned_map.txt -T build_aarch64/aligned_linker_script_arm.x
-/usr/local/popcorn/bin/x86_64-popcorn-linux-gnu-ld.bfd -o is_x86-64 x86_64.llc.o -z noexecstack -z relro --hash-style=gnu --build-id -static -m elf_x86_64 -L/usr/local/popcorn/x86_64/lib /usr/local/popcorn/x86_64/lib/crt1.o /usr/local/popcorn/x86_64/lib/libc.a /usr/local/popcorn/x86_64/lib/libmigrate.a /usr/local/popcorn/x86_64/lib/libstack-transform.a /usr/local/popcorn/x86_64/lib/libelf.a /usr/local/popcorn/x86_64/lib/libpthread.a /usr/local/popcorn/x86_64/lib/libc.a /usr/local/popcorn/x86_64/lib/libm.a --start-group --end-group -Map build_x86-64/aligned_map.txt -T build_x86-64/aligned_linker_script_x86.x
+/usr/local/popcorn/bin/aarch64-popcorn-linux-gnu-ld.bfd -o call_leaf_aarch64 aarch64.llc.o -z noexecstack -z relro --hash-style=gnu --build-id -static -m aarch64linux -L/usr/local/popcorn/aarch64/lib -L/usr/lib/gcc-cross/aarch64-linux-gnu/8 /usr/local/popcorn/aarch64/lib/crt1.o /usr/local/popcorn/aarch64/lib/libc.a /usr/local/popcorn/aarch64/lib/libmigrate.a /usr/local/popcorn/aarch64/lib/libstack-transform.a /usr/local/popcorn/aarch64/lib/libelf.a /usr/local/popcorn/aarch64/lib/libpthread.a /usr/local/popcorn/aarch64/lib/libc.a /usr/local/popcorn/aarch64/lib/libm.a --start-group -lgcc -lgcc_eh --end-group -Map build_aarch64/aligned_map.txt -T build_aarch64/aligned_linker_script_arm.x
+/usr/local/popcorn/bin/x86_64-popcorn-linux-gnu-ld.bfd -o call_leaf_x86-64 x86_64.llc.o -z noexecstack -z relro --hash-style=gnu --build-id -static -m elf_x86_64 -L/usr/local/popcorn/x86_64/lib /usr/local/popcorn/x86_64/lib/crt1.o /usr/local/popcorn/x86_64/lib/libc.a /usr/local/popcorn/x86_64/lib/libmigrate.a /usr/local/popcorn/x86_64/lib/libstack-transform.a /usr/local/popcorn/x86_64/lib/libelf.a /usr/local/popcorn/x86_64/lib/libpthread.a /usr/local/popcorn/x86_64/lib/libc.a /usr/local/popcorn/x86_64/lib/libm.a --start-group --end-group -Map build_x86-64/aligned_map.txt -T build_x86-64/aligned_linker_script_x86.x
 
-# metadata generation
-/usr/local/popcorn/bin/gen-stackinfo -f is_aarch64
-/usr/local/popcorn/bin/gen-stackinfo -f is_x86-64
-
-# copy to popcorn kernel
-scp is_aarch64 is_x86-64 popcorn@10.4.4.100:
-scp is_aarch64 is_x86-64 popcorn@10.4.4.101:
-
-# in x86
-cp is_x86-64 is
-# in arm
-cp is_aarch64 is
-
-# in x86
-./is
