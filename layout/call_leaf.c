@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <inttypes.h>
 
-static int variable_1 = 0;
+static int variable_1 = 3;
 static int variable_2 = 777;
 
 int add_7(int a, int b, int c, int d,
