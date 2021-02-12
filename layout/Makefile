@@ -1,6 +1,6 @@
 
 CFLAGS := -O0 -ffunction-sections -fdata-sections -Xclang -disable-O0-optnone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone 
-OPT_FLAGS := -name-string-literals -static-var-sections
+OPT_FLAGS := -name-string-literals 
 LLC_FLAGS := -O0
 
 ifeq "$(gcc -dumpmachine)" "x86_64-linux-gnu"
@@ -17,7 +17,7 @@ f: fact.out fact.s fact_2.out fact_2.s
 call_leaf_2.out: call_leaf.c
 	clang $(CFLAGS) -g -S -emit-llvm call_leaf.c -o call_leaf_debug.ll
 	opt $(OPT_FLAGS) -S call_leaf_debug.ll -o call_leaf_debug_opt.ll
-	llc $(LLC_FLAGS) -filetype=obj call_leaf_debug_opt.ll -o call_leaf_2.o
+	llc $(LLC_FLAGS) -function-sections -data-sections -filetype=obj call_leaf_debug_opt.ll -o call_leaf_2.o
 	clang call_leaf_2.o -o call_leaf_2.out
 
 call_leaf_2.s: call_leaf.c

@@ -7,8 +7,8 @@ static int variable_2 = 777;
 int add_7(int a, int b, int c, int d,
 		  int e, int f, int g)
 {
-	int x;
-	x =  a + b + c + d + e + f + g;
+	static int x = 5;
+	x = a + b + c + d + e + f + g + x;
 	return x;
 }
 
