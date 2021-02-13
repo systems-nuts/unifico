@@ -16,13 +16,10 @@ ALIGN := $(POPCORN)/bin/pyalign
 
 # Flags
 CFLAGS := -Xclang -disable-O0-optnone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone 
-OPT_FLAGS := -O0
-LLC_FLAGS := -O0
+OPT_FLAGS := -name-string-literals -static-var-sections
+LLC_FLAGS := -function-sections -data-sections
 LDFLAGS := -z noexecstack -z relro --hash-style=gnu --build-id 
 LIBS    := /lib/crt1.o \
-	/lib/libc.a \
-	/lib/libelf.a \
-	/lib/libpthread.a \
 	/lib/libc.a \
 	/lib/libm.a
 
@@ -33,18 +30,21 @@ ARM64_LDFLAGS := -m aarch64linux -L$(ARM64_POPCORN)/lib -L$(ARM64_LIBGCC) \
 	                 $(addprefix $(ARM64_POPCORN),$(LIBS)) $(LIBGCC)
 
 # X86-64
+X86_64_BUILD       := build_x86-64
 X86_64_ALIGNED     := $(BIN)_x86-64_aligned
 X86_64_VANILLA     := $(BIN)_x86-64_vanilla
 X86_64_OBJ         := $(SRC:.c=_x86_64.o)
-X86_64_MAP         := x86-64_map.txt
-X86_64_LD_SCRIPT   := aligned_linker_script_x86.x
-X86_64_ALIGNED_MAP := aligned_x86-64_map.txt
+X86_64_MAP         := $(X86_64_BUILD)/map.txt
+X86_64_LD_SCRIPT   := $(X86_64_BUILD)/aligned_linker_script_x86.x
+X86_64_ALIGNED_MAP := $(X86_64_BUILD)/aligned_map.txt
 
 # Aarch64
+ARM64_BUILD       := build_aarch64
 ARM64_ALIGNED     := $(BIN)_aarch64_aligned
 ARM64_VANILLA     := $(BIN)_aarch64_vanilla
-ARM64_MAP         := $(BIN)_aarch64_map.txt
-ARM64_LD_SCRIPT   := aligned_linker_script_arm.x
+ARM64_MAP         := $(ARM64_BUILD)/map.txt
+ARM64_LD_SCRIPT   := $(ARM64_BUILD)/aligned_linker_script_arm.x
+ARM64_ALIGNED_MAP := $(ARM64_BUILD)/aligned_map.txt
 
 ###############################################################################
 #                                 Recipes                                     #
@@ -61,25 +61,44 @@ all: call_leaf.out call_leaf.s
 ######################################################
 
 call_leaf_x86.ll: call_leaf.c
+	@echo " [CC] $@"
 	clang $(CFLAGS) -g -S -emit-llvm -ffunction-sections -fdata-sections call_leaf.c -o call_leaf_x86.ll 
+	# Remove the x86-64-related information
+	sed -e "s/\"target-cpu\"\=\"x86-64\"\ \"target-features\"\=\"+cx8,+fxsr,+mmx,+sse,+sse2,+x87\"//g" -i.backup call_leaf_x86.ll
 
 call_leaf_x86_opt.ll: call_leaf_x86.ll
+	@echo " [OPT] $@"
 	opt $(OPT_FLAGS) -S call_leaf_x86.ll -o call_leaf_x86_opt.ll 
 
 call_leaf_x86.o: call_leaf_x86_opt.ll
+	@echo " [LLC] $@ (x86-64)"
 	llc $(LLC_FLAGS) -filetype=obj call_leaf_x86_opt.ll -o call_leaf_x86.o
 
 call_leaf_x86_unaligned.out: call_leaf_x86.o
+	@echo " [LD] $@ (x86-64 unaligned)"
 	$(LD) -o $@ $^ $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_MAP)
 
 call_leaf_aarch64.o: call_leaf_x86_opt.ll
+	@echo " [LLC] $@ (aarch64)"
 	llc $(LLC_FLAGS) -march=aarch64 -filetype=obj call_leaf_x86_opt.ll -o call_leaf_aarch64.o
 
 call_leaf_aarch64_unaligned.out: call_leaf_aarch64.o
+	@echo " [LD] $@ (aarch64 unaligned)"
 	$(LD) -o $@ $^ $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
 
-linker_scripts: call_leaf_x86_unaligned.out call_leaf_aarch64_unaligned.out
-	$(ALIGN) --compiler-inst /usr/local/popcorn --x86-bin call_leaf_x86_unaligned.out --arm-bin call_leaf_aarch64_unaligned.out --x86-map build_x86-64/map.txt --arm-map build_aarch64/map.txt --output-x86-ls build_x86-64/aligned_linker_script_x86.x --output-arm-ls build_aarch64/aligned_linker_script_arm.x
+$(X86_64_LD_SCRIPT): call_leaf_x86_unaligned.out call_leaf_aarch64_unaligned.out
+	@echo " [ALIGN] $@"
+	$(ALIGN) --compiler-inst /usr/local/popcorn --x86-bin call_leaf_x86_unaligned.out --arm-bin call_leaf_aarch64_unaligned.out --x86-map $(X86_64_MAP) --arm-map $(ARM64_MAP) --output-x86-ls $(X86_64_LD_SCRIPT) --output-arm-ls $(ARM64_LD_SCRIPT)
+
+$(ARM64_LD_SCRIPT): $(X86_64_LD_SCRIPT)
+
+call_leaf_x86_aligned.out: $(X86_64_LD_SCRIPT)
+	@echo " [LD] $@ (x86-64 aligned)"
+	$(LD) -o $@ $^ $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_ALIGNED_MAP) -T $^
+
+call_leaf_aarch64_aligned.out: $(ARM64_LD_SCRIPT)
+	@echo " [LD] $@ (aarch64 aligned)"
+	$(LD) -o $@ $^ $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_ALIGNED_MAP) -T $^
 
 ######################################################
 
@@ -92,3 +111,4 @@ call_leaf.s: call_leaf.c
 
 clean:
 	rm *.o *.ll *.out
+	rm -r build_*/*
