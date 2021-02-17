@@ -12,6 +12,7 @@ ARM64_LIBGCC := $(shell dirname \
 # Tools
 # LD := ld.gold
 LD := /usr/local/popcorn/bin/x86_64-popcorn-linux-gnu-ld.gold
+#LD := ld.gold
 ALIGN := $(POPCORN)/bin/pyalign
 
 # Flags
@@ -94,11 +95,11 @@ $(ARM64_LD_SCRIPT): $(X86_64_LD_SCRIPT)
 
 call_leaf_x86_aligned.out: $(X86_64_LD_SCRIPT)
 	@echo " [LD] $@ (x86-64 aligned)"
-	$(LD) -o $@ $^ $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_ALIGNED_MAP) -T $^
+	$(LD) -o $@ call_leaf_x86.o $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_ALIGNED_MAP) -T $<
 
 call_leaf_aarch64_aligned.out: $(ARM64_LD_SCRIPT)
 	@echo " [LD] $@ (aarch64 aligned)"
-	$(LD) -o $@ $^ $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_ALIGNED_MAP) -T $^
+	$(LD) -o $@ call_leaf_aarch64.o $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_ALIGNED_MAP) -T $<
 
 ######################################################
 
@@ -110,5 +111,6 @@ call_leaf.s: call_leaf.c
 ######################################################
 
 clean:
+	@echo " [CLEAN]"
 	rm *.o *.ll *.out
 	rm -r build_*/*

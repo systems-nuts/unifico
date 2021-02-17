@@ -1,6 +1,6 @@
 
 CFLAGS := -O0 -ffunction-sections -fdata-sections -Xclang -disable-O0-optnone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone 
-OPT_FLAGS := -name-string-literals 
+OPT_FLAGS := -O0
 LLC_FLAGS := -O0
 
 ifeq "$(gcc -dumpmachine)" "x86_64-linux-gnu"
