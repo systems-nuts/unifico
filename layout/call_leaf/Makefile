@@ -12,7 +12,6 @@ ARM64_LIBGCC := $(shell dirname \
 # Tools
 # LD := ld.gold
 LD := /usr/local/popcorn/bin/x86_64-popcorn-linux-gnu-ld.gold
-#LD := ld.gold
 ALIGN := $(POPCORN)/bin/pyalign
 
 # Flags
@@ -32,8 +31,8 @@ ARM64_LDFLAGS := -m aarch64linux -L$(ARM64_POPCORN)/lib -L$(ARM64_LIBGCC) \
 
 # X86-64
 X86_64_BUILD       := build_x86-64
-X86_64_ALIGNED     := $(BIN)_x86-64_aligned
-X86_64_VANILLA     := $(BIN)_x86-64_vanilla
+X86_64_ALIGNED     := $(BIN)_x86-64_aligned.out
+X86_64_UNALIGNED   := $(BIN)_x86-64_unaligned.out
 X86_64_OBJ         := $(SRC:.c=_x86_64.o)
 X86_64_MAP         := $(X86_64_BUILD)/map.txt
 X86_64_LD_SCRIPT   := $(X86_64_BUILD)/aligned_linker_script_x86.x
@@ -41,8 +40,8 @@ X86_64_ALIGNED_MAP := $(X86_64_BUILD)/aligned_map.txt
 
 # Aarch64
 ARM64_BUILD       := build_aarch64
-ARM64_ALIGNED     := $(BIN)_aarch64_aligned
-ARM64_VANILLA     := $(BIN)_aarch64_vanilla
+ARM64_ALIGNED     := $(BIN)_aarch64_aligned.out
+ARM64_UNALIGNED   := $(BIN)_aarch64_unaligned.out
 ARM64_MAP         := $(ARM64_BUILD)/map.txt
 ARM64_LD_SCRIPT   := $(ARM64_BUILD)/aligned_linker_script_arm.x
 ARM64_ALIGNED_MAP := $(ARM64_BUILD)/aligned_map.txt
@@ -51,9 +50,16 @@ ARM64_ALIGNED_MAP := $(ARM64_BUILD)/aligned_map.txt
 #                                 Recipes                                     #
 ###############################################################################
 
+aligned: aligned-x86-64 aligned-aarch64
+unaligned: unaligned-x86-64 unaligned-aarch64
+
 aligned-x86-64: $(X86_64_ALIGNED)
-vanilla-x86-64: $(X86_64_VANILLA)
+unaligned-x86-64: $(X86_64_UNALIGNED)
 obj-x86-64:  	$(X86_64_OBJ)
+
+aligned-aarch64: $(ARM64_ALIGNED)
+unaligned-aarch64: $(ARM64_UNALIGNED)
+obj-aarch64:  	$(ARM64_OBJ)
 
 ######################################################
 
@@ -75,7 +81,7 @@ call_leaf_x86.o: call_leaf_x86_opt.ll
 	@echo " [LLC] $@ (x86-64)"
 	llc $(LLC_FLAGS) -filetype=obj call_leaf_x86_opt.ll -o call_leaf_x86.o
 
-call_leaf_x86_unaligned.out: call_leaf_x86.o
+$(X86_64_UNALIGNED): call_leaf_x86.o
 	@echo " [LD] $@ (x86-64 unaligned)"
 	$(LD) -o $@ $^ $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_MAP)
 
@@ -83,21 +89,21 @@ call_leaf_aarch64.o: call_leaf_x86_opt.ll
 	@echo " [LLC] $@ (aarch64)"
 	llc $(LLC_FLAGS) -march=aarch64 -filetype=obj call_leaf_x86_opt.ll -o call_leaf_aarch64.o
 
-call_leaf_aarch64_unaligned.out: call_leaf_aarch64.o
+$(ARM64_UNALIGNED): call_leaf_aarch64.o
 	@echo " [LD] $@ (aarch64 unaligned)"
 	$(LD) -o $@ $^ $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
 
-$(X86_64_LD_SCRIPT): call_leaf_x86_unaligned.out call_leaf_aarch64_unaligned.out
+$(X86_64_LD_SCRIPT): unaligned
 	@echo " [ALIGN] $@"
-	$(ALIGN) --compiler-inst /usr/local/popcorn --x86-bin call_leaf_x86_unaligned.out --arm-bin call_leaf_aarch64_unaligned.out --x86-map $(X86_64_MAP) --arm-map $(ARM64_MAP) --output-x86-ls $(X86_64_LD_SCRIPT) --output-arm-ls $(ARM64_LD_SCRIPT)
+	$(ALIGN) --compiler-inst /usr/local/popcorn --x86-bin $(X86_64_UNALIGNED) --arm-bin $(ARM64_UNALIGNED) --x86-map $(X86_64_MAP) --arm-map $(ARM64_MAP) --output-x86-ls $(X86_64_LD_SCRIPT) --output-arm-ls $(ARM64_LD_SCRIPT)
 
 $(ARM64_LD_SCRIPT): $(X86_64_LD_SCRIPT)
 
-call_leaf_x86_aligned.out: $(X86_64_LD_SCRIPT)
+$(X86_64_ALIGNED): $(X86_64_LD_SCRIPT)
 	@echo " [LD] $@ (x86-64 aligned)"
 	$(LD) -o $@ call_leaf_x86.o $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_ALIGNED_MAP) -T $<
 
-call_leaf_aarch64_aligned.out: $(ARM64_LD_SCRIPT)
+$(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	@echo " [LD] $@ (aarch64 aligned)"
 	$(LD) -o $@ call_leaf_aarch64.o $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_ALIGNED_MAP) -T $<
 
