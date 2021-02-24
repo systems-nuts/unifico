@@ -30,16 +30,11 @@ IR := $(SRC:.c=.ll)
 ###############################################################################
 # Linker and Flags
 ###############################################################################
-LD       := $(POPCORN)/bin/x86_64-popcorn-linux-gnu-ld.bfd
-ARM64_LD := $(POPCORN)/bin/aarch64-popcorn-linux-gnu-ld.bfd
+LD       := $(POPCORN)/bin/x86_64-popcorn-linux-gnu-ld.gold
+ARM64_LD := $(POPCORN)/bin/aarch64-popcorn-linux-gnu-ld.gold
 
 LDFLAGS := -z noexecstack -z relro --hash-style=gnu --build-id -static
 LIBS    := /lib/crt1.o \
-           /lib/libc.a \
-           /lib/libmigrate.a \
-           /lib/libstack-transform.a \
-           /lib/libelf.a \
-           /lib/libpthread.a \
            /lib/libc.a \
            /lib/libm.a
 
@@ -162,15 +157,6 @@ $(X86_64_ALIGNED): $(X86_64_LD_SCRIPT)
 	@echo " [LD] $@"
 	$(LD) -o $@ $(X86_64_OBJ) $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_ALIGNED_MAP) -T $<
 
-######################################################
-
-call_leaf.s: call_leaf.c
-	clang $(CFLAGS) -S -emit-llvm call_leaf.c -o call_leaf.ll
-	$(OPT) $(OPT_FLAGS) -S call_leaf.ll -o call_leaf_opt.ll
-	$(LLC) $(LLC_FLAGS) call_leaf_opt.ll -o call_leaf$(subst =,_,$(OPT_FLAGS))$(subst =,_,$(LLC_FLAGS)).s
-
-######################################################
-
 clean:
 	@echo " [CLEAN] $(ARM64_ALIGNED) $(ARM64_BUILD) $(X86_64_ALIGNED) \
 		$(X86_64_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.o"
@@ -180,3 +166,12 @@ clean:
 .PHONY: all clean \
         aligned aligned-aarch64 aligned-x86-64 \
         unaligned aligned-aarch64 aligned-x86-64
+
+######################################################
+
+call_leaf.s: call_leaf.c
+	clang $(CFLAGS) -S -emit-llvm call_leaf.c -o call_leaf.ll
+	$(OPT) $(OPT_FLAGS) -S call_leaf.ll -o call_leaf_opt.ll
+	$(LLC) $(LLC_FLAGS) call_leaf_opt.ll -o call_leaf$(subst =,_,$(OPT_FLAGS))$(subst =,_,$(LLC_FLAGS)).s
+
+######################################################
