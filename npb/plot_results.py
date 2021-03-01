@@ -174,6 +174,8 @@ def compare_experiments(dir1, dir2, out_plot, hue='Experiment', how='side'):
 
     exp1 = info1['experiment']
     exp2 = info2['experiment']
+    exp2 = 'remove 15 registers'
+    df2['Experiment'] = exp2
     flag = info1['flag']
 
     total_df = df1.append(df2, ignore_index=True)
@@ -186,16 +188,24 @@ def compare_experiments(dir1, dir2, out_plot, hue='Experiment', how='side'):
     df['% Overhead'] = df['Time'].combine(df2['Time'], lambda x1, x2: (x2 / x1 - 1) * 100)
     for bench in set(df['Benchmark']):
         plt.figure(figsize=(10, 5))
-        plt.subplot(1, 2, 2)
-        sns.boxplot(x='Threads', y='Time', hue='Experiment',
-                    data=total_df[(total_df['Benchmark'] == bench)],
-                    palette='Set3')
+        plt.subplot(1, 2, 1)
+        sns.set_context(rc={"font.size": 14, "axes.titlesize": 24, "axes.labelsize": 16})
+        # sns.boxplot(x='Threads', y='Time', hue='Experiment',
+        #             data=total_df[(total_df['Benchmark'] == bench)],
+        #             palette='Set3')
+        sns.stripplot(x='Threads', y='Time', hue='Experiment',
+                      data=total_df[(total_df['Benchmark'] == bench)],
+                      size=6, color=".3", linewidth=0,
+                      palette='Set1')
         plt.legend(loc=1, prop={'size': 8})
         plt.ylabel('Time (s)')
+        plt.legend(fontsize='medium', title_fontsize='20')
         plt.subplot(1, 2, 2)
+        sns.set_context(rc={"font.size": 14, "axes.titlesize": 24, "axes.labelsize": 16})
         sns.boxplot(x='Threads', y='% Overhead', hue='Class',
-                    data=df[(df['Benchmark'] == bench)],
-                    palette='Set3')
+                        data=df[(df['Benchmark'] == bench)],
+                        palette='Set3')
+        plt.legend([], [], frameon=False)
         bench_out_plot = '{}_{}'.format(out_plot, bench)
         title = '{} - "{}" vs "{}" {}'.format(bench, exp2, exp1, flag)
         plt.suptitle(title)
@@ -204,19 +214,5 @@ def compare_experiments(dir1, dir2, out_plot, hue='Experiment', how='side'):
 
 
 if __name__ == '__main__':
-
-    compare_experiments('results/b779a20', 'results/c2660ad', 'reports/plots/sole_remove_8_O0_B', hue='Experiment', how='side')
-    compare_experiments('results/1496895', 'results/b34df8c', 'reports/plots/sole_remove_8_O1_B', hue='Experiment', how='side')
-    compare_experiments('results/b920081', 'results/b33c03f', 'reports/plots/sole_remove_8_O2_B', hue='Experiment', how='side')
-    compare_experiments('results/fdb187b', 'results/e7547d1', 'reports/plots/sole_remove_8_O3_B', hue='Experiment', how='side')
-
-    compare_experiments('results/c2660ad', 'results/remove_14_regs/096c020', 'reports/plots/sole_remove_6_O0_B', hue='Experiment', how='side')
-    compare_experiments('results/b34df8c', 'results/remove_14_regs/ca1f7d6', 'reports/plots/sole_remove_6_O1_B', hue='Class', how='overhead')
-    compare_experiments('results/b33c03f', 'results/remove_14_regs/1d570f6', 'reports/plots/sole_remove_6_O2_B', hue='Class', how='overhead')
-    compare_experiments('results/e7547d1', 'results/remove_14_regs/9776cd6', 'reports/plots/sole_remove_6_O3_B', hue='Class', how='overhead')
-
-    compare_experiments('results/b779a20', 'results/remove_14_regs/096c020', 'reports/plots/sole_remove_14_O0_B', hue='Experiment', how='side')
-    compare_experiments('results/1496895', 'results/remove_14_regs/ca1f7d6', 'reports/plots/sole_remove_14_O1_B', hue='Class', how='overhead')
-    compare_experiments('results/b920081', 'results/remove_14_regs/1d570f6', 'reports/plots/sole_remove_14_O2_B', hue='Class', how='overhead')
-    compare_experiments('results/fdb187b', 'results/remove_14_regs/9776cd6', 'reports/plots/sole_remove_14_O3_B', hue='Class', how='overhead')
-
+    compare_experiments('results/1496895', 'results/remove_14_regs/ca1f7d6',
+                        'reports/plots/sole_remove_15_O1_B_large_font', hue='Class', how='overhead')

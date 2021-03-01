@@ -1,0 +1,37 @@
+There are 28 section headers, starting at offset 0x4765a0:
+
+Section Headers:
+  [Nr] Name              Type            Address          Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            0000000000000000 000000 000000 00      0   0  0
+  [ 1] .text             PROGBITS        0000000000500000 100000 0211c0 00  AX  0   0 1048576
+  [ 2] .rodata           PROGBITS        0000000000600000 200000 004790 00   A  0   0 1048576
+  [ 3] .eh_frame         PROGBITS        0000000000604790 204790 000344 00   A  0   0  8
+  [ 4] .data             PROGBITS        0000000000700000 300000 0011e8 00  WA  0   0 1048576
+  [ 5] .bss              NOBITS          0000000000800000 400000 024000 00  WA  0   0 1048576
+  [ 6] .tdata            NOBITS          0000000000900000 400000 001000 00 WAT  0   0 1048576
+  [ 7] .tbss             NOBITS          0000000000a00000 400000 0df0b0 00 WAT  0   0 1048576
+  [ 8] .init_array       INIT_ARRAY      0000000000a00000 400000 000028 08  WA  0   0  8
+  [ 9] .fini_array       FINI_ARRAY      0000000000a00028 400028 000008 08  WA  0   0  8
+  [10] .got              PROGBITS        0000000000a00030 400030 000040 08  WA  0   0  8
+  [11] .got.plt          PROGBITS        0000000000a00fe8 400fe8 000018 08  WA  0   0  8
+  [12] .llvm_stackmaps   PROGBITS        0000000000a01000 401000 0008c8 00   A  0   0 4096
+  [13] .comment          PROGBITS        0000000000000000 4018c8 000068 01  MS  0   0  1
+  [14] .stack_transform.unwind PROGBITS        0000000000000000 401930 0000c8 00      0   0  4
+  [15] .stack_transform.unwind_arange PROGBITS        0000000000000000 4019f8 0000f0 00      0   0  8
+  [16] .debug_aranges    PROGBITS        0000000000000000 401ae8 000060 00      0   0  1
+  [17] .debug_info       PROGBITS        0000000000000000 401b48 01e13a 00      0   0  1
+  [18] .debug_abbrev     PROGBITS        0000000000000000 41fc82 007089 00      0   0  1
+  [19] .debug_line       PROGBITS        0000000000000000 426d0b 00ecaf 00      0   0  1
+  [20] .debug_frame      PROGBITS        0000000000000000 4359c0 003250 00      0   0  8
+  [21] .debug_str        PROGBITS        0000000000000000 438c10 0032e6 01  MS  0   0  1
+  [22] .debug_loc        PROGBITS        0000000000000000 43bef6 023862 00      0   0  1
+  [23] .debug_macinfo    PROGBITS        0000000000000000 45f758 000078 00      0   0  1
+  [24] .debug_ranges     PROGBITS        0000000000000000 45f7d0 003900 00      0   0  1
+  [25] .symtab           SYMTAB          0000000000000000 4630d0 010068 18     26 2273  8
+  [26] .strtab           STRTAB          0000000000000000 473138 00332c 00      0   0  1
+  [27] .shstrtab         STRTAB          0000000000000000 476464 000136 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  p (processor specific)

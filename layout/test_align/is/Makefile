@@ -157,7 +157,7 @@ clean:
 
 %.ll: %.c
 	@echo " [IR] $<"
-	@$(CC) $(HET_CFLAGS) -S -emit-llvm $(ARM64_INC) -o $@ $<
+	$(CC) $(HET_CFLAGS) -S -emit-llvm $(ARM64_INC) -o $@ $<
 
 ###########
 # AArch64 #
@@ -165,22 +165,22 @@ clean:
 
 %_aarch64.o: %.c
 	@echo " [CC] $<"
-	@$(CC) $(HET_CFLAGS) -c $(ARM64_INC) -o $(<:.c=.o) $<
+	$(CC) $(HET_CFLAGS) -c $(ARM64_INC) -o $(<:.c=.o) $<
 
 $(ARM64_VANILLA): $(ARM64_BUILD)/.dir $(ARM64_OBJ)
 	@echo " [LD] $@ (vanilla)"
-	@$(ARM64_LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
+	$(ARM64_LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
 
 $(ARM64_LD_SCRIPT): $(ARM64_VANILLA) $(X86_64_VANILLA) 
 	@echo " [ALIGN] $@"
-	@$(ALIGN) --compiler-inst $(POPCORN) \
+	$(ALIGN) --compiler-inst $(POPCORN) \
 		--x86-bin $(X86_64_VANILLA) --arm-bin $(ARM64_VANILLA) \
 		--x86-map $(X86_64_MAP) --arm-map $(ARM64_MAP) \
 		--output-x86-ls $(X86_64_LD_SCRIPT)	--output-arm-ls $(ARM64_LD_SCRIPT)
 
 $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	@echo " [LD] $@ (aligned)"
-	@$(ARM64_LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map \
+	$(ARM64_LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map \
 		$(ARM64_ALIGNED_MAP) -T $<
 
 ##########
@@ -191,24 +191,24 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 
 $(X86_64_VANILLA): $(X86_64_BUILD)/.dir $(X86_64_OBJ)
 	@echo " [LD] $@ (vanilla)"
-	@$(LD) -o $@ $(X86_64_OBJ) $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_MAP)
+	$(LD) -o $@ $(X86_64_OBJ) $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_MAP)
 
 $(X86_64_LD_SCRIPT): $(ARM64_LD_SCRIPT)
 	@echo " [ALIGN] $@"
 
 $(X86_64_ALIGNED): $(X86_64_LD_SCRIPT)
 	@echo " [LD] $@ (aligned)"
-	@$(LD) -o $@ $(X86_64_OBJ) $(LDFLAGS) $(X86_64_LDFLAGS) \
+	$(LD) -o $@ $(X86_64_OBJ) $(LDFLAGS) $(X86_64_LDFLAGS) \
 		-Map $(X86_64_ALIGNED_MAP) -T $<
 
 # Stack-depth builds
 $(X86_64_SD_BUILD)/%.o: %.c
 	@echo " [CC (x86-64)] $< (stack depth)"
-	@$(CC) -target $(X86_64_TARGET) $(CFLAGS) -finstrument-functions -c $(X86_64_INC) -o $@ $<
+	$(CC) -target $(X86_64_TARGET) $(CFLAGS) -finstrument-functions -c $(X86_64_INC) -o $@ $<
 
 $(X86_64_SD): $(X86_64_SD_BUILD)/.dir $(X86_64_SD_OBJ)
 	@echo " [LD] $@ (stack depth)"
-	@$(CXX) -static -L$(POPCORN)/lib -o $@ $(X86_64_SD_OBJ) -lstack-depth
+	$(CXX) -static -L$(POPCORN)/lib -o $@ $(X86_64_SD_OBJ) -lstack-depth
 
 .PHONY: all post_process compress stack-depth clean \
         aligned aligned-aarch64 aligned-x86-64 \

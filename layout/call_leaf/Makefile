@@ -30,8 +30,8 @@ IR := $(SRC:.c=.ll)
 ###############################################################################
 # Linker and Flags
 ###############################################################################
-LD       := $(POPCORN)/bin/x86_64-popcorn-linux-gnu-ld.gold
-ARM64_LD := $(POPCORN)/bin/aarch64-popcorn-linux-gnu-ld.gold
+LD       := $(POPCORN)/bin/x86_64-popcorn-linux-gnu-ld.bfd
+ARM64_LD := $(POPCORN)/bin/aarch64-popcorn-linux-gnu-ld.bfd
 
 LDFLAGS := -z noexecstack -z relro --hash-style=gnu --build-id -static
 LIBS    := /lib/crt1.o \
