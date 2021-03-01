@@ -1,11 +1,17 @@
 #include <stdio.h>
 #include <inttypes.h>
 
+int y = 8;
+int z;
+static int v = 10;
+static int w = 11;
+
 int add_7(int a, int b, int c, int d,
 		  int e, int f, int g)
 {
 	int x;
-	x =  a + b + c + d + e + f + g;
+	z = 9;
+	x =  a + b + c + d + e + f + g + y + z + v + w;
 	return x;
 }
 
