@@ -33,8 +33,8 @@ HET_CFLAGS := $(CFLAGS) -popcorn-migratable -fno-common \
 IR := $(SRC:.c=.ll)
 
 # Linker
-LD      := $(POPCORN)/bin/x86_64-popcorn-linux-gnu-ld.bfd
-ARM64_LD := $(POPCORN)/bin/aarch64-popcorn-linux-gnu-ld.bfd
+LD      := $(POPCORN)/bin/x86_64-popcorn-linux-gnu-ld.gold
+ARM64_LD := $(POPCORN)/bin/aarch64-popcorn-linux-gnu-ld.gold
 LDFLAGS := -z noexecstack -z relro --hash-style=gnu --build-id -static
 LIBS    := /lib/crt1.o \
            /lib/libc.a \
