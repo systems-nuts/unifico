@@ -1,215 +1,191 @@
 ###############################################################################
-#                                                                             #
-#                                  FIXME's                                    #
-#                                                                             #
-#   Fill in these variables with system & application-specific information.   #
-#                                                                             #
+# FIXME's
 ###############################################################################
+POPCORN 	   := /usr/local/popcorn
 
-# FIXME directory of Popcorn compiler installation
-POPCORN := /usr/local/popcorn
-
-# FIXME directory of libgcc & libgcc_eh for aarch64 compiler
-ARM64_LIBGCC := $(shell dirname \
-                $(shell aarch64-linux-gnu-gcc -print-libgcc-file-name))
+# Check if LLVM Toolchain is set in the environment
+ifeq ($(LLVM_TOOLCHAIN),)
+LLVM_TOOLCHAIN := /usr/local/popcorn/bin
+endif
 
 BIN := call_leaf
+SRC := $(BIN).c
 
-SRC := call_leaf.c
+PYTHON = python3.7
 
-APP_DIR := $(shell pwd)
+# Lib musl directories per architecture
+X86_64_MUSL	:= ~/musl-cross-make/output/x86_64-linux-musl
+ARM64_MUSL  := ~/musl-cross-make/output/aarch64-linux-musl
+
+# Directory of libgcc & libgcc_eh for aarch64 compiler
+ARM64_LIBGCC   := $(shell dirname \
+	                $(shell aarch64-linux-gnu-gcc -print-libgcc-file-name))
 
 ###############################################################################
-#                  Compiler toolchain & command-line flags                    #
+# LLVM Tools and Flags
 ###############################################################################
+CC  := $(LLVM_TOOLCHAIN)/clang
+OPT := $(LLVM_TOOLCHAIN)/opt
+LLC := $(LLVM_TOOLCHAIN)/llc
 
-# Compiler
-CC         := $(POPCORN)/bin/clang
-CXX        := $(POPCORN)/bin/clang++
-CFLAGS     := -O0 -Wall -nostdinc -g
-HET_CFLAGS := $(CFLAGS) -popcorn-migratable -fno-common \
-              -ftls-model=initial-exec
+CFLAGS 		:= -Xclang -disable-O0-optnone #-fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone
+CFLAGS 		+= -O0 -Wall -nostdinc
+HET_CFLAGS 	:= $(CFLAGS) -fno-common -ftls-model=initial-exec
+OPT_FLAGS 	:= -name-string-literals -static-var-sections
+LLC_FLAGS 	:= -function-sections -data-sections
+#LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
 
 IR := $(SRC:.c=.ll)
 
-# Linker
-LD      := $(POPCORN)/bin/x86_64-popcorn-linux-gnu-ld.gold
+###############################################################################
+# Linker and Flags
+###############################################################################
+LD       := $(POPCORN)/bin/x86_64-popcorn-linux-gnu-ld.gold
 ARM64_LD := $(POPCORN)/bin/aarch64-popcorn-linux-gnu-ld.gold
+#LD       := ~/musl-cross-make/output/x86_64-linux-musl/bin/ld
+#ARM64_LD := ~/musl-cross-make/output/aarch64-linux-musl/bin/ld
+#LD       := ld.gold
+#ARM64_LD := arm-linux-gnueabihf-ld.gold
+
 LDFLAGS := -z noexecstack -z relro --hash-style=gnu --build-id -static
 LIBS    := /lib/crt1.o \
            /lib/libc.a \
-           /lib/libmigrate.a \
-           /lib/libstack-transform.a \
-           /lib/libelf.a \
-           /lib/libpthread.a \
-           /lib/libc.a \
            /lib/libm.a
 
-LIBGCC  := --start-group -lgcc -lgcc_eh --end-group
+LIBGCC := --start-group -lgcc -lgcc_eh --end-group
 
+###############################################################################
 # Alignment
-ALIGN          := $(POPCORN)/bin/pyalign
+###############################################################################
+ALIGN 		:= $(POPCORN)/bin/pyalign
+ALIGN_CHECK := $(POPCORN)/bin/check-align.py
 
-# Post-processing & checking
-POST_PROCESS   := $(POPCORN)/bin/gen-stackinfo
-COMPRESS       := $(POPCORN)/bin/compress
-ALIGN_CHECK    := $(POPCORN)/bin/check-align.py
-STACKMAP_CHECK := $(POPCORN)/bin/check-stackmaps
+###############################################################################
+# X86-64
+###############################################################################
+X86_64_POPCORN     := $(POPCORN)/x86_64
+X86_64_BUILD       := build_x86-64
+X86_64_ALIGNED     := $(BIN)_x86-64_aligned.out
+X86_64_UNALIGNED   := $(BIN)_x86-64_unaligned.out
+X86_64_OBJ         := $(SRC:.c=_x86-64.o)
+X86_64_MAP         := $(X86_64_BUILD)/map.txt
+X86_64_LD_SCRIPT   := $(X86_64_BUILD)/aligned_linker_script_x86.x
+X86_64_ALIGNED_MAP := $(X86_64_BUILD)/aligned_map.txt
 
-###########
-# AArch64 #
-###########
+X86_64_TARGET  := x86_64-linux-gnu
+X86_64_INC     := -isystem $(X86_64_MUSL)/include # FIXME
+X86_64_LDFLAGS := -m elf_x86_64 -L$(X86_64_MUSL)/lib \
+                  $(addprefix $(X86_64_MUSL),$(LIBS)) \
+                  --start-group --end-group
 
-# Locations
-ARM64_POPCORN := $(POPCORN)/aarch64
-ARM64_BUILD   := build_aarch64
-
-# Generated files
-ARM64_ALIGNED     := $(BIN)_aarch64
-ARM64_VANILLA     := $(ARM64_BUILD)/$(ARM64_ALIGNED)
+###############################################################################
+# Aarch64
+###############################################################################
+ARM64_POPCORN 	  := $(POPCORN)/aarch64
+ARM64_BUILD       := build_aarch64
+ARM64_ALIGNED     := $(BIN)_aarch64_aligned.out
+ARM64_UNALIGNED   := $(BIN)_aarch64_unaligned.out
 ARM64_OBJ         := $(SRC:.c=_aarch64.o)
 ARM64_MAP         := $(ARM64_BUILD)/map.txt
 ARM64_LD_SCRIPT   := $(ARM64_BUILD)/aligned_linker_script_arm.x
 ARM64_ALIGNED_MAP := $(ARM64_BUILD)/aligned_map.txt
 
-# Flags
 ARM64_TARGET  := aarch64-linux-gnu
-ARM64_INC     := -isystem $(ARM64_POPCORN)/include
-ARM64_LDFLAGS := -m aarch64linux -L$(ARM64_POPCORN)/lib -L$(ARM64_LIBGCC) \
-                 $(addprefix $(ARM64_POPCORN),$(LIBS)) $(LIBGCC)
-
-##########
-# x86-64 #
-##########
-
-# Locations
-X86_64_POPCORN  := $(POPCORN)/x86_64
-X86_64_BUILD    := build_x86-64
-X86_64_SD_BUILD := sd_x86-64
-
-# Generated files
-X86_64_ALIGNED     := $(BIN)_x86-64
-X86_64_VANILLA     := $(X86_64_BUILD)/$(X86_64_ALIGNED)
-X86_64_OBJ         := $(SRC:.c=_x86_64.o)
-X86_64_MAP         := $(X86_64_BUILD)/map.txt
-X86_64_SD          := $(X86_64_SD_BUILD)/$(X86_64_ALIGNED)
-X86_64_SD_OBJ      := $(addprefix $(X86_64_SD_BUILD)/,$(SRC:.c=.o))
-X86_64_LD_SCRIPT   := $(X86_64_BUILD)/aligned_linker_script_x86.x
-X86_64_ALIGNED_MAP := $(X86_64_BUILD)/aligned_map.txt
-
-# Flags
-X86_64_TARGET  := x86_64-linux-gnu
-X86_64_INC     := -isystem $(X86_64_POPCORN)/include
-X86_64_LDFLAGS := -m elf_x86_64 -L$(X86_64_POPCORN)/lib \
-                  $(addprefix $(X86_64_POPCORN),$(LIBS)) \
-                  --start-group --end-group
+ARM64_INC     := -isystem $(ARM64_MUSL)/include
+ARM64_LDFLAGS := -m aarch64linux -L$(ARM64_MUSL)/lib -L$(ARM64_LIBGCC) \
+	                 $(addprefix $(ARM64_MUSL),$(LIBS)) $(LIBGCC)
 
 ###############################################################################
 #                                 Recipes                                     #
 ###############################################################################
 
-all: post_process
+all: aligned
 
 ir: $(IR)
 
-check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
-	@echo " [CHECK] Checking stackmaps for $^"
-	@$(STACKMAP_CHECK) -a $(ARM64_ALIGNED) -x $(X86_64_ALIGNED)
-	@echo " [CHECK] Checking alignment for $^"
-	@$(ALIGN_CHECK) $(ARM64_ALIGNED) $(X86_64_ALIGNED)
+aligned: aligned-x86-64 aligned-aarch64
+unaligned: unaligned-x86-64 unaligned-aarch64
 
-post_process: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
-	@echo " [POST_PROCESS] $^"
-	@$(POST_PROCESS) -f $(ARM64_ALIGNED)
-	@$(POST_PROCESS) -f $(X86_64_ALIGNED)
-
-compress: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
-	@echo " [COMPRESS] $(ARM64_ALIGNED)"
-	@$(COMPRESS) -f $(ARM64_ALIGNED)
-	@echo " [COMPRESS] $(X86_64_ALIGNED)"
-	@$(COMPRESS) -f $(X86_64_ALIGNED)
-
-stack-depth: $(X86_64_SD)
-
-aligned: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
-aligned-aarch64: $(ARM64_ALIGNED)
 aligned-x86-64: $(X86_64_ALIGNED)
+unaligned-x86-64: $(X86_64_UNALIGNED)
+obj-x86-64:  	$(X86_64_OBJ)
 
-vanilla: $(ARM64_VANILLA) $(X86_64_VANILLA)
-vanilla-aarch64: $(ARM64_VANILLA)
-vanilla-x86-64: $(X86_64_VANILLA)
-
-clean:
-	@echo " [CLEAN] $(ARM64_ALIGNED) $(ARM64_BUILD) $(X86_64_ALIGNED) \
-		$(X86_64_BUILD) $(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) \
-		$(ARM64_LD_SCRIPT) $(ALIGN_WORKDIR) *.ll *.o"
-	@rm -rf $(ARM64_ALIGNED) $(ARM64_BUILD) $(X86_64_ALIGNED) $(X86_64_BUILD) \
-		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.o
-
-%.dir:
-	@echo " [MKDIR] $*"
-	@mkdir -p $*
-	@touch $@
+aligned-aarch64: $(ARM64_ALIGNED)
+unaligned-aarch64: $(ARM64_UNALIGNED)
+obj-aarch64:  	$(ARM64_OBJ)
 
 ##########
 # Common #
 ##########
 
 %.ll: %.c
-	@echo " [IR] $<"
-	$(CC) $(HET_CFLAGS) -S -emit-llvm $(ARM64_INC) -o $@ $<
+	@echo " [IR] $@"
+	$(CC) $(HET_CFLAGS) -g -S -emit-llvm $(ARM64_INC) -o $@ $<
+	# Remove the x86-64-related information
+	sed -e "s/\"target-cpu\"\=\"x86-64\"\ \"target-features\"\=\"+cx8,+fxsr,+mmx,+sse,+sse2,+x87\"//g" -i.backup $@
+	# Make directories
+	mkdir -p $(X86_64_BUILD) $(ARM64_BUILD)
+
+%_opt.ll: %.ll
+	@echo " [OPT] $@"
+	$(OPT) $(OPT_FLAGS) -S -o $@ $<
 
 ###########
 # AArch64 #
 ###########
 
-%_aarch64.o: %.c
-	@echo " [CC] $<"
-	$(CC) $(HET_CFLAGS) -c $(ARM64_INC) -o $(<:.c=.o) $<
+%_aarch64.o: %_opt.ll
+	@echo " [LLC] $@"
+	$(LLC) $(LLC_FLAGS) $(HET_FLAGS) -march=aarch64 -filetype=obj -o $(<:_opt.ll=_aarch64.o) $<
 
-$(ARM64_VANILLA): $(ARM64_BUILD)/.dir $(ARM64_OBJ)
-	@echo " [LD] $@ (vanilla)"
-	$(ARM64_LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
+$(ARM64_UNALIGNED): $(ARM64_OBJ)
+	@echo " [LD] $@"
+	$(ARM64_LD) -o $@ $< $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
 
-$(ARM64_LD_SCRIPT): $(ARM64_VANILLA) $(X86_64_VANILLA) 
+$(ARM64_LD_SCRIPT): $(X86_64_LD_SCRIPT)
 	@echo " [ALIGN] $@"
-	$(ALIGN) --compiler-inst $(POPCORN) \
-		--x86-bin $(X86_64_VANILLA) --arm-bin $(ARM64_VANILLA) \
-		--x86-map $(X86_64_MAP) --arm-map $(ARM64_MAP) \
-		--output-x86-ls $(X86_64_LD_SCRIPT)	--output-arm-ls $(ARM64_LD_SCRIPT)
 
 $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
-	@echo " [LD] $@ (aligned)"
-	$(ARM64_LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map \
-		$(ARM64_ALIGNED_MAP) -T $<
+	@echo " [LD] $@"
+	$(ARM64_LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_ALIGNED_MAP) -T $<
 
 ##########
 # x86-64 #
 ##########
 
-%_x86_64.o: %_aarch64.o
+%_x86-64.o: %_opt.ll
+	@echo " [LLC] $@"
+	$(LLC) $(LLC_FLAGS) $(HET_FLAGS) -march=x86-64 -filetype=obj -o $(<:_opt.ll=_x86-64.o) $<
 
-$(X86_64_VANILLA): $(X86_64_BUILD)/.dir $(X86_64_OBJ)
-	@echo " [LD] $@ (vanilla)"
-	$(LD) -o $@ $(X86_64_OBJ) $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_MAP)
+$(X86_64_UNALIGNED): $(X86_64_OBJ)
+	@echo " [LD] $@"
+	$(LD) -o $@ $< $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_MAP)
 
-$(X86_64_LD_SCRIPT): $(ARM64_LD_SCRIPT)
+$(X86_64_LD_SCRIPT): $(ARM64_UNALIGNED) $(X86_64_UNALIGNED)
 	@echo " [ALIGN] $@"
+	$(ALIGN) --compiler-inst $(POPCORN) \
+		--x86-bin $(X86_64_UNALIGNED) --arm-bin $(ARM64_UNALIGNED) \
+		--x86-map $(X86_64_MAP) --arm-map $(ARM64_MAP) \
+		--output-x86-ls $(X86_64_LD_SCRIPT) --output-arm-ls $(ARM64_LD_SCRIPT)
 
 $(X86_64_ALIGNED): $(X86_64_LD_SCRIPT)
-	@echo " [LD] $@ (aligned)"
-	$(LD) -o $@ $(X86_64_OBJ) $(LDFLAGS) $(X86_64_LDFLAGS) \
-		-Map $(X86_64_ALIGNED_MAP) -T $<
+	@echo " [LD] $@"
+	$(LD) -o $@ $(X86_64_OBJ) $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_ALIGNED_MAP) -T $<
 
-# Stack-depth builds
-$(X86_64_SD_BUILD)/%.o: %.c
-	@echo " [CC (x86-64)] $< (stack depth)"
-	$(CC) -target $(X86_64_TARGET) $(CFLAGS) -finstrument-functions -c $(X86_64_INC) -o $@ $<
+check_un: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
+	@echo " [CHECK] Checking unalignment for $^"
+	$(PYTHON) $(ALIGN_CHECK) $(ARM64_UNALIGNED) $(X86_64_UNALIGNED)
 
-$(X86_64_SD): $(X86_64_SD_BUILD)/.dir $(X86_64_SD_OBJ)
-	@echo " [LD] $@ (stack depth)"
-	$(CXX) -static -L$(POPCORN)/lib -o $@ $(X86_64_SD_OBJ) -lstack-depth
+check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
+	@echo " [CHECK] Checking alignment for $^"
+	$(PYTHON) $(ALIGN_CHECK) $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 
-.PHONY: all post_process compress stack-depth clean \
+clean:
+	@echo " [CLEAN] $(ARM64_ALIGNED) $(ARM64_BUILD) $(X86_64_ALIGNED) \
+		$(X86_64_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.o"
+	@rm -rf $(ARM64_ALIGNED) $(ARM64_BUILD) $(X86_64_ALIGNED) $(X86_64_BUILD) \
+		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.o
+
+.PHONY: all check clean \
         aligned aligned-aarch64 aligned-x86-64 \
-        vanilla vanilla-aarch64 vanilla-x86-64
+        unaligned aligned-aarch64 aligned-x86-64
