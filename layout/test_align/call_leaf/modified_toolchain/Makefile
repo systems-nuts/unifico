@@ -3,10 +3,8 @@
 ###############################################################################
 POPCORN 	   := /usr/local/popcorn
 
-# Check if LLVM Toolchain is set in the environment
-ifeq ($(LLVM_TOOLCHAIN),)
-LLVM_TOOLCHAIN := /usr/local/popcorn/bin
-endif
+LLVM_TOOLCHAIN := ~/llvm_9/toolchain/bin
+#LLVM_TOOLCHAIN := /usr/local/popcorn/bin
 
 BIN := call_leaf
 SRC := $(BIN).c
@@ -30,7 +28,7 @@ LLC := $(LLVM_TOOLCHAIN)/llc
 
 CFLAGS 		:= -Xclang -disable-O0-optnone #-fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone
 CFLAGS 		+= -O0 -Wall -nostdinc
-HET_CFLAGS 	:= $(CFLAGS) -fno-common -ftls-model=initial-exec
+HET_CFLAGS 	:= $(CFLAGS) -fno-common -ftls-model=initial-exec #-popcorn-alignment
 OPT_FLAGS 	:= -name-string-literals -static-var-sections
 LLC_FLAGS 	:= -function-sections -data-sections
 #LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
