@@ -63,9 +63,9 @@ ALIGN_CHECK := $(POPCORN)/bin/check-align.py
 ###############################################################################
 X86_64_POPCORN     := $(POPCORN)/x86_64
 X86_64_BUILD       := build_x86-64
-X86_64_ALIGNED     := $(BIN)_x86-64_aligned.out
-X86_64_UNALIGNED   := $(BIN)_x86-64_unaligned.out
-X86_64_OBJ         := $(SRC:.c=_x86-64.o)
+X86_64_ALIGNED     := $(BIN)_x86_64_aligned.out
+X86_64_UNALIGNED   := $(BIN)_x86_64_unaligned.out
+X86_64_OBJ         := $(SRC:.c=_x86_64.o)
 X86_64_MAP         := $(X86_64_BUILD)/map.txt
 X86_64_LD_SCRIPT   := $(X86_64_BUILD)/aligned_linker_script_x86.x
 X86_64_ALIGNED_MAP := $(X86_64_BUILD)/aligned_map.txt
@@ -151,9 +151,9 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 # x86-64 #
 ##########
 
-%_x86-64.o: %_opt.ll
+%_x86_64.o: %_opt.ll
 	@echo " [LLC] $@"
-	$(LLC) $(LLC_FLAGS) $(HET_FLAGS) -march=x86-64 -filetype=obj -o $(<:_opt.ll=_x86-64.o) $<
+	$(LLC) $(LLC_FLAGS) $(HET_FLAGS) -march=x86-64 -filetype=obj -o $(<:_opt.ll=_x86_64.o) $<
 
 $(X86_64_UNALIGNED): $(X86_64_OBJ)
 	@echo " [LD] $@"
