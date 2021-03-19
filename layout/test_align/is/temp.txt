@@ -1,4 +1,0 @@
-+ aarch64-linux-gnu-gcc -print-libgcc-file-name
-+ dirname /usr/lib/gcc-cross/aarch64-linux-gnu/9/libgcc.a
-+ pwd
-make: *** No rule to make target '2'.  Stop.

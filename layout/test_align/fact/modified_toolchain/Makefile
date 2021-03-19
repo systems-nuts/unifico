@@ -6,7 +6,7 @@ POPCORN 	   := /usr/local/popcorn
 LLVM_TOOLCHAIN := ~/llvm_9/toolchain/bin
 #LLVM_TOOLCHAIN := /usr/local/popcorn/bin
 
-BIN := call_leaf
+BIN := fact
 SRC := $(BIN).c
 
 PYTHON = python3.7
@@ -27,11 +27,11 @@ OPT := $(LLVM_TOOLCHAIN)/opt
 LLC := $(LLVM_TOOLCHAIN)/llc
 
 CFLAGS 		:= -Xclang -disable-O0-optnone #-fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone
-CFLAGS 		+= -O0 -Wall -nostdinc -fno-builtin-memcpy
+CFLAGS 		+= -O0 -Wall -nostdinc
 HET_CFLAGS 	:= $(CFLAGS) -fno-common -ftls-model=initial-exec #-popcorn-alignment
 OPT_FLAGS 	:= -name-string-literals -static-var-sections
 LLC_FLAGS 	:= -function-sections -data-sections
-LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
+#LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
 
 IR := $(SRC:.c=.ll)
 
@@ -45,7 +45,7 @@ ARM64_LD := $(POPCORN)/bin/aarch64-popcorn-linux-gnu-ld.gold
 #LD       := ld.gold
 #ARM64_LD := arm-linux-gnueabihf-ld.gold
 
-LDFLAGS := -z noexecstack -z relro --hash-style=gnu --build-id -static 
+LDFLAGS := -z noexecstack -z relro --hash-style=gnu --build-id -static
 LIBS    := /lib/crt1.o \
            /lib/libc.a \
            /lib/libm.a
@@ -138,14 +138,14 @@ obj-aarch64:  	$(ARM64_OBJ)
 
 $(ARM64_UNALIGNED): $(ARM64_OBJ)
 	@echo " [LD] $@"
-	$(LD) -o $@ $< $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
+	$(ARM64_LD) -o $@ $< $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
 
 $(ARM64_LD_SCRIPT): $(X86_64_LD_SCRIPT)
 	@echo " [ALIGN] $@"
 
 $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	@echo " [LD] $@"
-	$(LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_ALIGNED_MAP) -T $<
+	$(ARM64_LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_ALIGNED_MAP) -T $<
 
 ##########
 # x86-64 #
@@ -182,7 +182,7 @@ clean:
 	@echo " [CLEAN] $(ARM64_ALIGNED) $(ARM64_BUILD) $(X86_64_ALIGNED) \
 		$(X86_64_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.o"
 	@rm -rf $(ARM64_ALIGNED) $(ARM64_BUILD) $(X86_64_ALIGNED) $(X86_64_BUILD) \
-		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.o *.out
+		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.o
 
 .PHONY: all check clean \
         aligned aligned-aarch64 aligned-x86-64 \

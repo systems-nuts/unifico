@@ -27,11 +27,11 @@ OPT := $(LLVM_TOOLCHAIN)/opt
 LLC := $(LLVM_TOOLCHAIN)/llc
 
 CFLAGS 		:= -Xclang -disable-O0-optnone #-fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone
-CFLAGS 		+= -O0 -Wall -nostdinc -fno-builtin-memcpy
+CFLAGS 		+= -O0 -Wall -nostdinc
 HET_CFLAGS 	:= $(CFLAGS) -fno-common -ftls-model=initial-exec #-popcorn-alignment
 OPT_FLAGS 	:= -name-string-literals -static-var-sections
 LLC_FLAGS 	:= -function-sections -data-sections
-LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
+#LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
 
 IR := $(SRC:.c=.ll)
 
@@ -45,7 +45,7 @@ ARM64_LD := $(POPCORN)/bin/aarch64-popcorn-linux-gnu-ld.gold
 #LD       := ld.gold
 #ARM64_LD := arm-linux-gnueabihf-ld.gold
 
-LDFLAGS := -z noexecstack -z relro --hash-style=gnu --build-id -static 
+LDFLAGS := -z noexecstack -z relro --hash-style=gnu --build-id -static
 LIBS    := /lib/crt1.o \
            /lib/libc.a \
            /lib/libm.a
@@ -71,9 +71,9 @@ X86_64_LD_SCRIPT   := $(X86_64_BUILD)/aligned_linker_script_x86.x
 X86_64_ALIGNED_MAP := $(X86_64_BUILD)/aligned_map.txt
 
 X86_64_TARGET  := x86_64-linux-gnu
-X86_64_INC     := -isystem $(X86_64_POPCORN)/include # FIXME
-X86_64_LDFLAGS := -m elf_x86_64 -L$(X86_64_POPCORN)/lib \
-                  $(addprefix $(X86_64_POPCORN),$(LIBS)) \
+X86_64_INC     := -isystem $(X86_64_MUSL)/include # FIXME
+X86_64_LDFLAGS := -m elf_x86_64 -L$(X86_64_MUSL)/lib \
+                  $(addprefix $(X86_64_MUSL),$(LIBS)) \
                   --start-group --end-group
 
 ###############################################################################
@@ -89,9 +89,9 @@ ARM64_LD_SCRIPT   := $(ARM64_BUILD)/aligned_linker_script_arm.x
 ARM64_ALIGNED_MAP := $(ARM64_BUILD)/aligned_map.txt
 
 ARM64_TARGET  := aarch64-linux-gnu
-ARM64_INC     := -isystem $(ARM64_POPCORN)/include
-ARM64_LDFLAGS := -m aarch64linux -L$(ARM64_POPCORN)/lib -L$(ARM64_LIBGCC) \
-	                 $(addprefix $(ARM64_POPCORN),$(LIBS)) $(LIBGCC)
+ARM64_INC     := -isystem $(ARM64_MUSL)/include
+ARM64_LDFLAGS := -m aarch64linux -L$(ARM64_MUSL)/lib -L$(ARM64_LIBGCC) \
+	                 $(addprefix $(ARM64_MUSL),$(LIBS)) $(LIBGCC)
 
 ###############################################################################
 #                                 Recipes                                     #
@@ -138,14 +138,14 @@ obj-aarch64:  	$(ARM64_OBJ)
 
 $(ARM64_UNALIGNED): $(ARM64_OBJ)
 	@echo " [LD] $@"
-	$(LD) -o $@ $< $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
+	$(ARM64_LD) -o $@ $< $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
 
 $(ARM64_LD_SCRIPT): $(X86_64_LD_SCRIPT)
 	@echo " [ALIGN] $@"
 
 $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	@echo " [LD] $@"
-	$(LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_ALIGNED_MAP) -T $<
+	$(ARM64_LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_ALIGNED_MAP) -T $<
 
 ##########
 # x86-64 #
@@ -182,7 +182,7 @@ clean:
 	@echo " [CLEAN] $(ARM64_ALIGNED) $(ARM64_BUILD) $(X86_64_ALIGNED) \
 		$(X86_64_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.o"
 	@rm -rf $(ARM64_ALIGNED) $(ARM64_BUILD) $(X86_64_ALIGNED) $(X86_64_BUILD) \
-		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.o *.out
+		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.o
 
 .PHONY: all check clean \
         aligned aligned-aarch64 aligned-x86-64 \

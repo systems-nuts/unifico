@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <inttypes.h>
+#include <string.h>
 
 int y = 8;
 int z;

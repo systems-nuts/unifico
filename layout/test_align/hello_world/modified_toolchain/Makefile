@@ -6,7 +6,7 @@ POPCORN 	   := /usr/local/popcorn
 LLVM_TOOLCHAIN := ~/llvm_9/toolchain/bin
 #LLVM_TOOLCHAIN := /usr/local/popcorn/bin
 
-BIN := call_leaf
+BIN := hello
 SRC := $(BIN).c
 
 PYTHON = python3.7
@@ -27,7 +27,7 @@ OPT := $(LLVM_TOOLCHAIN)/opt
 LLC := $(LLVM_TOOLCHAIN)/llc
 
 CFLAGS 		:= -Xclang -disable-O0-optnone #-fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone
-CFLAGS 		+= -O0 -Wall -nostdinc -fno-builtin-memcpy
+CFLAGS 		+= -O0 -Wall -nostdinc 
 HET_CFLAGS 	:= $(CFLAGS) -fno-common -ftls-model=initial-exec #-popcorn-alignment
 OPT_FLAGS 	:= -name-string-literals -static-var-sections
 LLC_FLAGS 	:= -function-sections -data-sections
@@ -71,9 +71,9 @@ X86_64_LD_SCRIPT   := $(X86_64_BUILD)/aligned_linker_script_x86.x
 X86_64_ALIGNED_MAP := $(X86_64_BUILD)/aligned_map.txt
 
 X86_64_TARGET  := x86_64-linux-gnu
-X86_64_INC     := -isystem $(X86_64_POPCORN)/include # FIXME
-X86_64_LDFLAGS := -m elf_x86_64 -L$(X86_64_POPCORN)/lib \
-                  $(addprefix $(X86_64_POPCORN),$(LIBS)) \
+X86_64_INC     := -isystem $(X86_64_MUSL)/include # FIXME
+X86_64_LDFLAGS := -m elf_x86_64 -L$(X86_64_MUSL)/lib \
+                  $(addprefix $(X86_64_MUSL),$(LIBS)) \
                   --start-group --end-group
 
 ###############################################################################
@@ -89,9 +89,9 @@ ARM64_LD_SCRIPT   := $(ARM64_BUILD)/aligned_linker_script_arm.x
 ARM64_ALIGNED_MAP := $(ARM64_BUILD)/aligned_map.txt
 
 ARM64_TARGET  := aarch64-linux-gnu
-ARM64_INC     := -isystem $(ARM64_POPCORN)/include
-ARM64_LDFLAGS := -m aarch64linux -L$(ARM64_POPCORN)/lib -L$(ARM64_LIBGCC) \
-	                 $(addprefix $(ARM64_POPCORN),$(LIBS)) $(LIBGCC)
+ARM64_INC     := -isystem $(ARM64_MUSL)/include
+ARM64_LDFLAGS := -m aarch64linux -L$(ARM64_MUSL)/lib -L$(ARM64_LIBGCC) \
+	                 $(addprefix $(ARM64_MUSL),$(LIBS)) $(LIBGCC)
 
 ###############################################################################
 #                                 Recipes                                     #
