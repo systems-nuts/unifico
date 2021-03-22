@@ -12,8 +12,8 @@ SRC := $(BIN).c
 PYTHON = python3.7
 
 # Lib musl directories per architecture
-X86_64_MUSL	:= ~/musl-cross-make/output/x86_64-linux-musl
-ARM64_MUSL  := ~/musl-cross-make/output/aarch64-linux-musl
+X86_64_MUSL	:= ~/musl_popcorn_toolchain/toolchain_x86-64
+ARM64_MUSL  := ~/musl_popcorn_toolchain/toolchain_aarch64
 
 # Directory of libgcc & libgcc_eh for aarch64 compiler
 ARM64_LIBGCC   := $(shell dirname \
@@ -71,9 +71,9 @@ X86_64_LD_SCRIPT   := $(X86_64_BUILD)/aligned_linker_script_x86.x
 X86_64_ALIGNED_MAP := $(X86_64_BUILD)/aligned_map.txt
 
 X86_64_TARGET  := x86_64-linux-gnu
-X86_64_INC     := -isystem $(X86_64_POPCORN)/include # FIXME
-X86_64_LDFLAGS := -m elf_x86_64 -L$(X86_64_POPCORN)/lib \
-                  $(addprefix $(X86_64_POPCORN),$(LIBS)) \
+X86_64_INC     := -isystem $(X86_64_MUSL)/include # FIXME
+X86_64_LDFLAGS := -m elf_x86_64 -L$(X86_64_MUSL)/lib \
+                  $(addprefix $(X86_64_MUSL),$(LIBS)) \
                   --start-group --end-group
 
 ###############################################################################
@@ -89,9 +89,9 @@ ARM64_LD_SCRIPT   := $(ARM64_BUILD)/aligned_linker_script_arm.x
 ARM64_ALIGNED_MAP := $(ARM64_BUILD)/aligned_map.txt
 
 ARM64_TARGET  := aarch64-linux-gnu
-ARM64_INC     := -isystem $(ARM64_POPCORN)/include
-ARM64_LDFLAGS := -m aarch64linux -L$(ARM64_POPCORN)/lib -L$(ARM64_LIBGCC) \
-	                 $(addprefix $(ARM64_POPCORN),$(LIBS)) $(LIBGCC)
+ARM64_INC     := -isystem $(ARM64_MUSL)/include
+ARM64_LDFLAGS := -m aarch64linux -L$(ARM64_MUSL)/lib -L$(ARM64_LIBGCC) \
+	                 $(addprefix $(ARM64_MUSL),$(LIBS)) $(LIBGCC)
 
 ###############################################################################
 #                                 Recipes                                     #
