@@ -1,18 +1,15 @@
 #!/bin/bash
 
 LLVM_SOURCE=~/llvm-project
-POPCORN_PATCH=~/phd/unified_abi/llvm_patches/llvm-9.patch
-POPCORN_PATCHED_FILES=~/phd/unified_abi/llvm_patches/llvm_popcorn.txt
-ALIGN_PATCH=~/phd/unified_abi/llvm_patches/align.patch
+PATCH_FOLDER=~/phd/unified_abi/llvm_patches/llvm-9.0.1
 
 cd $LLVM_SOURCE || exit 1
-git checkout -- .
 git clean -d -f
+git checkout -- .
 
-echo 'Applying popcorn patch...'
-while read p; do
-  echo "$p"
-  git apply --include=$p $ALIGN_PATCH 
-done <$POPCORN_PATCHED_FILES
+for filename in ${PATCH_FOLDER}/*.patch; do
+	echo "Applying ${filename}..."
+  	git apply ${filename} || exit 1
+done 
 
 echo 'Done!'
