@@ -4,7 +4,6 @@
 POPCORN 	   := /usr/local/popcorn
 
 LLVM_TOOLCHAIN := ~/llvm_9/toolchain/bin
-#LLVM_TOOLCHAIN := /usr/local/popcorn/bin
 
 BIN := call_leaf
 SRC := $(BIN).c
@@ -27,13 +26,14 @@ OPT := $(LLVM_TOOLCHAIN)/opt
 LLC := $(LLVM_TOOLCHAIN)/llc
 
 CFLAGS 		:= -Xclang -disable-O0-optnone #-fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone
-CFLAGS 		+= -O0 -Wall -nostdinc -fno-builtin-memcpy
-HET_CFLAGS 	:= $(CFLAGS) -fno-common -ftls-model=initial-exec #-popcorn-alignment
+CFLAGS 		+= -O0 -Wall -nostdinc 
+HET_CFLAGS 	:= $(CFLAGS) -fno-common -ftls-model=initial-exec -masm=intel
 OPT_FLAGS 	:= -name-string-literals -static-var-sections
 LLC_FLAGS 	:= -function-sections -data-sections
 LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
 
 IR := $(SRC:.c=.ll)
+ASSEMBLY := $(SRC:.c=.s)
 
 ###############################################################################
 # Linker and Flags
@@ -100,6 +100,7 @@ ARM64_LDFLAGS := -m aarch64linux -L$(ARM64_MUSL)/lib -L$(ARM64_LIBGCC) \
 all: aligned
 
 ir: $(IR)
+assembly: $(ASSEMBLY)
 
 aligned: aligned-x86-64 aligned-aarch64
 unaligned: unaligned-x86-64 unaligned-aarch64
@@ -115,6 +116,10 @@ obj-aarch64:  	$(ARM64_OBJ)
 ##########
 # Common #
 ##########
+
+%.s: %.c
+	@echo " [ASSEMBLY] $@"
+	$(CC) $(HET_CFLAGS) -S $(ARM64_INC) -o $@ $<
 
 %.ll: %.c
 	@echo " [IR] $@"
@@ -134,7 +139,7 @@ obj-aarch64:  	$(ARM64_OBJ)
 
 %_aarch64.o: %_opt.ll
 	@echo " [LLC] $@"
-	$(LLC) $(LLC_FLAGS) $(HET_FLAGS) -march=aarch64 -filetype=obj -o $(<:_opt.ll=_aarch64.o) $<
+	$(LLC) $(LLC_FLAGS) -march=aarch64 -filetype=obj -o $(<:_opt.ll=_aarch64.o) $<
 
 $(ARM64_UNALIGNED): $(ARM64_OBJ)
 	@echo " [LD] $@"
@@ -153,7 +158,7 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 
 %_x86_64.o: %_opt.ll
 	@echo " [LLC] $@"
-	$(LLC) $(LLC_FLAGS) $(HET_FLAGS) -march=x86-64 -filetype=obj -o $(<:_opt.ll=_x86_64.o) $<
+	$(LLC) $(LLC_FLAGS) -march=x86-64 -filetype=obj -o $(<:_opt.ll=_x86_64.o) $<
 
 $(X86_64_UNALIGNED): $(X86_64_OBJ)
 	@echo " [LD] $@"
@@ -180,9 +185,9 @@ check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 
 clean:
 	@echo " [CLEAN] $(ARM64_ALIGNED) $(ARM64_BUILD) $(X86_64_ALIGNED) \
-		$(X86_64_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.o"
+		$(X86_64_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.o *.out"
 	@rm -rf $(ARM64_ALIGNED) $(ARM64_BUILD) $(X86_64_ALIGNED) $(X86_64_BUILD) \
-		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.o *.out
+		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.o *.out
 
 .PHONY: all check clean \
         aligned aligned-aarch64 aligned-x86-64 \
