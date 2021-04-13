@@ -25,7 +25,7 @@ CC  := $(LLVM_TOOLCHAIN)/clang
 OPT := $(LLVM_TOOLCHAIN)/opt
 LLC := $(LLVM_TOOLCHAIN)/llc
 
-CFLAGS 		:= -Xclang -disable-O0-optnone #-fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone
+CFLAGS 		:= -Xclang -disable-O0-optnone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mno-red-zone
 CFLAGS 		+= -O0 -Wall -nostdinc 
 HET_CFLAGS 	:= $(CFLAGS) -fno-common -ftls-model=initial-exec -masm=intel
 OPT_FLAGS 	:= -name-string-literals -static-var-sections
@@ -33,7 +33,6 @@ LLC_FLAGS 	:= -function-sections -data-sections
 LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
 
 IR := $(SRC:.c=.ll)
-ASSEMBLY := $(SRC:.c=.s)
 
 ###############################################################################
 # Linker and Flags
@@ -100,7 +99,6 @@ ARM64_LDFLAGS := -m aarch64linux -L$(ARM64_MUSL)/lib -L$(ARM64_LIBGCC) \
 all: aligned
 
 ir: $(IR)
-assembly: $(ASSEMBLY)
 
 aligned: aligned-x86-64 aligned-aarch64
 unaligned: unaligned-x86-64 unaligned-aarch64
@@ -117,12 +115,7 @@ obj-aarch64:  	$(ARM64_OBJ)
 # Common #
 ##########
 
-%.s: %.c
-	@echo " [ASSEMBLY] $@"
-	$(CC) $(HET_CFLAGS) -S $(ARM64_INC) -o $@ $<
-
 %.ll: %.c
-	@echo " [IR] $@"
 	$(CC) $(HET_CFLAGS) -g -S -emit-llvm $(ARM64_INC) -o $@ $<
 	# Remove the x86-64-related information
 	sed -e "s/\"target-cpu\"\=\"x86-64\"\ \"target-features\"\=\"+cx8,+fxsr,+mmx,+sse,+sse2,+x87\"//g" -i.backup $@
@@ -130,7 +123,6 @@ obj-aarch64:  	$(ARM64_OBJ)
 	mkdir -p $(X86_64_BUILD) $(ARM64_BUILD)
 
 %_opt.ll: %.ll
-	@echo " [OPT] $@"
 	$(OPT) $(OPT_FLAGS) -S -o $@ $<
 
 ###########
@@ -138,18 +130,15 @@ obj-aarch64:  	$(ARM64_OBJ)
 ###########
 
 %_aarch64.o: %_opt.ll
-	@echo " [LLC] $@"
+	$(LLC) $(LLC_FLAGS) -march=aarch64 -o $(<:_opt.ll=_aarch64.s) $<
 	$(LLC) $(LLC_FLAGS) -march=aarch64 -filetype=obj -o $(<:_opt.ll=_aarch64.o) $<
 
 $(ARM64_UNALIGNED): $(ARM64_OBJ)
-	@echo " [LD] $@"
 	$(LD) -o $@ $< $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
 
 $(ARM64_LD_SCRIPT): $(X86_64_LD_SCRIPT)
-	@echo " [ALIGN] $@"
 
 $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
-	@echo " [LD] $@"
 	$(LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_ALIGNED_MAP) -T $<
 
 ##########
@@ -157,35 +146,28 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 ##########
 
 %_x86_64.o: %_opt.ll
-	@echo " [LLC] $@"
+	$(LLC) $(LLC_FLAGS) -march=x86-64 --x86-asm-syntax=intel -o $(<:_opt.ll=_x86_64.s) $<
 	$(LLC) $(LLC_FLAGS) -march=x86-64 -filetype=obj -o $(<:_opt.ll=_x86_64.o) $<
 
 $(X86_64_UNALIGNED): $(X86_64_OBJ)
-	@echo " [LD] $@"
 	$(LD) -o $@ $< $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_MAP)
 
 $(X86_64_LD_SCRIPT): $(ARM64_UNALIGNED) $(X86_64_UNALIGNED)
-	@echo " [ALIGN] $@"
 	$(ALIGN) --compiler-inst $(POPCORN) \
 		--x86-bin $(X86_64_UNALIGNED) --arm-bin $(ARM64_UNALIGNED) \
 		--x86-map $(X86_64_MAP) --arm-map $(ARM64_MAP) \
 		--output-x86-ls $(X86_64_LD_SCRIPT) --output-arm-ls $(ARM64_LD_SCRIPT)
 
 $(X86_64_ALIGNED): $(X86_64_LD_SCRIPT)
-	@echo " [LD] $@"
 	$(LD) -o $@ $(X86_64_OBJ) $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_ALIGNED_MAP) -T $<
 
 check_un: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
-	@echo " [CHECK] Checking unalignment for $^"
 	$(PYTHON) $(ALIGN_CHECK) $(ARM64_UNALIGNED) $(X86_64_UNALIGNED)
 
 check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
-	@echo " [CHECK] Checking alignment for $^"
 	$(PYTHON) $(ALIGN_CHECK) $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 
 clean:
-	@echo " [CLEAN] $(ARM64_ALIGNED) $(ARM64_BUILD) $(X86_64_ALIGNED) \
-		$(X86_64_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.o *.out"
 	@rm -rf $(ARM64_ALIGNED) $(ARM64_BUILD) $(X86_64_ALIGNED) $(X86_64_BUILD) \
 		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.o *.out
 
