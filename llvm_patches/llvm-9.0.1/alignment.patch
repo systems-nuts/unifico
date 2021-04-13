@@ -1,0 +1,437 @@
+diff --git a/clang/include/clang/Basic/CodeGenOptions.def b/clang/include/clang/Basic/CodeGenOptions.def
+index cd7a84548765..82c156e38d2a 100644
+--- a/clang/include/clang/Basic/CodeGenOptions.def
++++ b/clang/include/clang/Basic/CodeGenOptions.def
+@@ -271,6 +271,9 @@ CODEGENOPT(DebugFwdTemplateParams, 1, 0) ///< Whether to emit complete
+ 
+ CODEGENOPT(EmitLLVMUseLists, 1, 0) ///< Control whether to serialize use-lists.
+ 
++/// Adjust linkage of global values for symbol alignment
++CODEGENOPT(PopcornAlignment, 1, 0)
++
+ CODEGENOPT(WholeProgramVTables, 1, 0) ///< Whether to apply whole-program
+                                       ///  vtable optimization.
+ 
+diff --git a/clang/include/clang/Driver/Options.td b/clang/include/clang/Driver/Options.td
+index 4ea8bfff0973..ca4a87677064 100644
+--- a/clang/include/clang/Driver/Options.td
++++ b/clang/include/clang/Driver/Options.td
+@@ -2533,6 +2533,7 @@ def pedantic : Flag<["-", "--"], "pedantic">, Group<pedantic_Group>, Flags<[CC1O
+ def pg : Flag<["-"], "pg">, HelpText<"Enable mcount instrumentation">, Flags<[CC1Option]>;
+ def pipe : Flag<["-", "--"], "pipe">,
+   HelpText<"Use pipes between commands, when possible">;
++def popcorn_alignment : Flag<["-"], "popcorn-alignment">, HelpText<"Run Popcorn passes to prepare for link-time symbol alignment">, Flags<[CC1Option]>;
+ def prebind__all__twolevel__modules : Flag<["-"], "prebind_all_twolevel_modules">;
+ def prebind : Flag<["-"], "prebind">;
+ def preload : Flag<["-"], "preload">;
+diff --git a/clang/lib/CodeGen/BackendUtil.cpp b/clang/lib/CodeGen/BackendUtil.cpp
+index 497652e85b47..668a29080302 100644
+--- a/clang/lib/CodeGen/BackendUtil.cpp
++++ b/clang/lib/CodeGen/BackendUtil.cpp
+@@ -364,6 +364,12 @@ static void addSymbolRewriterPass(const CodeGenOptions &Opts,
+   MPM->add(createRewriteSymbolsPass(DL));
+ }
+ 
++static void addPopcornAlignmentPasses(const PassManagerBuilder &Builder,
++				      legacy::PassManagerBase &PM) {
++  PM.add(createNameStringLiteralsPass());
++  PM.add(createStaticVarSectionsPass());
++}
++
+ static CodeGenOpt::Level getCGOptLevel(const CodeGenOptions &CodeGenOpts) {
+   switch (CodeGenOpts.OptimizationLevel) {
+   default:
+@@ -717,6 +723,17 @@ void EmitAssemblyHelper::CreatePasses(legacy::PassManager &MPM,
+   if (!CodeGenOpts.SampleProfileFile.empty())
+     PMBuilder.PGOSampleUse = CodeGenOpts.SampleProfileFile;
+ 
++  // Adjust global symbol linkage for alignment.
++  if (CodeGenOpts.PopcornAlignment) {
++	  if (CodeGenOpts.OptimizationLevel > 0)
++		PMBuilder.addExtension(PassManagerBuilder::EP_OptimizerLast,
++				 addPopcornAlignmentPasses); // TODO: maybe remove
++	  else {
++		MPM.add(createNameStringLiteralsPass());
++		MPM.add(createStaticVarSectionsPass());
++	  }
++  }
++
+   PMBuilder.populateFunctionPassManager(FPM);
+   PMBuilder.populateModulePassManager(MPM);
+ }
+diff --git a/clang/lib/Driver/ToolChains/Clang.cpp b/clang/lib/Driver/ToolChains/Clang.cpp
+index dd461a1976d9..4c3215f55584 100644
+--- a/clang/lib/Driver/ToolChains/Clang.cpp
++++ b/clang/lib/Driver/ToolChains/Clang.cpp
+@@ -5229,6 +5229,13 @@ void Clang::ConstructJob(Compilation &C, const JobAction &JA,
+     }
+   }
+ 
++  if(Args.hasArg(options::OPT_popcorn_alignment)) {
++    // Only symbol alignment
++    //CmdArgs.push_back("-ffunction-sections");
++    //CmdArgs.push_back("-fdata-sections");
++    CmdArgs.push_back("-popcorn-alignment");
++  }
++
+   // With -save-temps, we want to save the unoptimized bitcode output from the
+   // CompileJobAction, use -disable-llvm-passes to get pristine IR generated
+   // by the frontend.
+diff --git a/clang/lib/Frontend/CompilerInvocation.cpp b/clang/lib/Frontend/CompilerInvocation.cpp
+index bc54e38a1a63..6e9aaea4a8c4 100644
+--- a/clang/lib/Frontend/CompilerInvocation.cpp
++++ b/clang/lib/Frontend/CompilerInvocation.cpp
+@@ -1348,6 +1348,8 @@ static bool ParseCodeGenArgs(CodeGenOptions &Opts, ArgList &Args, InputKind IK,
+ 
+   Opts.SymbolPartition = Args.getLastArgValue(OPT_fsymbol_partition_EQ);
+ 
++  Opts.PopcornAlignment = Args.hasArg(OPT_popcorn_alignment);
++
+   return Success;
+ }
+ 
+diff --git a/llvm/include/llvm/InitializePasses.h b/llvm/include/llvm/InitializePasses.h
+index 164d0be2855a..ac441d91867e 100644
+--- a/llvm/include/llvm/InitializePasses.h
++++ b/llvm/include/llvm/InitializePasses.h
+@@ -288,6 +288,7 @@ void initializeModuleDebugInfoPrinterPass(PassRegistry&);
+ void initializeModuleSummaryIndexWrapperPassPass(PassRegistry&);
+ void initializeMustExecutePrinterPass(PassRegistry&);
+ void initializeNameAnonGlobalLegacyPassPass(PassRegistry&);
++void initializeNameStringLiteralsPass(PassRegistry&);
+ void initializeNaryReassociateLegacyPassPass(PassRegistry&);
+ void initializeNewGVNLegacyPassPass(PassRegistry&);
+ void initializeObjCARCAAWrapperPassPass(PassRegistry&);
+@@ -383,6 +384,7 @@ void initializeStackProtectorPass(PassRegistry&);
+ void initializeStackSafetyGlobalInfoWrapperPassPass(PassRegistry &);
+ void initializeStackSafetyInfoWrapperPassPass(PassRegistry &);
+ void initializeStackSlotColoringPass(PassRegistry&);
++void initializeStaticVarSectionsPass(PassRegistry&);
+ void initializeStraightLineStrengthReducePass(PassRegistry&);
+ void initializeStripDeadDebugInfoPass(PassRegistry&);
+ void initializeStripDeadPrototypesLegacyPassPass(PassRegistry&);
+diff --git a/llvm/include/llvm/LinkAllPasses.h b/llvm/include/llvm/LinkAllPasses.h
+index 675d179eb22a..d49f2bf2f435 100644
+--- a/llvm/include/llvm/LinkAllPasses.h
++++ b/llvm/include/llvm/LinkAllPasses.h
+@@ -144,6 +144,7 @@ namespace {
+       (void) llvm::createLowerInvokePass();
+       (void) llvm::createLowerSwitchPass();
+       (void) llvm::createNaryReassociatePass();
++      (void) llvm::createNameStringLiteralsPass();
+       (void) llvm::createObjCARCAAWrapperPass();
+       (void) llvm::createObjCARCAPElimPass();
+       (void) llvm::createObjCARCExpandPass();
+@@ -167,6 +168,7 @@ namespace {
+       (void) llvm::createSafeStackPass();
+       (void) llvm::createSROAPass();
+       (void) llvm::createSingleLoopExtractorPass();
++      (void) llvm::createStaticVarSectionsPass();
+       (void) llvm::createStripSymbolsPass();
+       (void) llvm::createStripNonDebugSymbolsPass();
+       (void) llvm::createStripDeadDebugInfoPass();
+diff --git a/llvm/include/llvm/Transforms/Utils.h b/llvm/include/llvm/Transforms/Utils.h
+index 6e03453babf1..52ece9075ad4 100644
+--- a/llvm/include/llvm/Transforms/Utils.h
++++ b/llvm/include/llvm/Transforms/Utils.h
+@@ -119,6 +119,19 @@ ModulePass *createStripNonLineTableDebugInfoPass();
+ // number of conditional branches in the hot paths based on profiles.
+ //
+ FunctionPass *createControlHeightReductionLegacyPass();
++
++//===----------------------------------------------------------------------===//
++//
++// NameStringLiterals - Give symbol names to anonymous string literals so they
++// can be aligned at link-time
++//
++ModulePass *createNameStringLiteralsPass();
++
++//===----------------------------------------------------------------------===//
++//
++// StaticVarSections - Put static global variables into their own sections
++//
++ModulePass *createStaticVarSectionsPass();
+ }
+ 
+ #endif
+diff --git a/llvm/lib/Transforms/Utils/CMakeLists.txt b/llvm/lib/Transforms/Utils/CMakeLists.txt
+index c232aa6223cc..4d17f43a44d2 100644
+--- a/llvm/lib/Transforms/Utils/CMakeLists.txt
++++ b/llvm/lib/Transforms/Utils/CMakeLists.txt
+@@ -41,6 +41,7 @@ add_llvm_library(LLVMTransformUtils
+   Mem2Reg.cpp
+   MetaRenamer.cpp
+   ModuleUtils.cpp
++  NameStringLiterals.cpp
+   NameAnonGlobals.cpp
+   PredicateInfo.cpp
+   PromoteMemoryToRegister.cpp
+@@ -53,6 +54,7 @@ add_llvm_library(LLVMTransformUtils
+   SimplifyLibCalls.cpp
+   SizeOpts.cpp
+   SplitModule.cpp
++  StaticVarSections.cpp
+   StripNonLineTableDebugInfo.cpp
+   SymbolRewriter.cpp
+   UnifyFunctionExitNodes.cpp
+diff --git a/llvm/lib/Transforms/Utils/NameStringLiterals.cpp b/llvm/lib/Transforms/Utils/NameStringLiterals.cpp
+new file mode 100644
+index 000000000000..03cbb7c9ea11
+--- /dev/null
++++ b/llvm/lib/Transforms/Utils/NameStringLiterals.cpp
+@@ -0,0 +1,118 @@
++#include <algorithm>
++#include <cctype>
++#include "llvm/Pass.h"
++#include "llvm/IR/Constants.h"
++#include "llvm/IR/GlobalVariable.h"
++#include "llvm/IR/GlobalValue.h"
++#include "llvm/IR/Module.h"
++#include "llvm/Support/Debug.h"
++#include "llvm/Support/raw_ostream.h"
++
++#define DEBUG_TYPE "name-string-literals"
++#define CHARS_FOR_NAME 10
++
++using namespace llvm;
++
++namespace
++{
++
++/**
++ * Generate unique name for private anonymous string literals.  Uses the
++ * filename, LLVM's temporary name and (up to) the first 10 characters of the
++ * string.  Converts non-alphanumeric characters to underscores.
++ */
++std::string UniquifySymbol(const Module &M, GlobalVariable &Sym)
++{
++  std::string newName;
++  std::string::size_type loc;
++  auto filter = [](char c){ return !isalnum(c); };
++
++  newName = M.getName();
++  loc = newName.find_last_of('.');
++  newName = newName.substr(0, loc) + "_" + Sym.getName().str() + "_";
++  std::replace_if(newName.begin(), newName.end(), filter, '_');
++
++  // Check if it's a string, and if so use string content to uniquify
++  if(Sym.hasInitializer()) {
++    Constant *Initializer = Sym.getInitializer();
++    if(isa<ConstantDataSequential>(Initializer)) {
++      ConstantDataSequential *CDS = cast<ConstantDataSequential>(Initializer);
++      if(CDS->isString()) {
++        std::string data = CDS->getAsString().substr(0, CHARS_FOR_NAME);
++        std::replace_if(data.begin(), data.end(), filter, '_');
++        newName += data;
++      }
++    }
++  }
++
++  return newName;
++}
++
++/**
++ * This pass searches for anonymous read-only data for which there is no symbol
++ * and generates a symbol for the data.  This is required by the Popcorn
++ * compiler in order to align the data at link-time.
++ */
++class NameStringLiterals : public ModulePass
++{
++public:
++	static char ID;
++
++  NameStringLiterals() : ModulePass(ID) {}
++  ~NameStringLiterals() {}
++
++	/* ModulePass virtual methods */
++  virtual void getAnalysisUsage(AnalysisUsage &AU) const { AU.setPreservesCFG(); }
++	virtual bool runOnModule(Module &M)
++  {
++    bool modified = false;
++    std::string newName;
++    Module::global_iterator gl, gle; // for global variables
++
++    LLVM_DEBUG(errs() << "\n********** Begin NameStringLiterals **********\n"
++                 << "********** Module: " << M.getName() << " **********\n\n");
++
++    // Iterate over all globals and generate symbol for anonymous string
++    // literals in each module
++    for(gl = M.global_begin(), gle = M.global_end(); gl != gle; gl++) {
++      // DONT NEED TO CHANGE NAME PER-SE just change type
++      // PrivateLinkage does NOT show up in any symbol table in the object file!
++      if(gl->getLinkage() == GlobalValue::PrivateLinkage) {
++        //change Linkage
++        //FROM private unnamed_addr constant [num x i8]
++        //TO global [num x i8]
++        gl->setLinkage(GlobalValue::ExternalLinkage);
++
++        // Make the global's name unique so we don't clash when linking with
++        // other files
++        newName = UniquifySymbol(M, *gl);
++        gl->setName(newName);
++
++        // Also REMOVE unnamed_addr value
++        if(gl->hasGlobalUnnamedAddr()) {
++          gl->setUnnamedAddr(GlobalValue::UnnamedAddr::None);
++        }
++
++        modified = true;
++
++        LLVM_DEBUG(errs() << "New anonymous string name: " << newName << "\n";);
++      } else {
++        LLVM_DEBUG(errs() << "> " <<  *gl << ", linkage: "
++                     << gl->getLinkage() << "\n");
++      }
++    }
++  
++    return modified;
++  }
++  virtual StringRef getPassName() const { return "Name string literals"; }
++};
++
++} /* end anonymous namespace */
++
++char NameStringLiterals::ID = 0;
++INITIALIZE_PASS(NameStringLiterals, "name-string-literals",
++  "Generate symbols for anonymous string literals", false, false)
++
++namespace llvm {
++  ModulePass *createNameStringLiteralsPass() { return new NameStringLiterals(); }
++}
+diff --git a/llvm/lib/Transforms/Utils/StaticVarSections.cpp b/llvm/lib/Transforms/Utils/StaticVarSections.cpp
+new file mode 100644
+index 000000000000..1ea0d2402ca4
+--- /dev/null
++++ b/llvm/lib/Transforms/Utils/StaticVarSections.cpp
+@@ -0,0 +1,104 @@
++#include <algorithm>
++#include "llvm/Pass.h"
++#include "llvm/IR/Module.h"
++#include "llvm/IR/GlobalVariable.h"
++#include "llvm/IR/GlobalValue.h"
++#include "llvm/Support/Debug.h"
++#include "llvm/Support/raw_ostream.h"
++
++#define DEBUG_TYPE "static-var-sections"
++
++using namespace llvm;
++
++namespace
++{
++
++std::string UniquifySymbol(const Module &M,
++                           std::string &section,
++                           GlobalVariable &Sym)
++{
++  std::string newName;
++  auto filter = [](char c){ return !isalnum(c); };
++
++  newName = M.getName().str() + "_" + Sym.getName().str();
++  std::replace_if(newName.begin(), newName.end(), filter, '_');
++
++  return section + newName;
++}
++
++/**
++ * This pass searches for static, i.e., module-private, global variables and
++ * modifies their linkage to be in their own sections similarly to other
++ * global variables with the -fdata-sections switch.  By default, LLVM doesn't
++ * apply -fdata-sections to static global variables.
++ */
++class StaticVarSections : public ModulePass
++{
++public:
++	static char ID;
++
++	StaticVarSections() : ModulePass(ID) {}
++	~StaticVarSections() {}
++
++	/* ModulePass virtual methods */
++  virtual void getAnalysisUsage(AnalysisUsage &AU) const { AU.setPreservesCFG(); }
++	virtual bool runOnModule(Module &M)
++  {
++    bool modified = false;
++    Module::global_iterator gl, gle; // for global variables
++  
++    LLVM_DEBUG(errs() << "\n********** Beginning StaticVarSections **********\n"
++                 << "********** Module: " << M.getName() << " **********\n\n");
++  
++    // Iterate over all static globals and place them in their own section
++    for(gl = M.global_begin(), gle = M.global_end(); gl != gle; gl++) {
++      std::string secName = ".";
++      if(gl->isThreadLocal()) secName += "t";
++  
++      if(gl->hasCommonLinkage() &&
++         gl->getName().find(".cache.") != std::string::npos) {
++        gl->setLinkage(GlobalValue::InternalLinkage);
++      }
++  
++      // InternalLinkage is specifically for STATIC variables
++      if(gl->hasInternalLinkage() && !gl->hasSection()) {
++        if(gl->isConstant()) {
++          //Belongs in RODATA
++          assert(!gl->isThreadLocal() && "TLS data should not be in .rodata");
++          secName += "rodata.";
++        }
++        else if(gl->getInitializer()->isZeroValue()) {
++          //Belongs in BSS
++          secName += "bss.";
++        }
++        else {
++          //Belongs in DATA
++          secName += "data.";
++        }
++
++        secName = UniquifySymbol(M, secName, *gl);
++        gl->setSection(secName);
++        modified = true;
++
++        LLVM_DEBUG(errs() << *gl << " - new section: " << secName << "\n");
++      } else {
++        LLVM_DEBUG(errs() << "> " <<  *gl << ", linkage: "
++                     << gl->getLinkage() << "\n");
++        continue;
++      }
++    }
++    
++    return modified;
++  }
++  virtual StringRef getPassName() const { return "Static variables in separate sections"; }
++};
++
++} /* end anonymous namespace */
++
++char StaticVarSections::ID = 0;
++INITIALIZE_PASS(StaticVarSections, "static-var-sections",
++  "Put static variables into separate sections", false, false)
++
++namespace llvm {
++  ModulePass *createStaticVarSectionsPass() { return new StaticVarSections(); }
++}
+diff --git a/llvm/lib/Transforms/Utils/Utils.cpp b/llvm/lib/Transforms/Utils/Utils.cpp
+index 5272ab6e95d5..f11df0a73118 100644
+--- a/llvm/lib/Transforms/Utils/Utils.cpp
++++ b/llvm/lib/Transforms/Utils/Utils.cpp
+@@ -33,7 +33,9 @@ void llvm::initializeTransformUtils(PassRegistry &Registry) {
+   initializeLowerInvokeLegacyPassPass(Registry);
+   initializeLowerSwitchPass(Registry);
+   initializeNameAnonGlobalLegacyPassPass(Registry);
++  initializeNameStringLiteralsPass(Registry);
+   initializePromoteLegacyPassPass(Registry);
++  initializeStaticVarSectionsPass(Registry);
+   initializeStripNonLineTableDebugInfoPass(Registry);
+   initializeUnifyFunctionExitNodesPass(Registry);
+   initializeMetaRenamerPass(Registry);
+diff --git a/llvm/tools/opt/opt.cpp b/llvm/tools/opt/opt.cpp
+index 2ee028e774f4..6570f917511d 100644
+--- a/llvm/tools/opt/opt.cpp
++++ b/llvm/tools/opt/opt.cpp
+@@ -535,6 +535,8 @@ int main(int argc, char **argv) {
+   initializeWasmEHPreparePass(Registry);
+   initializeWriteBitcodePassPass(Registry);
+   initializeHardwareLoopsPass(Registry);
++  initializeNameStringLiteralsPass(Registry);
++  initializeStaticVarSectionsPass(Registry);
+ 
+ #ifdef LINK_POLLY_INTO_TOOLS
+   polly::initializePollyPasses(Registry);

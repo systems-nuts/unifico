@@ -1,0 +1,85 @@
+diff --git a/llvm/lib/Target/AArch64/AArch64CallingConvention.td b/llvm/lib/Target/AArch64/AArch64CallingConvention.td
+index d969a9e1ab3a..e4e1cca94f20 100644
+--- a/llvm/lib/Target/AArch64/AArch64CallingConvention.td
++++ b/llvm/lib/Target/AArch64/AArch64CallingConvention.td
+@@ -73,8 +73,8 @@ def CC_AArch64_AAPCS : CallingConv<[
+   // Handle i1, i8, i16, i32, i64, f32, f64 and v2f64 by passing in registers,
+   // up to eight each of GPR and FPR.
+   CCIfType<[i1, i8, i16], CCPromoteToType<i32>>,
+-  CCIfType<[i32], CCAssignToRegWithShadow<[W0, W1, W2, W3, W4, W5, W6, W7],
+-                                          [X0, X1, X2, X3, X4, X5, X6, X7]>>,
++  CCIfType<[i32], CCAssignToRegWithShadow<[W0, W1, W2, W3, W4, W5],
++                                          [X0, X1, X2, X3, X4, X5]>>,
+   // i128 is split to two i64s, we can't fit half to register X7.
+   CCIfType<[i64], CCIfSplit<CCAssignToRegWithShadow<[X0, X2, X4, X6],
+                                                     [X0, X1, X3, X5]>>>,
+@@ -82,8 +82,8 @@ def CC_AArch64_AAPCS : CallingConv<[
+   // i128 is split to two i64s, and its stack alignment is 16 bytes.
+   CCIfType<[i64], CCIfSplit<CCAssignToStackWithShadow<8, 16, [X7]>>>,
+ 
+-  CCIfType<[i64], CCAssignToRegWithShadow<[X0, X1, X2, X3, X4, X5, X6, X7],
+-                                          [W0, W1, W2, W3, W4, W5, W6, W7]>>,
++  CCIfType<[i64], CCAssignToRegWithShadow<[X0, X1, X2, X3, X4, X5],
++                                          [W0, W1, W2, W3, W4, W5]>>,
+   CCIfType<[f16], CCAssignToRegWithShadow<[H0, H1, H2, H3, H4, H5, H6, H7],
+                                           [Q0, Q1, Q2, Q3, Q4, Q5, Q6, Q7]>>,
+   CCIfType<[f32], CCAssignToRegWithShadow<[S0, S1, S2, S3, S4, S5, S6, S7],
+@@ -121,10 +121,10 @@ def RetCC_AArch64_AAPCS : CallingConv<[
+                          CCBitConvertToType<f128>>>,
+ 
+   CCIfType<[i1, i8, i16], CCPromoteToType<i32>>,
+-  CCIfType<[i32], CCAssignToRegWithShadow<[W0, W1, W2, W3, W4, W5, W6, W7],
+-                                          [X0, X1, X2, X3, X4, X5, X6, X7]>>,
+-  CCIfType<[i64], CCAssignToRegWithShadow<[X0, X1, X2, X3, X4, X5, X6, X7],
+-                                          [W0, W1, W2, W3, W4, W5, W6, W7]>>,
++  CCIfType<[i32], CCAssignToRegWithShadow<[W8, W2],
++                                          [X8, X2]>>,
++  CCIfType<[i64], CCAssignToRegWithShadow<[X8, X2],
++                                          [W8, W2]>>,
+   CCIfType<[f16], CCAssignToRegWithShadow<[H0, H1, H2, H3, H4, H5, H6, H7],
+                                           [Q0, Q1, Q2, Q3, Q4, Q5, Q6, Q7]>>,
+   CCIfType<[f32], CCAssignToRegWithShadow<[S0, S1, S2, S3, S4, S5, S6, S7],
+diff --git a/llvm/lib/Target/AArch64/AArch64RegisterInfo.td b/llvm/lib/Target/AArch64/AArch64RegisterInfo.td
+index 61fc0795c242..de2e931d2554 100644
+--- a/llvm/lib/Target/AArch64/AArch64RegisterInfo.td
++++ b/llvm/lib/Target/AArch64/AArch64RegisterInfo.td
+@@ -135,12 +135,13 @@ def FFR : AArch64Reg<0, "ffr">, DwarfRegNum<[47]>;
+ 
+ // GPR register classes with the intersections of GPR32/GPR32sp and
+ // GPR64/GPR64sp for use by the coalescer.
+-def GPR32common : RegisterClass<"AArch64", [i32], 32, (sequence "W%u", 0, 30)> {
++def GPR32common : RegisterClass<"AArch64", [i32], 32,
++                                (add (sequence "W%u", 0, 8), (sequence "W%u", 16, 20), W29, W30)> {
+   let AltOrders = [(rotl GPR32common, 8)];
+   let AltOrderSelect = [{ return 1; }];
+ }
+ def GPR64common : RegisterClass<"AArch64", [i64], 64,
+-                                (add (sequence "X%u", 0, 28), FP, LR)> {
++                                (add (sequence "X%u", 0, 8), (sequence "X%u", 16, 20), FP, LR)> {
+   let AltOrders = [(rotl GPR64common, 8)];
+   let AltOrderSelect = [{ return 1; }];
+ }
+@@ -188,8 +189,8 @@ def GPR64z : RegisterOperand<GPR64> {
+ }
+ 
+ // GPR argument registers.
+-def GPR32arg : RegisterClass<"AArch64", [i32], 32, (sequence "W%u", 0, 7)>;
+-def GPR64arg : RegisterClass<"AArch64", [i64], 64, (sequence "X%u", 0, 7)>;
++def GPR32arg : RegisterClass<"AArch64", [i32], 32, (sequence "W%u", 0, 5)>;
++def GPR64arg : RegisterClass<"AArch64", [i64], 64, (sequence "X%u", 0, 5)>;
+ 
+ // GPR register classes which include WZR/XZR AND SP/WSP. This is not a
+ // constraint used by any instructions, it is used as a common super-class.
+diff --git a/llvm/lib/Target/X86/X86CallingConv.td b/llvm/lib/Target/X86/X86CallingConv.td
+index 1c3034a5116a..1328f39899e2 100644
+--- a/llvm/lib/Target/X86/X86CallingConv.td
++++ b/llvm/lib/Target/X86/X86CallingConv.td
+@@ -1046,7 +1046,7 @@ def CC_X86 : CallingConv<[
+ def CSR_NoRegs : CalleeSavedRegs<(add)>;
+ 
+ def CSR_32 : CalleeSavedRegs<(add ESI, EDI, EBX, EBP)>;
+-def CSR_64 : CalleeSavedRegs<(add RBX, R12, R13, R14, R15, RBP)>;
++def CSR_64 : CalleeSavedRegs<(add RBX, R15, RBP)>;
+ 
+ def CSR_64_SwiftError : CalleeSavedRegs<(sub CSR_64, R12)>;
+ 
