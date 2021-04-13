@@ -33,6 +33,7 @@ LLC_FLAGS 	:= -function-sections -data-sections
 LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
 
 IR := $(SRC:.c=.ll)
+IR_NODBG := $(SRC:.c=_nodbg.ll)
 
 ###############################################################################
 # Linker and Flags
@@ -65,6 +66,7 @@ X86_64_BUILD       := build_x86-64
 X86_64_ALIGNED     := $(BIN)_x86_64_aligned.out
 X86_64_UNALIGNED   := $(BIN)_x86_64_unaligned.out
 X86_64_OBJ         := $(SRC:.c=_x86_64.o)
+X86_64_ASM         := $(SRC:.c=_x86_64.s)
 X86_64_MAP         := $(X86_64_BUILD)/map.txt
 X86_64_LD_SCRIPT   := $(X86_64_BUILD)/aligned_linker_script_x86.x
 X86_64_ALIGNED_MAP := $(X86_64_BUILD)/aligned_map.txt
@@ -83,6 +85,7 @@ ARM64_BUILD       := build_aarch64
 ARM64_ALIGNED     := $(BIN)_aarch64_aligned.out
 ARM64_UNALIGNED   := $(BIN)_aarch64_unaligned.out
 ARM64_OBJ         := $(SRC:.c=_aarch64.o)
+ARM64_ASM         := $(SRC:.c=_aarch64.s)
 ARM64_MAP         := $(ARM64_BUILD)/map.txt
 ARM64_LD_SCRIPT   := $(ARM64_BUILD)/aligned_linker_script_arm.x
 ARM64_ALIGNED_MAP := $(ARM64_BUILD)/aligned_map.txt
@@ -99,17 +102,20 @@ ARM64_LDFLAGS := -m aarch64linux -L$(ARM64_MUSL)/lib -L$(ARM64_LIBGCC) \
 all: aligned
 
 ir: $(IR)
+assembly: asm-x86-64 asm-aarch64
 
 aligned: aligned-x86-64 aligned-aarch64
 unaligned: unaligned-x86-64 unaligned-aarch64
 
 aligned-x86-64: $(X86_64_ALIGNED)
 unaligned-x86-64: $(X86_64_UNALIGNED)
-obj-x86-64:  	$(X86_64_OBJ)
+obj-x86-64: $(X86_64_OBJ)
+asm-x86-64: $(X86_64_ASM)
 
 aligned-aarch64: $(ARM64_ALIGNED)
 unaligned-aarch64: $(ARM64_UNALIGNED)
-obj-aarch64:  	$(ARM64_OBJ)
+obj-aarch64: $(ARM64_OBJ)
+asm-aarch64: $(ARM64_ASM)
 
 ##########
 # Common #
@@ -125,12 +131,24 @@ obj-aarch64:  	$(ARM64_OBJ)
 %_opt.ll: %.ll
 	$(OPT) $(OPT_FLAGS) -S -o $@ $<
 
+%_nodbg.ll: %.c
+	$(CC) $(HET_CFLAGS) -S -emit-llvm $(ARM64_INC) -o $@ $<
+	# Remove the x86-64-related information
+	sed -e "s/\"target-cpu\"\=\"x86-64\"\ \"target-features\"\=\"+cx8,+fxsr,+mmx,+sse,+sse2,+x87\"//g" -i.backup $@
+	# Make directories
+	mkdir -p $(X86_64_BUILD) $(ARM64_BUILD)
+
+%_opt_nodbg.ll: %_nodbg.ll
+	$(OPT) $(OPT_FLAGS) -S -o $@ $<
+
 ###########
 # AArch64 #
 ###########
 
-%_aarch64.o: %_opt.ll
-	$(LLC) $(LLC_FLAGS) -march=aarch64 -o $(<:_opt.ll=_aarch64.s) $<
+$(ARM64_ASM): $(BIN)_opt_nodbg.ll
+	$(LLC) $(LLC_FLAGS) -march=aarch64 -o $@ $<
+
+%_aarch64.o: %_opt.ll 
 	$(LLC) $(LLC_FLAGS) -march=aarch64 -filetype=obj -o $(<:_opt.ll=_aarch64.o) $<
 
 $(ARM64_UNALIGNED): $(ARM64_OBJ)
@@ -145,8 +163,10 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 # x86-64 #
 ##########
 
+$(X86_64_ASM): $(BIN)_opt_nodbg.ll
+	$(LLC) $(LLC_FLAGS) -march=x86-64 --x86-asm-syntax=intel -o $@ $<
+
 %_x86_64.o: %_opt.ll
-	$(LLC) $(LLC_FLAGS) -march=x86-64 --x86-asm-syntax=intel -o $(<:_opt.ll=_x86_64.s) $<
 	$(LLC) $(LLC_FLAGS) -march=x86-64 -filetype=obj -o $(<:_opt.ll=_x86_64.o) $<
 
 $(X86_64_UNALIGNED): $(X86_64_OBJ)
