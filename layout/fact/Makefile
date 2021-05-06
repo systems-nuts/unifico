@@ -29,8 +29,8 @@ CFLAGS 		:= -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -m
 CFLAGS 		+= -O1 -Wall -nostdinc 
 HET_CFLAGS 	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec -masm=intel
 OPT_FLAGS 	:= -name-string-literals -static-var-sections
-LLC_FLAGS 	:= -function-sections -data-sections -frame-pointer=all
-#LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
+LLC_FLAGS 	:= -function-sections -data-sections 
+LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
 
 IR := $(SRC:.c=.ll)
 IR_NODBG := $(SRC:.c=_nodbg.ll)
