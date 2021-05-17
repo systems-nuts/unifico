@@ -150,7 +150,7 @@ Total Sum: 19
     \hline
     \%r10 & r3 & \$scp & \pbox{20cm}{Temp, Used to pass the functions' Static Chain Pointer \\ 4th Kernel Argument} \\
     \hline
-    \%r15 & r21 & \$gbp & Callee Saved Register, GOT Base Pointer (optionally) \\
+    \%r15 & r20 & \$gbp & Callee Saved Register, GOT Base Pointer (optionally) \\
     \hline
 \end{tabular}
 \end{adjustwidth}\label{tab:mappings}
@@ -187,7 +187,7 @@ NOTE: Unsure about \%rax - r8 mapping
     \hline
     \%r10 & r3 & \$scp & \pbox{20cm}{Temp, Static Chain Pointer \\ 4th Kernel Argument} \\
     \hline
-    \%r15 & r21 & \$gbp & \pbox{20cm}{Callee Saved Register \\ GOT Base Pointer (optionally)} \\
+    \%r15 & r20 & \$gbp & \pbox{20cm}{Callee Saved Register \\ GOT Base Pointer (optionally)} \\
     \hline
 \end{tabular}
 \end{adjustwidth}\label{tab:mappings_per_func}
