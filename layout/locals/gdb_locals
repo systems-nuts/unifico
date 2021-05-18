@@ -1,0 +1,7 @@
+break main
+b 14
+run
+c
+source frame.py
+frame_info
+quit
