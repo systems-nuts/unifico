@@ -1,3 +1,4 @@
+break main
 break sort
 break swap
 run
@@ -9,4 +10,5 @@ c
 c
 c
 frame_info
+bt -past-main
 quit
