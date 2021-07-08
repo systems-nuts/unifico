@@ -1,0 +1,12 @@
+b _start
+b _start_c
+b __libc_start_main
+b main
+r
+p $rbp
+c
+p $rbp
+c
+p $rbp
+c
+p $rbp
