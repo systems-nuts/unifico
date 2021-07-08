@@ -1,3 +1,7 @@
+# Directory structure 
+
+* *common/*: Contains some common functionality files
+
 ## Installing gdb
 
 * `sudo apt-get install texinfo`

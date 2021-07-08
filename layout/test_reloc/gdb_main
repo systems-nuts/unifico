@@ -1,0 +1,5 @@
+set $end_addr=0x800000000000
+b main
+r
+x/32x $rsp
+q
