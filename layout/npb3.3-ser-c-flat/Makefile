@@ -4,6 +4,11 @@ all:
 		make -C $$W; \
 	done
 
+asm:
+	for W in bt cg dc ep ft is lu mg sp ua; do \
+		make -C $$W asm; \
+	done
+
 .PHONY: clean
 clean:
 	for W in bt cg dc ep ft is lu mg sp ua; do \
@@ -21,4 +26,4 @@ B: clean
 
 .PHONY: help
 help:
-	@echo "make {all | S | A | B | clean}"
+	@echo "make {all | asm | json | S | A | B | clean}"

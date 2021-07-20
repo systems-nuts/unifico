@@ -8,14 +8,18 @@ LLVM_TOOLCHAIN := ~/llvm_9/toolchain/bin
 PYTHON = python3.7
 
 # Lib musl directories per architecture
-X86_64_MUSL	:= ~/musl_toolchains/musl_popcorn_toolchain_reloc/toolchain_x86-64
 ARM64_MUSL  := ~/musl_toolchains/musl_popcorn_toolchain_reloc/toolchain_aarch64
-#X86_64_MUSL	:= ~/popcorn-compiler/lib/musl-1.1.18/toolchain_x86-64
+X86_64_MUSL	:= ~/musl_toolchains/musl_popcorn_toolchain_reloc/toolchain_x86-64
 #ARM64_MUSL  := ~/popcorn-compiler/lib/musl-1.1.18/toolchain_aarch64
+#X86_64_MUSL	:= ~/popcorn-compiler/lib/musl-1.1.18/toolchain_x86-64
 
 # Directory of libgcc & libgcc_eh for aarch64 compiler
 ARM64_LIBGCC   := $(shell dirname \
 	                $(shell aarch64-linux-gnu-gcc -print-libgcc-file-name))
+
+# For llvm-mca tool
+ARM64_CPU   := thunderx2t99
+X86_64_CPU	:= btver2
 
 ###############################################################################
 # LLVM Tools and Flags
@@ -23,9 +27,10 @@ ARM64_LIBGCC   := $(shell dirname \
 CC  := $(LLVM_TOOLCHAIN)/clang
 OPT := $(LLVM_TOOLCHAIN)/opt
 LLC := $(LLVM_TOOLCHAIN)/llc
+MCA := ~/llvm_13/toolchain/bin/llvm-mca
 
 CFLAGS 		:= -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer 
-CFLAGS 		+= -O1 -Wall -nostdinc 
+CFLAGS 		+= -O0 -Wall -nostdinc 
 HET_CFLAGS 	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec
 OPT_FLAGS 	:= -name-string-literals -static-var-sections
 LLC_FLAGS 	:= -function-sections -data-sections
@@ -69,6 +74,8 @@ X86_64_ASM         := $(SRC:.c=_x86_64.s)
 X86_64_MAP         := $(X86_64_BUILD)/map.txt
 X86_64_LD_SCRIPT   := $(X86_64_BUILD)/aligned_linker_script_x86.x
 X86_64_ALIGNED_MAP := $(X86_64_BUILD)/aligned_map.txt
+X86_64_JSON        := $(SRC:.c=_x86_64.json)
+X86_64_JSON_DIR    := ../json/x86-64/$(BIN)
 
 X86_64_TARGET  := x86_64-linux-gnu
 X86_64_INC     := -isystem $(X86_64_MUSL)/include # FIXME
@@ -88,6 +95,8 @@ ARM64_ASM         := $(SRC:.c=_aarch64.s)
 ARM64_MAP         := $(ARM64_BUILD)/map.txt
 ARM64_LD_SCRIPT   := $(ARM64_BUILD)/aligned_linker_script_arm.x
 ARM64_ALIGNED_MAP := $(ARM64_BUILD)/aligned_map.txt
+ARM64_JSON        := $(SRC:.c=_aarch64.json)
+ARM64_JSON_DIR    := ../json/aarch64/$(BIN)
 
 ARM64_TARGET  := aarch64-linux-gnu
 ARM64_INC     := -isystem $(ARM64_MUSL)/include
@@ -102,8 +111,9 @@ all: aligned
 
 ir: $(IR)
 asm: asm-x86-64 asm-aarch64
+json: json-x86-64 json-aarch64
 
-# Small hack to cancle the implicit assembler rule
+# Small hack to cancel the implicit assembler rule
 %.o : %.s
 
 aligned: aligned-x86-64 aligned-aarch64
@@ -113,11 +123,13 @@ aligned-x86-64: $(X86_64_ALIGNED)
 unaligned-x86-64: $(X86_64_UNALIGNED)
 obj-x86-64: $(X86_64_OBJ)
 asm-x86-64: $(X86_64_ASM)
+json-x86-64: $(X86_64_JSON)
 
 aligned-aarch64: $(ARM64_ALIGNED)
 unaligned-aarch64: $(ARM64_UNALIGNED)
 obj-aarch64: $(ARM64_OBJ)
 asm-aarch64: $(ARM64_ASM)
+json-aarch64: $(ARM64_JSON)
 
 ##########
 # Common #
@@ -141,7 +153,7 @@ asm-aarch64: $(ARM64_ASM)
 	# Remove the x86-64-related information
 	sed -e "s/\"target-cpu\"\=\"x86-64\"\ \"target-features\"\=\"+cx8,+fxsr,+mmx,+sse,+sse2,+x87\"//g" -i $@
 	# Make directories
-	mkdir -p $(X86_64_BUILD) $(ARM64_BUILD)
+	mkdir -p $(X86_64_BUILD) $(ARM64_BUILD) $(X86_64_JSON_DIR) $(ARM64_JSON_DIR)
 
 %_opt_nodbg.ll: %_nodbg.ll
 	@echo " [OPT NO DEBUG] $@"
@@ -151,9 +163,13 @@ asm-aarch64: $(ARM64_ASM)
 # AArch64 #
 ###########
 
-$(ARM64_ASM): $(BIN)_opt_nodbg.ll
+%_aarch64.s: %_opt_nodbg.ll
 	@echo " [LLC ASSEMBLY] $@"
-	$(LLC) $(LLC_FLAGS) -march=aarch64 -o $@ $<
+	$(LLC) $(LLC_FLAGS) -march=aarch64 -o $(ARM64_BUILD)/$(<:_opt_nodbg.ll=_aarch64.s) $<
+
+%_aarch64.json: %_aarch64.s
+	@echo " [LLVM-MCA] $@"
+	$(MCA) -march=aarch64 -mcpu=$(ARM64_CPU) -json -o $(ARM64_JSON_DIR)/$(<:.s=.json) $(ARM64_BUILD)/$<
 
 %_aarch64.o: %_opt.ll 
 	@echo " [LLC] $@"
@@ -174,9 +190,13 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 # x86-64 #
 ##########
 
-$(X86_64_ASM): $(BIN)_opt_nodbg.ll
+%_x86_64.s: %_opt_nodbg.ll
 	@echo " [LLC ASSEMBLY] $@"
-	$(LLC) $(LLC_FLAGS) -march=x86-64 --x86-asm-syntax=intel -o $@ $<
+	$(LLC) $(LLC_FLAGS) -march=x86-64 --x86-asm-syntax=intel -o $(X86_64_BUILD)/$(<:_opt_nodbg.ll=_x86_64.s) $<
+
+%_x86_64.json: %_x86_64.s
+	@echo " [LLVM-MCA] $@"
+	$(MCA) -march=x86-64 -mcpu=$(X86_64_CPU) -json -o $(X86_64_JSON_DIR)/$(<:.s=.json) $(X86_64_BUILD)/$<
 
 %_x86_64.o: %_opt.ll
 	@echo " [LLC] $@"
@@ -208,7 +228,7 @@ check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 clean:
 	@echo " [CLEAN] $(ARM64_ALIGNED) $(ARM64_BUILD) $(X86_64_ALIGNED) \
 		$(X86_64_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.o *.out"
-	@rm -rf $(ARM64_ALIGNED) $(ARM64_BUILD) $(X86_64_ALIGNED) $(X86_64_BUILD) \
+	@rm -rf $(ARM64_ALIGNED) $(ARM64_BUILD) $(ARM64_JSON_DIR) $(X86_64_ALIGNED) $(X86_64_BUILD) $(X86_64_JSON_DIR) \
 		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.o *.out
 
 .PHONY: all check clean \
