@@ -525,6 +525,8 @@ utilities/lstopo_p.txt
 *.s
 *.ll
 *.x
+*.pptx
+*.json
 *aarch64
 *x86-64
 spec2017/results/

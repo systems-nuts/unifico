@@ -1,4 +1,5 @@
 import os
+import argparse
 import matplotlib.pyplot as plt
 
 from jsonstream import load
@@ -62,7 +63,6 @@ def sort_by_pressure(folder_path, target_resources):
     """Sort the assembly files in a folder based on hardware pressure
 
     Calculates the hardware pressure for the given resources, for all the resources of the JSON files in a folder.
-    Returns a list with the hardware pressure in ascending order.
     Hardware pressure per file is summed for all the resources.
     JSON files are created through the `llvm-mca --json` command and must be of the same architecture.
     @param folder_path: the location of the json files
@@ -72,6 +72,8 @@ def sort_by_pressure(folder_path, target_resources):
     result = []
     for file in os.listdir(folder_path):
         file_path = os.path.join(folder_path, file)
+        if not os.path.isfile(file_path):
+            continue
         mca_dict = parse_mca_json(file_path)
         pressure_dict = resource_pressure(mca_dict)
         total_pressure = sum([pressure_dict[resource]
@@ -80,6 +82,41 @@ def sort_by_pressure(folder_path, target_resources):
         result.append([file, total_pressure])
 
     result = sorted(result, key=lambda x: x[1])  # Sort list of tuples based on the 2nd argument, i.e. total_pressure
+
+    return list(zip(*result))
+
+
+def folder_pressure(folder_path, target_resources):
+    """Sum the hardware pressure of all assembly files in a folder
+
+    Sums the hardware pressure for the given target resources, for all the resources of the JSON files in a folder.
+    Hardware pressure per file is summed for all the resources.
+    JSON files are created through the `llvm-mca --json` command and must be of the same architecture.
+    @param folder_path: the location of the json files
+    @param target_resources: list of processor resources
+    @return: tuple with the folder name and the sum of pressures for all files
+    """
+    pressures = sort_by_pressure(folder_path, target_resources)[1]  # Get only the numbers, not the file names.
+    folder_name = folder_path.split('/')[-1]
+    return folder_name, sum(pressures)
+
+
+def multi_folder_pressure(folder_path, target_resources):
+    """Get the hardware pressure of all folders in a folder
+
+    Calculate the hardware pressure for the given target resources, for all the folders with JSON files in a folder.
+    Hardware pressure per folders is summed for all the resources.
+    JSON files are created through the `llvm-mca --json` command and must be of the same architecture.
+    @param folder_path: the location of the folders with the json files
+    @param target_resources: list of processor resources
+    @return: list with folder names with their total pressures in ascending order
+    """
+    result = []
+    for folder in os.listdir(folder_path):
+        inner_folder_path = os.path.join(folder_path, folder)
+        if not os.path.isdir(inner_folder_path):
+            continue
+        result.append(folder_pressure(inner_folder_path, target_resources))
 
     return list(zip(*result))
 
@@ -102,8 +139,20 @@ def plot_by_pressure(folder_path, target_resources):
 
 if __name__ == '__main__':
     mca = parse_mca_json(EXAMPLE_JSON)
-    print(resource_pressure(mca))
-    print(sort_by_pressure('json_examples', ['JALU0', 'JDiv']))
-    print(sort_by_pressure('json_examples', ['THX2T99P0']))
-    plot_by_pressure('json_examples', ['JALU0', 'JDiv'])
-    plot_by_pressure('json_examples', ['THX2T99P0'])
+    # print(sort_by_pressure('json_examples', ['JALU0', 'JDiv']))
+    # print(sort_by_pressure('json_examples', ['THX2T99P0']))
+    # plot_by_pressure('json_examples', ['JALU0', 'JDiv'])
+
+    parser = argparse.ArgumentParser(description='Utility script for extracting hardware pressure, '
+                                                 'as JSON, from assembly files.')
+    parser.add_argument('--asm-folder', action="store", required=True,
+                        help='folder containing the assembly files')
+
+    args, others = parser.parse_known_args()
+
+    # print(sort_by_pressure(args.asm_folder, ['JALU0', 'JDiv']))
+    # print(folder_pressure(args.asm_folder, ['JALU0', 'JDiv']))
+    l = multi_folder_pressure('npb_aarch64_json', ['THX2T99P0', 'THX2T99P1', 'THX2T99P2',
+                                                     'THX2T99P3', 'THX2T99P4', 'THX2T99P5'])
+    for x, y in list(zip(*l)):
+        print(x, y)
