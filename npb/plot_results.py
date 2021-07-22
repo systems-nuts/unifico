@@ -171,8 +171,8 @@ def get_overhead_df(dir1, dir2):
     df2 = df2[df2['Class'] == 'B']
     df2 = df2[df2['Threads'] == 1]
 
-    df1 = df1.groupby(['Benchmark', 'Threads']).mean()
-    df2 = df2.groupby(['Benchmark', 'Threads']).mean()
+    df1 = df1.groupby(['Benchmark']).mean()
+    df2 = df2.groupby(['Benchmark']).mean()
 
     info1 = get_info(os.path.join(dir1, 'info.json'))
     info2 = get_info(os.path.join(dir2, 'info.json'))
@@ -262,7 +262,15 @@ if __name__ == '__main__':
     # compare_experiments('results/1496895', 'results/remove_14_regs/ca1f7d6',
     #                     'reports/plots/sole_remove_15_O1_B_large_font', hue='Class', how='overhead')
 
-    print(get_overhead_df('results/b779a20', 'results/remove_14_regs/096c020'))
-    print(get_overhead_df('results/1496895', 'results/remove_14_regs/ca1f7d6'))
-    print(get_overhead_df('results/b920081', 'results/remove_14_regs/1d570f6'))
-    print(get_overhead_df('results/fdb187b', 'results/remove_14_regs/9776cd6'))
+    df0 = get_overhead_df('results/b779a20', 'results/remove_14_regs/096c020')
+    df0 = df0.rename(columns={'% Overhead': 'Overhead -O0'})
+    df1 = get_overhead_df('results/1496895', 'results/remove_14_regs/ca1f7d6')
+    df1 = df1.rename(columns={'% Overhead': 'Overhead -O1'})
+    df2 = get_overhead_df('results/b920081', 'results/remove_14_regs/1d570f6')
+    df2 = df2.rename(columns={'% Overhead': 'Overhead -O2'})
+    df3 = get_overhead_df('results/fdb187b', 'results/remove_14_regs/9776cd6')
+    df3 = df3.rename(columns={'% Overhead': 'Overhead -O3'})
+
+    df = pd.concat([df0, df1, df2, df3], axis=1)
+    df.drop(['Threads'], axis=1, inplace=True)
+    df.to_csv('results/remove_14_regs/overheads.csv')
