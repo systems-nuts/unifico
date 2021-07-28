@@ -522,8 +522,10 @@ venv.bak/
 .mypy_cache/
 
 utilities/lstopo_p.txt
+*.gdb_history
 *.s
 *.ll
+*.bc
 *.x
 *.pptx
 *.json

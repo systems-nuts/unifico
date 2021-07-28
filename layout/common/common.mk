@@ -18,8 +18,10 @@ ARM64_LIBGCC   := $(shell dirname \
 	                $(shell aarch64-linux-gnu-gcc -print-libgcc-file-name))
 
 # For llvm-mca tool
-ARM64_CPU   := thunderx2t99
-X86_64_CPU	:= btver2
+MCA 			:= ~/llvm_13/toolchain/bin/llvm-mca
+ARM64_CPU   	:= thunderx2t99
+X86_64_CPU		:= btver2
+MCA_RESULT_DIR 	:= ../mca-results/reg-pressure-O0
 
 ###############################################################################
 # LLVM Tools and Flags
@@ -27,7 +29,6 @@ X86_64_CPU	:= btver2
 CC  := $(LLVM_TOOLCHAIN)/clang
 OPT := $(LLVM_TOOLCHAIN)/opt
 LLC := $(LLVM_TOOLCHAIN)/llc
-MCA := ~/llvm_13/toolchain/bin/llvm-mca
 
 CFLAGS 		:= -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer 
 CFLAGS 		+= -O0 -Wall -nostdinc 
@@ -46,8 +47,6 @@ LD       := $(POPCORN)/bin/x86_64-popcorn-linux-gnu-ld.gold
 ARM64_LD := $(POPCORN)/bin/aarch64-popcorn-linux-gnu-ld.gold
 #LD       := ~/musl-cross-make/output/x86_64-linux-musl/bin/ld
 #ARM64_LD := ~/musl-cross-make/output/aarch64-linux-musl/bin/ld
-#LD       := ld.gold
-#ARM64_LD := arm-linux-gnueabihf-ld.gold
 
 LDFLAGS := -z noexecstack -z relro --hash-style=gnu --build-id -static 
 LIBS    := /lib/crt1.o \
@@ -75,7 +74,7 @@ X86_64_MAP         := $(X86_64_BUILD)/map.txt
 X86_64_LD_SCRIPT   := $(X86_64_BUILD)/aligned_linker_script_x86.x
 X86_64_ALIGNED_MAP := $(X86_64_BUILD)/aligned_map.txt
 X86_64_JSON        := $(SRC:.c=_x86_64.json)
-X86_64_JSON_DIR    := ../json/x86-64/$(BIN)
+X86_64_JSON_DIR    := $(MCA_RESULT_DIR)/x86-64/$(BIN)
 
 X86_64_TARGET  := x86_64-linux-gnu
 X86_64_INC     := -isystem $(X86_64_MUSL)/include # FIXME
@@ -96,7 +95,7 @@ ARM64_MAP         := $(ARM64_BUILD)/map.txt
 ARM64_LD_SCRIPT   := $(ARM64_BUILD)/aligned_linker_script_arm.x
 ARM64_ALIGNED_MAP := $(ARM64_BUILD)/aligned_map.txt
 ARM64_JSON        := $(SRC:.c=_aarch64.json)
-ARM64_JSON_DIR    := ../json/aarch64/$(BIN)
+ARM64_JSON_DIR    := $(MCA_RESULT_DIR)/aarch64/$(BIN)
 
 ARM64_TARGET  := aarch64-linux-gnu
 ARM64_INC     := -isystem $(ARM64_MUSL)/include
@@ -169,7 +168,8 @@ json-aarch64: $(ARM64_JSON)
 
 %_aarch64.json: %_aarch64.s
 	@echo " [LLVM-MCA] $@"
-	$(MCA) -march=aarch64 -mcpu=$(ARM64_CPU) -json -o $(ARM64_JSON_DIR)/$(<:.s=.json) $(ARM64_BUILD)/$<
+	#$(MCA) -march=aarch64 -mcpu=$(ARM64_CPU) -json -o $(ARM64_JSON_DIR)/$(<:.s=.json) $(ARM64_BUILD)/$<
+	$(MCA) -march=aarch64 -mcpu=$(ARM64_CPU) -register-file-stats -o $(ARM64_JSON_DIR)/$(<:.s=.json) $(ARM64_BUILD)/$<
 
 %_aarch64.o: %_opt.ll 
 	@echo " [LLC] $@"
@@ -196,7 +196,8 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 
 %_x86_64.json: %_x86_64.s
 	@echo " [LLVM-MCA] $@"
-	$(MCA) -march=x86-64 -mcpu=$(X86_64_CPU) -json -o $(X86_64_JSON_DIR)/$(<:.s=.json) $(X86_64_BUILD)/$<
+	#$(MCA) -march=x86-64 -mcpu=$(X86_64_CPU) -json -o $(X86_64_JSON_DIR)/$(<:.s=.json) $(X86_64_BUILD)/$<
+	$(MCA) -march=x86-64 -mcpu=$(X86_64_CPU) -register-file-stats -o $(X86_64_JSON_DIR)/$(<:.s=.json) $(X86_64_BUILD)/$<
 
 %_x86_64.o: %_opt.ll
 	@echo " [LLC] $@"
@@ -226,8 +227,8 @@ check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	$(PYTHON) $(ALIGN_CHECK) $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 
 clean:
-	@echo " [CLEAN] $(ARM64_ALIGNED) $(ARM64_BUILD) $(X86_64_ALIGNED) \
-		$(X86_64_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.o *.out"
+	@echo " [CLEAN] $(ARM64_ALIGNED) $(ARM64_BUILD) $(ARM64_JSON_DIR) $(X86_64_ALIGNED) $(X86_64_BUILD) $(X86_64_JSON_DIR) \
+		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.o *.out"
 	@rm -rf $(ARM64_ALIGNED) $(ARM64_BUILD) $(ARM64_JSON_DIR) $(X86_64_ALIGNED) $(X86_64_BUILD) $(X86_64_JSON_DIR) \
 		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.o *.out
 

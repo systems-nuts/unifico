@@ -9,7 +9,12 @@ asm:
 		make -C $$W asm; \
 	done
 
-.PHONY: clean
+json:
+	for W in bt cg dc ep ft is lu mg sp ua; do \
+		make -C $$W json; \
+	done
+
+.PHONY: asm json clean
 clean:
 	for W in bt cg dc ep ft is lu mg sp ua; do \
 		make -C $$W clean; \
