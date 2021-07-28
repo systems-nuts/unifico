@@ -1,0 +1,390 @@
+diff --git a/lib/musl-1.1.18/arch/aarch64/crt_arch.h b/lib/musl-1.1.18/arch/aarch64/crt_arch.h
+index dbc6e8e6..13d5b373 100644
+--- a/lib/musl-1.1.18/arch/aarch64/crt_arch.h
++++ b/lib/musl-1.1.18/arch/aarch64/crt_arch.h
+@@ -1,3 +1,7 @@
++
++/* Original version by the musl authors */
++/* Current version by Antonio Barbalace, Stevens 2019 */
++
+ __asm__(
+ ".text \n"
+ ".global " START "\n"
+@@ -40,3 +44,9 @@ START ":\n"
+ 
+ /* comment the following to disable relocation before libc start */
+ #define STACK_RELOC
++#define STACK_RELOC_MOVE_VDSO
++#define STACK_RELOC_PROTECT
++
++
++
++
+diff --git a/lib/musl-1.1.18/arch/aarch64/stack_arch.h b/lib/musl-1.1.18/arch/aarch64/stack_arch.h
+index bfb95445..4b818ef8 100644
+--- a/lib/musl-1.1.18/arch/aarch64/stack_arch.h
++++ b/lib/musl-1.1.18/arch/aarch64/stack_arch.h
+@@ -18,6 +18,9 @@
+ #define STACK_PAGE_SIZE    (4096)
+ #define STACK_MAPPED_PAGES (32)
+ 
++#define STACK_RELOC_PAGE_ALIGN 5
++#define STACK_RELOC_OFFSET 0x00
++
+ /* stack relocation arch dep macros */
+ 
+ #define arch_stack_switch(stack_top, stack_offset) \
+diff --git a/lib/musl-1.1.18/arch/x86_64/crt_arch.h b/lib/musl-1.1.18/arch/x86_64/crt_arch.h
+index 0853527b..10bbfbb9 100644
+--- a/lib/musl-1.1.18/arch/x86_64/crt_arch.h
++++ b/lib/musl-1.1.18/arch/x86_64/crt_arch.h
+@@ -1,3 +1,7 @@
++
++/* Original version by the musl authors */
++/* Current version by Antonio Barbalace, Nikos, The University of Edinburgh 2021 */
++
+ __asm__(
+ ".text \n"
+ ".global " START " \n"
+@@ -11,14 +15,18 @@ START ": \n"
+ "	call " START "_c \n"
+ );
+ 
++/* TODO copy more than a byte at the time */
+ #define __memcpy_nostack(dest, src, n) \
+ 	({ unsigned long retval =-1; \
+ 	__asm__ volatile(".weak __memcpy_nostack \n" \
++		".weak __memcpy_nostack_error \n" \
+ 		".weak __memcpy_nostack_exit \n" \
+ 		".weak __memcpy_nostack_copy \n" \
+ 		"__memcpy_nostack:" \
+ 		"cmp %4, %3; \n\t" \
+-		"jg __memcpy_nostack_exit; \n" \
++		"jg __memcpy_nostack_error; \n" \
++		"push %%r8; \n\t" \
++		"push %%r9; \n\t" \
+ 		"movq %1, %%r8; \n\t" \
+ 		"cmp %%r8, %2; \n\t" \
+ 		"jle __memcpy_nostack_exit; \n" \
+@@ -30,11 +38,15 @@ START ": \n"
+ 		"jg __memcpy_nostack_copy; \n" \
+ 		"__memcpy_nostack_exit:" \
+ 		"movq %%r8, %0; \n\t" \
++		"pop %%r9; \n\t" \
++		"pop %%r8; \n\t" \
++		"__memcpy_nostack_error: \n\t" \
+ 		: "=r" (retval) \
+ 		: "I" (0), "r" (n), \
+ 		  "r" (dest), "r" (src) \
+-		: "r9b", "r8", "memory"); \
++		: "r9", "r8", "memory"); \
+ 	retval; })
+ 
+ /* comment the following to disable relocation before libc start */
+ #define STACK_RELOC
++//in x86_64 we don't move VVAR and VDSO, at least for the moment
+diff --git a/lib/musl-1.1.18/crt/crt1.c b/lib/musl-1.1.18/crt/crt1.c
+index 9512e85d..6d0c050a 100644
+--- a/lib/musl-1.1.18/crt/crt1.c
++++ b/lib/musl-1.1.18/crt/crt1.c
+@@ -1,3 +1,4 @@
++
+ /* Original version by the musl authors */
+ /* Current version by Antonio Barbalace, Stevens 2019 */
+ 
+@@ -9,11 +10,13 @@
+  */
+ 
+ #include <features.h>
++#include "libc.h"
+ 
+ #define START "_start"
+ 
+ #include "crt_arch.h"
+ 
++
+ #ifdef STACK_RELOC
+ #define _GNU_SOURCE
+ #include "stack_arch.h"
+@@ -24,6 +27,8 @@
+ #include <sys/prctl.h>
+ #include <elf.h>
+ 
++#define STACK_RELOC_ALIGN
++
+ #if ULONG_MAX == 0xffffffff
+ typedef Elf32_auxv_t Auxv;
+ typedef Elf32_Ehdr Ehdr;
+@@ -31,14 +36,22 @@ typedef Elf32_Ehdr Ehdr;
+ typedef Elf64_auxv_t Auxv;
+ typedef Elf64_Ehdr Ehdr;
+ #endif
++
++#define memlng_nostack(iter, start, end, value) \
++	({for (iter = start; iter <= end; iter++) \
++		if (*(unsigned long*)iter == value) { \
++			break; \
++		}})
+ #endif /* STACK_RELOC */
+ 
++
+ int main();
+-void _init() __attribute__((weak));
+-void _fini() __attribute__((weak));
++void _init() __attribute((weak));
++void _fini() __attribute((weak));
+ _Noreturn int __libc_start_main(int (*)(), int, char **,
+ 	void (*)(), void(*)(), void(*)());
+- 
++
++
+ #ifdef STACK_RELOC_DEBUG
+ static inline char *_itoa_b16(char *p, unsigned long x)
+ {
+@@ -72,6 +85,9 @@ static inline char *_itoa_b10(char *p, long x)
+ }
+ #endif /* STACK_RELOC_DEBUG */
+ 
++// The stack including aux, env, arg are built by 
++// https://elixir.bootlin.com/linux/latest/C/ident/create_elf_tables
++
+ void _start_c(long *p)
+ {
+ 	register int argc = p[0];
+@@ -81,9 +97,10 @@ void _start_c(long *p)
+ 	/* stack relocation code */
+ 	register char **envp = argv+argc+1;
+ 	Auxv *auxv; 
+-	int i, copied =-1, size =-1, total_size =-1;
+-	long stack_ptr =-1, stack_addr =-1;
+-	register long max; long vvar_base, vdso_size;
++	int i, copied =-1, total_size =-1; //TODO convert total_size to stack_size
++	long stack_ptr =-1, stack_addr =-1, frame_size=-1; //stack_ret=-1,
++	register long max; long vvar_base =0, vdso_size =0;
++#define max_size(aaa) (max - ((unsigned long)(aaa)))
+ 	Ehdr *sysinfo_ehdr;
+ 
+ 	/* ARCH getting the the current stack pointer */
+@@ -94,6 +111,7 @@ void _start_c(long *p)
+ 	 */
+ 	if ( STACK_START_ADDR > (unsigned long) stack_ptr)
+ 		goto _abort_relocation;
++//TODO cross check this for x86 seems wrong
+     
+ 	/* getting the current dimension of the stack, using heuristics */
+ 	for (i=0; i<argc; i++) {
+@@ -108,32 +126,53 @@ void _start_c(long *p)
+ 	for (i=0; (auxv[i].a_type != AT_NULL); i++) {
+ 		if (max < (long)auxv[i].a_un.a_val)
+ 			max = (long) auxv[i].a_un.a_val;
++		
++		/* look for VDSO information */
++		if ( (auxv[i].a_type == AT_SYSINFO_EHDR) ) /* TODO maybe consider AT_SYSINFO as well */
++			sysinfo_ehdr = (Ehdr*)auxv[i].a_un.a_val;
++
++		/* check if we need to abort relocation, for example in case of dynamic 
++		* linking. The key heuristic is to check if the text section is above
++		* the new stack address -- as we don't relocate the text section, we 
++		* need to abort.
++		*/
++		if ( (auxv[i].a_type == AT_ENTRY) &&
++				(auxv[i].a_un.a_val >= STACK_END_ADDR) )
++			goto _abort_relocation;
++	}
++	/* NOTE above we may had to add the size of the variable to max, but at the moment it works */
++	
++	/* align max address, highest virtual address */
++	max = (max & ~(STACK_PAGE_SIZE -1)) + STACK_PAGE_SIZE; 
+ 
+-	/* look for VDSO information */
+-	if ( (auxv[i].a_type == AT_SYSINFO_EHDR) ) /* TODO maybe consider AT_SYSINFO as well */
+-	    sysinfo_ehdr = (Ehdr*)auxv[i].a_un.a_val;
++	/* expected total mapped size in [stack], can be overestimated */
++	total_size = STACK_PAGE_SIZE * 
++		(STACK_MAPPED_PAGES + (max_size(stack_ptr)/STACK_PAGE_SIZE) +1);
+ 
+-	/* check if we need to abort relocation, for example in case of dynamic 
+-	 * linking. The key heuristic is to check if the text section is above
+-	 * the new stack address -- as we don't relocate the text section, we 
+-	 * need to abort.
++	/* size of the current stack, based on argc position, other methods based
++	 * on GCC's __builtin_* do not work on all architectures, therefore this seems
++	 * the most reliable solution
+ 	 */
+-	if ( (auxv[i].a_type == AT_ENTRY) &&
+-			(auxv[i].a_un.a_val >= STACK_END_ADDR) )
+-		goto _abort_relocation;
+-	}
+-	/* align max address */
+-	max = (max & ~(STACK_PAGE_SIZE -1)) + STACK_PAGE_SIZE;
+-	size = (max - ((unsigned long)stack_ptr) ); 
+-
+-	/* update expected total mapped size in [stack] */
+-	total_size = STACK_PAGE_SIZE * (STACK_MAPPED_PAGES + (size/STACK_PAGE_SIZE) +1); //it is ok to over estimate this
+-    
++	frame_size = (unsigned long)p - stack_ptr;
++	
++#if 0
++	/* calculate the size of the first frame by looking at the return address of the current frame that can be obtained with a builtin */
++	stack_ret = (unsigned long)__builtin_return_address(0); // get the address to be matched 
++	memlng_nostack(stack_addr, stack_ptr, max, stack_ret);
++	if (stack_addr != max)
++		frame_size = stack_addr -stack_ptr;
++#endif	
++/*	__asm__ ("nop \n\t mov %0, %%rax \n\t mov %1, %%rbx \n\t mov %2, %%rcx \n\t mov %3, %%rdx \n\t nop \n\t": 
++	: "r" ((long)max), "r" ((long)max_size(stack_ptr)), "r" ((long)total_size), "r" ((long)frame_size)
++	: "rax", "rbx", "rcx", "rdx", "memory" );
++*/
++
++#ifdef STACK_RELOC_MOVE_VDSO
+ 	/* if VDSO is mapped in, let's move it firstly */
+ 	if (sysinfo_ehdr) {
+ 		/* VDSO: need to look up the size in the phdr and align it */
+ 		Elf64_Phdr *ph = (void *)((char *)sysinfo_ehdr + sysinfo_ehdr->e_phoff);
+-		size_t base=-1i, end =-1;
++		size_t base=-1, end =-1;
+ 		for (i=0; i<sysinfo_ehdr->e_phnum; i++, ph=(void *)((char *)ph+sysinfo_ehdr->e_phentsize)) {
+ 			/* so far, kernel version 5.15 there is only one PT_LOAD, this doesn't support more than one */
+ 			if (ph->p_type == PT_LOAD) {
+@@ -154,7 +193,6 @@ void _start_c(long *p)
+ 		if ( ((unsigned long) stack_addr) > -4096UL) {
+ 			i =1; goto _error;
+ 		}
+-
+ 		stack_addr = __syscall(SYS_mremap, base, (end - base), (end - base), (MREMAP_FIXED | MREMAP_MAYMOVE), STACK_END_ADDR - (end - base));
+ 		if ( ((unsigned long) stack_addr) > -4096UL) {
+ 			i =2; goto _error;
+@@ -165,10 +203,25 @@ void _start_c(long *p)
+     }
+ _malformed_vdso:
+ 
+-#if STACK_RELOC_USE_MMAP
+-    /* get the memory for the stack */
++#endif /* STAC_RELOC_MOVE_VDSO */
+ 
+-    //TODO implement the same trick as with mremap (see below)
++/*
++TODO in x86_64 need to move the VDSO and VVAR at the very end of the addr space and move the stack down a page (this code can be integrated with the code below -- for the moment we skipped this code
++NOTE the code below is not working, mremap doesn't allow moving to an overlapping area, and allows shrinking only at the end of the memory area (not at beginnning)
++//#ifdef x86
++stack_addr = _syscall(SYS_mremap, (max - total_size), total_size, total_size, (MREMAP_FIXED | MREMAP_MAYMOVE), STACK_END_ADDR - vdso_size - total_size);
++	if ( ((unsigned long) stack_addr) > -4096UL) {
++			i =2; goto _error;
++	}
++//#endif x86
++*/
++
++	/* if the stack is already ending at the right addr, skip this */
++	if (STACK_END_ADDR == max)
++		goto _finalize;
++	
++#if STACK_RELOC_USE_MMAP
++    /* allocate the memory to where to move the stack */
+ 
+ #ifdef SYS_mmap2
+     stack_addr = (void*) __syscall(SYS_mmap2, STACK_START_ADDR - vdso_size, STACK_SIZE, PROT_READ|PROT_WRITE, (MAP_PRIVATE|MAP_ANON|MAP_FIXED), -1, 0);
+@@ -213,8 +266,8 @@ _malformed_vdso:
+ 
+ #if STACK_RELOC_USE_MMAP
+ 	/* ARCH copy of the stack */ //TODO can we use SYS_mremap instead?
+-	copied = __memcpy_nostack((STACK_END_ADDR - vdso_size -size), stack_ptr, size);
+-	if (copied != size) {
++	copied = __memcpy_nostack((STACK_END_ADDR - vdso_size -max_size(stack_ptr)), stack_ptr, max_size(stack_ptr));
++	if (copied != max_size(stack_ptr)) {
+ 		i =4; goto _error;
+ 	}
+ #else /* STACK_RELOC_USE_MMAP */
+@@ -230,7 +283,7 @@ __retry_mremap:
+ 		 * least). Setting ulimit may also end up in a smaller stack. We
+ 		 * try to guess the size here.
+ 		 */
+-		if (total_size >  size) {
++		if (total_size >  max_size(stack_ptr)) {
+ 			total_size -= STACK_PAGE_SIZE;
+ 			goto __retry_mremap;
+ 		}
+@@ -238,19 +291,42 @@ __retry_mremap:
+ 	}
+ #endif /* !STACK_RELOC_USE_MMAP */
+ 
+-	/* tells to the kernel where is the stack */
++	/* tells to the kernel where is the stack and the env/aux variables
++	 * requires root or
++	 * http://yhbt.net/lore/all/1392387209-330-1-git-send-email-avagin@openvz.org/T/
++	 */
+ 	__syscall(SYS_prctl, PR_SET_MM, PR_SET_MM_START_STACK, (STACK_END_ADDR -vdso_size - total_size), 0, 0);
+ 	__syscall(SYS_prctl, PR_SET_MM, PR_SET_MM_ARG_START, argv[0], 0, 0);
+ 	__syscall(SYS_prctl, PR_SET_MM, PR_SET_MM_ARG_END,   envp[0], 0, 0);
+ 	__syscall(SYS_prctl, PR_SET_MM, PR_SET_MM_ENV_START, envp[0], 0, 0);	
+ 	__syscall(SYS_prctl, PR_SET_MM, PR_SET_MM_ENV_END,   STACK_END_ADDR -vdso_size, 0, 0);                            __syscall(SYS_prctl, PR_SET_MM, PR_SET_MM_AUXV,      &auxv[0], i*sizeof(Auxv), 0);
+ 
++#ifdef STACK_RELOC_PROTECT
+ 	/* mmap protect upper area */
+ 	__syscall(SYS_mmap, STACK_END_ADDR, arch_vaddr_max() - STACK_END_ADDR, 0, (MAP_PRIVATE|MAP_ANON|MAP_FIXED), -1, 0);
+-
++#endif /* STACK_RELOC_PROTECT */ 
++	
++_finalize:
++#ifdef STACK_RELOC_ALIGN
++	/* fail silently if frame_size was not found before */
++	if (frame_size != -1) {
++		/* ARCH copy of the stack */
++		copied = __memcpy_nostack((STACK_END_ADDR - // should we add -vdso???
++						((STACK_RELOC_PAGE_ALIGN*STACK_PAGE_SIZE) +STACK_RELOC_OFFSET)),
++						(STACK_END_ADDR - vdso_size -max_size(stack_ptr)), 
++							  (long)frame_size );
++		if (copied != frame_size) {
++			i =5; goto _error;
++		}
++	}
+ 	/* ARCH stack switch */
+-	arch_stack_switch(STACK_END_ADDR -vdso_size, size);
+-
++	arch_stack_switch(STACK_END_ADDR, (long)((STACK_RELOC_PAGE_ALIGN*STACK_PAGE_SIZE) +STACK_RELOC_OFFSET)); 
++#else
++	/* ARCH stack switch */
++	arch_stack_switch(STACK_END_ADDR -vdso_size, (long)max_size(stack_ptr));
++#endif /* STACK_RELOC_ALIGN */
++	
++	
+ #if STACK_RELOC_USE_MMAP
+ 	/* unmap previous stack */
+ 	__syscall(SYS_munmap, (max - total_size), total_size);
+@@ -262,7 +338,6 @@ _abort_relocation:
+ #endif /* STACK_RELOC */
+ 
+ 	/* now continue to normal startup */
+-
+ 	__libc_start_main(main, argc, argv, _init, _fini, 0);
+ 
+ #ifdef STACK_RELOC
+@@ -296,4 +371,4 @@ _error:
+     for (;;) __syscall(SYS_exit, 1); //ec);
+ #endif /* STACK_RELOC */
+ }
+-
++ 
+diff --git a/lib/musl-1.1.18/test-stack-reloc/compile.sh b/lib/musl-1.1.18/test-stack-reloc/compile.sh
+old mode 100644
+new mode 100755
+index 7ef843b3..a9513e3f
+--- a/lib/musl-1.1.18/test-stack-reloc/compile.sh
++++ b/lib/musl-1.1.18/test-stack-reloc/compile.sh
+@@ -1,3 +1,3 @@
+ #!/bin/sh
+-/usr/local/musl/bin/musl-gcc -o sd self-dump.c -static -v
++../toolchain_x86-64/bin/musl-gcc -o sd self-dump.c -static -v
+ 
+diff --git a/lib/musl-1.1.18/test-stack-reloc/test_memcpy_nostack_x86.c b/lib/musl-1.1.18/test-stack-reloc/test_memcpy_nostack_x86.c
+index 618214fa..e94c267b 100644
+--- a/lib/musl-1.1.18/test-stack-reloc/test_memcpy_nostack_x86.c
++++ b/lib/musl-1.1.18/test-stack-reloc/test_memcpy_nostack_x86.c
+@@ -67,7 +67,7 @@ int main()
+ 		printf("%4d ", new_ptr[i]);
+ 	printf("\n");
+ 
+-	long int result = __memcpy_nostack(new_ptr, ptr, (long int)(4 * N));
++	long int result = __memcpy_nostack(new_addr, old_addr, (long int)(4 * N));
+ 	printf("Result is: %ld\n", result);
+ 
+ 	for(int i=0; i<N; i += 512)

@@ -1,27 +1,27 @@
 ###############################################################################
 # FIXME's
 ###############################################################################
-POPCORN 	   := /usr/local/popcorn
+POPCORN 	   ?= /usr/local/popcorn
 
-LLVM_TOOLCHAIN := ~/llvm_9/toolchain/bin
+LLVM_TOOLCHAIN ?= ~/llvm_9/toolchain/bin
 
-PYTHON = python3.7
+PYTHON ?= python3.7
 
 # Lib musl directories per architecture
-ARM64_MUSL  := ~/musl_toolchains/musl_popcorn_toolchain_reloc/toolchain_aarch64
-X86_64_MUSL	:= ~/musl_toolchains/musl_popcorn_toolchain_reloc/toolchain_x86-64
+ARM64_MUSL  ?= ~/musl_toolchains/musl_popcorn_toolchain_reloc/toolchain_aarch64
+X86_64_MUSL	?= ~/musl_toolchains/musl_popcorn_toolchain_reloc/toolchain_x86-64
 #ARM64_MUSL  := ~/popcorn-compiler/lib/musl-1.1.18/toolchain_aarch64
 #X86_64_MUSL	:= ~/popcorn-compiler/lib/musl-1.1.18/toolchain_x86-64
 
 # Directory of libgcc & libgcc_eh for aarch64 compiler
-ARM64_LIBGCC   := $(shell dirname \
+ARM64_LIBGCC   ?= $(shell dirname \
 	                $(shell aarch64-linux-gnu-gcc -print-libgcc-file-name))
 
 # For llvm-mca tool
-MCA 			:= ~/llvm_13/toolchain/bin/llvm-mca
-ARM64_CPU   	:= thunderx2t99
-X86_64_CPU		:= btver2
-MCA_RESULT_DIR 	:= ../mca-results/reg-pressure-O0
+MCA 			?= ~/llvm_13/toolchain/bin/llvm-mca
+ARM64_CPU   	?= thunderx2t99
+X86_64_CPU		?= btver2
+MCA_RESULT_DIR 	?= ../mca-results/reg-pressure-O0
 
 ###############################################################################
 # LLVM Tools and Flags
