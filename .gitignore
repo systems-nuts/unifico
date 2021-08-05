@@ -528,6 +528,7 @@ utilities/lstopo_p.txt
 *.bc
 *.x
 *.pptx
+*.docx
 *.json
 *aarch64
 *x86-64

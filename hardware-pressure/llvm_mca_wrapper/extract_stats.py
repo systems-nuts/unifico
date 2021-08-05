@@ -270,4 +270,4 @@ if __name__ == '__main__':
         plt.savefig('json/sole/pressure-' + flag + '.png')
         plt.show()
         # bar_plot(benchmarks_sorted, hw_pressures_sorted, reg_pressures_sorted,
-        #          y1_label='hardware_pressure', y2_label='register_file_pressure')
+        #          y1_label='hardware-pressure', y2_label='register_file_pressure')
