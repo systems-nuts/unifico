@@ -1,0 +1,52 @@
+
+call_leaf.o:     file format elf64-littleaarch64
+
+
+Disassembly of section .text:
+
+0000000000000000 <add_7>:
+   0:	d100c3ff 	sub	sp, sp, #0x30
+   4:	a9027bfd 	stp	x29, x30, [sp, #32]
+   8:	910083fd 	add	x29, sp, #0x20
+   c:	0b010008 	add	w8, w0, w1
+  10:	0b020108 	add	w8, w8, w2
+  14:	b94013b0 	ldr	w16, [x29, #16]
+  18:	0b030108 	add	w8, w8, w3
+  1c:	293f03a1 	stp	w1, w0, [x29, #-8]
+  20:	b81f43a2 	stur	w2, [x29, #-12]
+  24:	0b040108 	add	w8, w8, w4
+  28:	a9427bfd 	ldp	x29, x30, [sp, #32]
+  2c:	0b050108 	add	w8, w8, w5
+  30:	0b100108 	add	w8, w8, w16
+  34:	29018fe4 	stp	w4, w3, [sp, #12]
+  38:	290097e8 	stp	w8, w5, [sp, #4]
+  3c:	9100c3ff 	add	sp, sp, #0x30
+  40:	d65f03c0 	ret
+
+0000000000000044 <main>:
+  44:	d100c3ff 	sub	sp, sp, #0x30
+  48:	a9027bfd 	stp	x29, x30, [sp, #32]
+  4c:	910083fd 	add	x29, sp, #0x20
+  50:	293f7fa0 	stp	w0, wzr, [x29, #-8]
+  54:	f9000be1 	str	x1, [sp, #16]
+  58:	528000e8 	mov	w8, #0x7                   	// #7
+  5c:	52800020 	mov	w0, #0x1                   	// #1
+  60:	52800041 	mov	w1, #0x2                   	// #2
+  64:	52800062 	mov	w2, #0x3                   	// #3
+  68:	52800083 	mov	w3, #0x4                   	// #4
+  6c:	528000a4 	mov	w4, #0x5                   	// #5
+  70:	528000c5 	mov	w5, #0x6                   	// #6
+  74:	b90003e8 	str	w8, [sp]
+  78:	d503201f 	nop
+  7c:	d503201f 	nop
+  80:	d503201f 	nop
+  84:	97ffffdf 	bl	0 <add_7>
+  88:	90000000 	adrp	x0, 0 <add_7>
+  8c:	2a0803e1 	mov	w1, w8
+  90:	91000000 	add	x0, x0, #0x0
+  94:	b9000fe8 	str	w8, [sp, #12]
+  98:	94000000 	bl	0 <printf>
+  9c:	a9427bfd 	ldp	x29, x30, [sp, #32]
+  a0:	2a1f03e8 	mov	w8, wzr
+  a4:	9100c3ff 	add	sp, sp, #0x30
+  a8:	d65f03c0 	ret
