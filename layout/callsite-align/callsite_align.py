@@ -1,13 +1,15 @@
+import sys
 import re
 
+FUNCTION_REGEX = r'\d+\s<(\w+)>:.*'
+CALLSITE_REGEX = {
+    'x86-64': r'\s(callq)\s',
+    'aarch64': r'\s(bl)\s'
+}
+RETURN_ADDRESS_REGEX = r'\s*(\w\w):.*'
 
-FUNCTION_REGEX = '0+\s<(\w+)>:.*'
-X86_64_CALLSITE_REGEX = '\w\w:.*callq.*'
-ARM_V8_CALLSITE_REGEX = '\w\w:.*bl.*'
-RETURN_ADDRESS_REGEX = '(\w\w):.*'
 
-
-def get_return_addresses(objdump_output):
+def get_return_addresses(objdump_output, arch):
     """ Parse the output of `objdump` and return a dictionary with the return addresses per function.
 
     Given an objdump output, iterate over all functions.
@@ -43,53 +45,39 @@ def get_return_addresses(objdump_output):
 
     where we follow the naming convention of temporary labels as emitted by LLVM at callsites.
     @param objdump_output: Text file
+    @param arch: x86-64 or aarch64
     @return: dictionary
     """
+    result = {}
+
     with open(objdump_output, "r") as objdump_file:
+
         lines = objdump_file.readlines()
+
         for index, line in enumerate(lines):
-            s = None
-            matchResult = re.match(FUNCTION_REGEX, line)
-            if matchResult:  # Inside a function's code
+
+            match_result = re.match(FUNCTION_REGEX, line)
+
+            if match_result:  # Inside a function's code
+                counter = 0
+                cur_function = match_result.group(1)
+                continue
+
+            match_result2 = re.search(CALLSITE_REGEX[arch], line)
+
+            if match_result2:  # Found a call instruction
+
                 nextLine = lines[index + 1]
-                matchResult2 = re.match(twoLinesRe2, nextLine)
-                if matchResult2:
-                    name = matchResult.group(1)
-                    address = int(matchResult2.group(1), 0)
-                    size = int(matchResult2.group(2), 0)
-                    alignment = int(matchResult2.group(3), 0)
-                    objectFile = matchResult2.group(4)
-                    s = Symbol.Symbol(name, address, size, alignment,
-                                      objectFile, self.getArch())
+                match_result3 = re.match(RETURN_ADDRESS_REGEX, nextLine)  # Parsing instruction after the call
+
+                if not match_result3:
+                    print('Unreachable')
                 else:
-                    er("missed a two lines symbol while parsing    objdump_file:\n")
-                    er("line1: " + line + "\n")
-                    er("line2: " + nextLine + "\n")
-                    sys.exit(-1)
-            else:
-                matchResult3 = re.match(oneLineRe, line)
-                if matchResult3:  # one line symbol description
-                    name = matchResult3.group(1)
-                    address = int(matchResult3.group(2), 0)
-                    size = int(matchResult3.group(3), 0)
-                    alignment = int(matchResult3.group(4), 0)
-                    objectFile = matchResult3.group(5)
+                    cur_label = '.L' + cur_function + str(counter)
+                    result[cur_label] = match_result3.group(1)
+                    counter = counter + 1
 
-                    if name == '.text':
-                        nextLine = lines[index + 1]
-                        matchResult4 = re.match(extraLineRe, nextLine)
-                        our_symbols = ['__set_thread_area', 'memcpy', 'memset']
-                        our_symbols = ['__set_thread_area']
-                        if matchResult4 and matchResult4.group(2) in our_symbols:
-                            name = name + '.' + matchResult4.group(2)
-                            print(name)
-                    s = Symbol.Symbol(name, address, size, alignment,
-                                      objectFile, self.getArch())
-
-            if s:
-                res.append(s)
-
-    return res
+    return result
 
 
 def align(text1, text2):
@@ -103,7 +91,51 @@ def align(text1, text2):
 
     Aarch64 instructions should be 4-byte aligned.
 
-    @param text1:
-    @param text2:
+    @param text1: objdump input for x86-64
+    @param text2: objdump input for arm-v8
     @return:
     """
+    d1 = get_return_addresses(text1, 'x86-64')
+    d2 = get_return_addresses(text2, 'aarch64')
+
+    # Accumulated paddings for both architectures
+    total_padding1 = 0
+    total_padding2 = 0
+
+    padding_dict = {'x86-64': {}, 'aarch64': {}}
+    for key in d1.keys():
+
+        # Offsets of call instructions from the caller function's symbol
+        offset1 = int(d1[key], 16) + total_padding1
+        offset2 = int(d2[key], 16) + total_padding2
+
+        diff = offset1 - offset2
+        padding1 = 0
+        padding2 = 0
+
+        if diff < 0:
+            padding1 = abs(diff)  # We assume that x86-64 can be padded arbitrarily...
+            padding2 = 0
+
+        if diff > 0:
+            padding1 = diff % 4  # ...whereas we know that arm-v8 instructions must be 4-byte aligned
+            if padding1 == 0:
+                padding2 = diff
+            else:
+                padding2 = 4 * (diff // 4 + 1)
+
+        padding_dict['x86-64'][key] = padding1
+        padding_dict['aarch64'][key] = padding2
+        total_padding1 = total_padding1 + padding1
+        total_padding2 = total_padding2 + padding2
+
+    print(padding_dict)
+
+
+if __name__ == '__main__':
+
+    if len(sys.argv) < 3:
+        print('Usage: ./callsite_align <objdump_input_x86> <objdump_input_arm>')
+        sys.exit(1)
+
+    align(sys.argv[1], sys.argv[2])

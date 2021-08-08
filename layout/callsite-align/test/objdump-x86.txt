@@ -42,15 +42,13 @@ Disassembly of section .text.main:
   2c:	b9 04 00 00 00       	mov    $0x4,%ecx
   31:	41 b8 05 00 00 00    	mov    $0x5,%r8d
   37:	41 b9 06 00 00 00    	mov    $0x6,%r9d
-  3d:	66 90                	xchg   %ax,%ax
-  3f:	e8 00 00 00 00       	callq  44 <main+0x44>
-  44:	89 45 fc             	mov    %eax,-0x4(%rbp)
-  47:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 4e <main+0x4e>
-  4e:	89 c6                	mov    %eax,%esi
-  50:	31 c0                	xor    %eax,%eax
-  52:	90                   	nop
-  53:	e8 00 00 00 00       	callq  58 <main+0x58>
-  58:	31 c0                	xor    %eax,%eax
-  5a:	48 83 c4 20          	add    $0x20,%rsp
-  5e:	5d                   	pop    %rbp
-  5f:	c3                   	retq   
+  3d:	e8 00 00 00 00       	callq  42 <main+0x42>
+  42:	89 45 fc             	mov    %eax,-0x4(%rbp)
+  45:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 4c <main+0x4c>
+  4c:	89 c6                	mov    %eax,%esi
+  4e:	31 c0                	xor    %eax,%eax
+  50:	e8 00 00 00 00       	callq  55 <main+0x55>
+  55:	31 c0                	xor    %eax,%eax
+  57:	48 83 c4 20          	add    $0x20,%rsp
+  5b:	5d                   	pop    %rbp
+  5c:	c3                   	retq   
