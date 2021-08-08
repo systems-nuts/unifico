@@ -5,7 +5,7 @@ POPCORN 	   ?= /usr/local/popcorn
 
 LLVM_TOOLCHAIN ?= ~/llvm_9/toolchain/bin
 
-PYTHON ?= python3.7
+PYTHON ?= python3.9
 
 # Lib musl directories per architecture
 ARM64_MUSL  ?= ~/musl_toolchains/musl_popcorn_toolchain_reloc/toolchain_aarch64
@@ -17,7 +17,7 @@ X86_64_MUSL	?= ~/musl_toolchains/musl_popcorn_toolchain_reloc/toolchain_x86-64
 ARM64_LIBGCC   ?= $(shell dirname \
 	                $(shell aarch64-linux-gnu-gcc -print-libgcc-file-name))
 
-# For llvm-mca tool
+# For llvm-mca tool TODO
 MCA 			?= ~/llvm_13/toolchain/bin/llvm-mca
 ARM64_CPU   	?= thunderx2t99
 X86_64_CPU		?= btver2
@@ -26,9 +26,10 @@ MCA_RESULT_DIR 	?= ../mca-results/reg-pressure-O0
 ###############################################################################
 # LLVM Tools and Flags
 ###############################################################################
-CC  := $(LLVM_TOOLCHAIN)/clang
-OPT := $(LLVM_TOOLCHAIN)/opt
-LLC := $(LLVM_TOOLCHAIN)/llc
+CC  	:= $(LLVM_TOOLCHAIN)/clang
+OPT 	:= $(LLVM_TOOLCHAIN)/opt
+LLC 	:= $(LLVM_TOOLCHAIN)/llc
+OBJDUMP	:= $(LLVM_TOOLCHAIN)/llvm-objdump
 
 CFLAGS 		:= -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer 
 CFLAGS 		+= -O0 -Wall -nostdinc 
@@ -58,8 +59,9 @@ LIBGCC := --start-group -lgcc -lgcc_eh --end-group
 ###############################################################################
 # Alignment
 ###############################################################################
-ALIGN 		:= $(POPCORN)/bin/pyalign
-ALIGN_CHECK := $(POPCORN)/bin/check-align.py
+ALIGN 			:= $(POPCORN)/bin/pyalign
+ALIGN_CHECK 	:= $(POPCORN)/bin/check-align.py
+CALLSITE_ALIGN	:= $(POPCORN)/bin/callsite_align.py
 
 ###############################################################################
 # X86-64
@@ -69,6 +71,7 @@ X86_64_BUILD       := build_x86-64
 X86_64_ALIGNED     := $(BIN)_x86_64_aligned.out
 X86_64_UNALIGNED   := $(BIN)_x86_64_unaligned.out
 X86_64_OBJ         := $(SRC:.c=_x86_64.o)
+X86_64_OBJ_CS      := $(SRC:.c=_x86_64_cs.o) # Callsite alignment
 X86_64_ASM         := $(SRC:.c=_x86_64.s)
 X86_64_MAP         := $(X86_64_BUILD)/map.txt
 X86_64_LD_SCRIPT   := $(X86_64_BUILD)/aligned_linker_script_x86.x
@@ -90,6 +93,7 @@ ARM64_BUILD       := build_aarch64
 ARM64_ALIGNED     := $(BIN)_aarch64_aligned.out
 ARM64_UNALIGNED   := $(BIN)_aarch64_unaligned.out
 ARM64_OBJ         := $(SRC:.c=_aarch64.o)
+ARM64_OBJ_CS      := $(SRC:.c=_aarch64_cs.o) # Callsite alignment
 ARM64_ASM         := $(SRC:.c=_aarch64.s)
 ARM64_MAP         := $(ARM64_BUILD)/map.txt
 ARM64_LD_SCRIPT   := $(ARM64_BUILD)/aligned_linker_script_arm.x
@@ -121,14 +125,18 @@ unaligned: unaligned-x86-64 unaligned-aarch64
 aligned-x86-64: $(X86_64_ALIGNED)
 unaligned-x86-64: $(X86_64_UNALIGNED)
 obj-x86-64: $(X86_64_OBJ)
+obj-x86-64-cs: $(X86_64_OBJ_CS)
 asm-x86-64: $(X86_64_ASM)
 json-x86-64: $(X86_64_JSON)
 
 aligned-aarch64: $(ARM64_ALIGNED)
 unaligned-aarch64: $(ARM64_UNALIGNED)
 obj-aarch64: $(ARM64_OBJ)
+obj-aarch64-cs: $(ARM64_OBJ_CS)
 asm-aarch64: $(ARM64_ASM)
 json-aarch64: $(ARM64_JSON)
+
+.PRECIOUS: $(BIN)_cs_align.json
 
 ##########
 # Common #
@@ -158,6 +166,12 @@ json-aarch64: $(ARM64_JSON)
 	@echo " [OPT NO DEBUG] $@"
 	$(OPT) $(OPT_FLAGS) -S -o $@ $<
 
+%_cs_align.json: %_x86_64.o %_aarch64.o
+	@echo " [CALLSITE ALIGN] $@"
+	$(OBJDUMP) -d $< >$(X86_64_BUILD)/x86_64.objdump
+	$(OBJDUMP) -d $(word 2,$^) >$(ARM64_BUILD)/aarch64.objdump 
+	$(PYTHON) $(CALLSITE_ALIGN) $(X86_64_BUILD)/x86_64.objdump $(ARM64_BUILD)/aarch64.objdump >$@
+
 ###########
 # AArch64 #
 ###########
@@ -175,7 +189,11 @@ json-aarch64: $(ARM64_JSON)
 	@echo " [LLC] $@"
 	$(LLC) $(LLC_FLAGS) -march=aarch64 -filetype=obj -o $(<:_opt.ll=_aarch64.o) $<
 
-$(ARM64_UNALIGNED): $(ARM64_OBJ)
+%_aarch64_cs.o: %_cs_align.json %_opt.ll
+	@echo " [CALLSITE ALIGN] $@"
+	$(LLC) $(LLC_FLAGS) -march=aarch64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
+
+$(ARM64_UNALIGNED): $(ARM64_OBJ_CS)
 	@echo " [LD] $@"
 	$(LD) -o $@ $^ $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
 
@@ -184,7 +202,7 @@ $(ARM64_LD_SCRIPT): $(X86_64_LD_SCRIPT)
 
 $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	@echo " [LD] $@"
-	$(LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_ALIGNED_MAP) -T $<
+	$(LD) -o $@ $(ARM64_OBJ_CS) $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_ALIGNED_MAP) -T $<
 
 ##########
 # x86-64 #
@@ -203,7 +221,11 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	@echo " [LLC] $@"
 	$(LLC) $(LLC_FLAGS) -march=x86-64 -filetype=obj -o $(<:_opt.ll=_x86_64.o) $<
 
-$(X86_64_UNALIGNED): $(X86_64_OBJ)
+%_x86_64_cs.o: %_cs_align.json %_opt.ll
+	@echo " [CALLSITE ALIGN] $@"
+	$(LLC) $(LLC_FLAGS) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
+
+$(X86_64_UNALIGNED): $(X86_64_OBJ_CS)
 	@echo " [LD] $@"
 	$(LD) -o $@ $^ $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_MAP)
 
@@ -216,7 +238,7 @@ $(X86_64_LD_SCRIPT): $(ARM64_UNALIGNED) $(X86_64_UNALIGNED)
 
 $(X86_64_ALIGNED): $(X86_64_LD_SCRIPT)
 	@echo " [LD] $@"
-	$(LD) -o $@ $(X86_64_OBJ) $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_ALIGNED_MAP) -T $<
+	$(LD) -o $@ $(X86_64_OBJ_CS) $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_ALIGNED_MAP) -T $<
 
 check_un: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	@echo " [CHECK] Checking unalignment for $^"
@@ -228,9 +250,9 @@ check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 
 clean:
 	@echo " [CLEAN] $(ARM64_ALIGNED) $(ARM64_BUILD) $(ARM64_JSON_DIR) $(X86_64_ALIGNED) $(X86_64_BUILD) $(X86_64_JSON_DIR) \
-		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.o *.out"
+		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.json *.o *.out"
 	@rm -rf $(ARM64_ALIGNED) $(ARM64_BUILD) $(ARM64_JSON_DIR) $(X86_64_ALIGNED) $(X86_64_BUILD) $(X86_64_JSON_DIR) \
-		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.o *.out
+		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *json *.o *.out
 
 .PHONY: all check clean \
         aligned aligned-aarch64 aligned-x86-64 \

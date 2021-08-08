@@ -1,7 +1,8 @@
 import sys
 import re
+import json
 
-FUNCTION_REGEX = r'\d+\s<(\w+)>:.*'
+FUNCTION_REGEX = r'\d+\s(\w+):.*'
 CALLSITE_REGEX = {
     'x86-64': r'\s(callq)\s',
     'aarch64': r'\s(bl)\s'
@@ -129,7 +130,7 @@ def align(text1, text2):
         total_padding1 = total_padding1 + padding1
         total_padding2 = total_padding2 + padding2
 
-    print(padding_dict)
+    print(json.dumps(padding_dict))
 
 
 if __name__ == '__main__':
