@@ -62,6 +62,7 @@ def get_return_addresses(objdump_output, arch):
             if match_result:  # Inside a function's code
                 counter = 0
                 cur_function = match_result.group(1)
+                result[cur_function] = {}
                 continue
 
             match_result2 = re.search(CALLSITE_REGEX[arch], line)
@@ -75,7 +76,7 @@ def get_return_addresses(objdump_output, arch):
                     print('Unreachable')
                 else:
                     cur_label = '.L' + cur_function + str(counter)
-                    result[cur_label] = match_result3.group(1)
+                    result[cur_function][cur_label] = match_result3.group(1)
                     counter = counter + 1
 
     return result
@@ -99,36 +100,38 @@ def align(text1, text2):
     d1 = get_return_addresses(text1, 'x86-64')
     d2 = get_return_addresses(text2, 'aarch64')
 
-    # Accumulated paddings for both architectures
-    total_padding1 = 0
-    total_padding2 = 0
-
     padding_dict = {'x86-64': {}, 'aarch64': {}}
-    for key in d1.keys():
+    for function in d1.keys():
 
-        # Offsets of call instructions from the caller function's symbol
-        offset1 = int(d1[key], 16) + total_padding1
-        offset2 = int(d2[key], 16) + total_padding2
+        # Accumulated paddings for each function in both architectures
+        total_padding1 = 0
+        total_padding2 = 0
 
-        diff = offset1 - offset2
-        padding1 = 0
-        padding2 = 0
+        for label in d1[function].keys():
 
-        if diff < 0:
-            padding1 = abs(diff)  # We assume that x86-64 can be padded arbitrarily...
+            # Offsets of call instructions from the caller function's symbol
+            offset1 = int(d1[function][label], 16) + total_padding1
+            offset2 = int(d2[function][label], 16) + total_padding2
+
+            diff = offset1 - offset2
+            padding1 = 0
             padding2 = 0
 
-        if diff > 0:
-            padding1 = diff % 4  # ...whereas we know that arm-v8 instructions must be 4-byte aligned
-            if padding1 == 0:
-                padding2 = diff
-            else:
-                padding2 = 4 * (diff // 4 + 1)
+            if diff < 0:
+                padding1 = abs(diff)  # We assume that x86-64 can be padded arbitrarily...
+                padding2 = 0
 
-        padding_dict['x86-64'][key] = padding1
-        padding_dict['aarch64'][key] = padding2
-        total_padding1 = total_padding1 + padding1
-        total_padding2 = total_padding2 + padding2
+            if diff > 0:
+                padding1 = diff % 4  # ...whereas we know that arm-v8 instructions must be 4-byte aligned
+                if padding1 == 0:
+                    padding2 = diff
+                else:
+                    padding2 = 4 * (diff // 4 + 1)
+
+            padding_dict['x86-64'][label] = padding1
+            padding_dict['aarch64'][label] = padding2
+            total_padding1 = total_padding1 + padding1
+            total_padding2 = total_padding2 + padding2
 
     print(json.dumps(padding_dict))
 
