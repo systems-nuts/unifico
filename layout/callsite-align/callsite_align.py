@@ -17,9 +17,9 @@ CALLSITE_REGEX = {
 }
 
 RETURN_ADDRESS_REGEX = re.compile(r"""
- \s*            # Initial whitespaces
- [0-9a-fA-F]+:  # Hex offset
- .*             # Ignore rest
+ \s*                # Initial whitespaces
+ ([0-9a-fA-F]+):    # Hex offset
+ .*                 # Ignore rest
 """, re.VERBOSE)
 
 
