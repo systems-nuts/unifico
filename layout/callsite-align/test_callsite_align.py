@@ -1,13 +1,25 @@
 import sys
 import re
-import json
 
-FUNCTION_REGEX = r'\d+\s<?(\w+)>?:.*'
+# This verbose and more readable regex form, requires the re.VERBOSE flag in re.compile
+FUNCTION_REGEX = re.compile(r"""
+ \d+        # Function symbol address
+ \s         # A whitespace
+ <?(\w+)>?: # Function name, optionally enclosed in '<...>'
+ .*         # Ignore rest
+""", re.VERBOSE)
+
+# Will be used with re.search
 CALLSITE_REGEX = {
     'x86-64': r'\s(callq)\s',
     'aarch64': r'\s(bl)\s'
 }
-RETURN_ADDRESS_REGEX = r'\s*(\w\w):.*'
+
+RETURN_ADDRESS_REGEX = re.compile(r"""
+ \s*                # Initial whitespaces
+ ([0-9a-fA-F]+):    # Hex offset
+ .*                 # Ignore rest
+""", re.VERBOSE)
 
 
 def get_return_addresses(objdump_output, arch):
@@ -57,7 +69,7 @@ def get_return_addresses(objdump_output, arch):
 
         for index, line in enumerate(lines):
 
-            match_result = re.match(FUNCTION_REGEX, line)
+            match_result = FUNCTION_REGEX.match(line)
 
             if match_result:  # Inside a function's code
                 counter = 0
@@ -70,7 +82,7 @@ def get_return_addresses(objdump_output, arch):
             if match_result2:  # Found a call instruction
 
                 nextLine = lines[index + 1]
-                match_result3 = re.match(RETURN_ADDRESS_REGEX, nextLine)  # Parsing instruction after the call
+                match_result3 = RETURN_ADDRESS_REGEX.match(nextLine)  # Parsing instruction after the call
 
                 if not match_result3:
                     print('Unreachable')
@@ -92,6 +104,10 @@ if __name__ == '__main__':
 
     d1 = get_return_addresses(sys.argv[1], 'x86-64')
     d2 = get_return_addresses(sys.argv[2], 'aarch64')
+
+    for function in d1.keys():
+        for label in d1[function].keys():
+            print(label, d1[function][label], '----', d2[function][label])
 
     if d1 != d2:
         ret_code = 1  # If callsites are not aligned return with 1 error status
