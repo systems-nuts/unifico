@@ -2,7 +2,7 @@ import sys
 import re
 import json
 
-FUNCTION_REGEX = r'\d+\s(\w+):.*'
+FUNCTION_REGEX = r'\d+\s<?(\w+)>?:.*'
 CALLSITE_REGEX = {
     'x86-64': r'\s(callq)\s',
     'aarch64': r'\s(bl)\s'
@@ -122,10 +122,10 @@ def align(text1, text2):
                 padding2 = 0
 
             if diff > 0:
-                padding1 = diff % 4  # ...whereas we know that arm-v8 instructions must be 4-byte aligned
-                if padding1 == 0:
+                if diff % 4 == 0:  # ...whereas we know that arm-v8 instructions must be 4-byte aligned
                     padding2 = diff
                 else:
+                    padding1 = 4 - diff % 4
                     padding2 = 4 * (diff // 4 + 1)
 
             padding_dict['x86-64'][label] = padding1
