@@ -59,9 +59,10 @@ LIBGCC := --start-group -lgcc -lgcc_eh --end-group
 ###############################################################################
 # Alignment
 ###############################################################################
-ALIGN 			:= $(POPCORN)/bin/pyalign
-ALIGN_CHECK 	:= $(POPCORN)/bin/check-align.py
-CALLSITE_ALIGN	:= $(POPCORN)/bin/callsite_align.py
+ALIGN 					:= $(POPCORN)/bin/pyalign
+ALIGN_CHECK 			:= $(POPCORN)/bin/check-align.py
+CALLSITE_ALIGN			:= /home/nikos/phd/unified_abi/layout/callsite-align/callsite_align.py
+CALLSITE_ALIGN_CHECK	:= /home/nikos/phd/unified_abi/layout/callsite-align/test_callsite_align.py
 
 ###############################################################################
 # X86-64
@@ -221,9 +222,13 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	@echo " [LLC] $@"
 	$(LLC) $(LLC_FLAGS) -march=x86-64 -filetype=obj -o $(<:_opt.ll=_x86_64_init.o) $<
 
-%_x86_64.o: %_cs_align.json %_opt.ll
+%_x86_64.o: %_cs_align.json %_opt.ll %_aarch64.o
 	@echo " [LLC CALLSITE ALIGN] $@"
 	$(LLC) $(LLC_FLAGS) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
+	@echo " [CHECK CALLSITE ALIGN] $@ $(word 3,$^)"
+	$(OBJDUMP) -d $@ >$(X86_64_BUILD)/x86_64.objdump
+	$(OBJDUMP) -d $(word 3,$^) >$(ARM64_BUILD)/aarch64.objdump 
+	$(PYTHON) $(CALLSITE_ALIGN_CHECK) $(X86_64_BUILD)/x86_64.objdump  $(ARM64_BUILD)/aarch64.objdump
 
 $(X86_64_UNALIGNED): $(X86_64_OBJ)
 	@echo " [LD] $@"
