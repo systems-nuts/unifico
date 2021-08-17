@@ -522,9 +522,14 @@ venv.bak/
 .mypy_cache/
 
 utilities/lstopo_p.txt
+*.gdb_history
 *.s
 *.ll
+*.bc
 *.x
+*.pptx
+*.docx
+*.json
 *aarch64
 *x86-64
 spec2017/results/

@@ -1,0 +1,131 @@
+
+bubble_sort_x86_64_init.o:	file format ELF64-x86-64
+
+
+Disassembly of section .text.swap:
+
+0000000000000000 swap:
+       0: 55                           	pushq	%rbp
+       1: 48 89 e5                     	movq	%rsp, %rbp
+       4: 48 83 ec 10                  	subq	$16, %rsp
+       8: 48 89 7d f0                  	movq	%rdi, -16(%rbp)
+       c: 89 75 f8                     	movl	%esi, -8(%rbp)
+       f: 48 63 c6                     	movslq	%esi, %rax
+      12: 8b 0c 87                     	movl	(%rdi,%rax,4), %ecx
+      15: 89 4d fc                     	movl	%ecx, -4(%rbp)
+      18: 8b 4c 87 04                  	movl	4(%rdi,%rax,4), %ecx
+      1c: 89 0c 87                     	movl	%ecx, (%rdi,%rax,4)
+      1f: 8b 45 fc                     	movl	-4(%rbp), %eax
+      22: 48 8b 4d f0                  	movq	-16(%rbp), %rcx
+      26: 48 63 55 f8                  	movslq	-8(%rbp), %rdx
+      2a: 89 44 91 04                  	movl	%eax, 4(%rcx,%rdx,4)
+      2e: 48 83 c4 10                  	addq	$16, %rsp
+      32: 5d                           	popq	%rbp
+      33: c3                           	retq
+
+Disassembly of section .text.sort:
+
+0000000000000000 sort:
+       0: 55                           	pushq	%rbp
+       1: 48 89 e5                     	movq	%rsp, %rbp
+       4: 48 83 ec 20                  	subq	$32, %rsp
+       8: 48 89 7d e8                  	movq	%rdi, -24(%rbp)
+       c: 89 75 f4                     	movl	%esi, -12(%rbp)
+       f: c7 45 f8 00 00 00 00         	movl	$0, -8(%rbp)
+      16: eb 0b                        	jmp	11 <sort+0x23>
+      18: 90                           	nop
+      19: 90                           	nop
+      1a: 90                           	nop
+      1b: 90                           	nop
+      1c: 90                           	nop
+      1d: 90                           	nop
+      1e: 90                           	nop
+      1f: 90                           	nop
+      20: ff 45 f8                     	incl	-8(%rbp)
+      23: 8b 45 f8                     	movl	-8(%rbp), %eax
+      26: 3b 45 f4                     	cmpl	-12(%rbp), %eax
+      29: 7d 52                        	jge	82 <sort+0x7d>
+      2b: 8b 45 f8                     	movl	-8(%rbp), %eax
+      2e: ff c8                        	decl	%eax
+      30: 89 45 fc                     	movl	%eax, -4(%rbp)
+      33: 83 7d fc 00                  	cmpl	$0, -4(%rbp)
+      37: 78 27                        	js	39 <sort+0x60>
+      39: 90                           	nop
+      3a: 90                           	nop
+      3b: 90                           	nop
+      3c: 90                           	nop
+      3d: 90                           	nop
+      3e: 90                           	nop
+      3f: 90                           	nop
+      40: 48 8b 45 e8                  	movq	-24(%rbp), %rax
+      44: 48 63 4d fc                  	movslq	-4(%rbp), %rcx
+      48: 8b 14 88                     	movl	(%rax,%rcx,4), %edx
+      4b: 3b 54 88 04                  	cmpl	4(%rax,%rcx,4), %edx
+      4f: 0f 9f c0                     	setg	%al
+      52: 84 c0                        	testb	%al, %al
+      54: 75 10                        	jne	16 <sort+0x66>
+      56: eb c8                        	jmp	-56 <sort+0x20>
+      58: 90                           	nop
+      59: 90                           	nop
+      5a: 90                           	nop
+      5b: 90                           	nop
+      5c: 90                           	nop
+      5d: 90                           	nop
+      5e: 90                           	nop
+      5f: 90                           	nop
+      60: 31 c0                        	xorl	%eax, %eax
+      62: 84 c0                        	testb	%al, %al
+      64: 74 ba                        	je	-70 <sort+0x20>
+      66: 48 8b 7d e8                  	movq	-24(%rbp), %rdi
+      6a: 8b 75 fc                     	movl	-4(%rbp), %esi
+      6d: e8 00 00 00 00               	callq	0 <sort+0x72>
+      72: ff 4d fc                     	decl	-4(%rbp)
+      75: 83 7d fc 00                  	cmpl	$0, -4(%rbp)
+      79: 78 e5                        	js	-27 <sort+0x60>
+      7b: eb c3                        	jmp	-61 <sort+0x40>
+      7d: 48 83 c4 20                  	addq	$32, %rsp
+      81: 5d                           	popq	%rbp
+      82: c3                           	retq
+
+Disassembly of section .text.main:
+
+0000000000000000 main:
+       0: 55                           	pushq	%rbp
+       1: 48 89 e5                     	movq	%rsp, %rbp
+       4: 53                           	pushq	%rbx
+       5: 48 83 ec 28                  	subq	$40, %rsp
+       9: c7 45 f0 00 00 00 00         	movl	$0, -16(%rbp)
+      10: 0f 28 05 00 00 00 00         	movaps	(%rip), %xmm0
+      17: 0f 29 45 d0                  	movaps	%xmm0, -48(%rbp)
+      1b: 8b 05 00 00 00 00            	movl	(%rip), %eax
+      21: 89 45 e0                     	movl	%eax, -32(%rbp)
+      24: 48 8d 7d d0                  	leaq	-48(%rbp), %rdi
+      28: be 05 00 00 00               	movl	$5, %esi
+      2d: e8 00 00 00 00               	callq	0 <main+0x32>
+      32: c7 45 f4 00 00 00 00         	movl	$0, -12(%rbp)
+      39: 48 8d 1d 00 00 00 00         	leaq	(%rip), %rbx
+      40: 83 7d f4 04                  	cmpl	$4, -12(%rbp)
+      44: 7f 25                        	jg	37 <main+0x6b>
+      46: 90                           	nop
+      47: 90                           	nop
+      48: 90                           	nop
+      49: 90                           	nop
+      4a: 90                           	nop
+      4b: 90                           	nop
+      4c: 90                           	nop
+      4d: 90                           	nop
+      4e: 90                           	nop
+      4f: 90                           	nop
+      50: 48 63 75 f4                  	movslq	-12(%rbp), %rsi
+      54: 8b 54 b5 d0                  	movl	-48(%rbp,%rsi,4), %edx
+      58: 48 89 df                     	movq	%rbx, %rdi
+      5b: 31 c0                        	xorl	%eax, %eax
+      5d: e8 00 00 00 00               	callq	0 <main+0x62>
+      62: ff 45 f4                     	incl	-12(%rbp)
+      65: 83 7d f4 04                  	cmpl	$4, -12(%rbp)
+      69: 7e e5                        	jle	-27 <main+0x50>
+      6b: 31 c0                        	xorl	%eax, %eax
+      6d: 48 83 c4 28                  	addq	$40, %rsp
+      71: 5b                           	popq	%rbx
+      72: 5d                           	popq	%rbp
+      73: c3                           	retq

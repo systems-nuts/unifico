@@ -10,5 +10,4 @@ c
 c
 c
 frame_info
-bt -past-main
 quit

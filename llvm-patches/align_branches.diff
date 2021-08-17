@@ -1,0 +1,1135 @@
+diff --git a/llvm/include/llvm/MC/MCAsmBackend.h b/llvm/include/llvm/MC/MCAsmBackend.h
+--- a/llvm/include/llvm/MC/MCAsmBackend.h
++++ b/llvm/include/llvm/MC/MCAsmBackend.h
+@@ -46,6 +46,9 @@
+ 
+   const support::endianness Endian;
+ 
++  virtual void alignBranchesBegin(MCObjectStreamer &OS, const MCInst &Inst) {}
++  virtual void alignBranchesEnd(MCObjectStreamer &OS, const MCInst &Inst) {}
++
+   /// lifetime management
+   virtual void reset() {}
+ 
+diff --git a/llvm/include/llvm/MC/MCAssembler.h b/llvm/include/llvm/MC/MCAssembler.h
+--- a/llvm/include/llvm/MC/MCAssembler.h
++++ b/llvm/include/llvm/MC/MCAssembler.h
+@@ -191,9 +191,8 @@
+   bool layoutSectionOnce(MCAsmLayout &Layout, MCSection &Sec);
+ 
+   bool relaxInstruction(MCAsmLayout &Layout, MCRelaxableFragment &IF);
+-
+   bool relaxLEB(MCAsmLayout &Layout, MCLEBFragment &IF);
+-
++  bool relaxBoundaryAlign(MCAsmLayout &Layout, MCBoundaryAlignFragment &BF);
+   bool relaxDwarfLineAddr(MCAsmLayout &Layout, MCDwarfLineAddrFragment &DF);
+   bool relaxDwarfCallFrameFragment(MCAsmLayout &Layout,
+                                    MCDwarfCallFrameFragment &DF);
+diff --git a/llvm/include/llvm/MC/MCFragment.h b/llvm/include/llvm/MC/MCFragment.h
+--- a/llvm/include/llvm/MC/MCFragment.h
++++ b/llvm/include/llvm/MC/MCFragment.h
+@@ -16,6 +16,7 @@
+ #include "llvm/ADT/ilist_node.h"
+ #include "llvm/MC/MCFixup.h"
+ #include "llvm/MC/MCInst.h"
++#include "llvm/Support/Alignment.h"
+ #include "llvm/Support/Casting.h"
+ #include "llvm/Support/SMLoc.h"
+ #include <cstdint>
+@@ -41,6 +42,7 @@
+     FT_Dwarf,
+     FT_DwarfFrame,
+     FT_LEB,
++    FT_BoundaryAlign,
+     FT_SymbolId,
+     FT_CVInlineLines,
+     FT_CVDefRange,
+@@ -563,6 +565,49 @@
+   }
+ };
+ 
++class MCBoundaryAlignFragment : public MCFragment {
++private:
++  /// The size of the MCBoundaryAlignFragment.
++  /// Note: The size is lazily set during relaxation, and is not meaningful
++  /// before that.
++  uint64_t Size = 0;
++  /// The alignment requirement of the branch to be aligned.
++  Align AlignBoundary;
++  /// Flag to indicate whether the branch is fused.
++  bool Fused : 1;
++  /// Flag to indicate whether NOPs should be emitted.
++  bool EmitNops : 1;
++
++public:
++  MCBoundaryAlignFragment(Align AlignBoundary, bool Fused = false,
++                          bool EmitNops = false, MCSection *Sec = nullptr)
++      : MCFragment(FT_BoundaryAlign, false, Sec), AlignBoundary(AlignBoundary),
++        Fused(Fused), EmitNops(EmitNops) {}
++
++  /// \name Accessors
++  /// @{
++
++  Align getAlignment() const { return AlignBoundary; }
++
++  uint64_t getSize() const { return Size; }
++
++  bool canEmitNops() const { return EmitNops; }
++
++  bool isFused() const { return Fused; }
++
++  void setFused(bool Value) { Fused = Value; }
++
++  void setEmitNops(bool Value) { EmitNops = Value; }
++
++  void setSize(uint64_t Value) { Size = Value; }
++
++  /// @}
++  //
++
++  static bool classof(const MCFragment *F) {
++    return F->getKind() == MCFragment::FT_BoundaryAlign;
++  }
++};
+ } // end namespace llvm
+ 
+ #endif // LLVM_MC_MCFRAGMENT_H
+diff --git a/llvm/include/llvm/MC/MCObjectStreamer.h b/llvm/include/llvm/MC/MCObjectStreamer.h
+--- a/llvm/include/llvm/MC/MCObjectStreamer.h
++++ b/llvm/include/llvm/MC/MCObjectStreamer.h
+@@ -53,6 +53,7 @@
+   void EmitCFIStartProcImpl(MCDwarfFrameInfo &Frame) override;
+   void EmitCFIEndProcImpl(MCDwarfFrameInfo &Frame) override;
+   MCSymbol *EmitCFILabel() override;
++  void EmitInstructionImpl(const MCInst &Inst, const MCSubtargetInfo &STI);
+   void resolvePendingFixups();
+ 
+ protected:
+diff --git a/llvm/lib/MC/MCAssembler.cpp b/llvm/lib/MC/MCAssembler.cpp
+--- a/llvm/lib/MC/MCAssembler.cpp
++++ b/llvm/lib/MC/MCAssembler.cpp
+@@ -309,6 +309,9 @@
+   case MCFragment::FT_LEB:
+     return cast<MCLEBFragment>(F).getContents().size();
+ 
++  case MCFragment::FT_BoundaryAlign:
++    return cast<MCBoundaryAlignFragment>(F).getSize();
++
+   case MCFragment::FT_SymbolId:
+     return 4;
+ 
+@@ -605,6 +608,13 @@
+     break;
+   }
+ 
++  case MCFragment::FT_BoundaryAlign: {
++    if (!Asm.getBackend().writeNopData(OS, FragmentSize))
++      report_fatal_error("unable to write nop sequence of " +
++                         Twine(FragmentSize) + " bytes");
++    break;
++  }
++
+   case MCFragment::FT_SymbolId: {
+     const MCSymbolIdFragment &SF = cast<MCSymbolIdFragment>(F);
+     support::endian::write<uint32_t>(OS, SF.getSymbol()->getIndex(), Endian);
+@@ -941,6 +951,72 @@
+   return OldSize != LF.getContents().size();
+ }
+ 
++/// Check if the branch crosses the boundary.
++///
++/// \param StartAddr start address of the fused/unfused branch.
++/// \param Size size of the fused/unfused branch.
++/// \param BoundaryAlignment aligment requirement of the branch.
++/// \returns true if the branch cross the boundary.
++static bool mayCrossBoundary(uint64_t StartAddr, uint64_t Size,
++                             Align BoundaryAlignment) {
++  uint64_t EndAddr = StartAddr + Size;
++  return (StartAddr >> Log2(BoundaryAlignment)) !=
++         ((EndAddr - 1) >> Log2(BoundaryAlignment));
++}
++
++/// Check if the branch is against the boundary.
++///
++/// \param StartAddr start address of the fused/unfused branch.
++/// \param Size size of the fused/unfused branch.
++/// \param BoundaryAlignment aligment requirement of the branch.
++/// \returns true if the branch is against the boundary.
++static bool isAgainstBoundary(uint64_t StartAddr, uint64_t Size,
++                              Align BoundaryAlignment) {
++  uint64_t EndAddr = StartAddr + Size;
++  return (EndAddr & (BoundaryAlignment.value() - 1)) == 0;
++}
++
++/// Check if the branch needs padding.
++///
++/// \param StartAddr start address of the fused/unfused branch.
++/// \param Size size of the fused/unfused branch.
++/// \param BoundaryAlignment aligment requirement of the branch.
++/// \returns true if the branch needs padding.
++static bool needPadding(uint64_t StartAddr, uint64_t Size,
++                        Align BoundaryAlignment) {
++  return mayCrossBoundary(StartAddr, Size, BoundaryAlignment) ||
++         isAgainstBoundary(StartAddr, Size, BoundaryAlignment);
++}
++
++bool MCAssembler::relaxBoundaryAlign(MCAsmLayout &Layout,
++                                     MCBoundaryAlignFragment &BF) {
++  // The MCBoundaryAlignFragment that doesn't emit NOP should not be relaxed.
++  if (!BF.canEmitNops())
++    return false;
++
++  uint64_t AlignedOffset = Layout.getFragmentOffset(BF.getNextNode());
++  uint64_t AlignedSize = 0;
++  const MCFragment *F = BF.getNextNode();
++  // If the branch is unfused, it is emitted into one fragment, otherwise it is
++  // emitted into two fragments at most, the next MCBoundaryAlignFragment(if
++  // exists) also marks the end of the branch.
++  for (auto i = 0, N = BF.isFused() ? 2 : 1;
++       i != N && !isa<MCBoundaryAlignFragment>(F); ++i, F = F->getNextNode()) {
++    AlignedSize += computeFragmentSize(Layout, *F);
++  }
++  uint64_t OldSize = BF.getSize();
++  AlignedOffset -= OldSize;
++  Align BoundaryAlignment = BF.getAlignment();
++  uint64_t NewSize = needPadding(AlignedOffset, AlignedSize, BoundaryAlignment)
++                         ? offsetToAlignment(AlignedOffset, BoundaryAlignment)
++                         : 0U;
++  if (NewSize == OldSize)
++    return false;
++  BF.setSize(NewSize);
++  Layout.invalidateFragmentsFrom(&BF);
++  return true;
++}
++
+ bool MCAssembler::relaxDwarfLineAddr(MCAsmLayout &Layout,
+                                      MCDwarfLineAddrFragment &DF) {
+   MCContext &Context = Layout.getAssembler().getContext();
+@@ -1057,6 +1133,10 @@
+     case MCFragment::FT_LEB:
+       RelaxedFrag = relaxLEB(Layout, *cast<MCLEBFragment>(I));
+       break;
++    case MCFragment::FT_BoundaryAlign:
++      RelaxedFrag =
++          relaxBoundaryAlign(Layout, *cast<MCBoundaryAlignFragment>(I));
++      break;
+     case MCFragment::FT_CVInlineLines:
+       RelaxedFrag =
+           relaxCVInlineLineTable(Layout, *cast<MCCVInlineLineTableFragment>(I));
+diff --git a/llvm/lib/MC/MCFragment.cpp b/llvm/lib/MC/MCFragment.cpp
+--- a/llvm/lib/MC/MCFragment.cpp
++++ b/llvm/lib/MC/MCFragment.cpp
+@@ -275,6 +275,9 @@
+     case FT_LEB:
+       delete cast<MCLEBFragment>(this);
+       return;
++    case FT_BoundaryAlign:
++      delete cast<MCBoundaryAlignFragment>(this);
++      return;
+     case FT_SymbolId:
+       delete cast<MCSymbolIdFragment>(this);
+       return;
+@@ -319,6 +322,7 @@
+   case MCFragment::FT_Dwarf: OS << "MCDwarfFragment"; break;
+   case MCFragment::FT_DwarfFrame: OS << "MCDwarfCallFrameFragment"; break;
+   case MCFragment::FT_LEB:   OS << "MCLEBFragment"; break;
++  case MCFragment::FT_BoundaryAlign: OS<<"MCBoundaryAlignFragment"; break;
+   case MCFragment::FT_SymbolId:    OS << "MCSymbolIdFragment"; break;
+   case MCFragment::FT_CVInlineLines: OS << "MCCVInlineLineTableFragment"; break;
+   case MCFragment::FT_CVDefRange: OS << "MCCVDefRangeTableFragment"; break;
+@@ -418,6 +422,19 @@
+     OS << " Value:" << LF->getValue() << " Signed:" << LF->isSigned();
+     break;
+   }
++  case MCFragment::FT_BoundaryAlign: {
++    const auto *BF = cast<MCBoundaryAlignFragment>(this);
++    if (BF->canEmitNops())
++      OS << " (can emit nops to align";
++    if (BF->isFused())
++      OS << " fused branch)";
++    else
++      OS << " unfused branch)";
++    OS << "\n       ";
++    OS << " BoundarySize:" << BF->getAlignment().value()
++       << " Size:" << BF->getSize();
++    break;
++  }
+   case MCFragment::FT_SymbolId: {
+     const MCSymbolIdFragment *F = cast<MCSymbolIdFragment>(this);
+     OS << "\n       ";
+diff --git a/llvm/lib/MC/MCObjectStreamer.cpp b/llvm/lib/MC/MCObjectStreamer.cpp
+--- a/llvm/lib/MC/MCObjectStreamer.cpp
++++ b/llvm/lib/MC/MCObjectStreamer.cpp
+@@ -364,6 +364,13 @@
+ 
+ void MCObjectStreamer::EmitInstruction(const MCInst &Inst,
+                                        const MCSubtargetInfo &STI) {
++  getAssembler().getBackend().alignBranchesBegin(*this, Inst);
++  EmitInstructionImpl(Inst, STI);
++  getAssembler().getBackend().alignBranchesEnd(*this, Inst);
++}
++
++void MCObjectStreamer::EmitInstructionImpl(const MCInst &Inst,
++                                           const MCSubtargetInfo &STI) {
+   MCStreamer::EmitInstruction(Inst, STI);
+ 
+   MCSection *Sec = getCurrentSectionOnly();
+diff --git a/llvm/lib/Target/X86/MCTargetDesc/X86AsmBackend.cpp b/llvm/lib/Target/X86/MCTargetDesc/X86AsmBackend.cpp
+--- a/llvm/lib/Target/X86/MCTargetDesc/X86AsmBackend.cpp
++++ b/llvm/lib/Target/X86/MCTargetDesc/X86AsmBackend.cpp
+@@ -19,14 +19,19 @@
+ #include "llvm/MC/MCExpr.h"
+ #include "llvm/MC/MCFixupKindInfo.h"
+ #include "llvm/MC/MCInst.h"
++#include "llvm/MC/MCInstrInfo.h"
+ #include "llvm/MC/MCMachObjectWriter.h"
++#include "llvm/MC/MCObjectStreamer.h"
+ #include "llvm/MC/MCObjectWriter.h"
+ #include "llvm/MC/MCRegisterInfo.h"
+ #include "llvm/MC/MCSectionMachO.h"
+ #include "llvm/MC/MCSubtargetInfo.h"
+ #include "llvm/MC/MCValue.h"
++#include "llvm/Support/CommandLine.h"
+ #include "llvm/Support/ErrorHandling.h"
+ #include "llvm/Support/raw_ostream.h"
++#include "llvm/Support/TargetRegistry.h"
++
+ using namespace llvm;
+ 
+ static unsigned getFixupKindSize(unsigned Kind) {
+@@ -64,6 +69,71 @@
+ }
+ 
+ namespace {
++class X86AlignBranchKind {
++private:
++  uint8_t AlignBranchKind = 0;
++
++public:
++  enum Flag : uint8_t {
++    AlignBranchNone = 0,
++    AlignBranchFused = 1U << 0,
++    AlignBranchJcc = 1U << 1,
++    AlignBranchJmp = 1U << 2,
++    AlignBranchCall = 1U << 3,
++    AlignBranchRet = 1U << 4,
++    AlignBranchIndirect = 1U << 5
++  };
++
++  void operator=(const std::string &Val) {
++    if (Val.empty())
++      return;
++    SmallVector<StringRef, 6> BranchTypes;
++    StringRef(Val).split(BranchTypes, '+', -1, false);
++    for (auto BranchType : BranchTypes) {
++      if (BranchType == "fused")
++        addKind(AlignBranchFused);
++      else if (BranchType == "jcc")
++        addKind(AlignBranchJcc);
++      else if (BranchType == "jmp")
++        addKind(AlignBranchJmp);
++      else if (BranchType == "call")
++        addKind(AlignBranchCall);
++      else if (BranchType == "ret")
++        addKind(AlignBranchRet);
++      else if (BranchType == "indirect")
++        addKind(AlignBranchIndirect);
++      else {
++        report_fatal_error(
++            "'-x86-align-branch 'The branches's type is combination of jcc, "
++            "fused, jmp, call, ret, indirect.(plus separated)",
++            false);
++      }
++    }
++  }
++
++  operator uint8_t() const { return AlignBranchKind; }
++  void addKind(Flag Value) { AlignBranchKind |= Value; }
++};
++
++X86AlignBranchKind X86AlignBranchKindLoc;
++
++cl::opt<uint64_t> X86AlignBranchBoundary(
++    "x86-align-branch-boundary", cl::init(0),
++    cl::desc(
++        "Control how the assembler should align branches with NOP. If the "
++        "boundary's size is not 0, it should be a power of 2 and no less "
++        "than 32. Branches will be aligned within the boundary of specified "
++        "size. -x86-align-branch-boundary=0 doesn't align branches."));
++
++cl::opt<X86AlignBranchKind, true, cl::parser<std::string>> X86AlignBranch(
++    "x86-align-branch",
++    cl::desc("Specify types of branches to align (plus separated list of "
++             "types). The branches's type is combination of jcc, fused, "
++             "jmp, call, ret, indirect."),
++    cl::value_desc("jcc(conditional jump), fused(fused conditional jump), "
++                   "jmp(unconditional jump); call(call); ret(ret), "
++                   "indirect(indirect jump)."),
++    cl::location(X86AlignBranchKindLoc));
+ 
+ class X86ELFObjectWriter : public MCELFObjectTargetWriter {
+ public:
+@@ -74,9 +144,31 @@
+ 
+ class X86AsmBackend : public MCAsmBackend {
+   const MCSubtargetInfo &STI;
++  const MCInstrInfo &MCII;
++  X86AlignBranchKind AlignBranchType;
++  Align AlignBoundary;
++
++  bool isFirstMacroFusibleInst(const MCInst &Inst) const;
++  bool isMacroFused(const MCInst &Cmp, const MCInst &Jcc) const;
++  bool isRIPRelative(const MCInst &MI) const;
++  bool hasVariantSymbol(const MCInst &MI) const;
++
++  bool needAlign(MCObjectStreamer &OS) const;
++  bool needAlignInst(const MCInst &Inst) const;
++  MCBoundaryAlignFragment *
++  getOrCreateBoundaryAlignFragment(MCObjectStreamer &OS) const;
++  MCInst PrevInst;
++
+ public:
+   X86AsmBackend(const Target &T, const MCSubtargetInfo &STI)
+-      : MCAsmBackend(support::little), STI(STI) {}
++      : MCAsmBackend(support::little), STI(STI),
++        MCII(*(T.createMCInstrInfo())) {
++    AlignBoundary = assumeAligned(X86AlignBranchBoundary);
++    AlignBranchType = X86AlignBranchKindLoc;
++  }
++
++  void alignBranchesBegin(MCObjectStreamer &OS, const MCInst &Inst) override;
++  void alignBranchesEnd(MCObjectStreamer &OS, const MCInst &Inst) override;
+ 
+   unsigned getNumFixupKinds() const override {
+     return X86::NumTargetFixupKinds;
+@@ -258,6 +350,199 @@
+   return getRelaxedOpcodeBranch(Inst, is16BitMode);
+ }
+ 
++static X86::CondCode getCondFromBranch(const MCInst &MI,
++                                       const MCInstrInfo &MCII) {
++  unsigned Opcode = MI.getOpcode();
++  switch (Opcode) {
++  default:
++    return X86::COND_INVALID;
++  case X86::JCC_1: {
++    const MCInstrDesc &Desc = MCII.get(Opcode);
++    return static_cast<X86::CondCode>(
++        MI.getOperand(Desc.getNumOperands() - 1).getImm());
++  }
++  }
++}
++
++static X86::SecondMacroFusionInstKind
++classifySecondInstInMacroFusion(const MCInst &MI, const MCInstrInfo &MCII) {
++  X86::CondCode CC = getCondFromBranch(MI, MCII);
++  return classifySecondCondCodeInMacroFusion(CC);
++}
++
++/// Check if the instruction is valid as the first instruction in macro fusion.
++bool X86AsmBackend::isFirstMacroFusibleInst(const MCInst &Inst) const {
++  // An Intel instruction with RIP relative addressing is not macro fusible.
++  if (isRIPRelative(Inst))
++    return false;
++  X86::FirstMacroFusionInstKind FIK =
++      X86::classifyFirstOpcodeInMacroFusion(Inst.getOpcode());
++  return FIK != X86::FirstMacroFusionInstKind::Invalid;
++}
++
++/// Check if the two instructions are macro-fused.
++bool X86AsmBackend::isMacroFused(const MCInst &Cmp, const MCInst &Jcc) const {
++  const MCInstrDesc &InstDesc = MCII.get(Jcc.getOpcode());
++  if (!InstDesc.isConditionalBranch())
++    return false;
++  if (!isFirstMacroFusibleInst(Cmp))
++    return false;
++  const X86::FirstMacroFusionInstKind CmpKind =
++      X86::classifyFirstOpcodeInMacroFusion(Cmp.getOpcode());
++  const X86::SecondMacroFusionInstKind BranchKind =
++      classifySecondInstInMacroFusion(Jcc, MCII);
++  return X86::isMacroFused(CmpKind, BranchKind);
++}
++
++/// Check if the instruction is RIP relative addressing.
++bool X86AsmBackend::isRIPRelative(const MCInst &MI) const {
++  unsigned Opcode = MI.getOpcode();
++  const MCInstrDesc &Desc = MCII.get(Opcode);
++  uint64_t TSFlags = Desc.TSFlags;
++  unsigned CurOp = X86II::getOperandBias(Desc);
++  int MemoryOperand = X86II::getMemoryOperandNo(TSFlags);
++  if (MemoryOperand >= 0) {
++    unsigned BaseRegNum = MemoryOperand + CurOp + X86::AddrBaseReg;
++    unsigned BaseReg = MI.getOperand(BaseRegNum).getReg();
++    if (BaseReg == X86::RIP)
++      return true;
++  }
++  return false;
++}
++
++/// Check if the instruction has variant symbol operand.
++bool X86AsmBackend::hasVariantSymbol(const MCInst &MI) const {
++
++  for (auto &Operand : MI) {
++    if (Operand.isExpr()) {
++      const MCExpr &Expr = *Operand.getExpr();
++      if (Expr.getKind() == MCExpr::SymbolRef &&
++          cast<MCSymbolRefExpr>(*Operand.getExpr()).getKind() !=
++              MCSymbolRefExpr::VK_None)
++        return true;
++    }
++  }
++  return false;
++}
++
++bool X86AsmBackend::needAlign(MCObjectStreamer &OS) const {
++  if (AlignBoundary == Align::None() ||
++      AlignBranchType == X86AlignBranchKind::AlignBranchNone)
++    return false;
++
++  MCAssembler &Assembler = OS.getAssembler();
++  MCSection *Sec = OS.getCurrentSectionOnly();
++  // To be Done: Currently don't deal with Bundle cases.
++  if (Assembler.isBundlingEnabled() && Sec->isBundleLocked())
++    return false;
++
++  // Branches only need to be aligned in 32-bit or 64-bit mode.
++  if (!(STI.getFeatureBits()[X86::Mode64Bit] ||
++        STI.getFeatureBits()[X86::Mode32Bit]))
++    return false;
++
++  return true;
++}
++
++/// Check if the instruction operand needs to be aligned. Padding is disabled
++/// before intruction which may be rewritten by linker(e.g. TLSCALL).
++bool X86AsmBackend::needAlignInst(const MCInst &Inst) const {
++  // Linker may rewrite the instruction with variant symbol operand.
++  if (hasVariantSymbol(Inst))
++    return false;
++
++  const MCInstrDesc &InstDesc = MCII.get(Inst.getOpcode());
++  return (InstDesc.isConditionalBranch() &&
++          (AlignBranchType & X86AlignBranchKind::AlignBranchJcc)) ||
++         (InstDesc.isUnconditionalBranch() &&
++          (AlignBranchType & X86AlignBranchKind::AlignBranchJmp)) ||
++         (InstDesc.isCall() &&
++          (AlignBranchType & X86AlignBranchKind::AlignBranchCall)) ||
++         (InstDesc.isReturn() &&
++          (AlignBranchType & X86AlignBranchKind::AlignBranchRet)) ||
++         (InstDesc.isIndirectBranch() &&
++          (AlignBranchType & X86AlignBranchKind::AlignBranchIndirect));
++}
++
++static bool canReuseBoundaryAlignFragment(const MCBoundaryAlignFragment &F) {
++  // If a MCBoundaryAlignFragment has not been used to emit NOP,we can reuse it.
++  return !F.canEmitNops();
++}
++
++MCBoundaryAlignFragment *
++X86AsmBackend::getOrCreateBoundaryAlignFragment(MCObjectStreamer &OS) const {
++  auto *F = dyn_cast_or_null<MCBoundaryAlignFragment>(OS.getCurrentFragment());
++  if (!F || !canReuseBoundaryAlignFragment(*F)) {
++    F = new MCBoundaryAlignFragment(AlignBoundary);
++    OS.insert(F);
++  }
++  return F;
++}
++
++/// Insert MCBoundaryAlignFragment before instructions to align branches.
++void X86AsmBackend::alignBranchesBegin(MCObjectStreamer &OS,
++                                       const MCInst &Inst) {
++  if (!needAlign(OS))
++    return;
++
++  MCFragment *CF = OS.getCurrentFragment();
++  bool NeedAlignFused = AlignBranchType & X86AlignBranchKind::AlignBranchFused;
++  if (NeedAlignFused && isMacroFused(PrevInst, Inst) && CF) {
++    // Macro fusion actually happens and there is no other fragment inserted
++    // after the previous instruction. NOP can be emitted in PF to align fused
++    // jcc.
++    if (auto *PF =
++            dyn_cast_or_null<MCBoundaryAlignFragment>(CF->getPrevNode())) {
++      const_cast<MCBoundaryAlignFragment *>(PF)->setEmitNops(true);
++      const_cast<MCBoundaryAlignFragment *>(PF)->setFused(true);
++    }
++  } else if (needAlignInst(Inst)) {
++    // Note: When there is at least one fragment, such as MCAlignFragment,
++    // inserted after the previous instruction, e.g.
++    //
++    // \code
++    //   cmp %rax %rcx
++    //   .align 16
++    //   je .Label0
++    // \ endcode
++    //
++    // We will treat the JCC as a unfused branch although it may be fused
++    // with the CMP.
++    auto *F = getOrCreateBoundaryAlignFragment(OS);
++    F->setEmitNops(true);
++    F->setFused(false);
++  } else if (NeedAlignFused && isFirstMacroFusibleInst(Inst)) {
++    // We don't know if macro fusion happens until the reaching the next
++    // instruction, so a place holder is put here if necessary.
++    getOrCreateBoundaryAlignFragment(OS);
++  }
++
++  PrevInst = Inst;
++}
++
++/// Insert a MCBoundaryAlignFragment to mark the end of the branch to be aligned
++/// if necessary.
++void X86AsmBackend::alignBranchesEnd(MCObjectStreamer &OS, const MCInst &Inst) {
++  if (!needAlign(OS))
++    return;
++  // If the branch is emitted into a MCRelaxableFragment, we can determine the
++  // size of the branch easily in MCAssembler::relaxBoundaryAlign. When the
++  // branch is fused, the fused branch(macro fusion pair) must be emitted into
++  // two fragments. Or when the branch is unfused, the branch must be emitted
++  // into one fragment. The MCRelaxableFragment naturally marks the end of the
++  // fused or unfused branch.
++  // Otherwise, we need to insert a MCBoundaryAlignFragment to mark the end of
++  // the branch. This MCBoundaryAlignFragment may be reused to emit NOP to align
++  // other branch.
++  if (needAlignInst(Inst) && !isa<MCRelaxableFragment>(OS.getCurrentFragment()))
++    OS.insert(new MCBoundaryAlignFragment(AlignBoundary));
++
++  // Update the maximum alignment on the current section if necessary.
++  MCSection *Sec = OS.getCurrentSectionOnly();
++  if (AlignBoundary.value() > Sec->getAlignment())
++    Sec->setAlignment(AlignBoundary);
++}
++
+ Optional<MCFixupKind> X86AsmBackend::getFixupKind(StringRef Name) const {
+   if (STI.getTargetTriple().isOSBinFormatELF()) {
+     if (STI.getTargetTriple().getArch() == Triple::x86_64) {
+diff --git a/llvm/test/MC/X86/align-branch-32-1a.s b/llvm/test/MC/X86/align-branch-32-1a.s
+new file mode 100644
+--- /dev/null
++++ b/llvm/test/MC/X86/align-branch-32-1a.s
+@@ -0,0 +1,38 @@
++# Check NOP padding is disabled before instruction that has variant symbol operand.
++# RUN: llvm-mc -filetype=obj -triple i386-unknown-unknown --x86-align-branch-boundary=32 --x86-align-branch=call %s | llvm-objdump -d  - | FileCheck %s
++
++# CHECK: 00000000 foo:
++# CHECK-COUNT-5:      : 64 a3 01 00 00 00                movl    %eax, %fs:1
++# CHECK:            1e: e8 fc ff ff ff                   calll   {{.*}}
++# CHECK-COUNT-4:      : 64 a3 01 00 00 00                movl    %eax, %fs:1
++# CHECK:            3b: 55                               pushl   %ebp
++# CHECK-NEXT:       3c: ff 91 00 00 00 00                calll   *(%ecx)
++# CHECK-COUNT-4:      : 64 a3 01 00 00 00                movl    %eax, %fs:1
++# CHECK:            5a: c1 e9 02                         shrl    $2, %ecx
++# CHECK-NEXT:       5d: 55                               pushl   %ebp
++# CHECK-NEXT:       5e: ff 10                            calll   *(%eax)
++# CHECK-COUNT-5:      : 64 a3 01 00 00 00                movl    %eax, %fs:1
++# CHECK-NEXT:       7e: ff 20                            jmpl    *(%eax)
++  .text
++  .globl  foo
++  .p2align  4
++foo:
++  .rept 5
++  movl  %eax, %fs:0x1
++  .endr
++  call    ___tls_get_addr@PLT
++  .rept 4
++  movl  %eax, %fs:0x1
++  .endr
++  pushl  %ebp
++  call *___tls_get_addr@GOT(%ecx)
++  .rept 4
++  movl  %eax, %fs:0x1
++  .endr
++  shrl  $2, %ecx
++  pushl %ebp
++  call *foo@tlscall(%eax)
++  .rept 5
++  movl  %eax, %fs:0x1
++  .endr
++  jmp  *foo@tlscall(%eax)
+diff --git a/llvm/test/MC/X86/align-branch-64-1a.s b/llvm/test/MC/X86/align-branch-64-1a.s
+new file mode 100644
+--- /dev/null
++++ b/llvm/test/MC/X86/align-branch-64-1a.s
+@@ -0,0 +1,83 @@
++# Check only fused conditional jumps, conditional jumps and unconditional jumps are aligned with option --x86-align-branch-boundary=32 --x86-align-branch=fused+jcc+jmp
++# RUN: llvm-mc -filetype=obj -triple x86_64-unknown-unknown --x86-align-branch-boundary=32 --x86-align-branch=fused+jcc+jmp %s | llvm-objdump -d  - > %t1
++# RUN: FileCheck --input-file=%t1 %s
++
++# Check no branches is aligned with option --x86-align-branch-boundary=0
++# RUN: llvm-mc -filetype=obj -triple x86_64-unknown-unknown --x86-align-branch-boundary=0 --x86-align-branch=fused+jcc+jmp %s | llvm-objdump -d  - > %t2
++# RUN: llvm-mc -filetype=obj -triple x86_64-unknown-unknown %s | llvm-objdump -d  - > %t3
++# RUN: cmp %t2 %t3
++
++# CHECK: 0000000000000000 foo:
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            18: 48 39 c5                         cmpq    %rax, %rbp
++# CHECK-NEXT:       1b: 31 c0                            xorl    %eax, %eax
++# CHECK-COUNT-3:      : 90                               nop
++# CHECK:            20: 48 39 c5                         cmpq    %rax, %rbp
++# CHECK-NEXT:       23: 74 5d                            je      {{.*}}
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            3d: 31 c0                            xorl    %eax, %eax
++# CHECK-NEXT:       3f: 90                               nop
++# CHECK-NEXT:       40: 74 40                            je      {{.*}}
++# CHECK-NEXT:       42: 5d                               popq    %rbp
++# CHECK-NEXT:       43: 74 3d                            je      {{.*}}
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            5d: 31 c0                            xorl    %eax, %eax
++# CHECK-NEXT:       5f: 90                               nop
++# CHECK-NEXT:       60: eb 26                            jmp     {{.*}}
++# CHECK-NEXT:       62: eb 24                            jmp     {{.*}}
++# CHECK-NEXT:       64: eb 22                            jmp     {{.*}}
++# CHECK-COUNT-2:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            76: 89 45 fc                         movl    %eax, -4(%rbp)
++# CHECK-NEXT:       79: 5d                               popq    %rbp
++# CHECK-NEXT:       7a: 48 39 c5                         cmpq    %rax, %rbp
++# CHECK-NEXT:       7d: 74 03                            je      {{.*}}
++# CHECK-NEXT:       7f: 90                               nop
++# CHECK-NEXT:       80: eb 06                            jmp     {{.*}}
++# CHECK-NEXT:       82: 8b 45 f4                         movl    -12(%rbp), %eax
++# CHECK-NEXT:       85: 89 45 fc                         movl    %eax, -4(%rbp)
++# CHECK-COUNT-10:     : 89 b5 50 fb ff ff                movl    %esi, -1200(%rbp)
++# CHECK:            c4: eb c2                            jmp     {{.*}}
++# CHECK-NEXT:       c6: c3                               retq
++
++  .text
++  .globl  foo
++  .p2align  4
++foo:
++  .rept 3
++  movl  %eax, %fs:0x1
++  .endr
++  cmp  %rax, %rbp
++  xorl %eax, %eax
++  cmp  %rax, %rbp
++  je  .L_2
++  .rept 3
++  movl  %eax, %fs:0x1
++  .endr
++  xorl %eax, %eax
++  je  .L_2
++  popq  %rbp
++  je  .L_2
++  .rept 3
++  movl  %eax, %fs:0x1
++  .endr
++  xorl %eax, %eax
++  jmp  .L_3
++  jmp  .L_3
++  jmp  .L_3
++  .rept 2
++  movl  %eax, %fs:0x1
++  .endr
++  movl  %eax, -4(%rbp)
++  popq  %rbp
++  cmp  %rax, %rbp
++  je  .L_2
++  jmp  .L_3
++.L_2:
++  movl  -12(%rbp), %eax
++  movl  %eax, -4(%rbp)
++.L_3:
++  .rept 10
++  movl  %esi, -1200(%rbp)
++  .endr
++  jmp  .L_3
++  retq
+diff --git a/llvm/test/MC/X86/align-branch-64-1b.s b/llvm/test/MC/X86/align-branch-64-1b.s
+new file mode 100644
+--- /dev/null
++++ b/llvm/test/MC/X86/align-branch-64-1b.s
+@@ -0,0 +1,32 @@
++# Check only fused conditional jumps and conditional jumps are aligned with option --x86-align-branch-boundary=32 --x86-align-branch=fused+jcc
++# RUN: llvm-mc -filetype=obj -triple x86_64-unknown-unknown --x86-align-branch-boundary=32 --x86-align-branch=fused+jcc %S/align-branch-64-1a.s | llvm-objdump -d  - | FileCheck %s
++
++# CHECK: 0000000000000000 foo:
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK-NEXT:       18: 48 39 c5                         cmpq    %rax, %rbp
++# CHECK-NEXT:       1b: 31 c0                            xorl    %eax, %eax
++# CHECK-COUNT-3:      : 90                               nop
++# CHECK-NEXT:       20: 48 39 c5                         cmpq    %rax, %rbp
++# CHECK-NEXT:       23: 74 5b                            je      {{.*}}
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            3d: 31 c0                            xorl    %eax, %eax
++# CHECK-NEXT:       3f: 90                               nop
++# CHECK-NEXT:       40: 74 3e                            je      {{.*}}
++# CHECK-NEXT:       42: 5d                               popq    %rbp
++# CHECK-NEXT:       43: 74 3b                            je      {{.*}}
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            5d: 31 c0                            xorl    %eax, %eax
++# CHECK-NEXT:       5f: eb 25                            jmp     {{.*}}
++# CHECK-NEXT:       61: eb 23                            jmp     {{.*}}
++# CHECK-NEXT:       63: eb 21                            jmp     {{.*}}
++# CHECK-COUNT-2:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK-NEXT:       75: 89 45 fc                         movl    %eax, -4(%rbp)
++# CHECK:            78: 5d                               popq    %rbp
++# CHECK-NEXT:       79: 48 39 c5                         cmpq    %rax, %rbp
++# CHECK-NEXT:       7c: 74 02                            je      {{.*}}
++# CHECK-NEXT:       7e: eb 06                            jmp     {{.*}}
++# CHECK-NEXT:       80: 8b 45 f4                         movl    -12(%rbp), %eax
++# CHECK-NEXT:       83: 89 45 fc                         movl    %eax, -4(%rbp)
++# CHECK-COUNT-10:     : 89 b5 50 fb ff ff                movl    %esi, -1200(%rbp)
++# CHECK:            c2: eb c2                            jmp     {{.*}}
++# CHECK-NEXT:       c4: c3                               retq
+diff --git a/llvm/test/MC/X86/align-branch-64-1c.s b/llvm/test/MC/X86/align-branch-64-1c.s
+new file mode 100644
+--- /dev/null
++++ b/llvm/test/MC/X86/align-branch-64-1c.s
+@@ -0,0 +1,31 @@
++# Check only conditional jumps are aligned with option --x86-align-branch-boundary=32 --x86-align-branch=jcc
++# RUN: llvm-mc -filetype=obj -triple x86_64-unknown-unknown --x86-align-branch-boundary=32 --x86-align-branch=jcc %S/align-branch-64-1a.s | llvm-objdump -d  - | FileCheck %s
++
++# CHECK: 0000000000000000 foo:
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            18: 48 39 c5                         cmpq    %rax, %rbp
++# CHECK-NEXT:       1b: 31 c0                            xorl    %eax, %eax
++# CHECK-NEXT:       1d: 48 39 c5                         cmpq    %rax, %rbp
++# CHECK-NEXT:       20: 74 5b                            je      {{.*}}
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            3a: 31 c0                            xorl    %eax, %eax
++# CHECK-NEXT:       3c: 74 3f                            je      {{.*}}
++# CHECK-NEXT:       3e: 5d                               popq    %rbp
++# CHECK-NEXT:       3f: 90                               nop
++# CHECK-NEXT:       40: 74 3b                            je      {{.*}}
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            5a: 31 c0                            xorl    %eax, %eax
++# CHECK-NEXT:       5c: eb 25                            jmp     {{.*}}
++# CHECK-NEXT:       5e: eb 23                            jmp     {{.*}}
++# CHECK-NEXT:       60: eb 21                            jmp     {{.*}}
++# CHECK-COUNT-2:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            72: 89 45 fc                         movl    %eax, -4(%rbp)
++# CHECK-NEXT:       75: 5d                               popq    %rbp
++# CHECK-NEXT:       76: 48 39 c5                         cmpq    %rax, %rbp
++# CHECK-NEXT:       79: 74 02                            je      {{.*}}
++# CHECK-NEXT:       7b: eb 06                            jmp     {{.*}}
++# CHECK-NEXT:       7d: 8b 45 f4                         movl    -12(%rbp), %eax
++# CHECK-NEXT:       80: 89 45 fc                         movl    %eax, -4(%rbp)
++# CHECK-COUNT-10:     : 89 b5 50 fb ff ff                movl    %esi, -1200(%rbp)
++# CHECK:            bf: eb c2                            jmp     {{.*}}
++# CHECK-NEXT:       c1: c3                               retq
+diff --git a/llvm/test/MC/X86/align-branch-64-1d.s b/llvm/test/MC/X86/align-branch-64-1d.s
+new file mode 100644
+--- /dev/null
++++ b/llvm/test/MC/X86/align-branch-64-1d.s
+@@ -0,0 +1,38 @@
++# Check only conditional jumps and unconditional jumps are aligned with option --x86-align-branch-boundary=32 --x86-align-branch=jcc+jmp
++# RUN: llvm-mc -filetype=obj -triple x86_64-unknown-unknown --x86-align-branch-boundary=32 --x86-align-branch=jcc+jmp %S/align-branch-64-1a.s | llvm-objdump -d  - > %t1
++# RUN: FileCheck --input-file=%t1 %s --check-prefixes=CHECK,SHORT-NOP
++
++# Check long NOP can be emitted to align branch if the target cpu support long nop.
++# RUN: llvm-mc -filetype=obj -triple x86_64-unknown-unknown --x86-align-branch-boundary=32 -mcpu=x86-64 --x86-align-branch=jcc+jmp %S/align-branch-64-1a.s | llvm-objdump -d  - >%t2
++# RUN: FileCheck --input-file=%t2 %s --check-prefixes=CHECK,LONG-NOP
++
++# CHECK: 0000000000000000 foo:
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            18: 48 39 c5                         cmpq    %rax, %rbp
++# CHECK-NEXT:       1b: 31 c0                            xorl    %eax, %eax
++# CHECK-NEXT:       1d: 48 39 c5                         cmpq    %rax, %rbp
++# CHECK-NEXT:       20: 74 5d                            je      {{.*}}
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            3a: 31 c0                            xorl    %eax, %eax
++# CHECK-NEXT:       3c: 74 41                            je      {{.*}}
++# CHECK-NEXT:       3e: 5d                               popq    %rbp
++# CHECK-NEXT:       3f: 90                               nop
++# CHECK-NEXT:       40: 74 3d                            je      {{.*}}
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            5a: 31 c0                            xorl    %eax, %eax
++# CHECK-NEXT:       5c: eb 27                            jmp     {{.*}}
++# SHORT-NOP-COUNT-2:  : 90                               nop
++# LONG-NOP:         5e: 66 90                            nop
++# CHECK-NEXT:       60: eb 23                            jmp     {{.*}}
++# CHECK-NEXT:       62: eb 21                            jmp     {{.*}}
++# CHECK-COUNT-2:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            74: 89 45 fc                         movl    %eax, -4(%rbp)
++# CHECK-NEXT:       77: 5d                               popq    %rbp
++# CHECK-NEXT:       78: 48 39 c5                         cmpq    %rax, %rbp
++# CHECK-NEXT:       7b: 74 02                            je      {{.*}}
++# CHECK-NEXT:       7d: eb 06                            jmp     {{.*}}
++# CHECK-NEXT:       7f: 8b 45 f4                         movl    -12(%rbp), %eax
++# CHECK-NEXT:       82: 89 45 fc                         movl    %eax, -4(%rbp)
++# CHECK-COUNT-10:     : 89 b5 50 fb ff ff                movl    %esi, -1200(%rbp)
++# CHECK:            c1: eb c2                            jmp     {{.*}}
++# CHECK-NEXT:       c3: c3                               retq
+diff --git a/llvm/test/MC/X86/align-branch-64-2a.s b/llvm/test/MC/X86/align-branch-64-2a.s
+new file mode 100644
+--- /dev/null
++++ b/llvm/test/MC/X86/align-branch-64-2a.s
+@@ -0,0 +1,44 @@
++# Check only indirect jumps are aligned with option --x86-align-branch-boundary=32 --x86-align-branch=indirect
++# RUN: llvm-mc -filetype=obj -triple x86_64-unknown-unknown --x86-align-branch-boundary=32 --x86-align-branch=indirect %s | llvm-objdump -d  - | FileCheck %s
++
++# CHECK: 0000000000000000 foo:
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK-COUNT-2:      : 89 75 f4                         movl    %esi, -12(%rbp)
++# CHECK-COUNT-2:      : 90                               nop
++# CHECK:            20: ff e0                            jmpq    *%rax
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            3a: 89 75 f4                         movl    %esi, -12(%rbp)
++# CHECK-NEXT:       3d: 55                               pushq   %rbp
++# CHECK-NEXT:       3e: ff d0                            callq   *%rax
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK-NEXT:       58: 55                               pushq   %rbp
++# CHECK-NEXT:       59: e8 a2 ff ff ff                   callq   {{.*}}
++# CHECK-COUNT-4:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            7e: ff 14 25 00 00 00 00             callq   *0
++
++  .text
++  .globl  foo
++  .p2align  4
++foo:
++  .rept 3
++  movl  %eax, %fs:0x1
++  .endr
++  .rept 2
++  movl  %esi, -12(%rbp)
++  .endr
++  jmp  *%rax
++  .rept 3
++  movl  %eax, %fs:0x1
++  .endr
++  movl  %esi, -12(%rbp)
++  pushq  %rbp
++  call *%rax
++  .rept 3
++  movl  %eax, %fs:0x1
++  .endr
++  pushq  %rbp
++  call  foo
++  .rept 4
++  movl  %eax, %fs:0x1
++  .endr
++  call  *foo
+diff --git a/llvm/test/MC/X86/align-branch-64-2b.s b/llvm/test/MC/X86/align-branch-64-2b.s
+new file mode 100644
+--- /dev/null
++++ b/llvm/test/MC/X86/align-branch-64-2b.s
+@@ -0,0 +1,17 @@
++# Check only calls are aligned with option --x86-align-branch-boundary=32 --x86-align-branch=call
++# RUN: llvm-mc -filetype=obj -triple x86_64-unknown-unknown --x86-align-branch-boundary=32 --x86-align-branch=call %S/align-branch-64-2a.s| llvm-objdump -d  - | FileCheck %s
++
++# CHECK: 0000000000000000 foo:
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK-COUNT-2:      : 89 75 f4                         movl    %esi, -12(%rbp)
++# CHECK:            1e: ff e0                            jmpq    *%rax
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            38: 89 75 f4                         movl    %esi, -12(%rbp)
++# CHECK-NEXT:       3b: 55                               pushq    %rbp
++# CHECK-NEXT:       3c: ff d0                            callq    *%rax
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl     %eax, %fs:1
++# CHECK:            56: 55                               pushq    %rbp
++# CHECK-NEXT:       57: e8 a4 ff ff ff                   callq    {{.*}}
++# CHECK-COUNT-4:      : 64 89 04 25 01 00 00 00          movl     %eax, %fs:1
++# CHECK-COUNT-4:      : 90                               nop
++# CHECK:            80: ff 14 25 00 00 00 00             callq    *0
+diff --git a/llvm/test/MC/X86/align-branch-64-2c.s b/llvm/test/MC/X86/align-branch-64-2c.s
+new file mode 100644
+--- /dev/null
++++ b/llvm/test/MC/X86/align-branch-64-2c.s
+@@ -0,0 +1,19 @@
++# Check only indirect jumps and calls are aligned with option --x86-align-branch-boundary=32 --x86-align-branch=indirect+call
++# RUN: llvm-mc -filetype=obj -triple x86_64-unknown-unknown --x86-align-branch-boundary=32 --x86-align-branch=indirect+call %S/align-branch-64-2a.s  | llvm-objdump -d  - | FileCheck %s
++
++# CHECK: 0000000000000000 foo:
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK-COUNT-2:      : 89 75 f4                         movl    %esi, -12(%rbp)
++# CHECK-COUNT-2:      : 90                               nop
++# CHECK:            20: ff e0                            jmpq    *%rax
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            3a: 89 75 f4                         movl    %esi, -12(%rbp)
++# CHECK-NEXT:       3d: 55                               pushq    %rbp
++# CHECK-COUNT-2:      : 90                               nop
++# CHECK:            40: ff d0                            callq    *%rax
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            5a: 55                               pushq    %rbp
++# CHECK-COUNT-5:      : 90                               nop
++# CHECK:            60: e8 9b ff ff ff                   callq   {{.*}}
++# CHECK-COUNT-4:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            85: ff 14 25 00 00 00 00             callq    *0
+diff --git a/llvm/test/MC/X86/align-branch-64-3a.s b/llvm/test/MC/X86/align-branch-64-3a.s
+new file mode 100644
+--- /dev/null
++++ b/llvm/test/MC/X86/align-branch-64-3a.s
+@@ -0,0 +1,41 @@
++# Check NOP padding is disabled before instruction that has variant symbol operand.
++# RUN: llvm-mc -filetype=obj -triple x86_64-unknown-unknown --x86-align-branch-boundary=32 --x86-align-branch=jmp+call %s | llvm-objdump -d  - | FileCheck %s
++
++# CHECK: 0000000000000000 foo:
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK-COUNT-2:      : 48 89 e5                         movq    %rsp, %rbp
++# CHECK:            1e: e8 00 00 00 00                   callq   {{.*}}
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            3b: 55                               pushq   %rbp
++# CHECK-NEXT:       3c: 89 75 f4                         movl    %esi, -12(%rbp)
++# CHECK-NEXT:       3f: ff 15 00 00 00 00                callq   *(%rip)
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            5d: ff 15 00 00 00 00                callq   *(%rip)
++# CHECK-NEXT-3:       : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            7b: ff 25 00 00 00 00                jmpq    *(%rip)
++
++  .text
++  .globl  foo
++  .p2align  4
++foo:
++  .rept 3
++  movl  %eax, %fs:0x1
++  .endr
++  .rept 2
++  movq  %rsp, %rbp
++  .endr
++  call    __tls_get_addr@PLT
++  .rept 3
++  movl  %eax, %fs:0x1
++  .endr
++  pushq  %rbp
++  movl  %esi, -12(%rbp)
++  call    *__tls_get_addr@GOTPCREL(%rip)
++  .rept 3
++  movl  %eax, %fs:0x1
++  .endr
++  call *foo@GOTPCREL(%rip)
++  .rept 3
++  movl  %eax, %fs:0x1
++  .endr
++  jmp  *foo@GOTPCREL(%rip)
+diff --git a/llvm/test/MC/X86/align-branch-64-4a.s b/llvm/test/MC/X86/align-branch-64-4a.s
+new file mode 100644
+--- /dev/null
++++ b/llvm/test/MC/X86/align-branch-64-4a.s
+@@ -0,0 +1,33 @@
++# Check only rets are aligned with option --x86-align-branch-boundary=32 --x86-align-branch=ret
++# RUN: llvm-mc -filetype=obj -triple x86_64-unknown-unknown --x86-align-branch-boundary=32 --x86-align-branch=ret %s | llvm-objdump -d  - | FileCheck %s
++
++# CHECK: 0000000000000000 foo:
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK-COUNT-2:      : 48 89 e5                         movq    %rsp, %rbp
++# CHECK:            1e: 5a                               popq    %rdx
++# CHECK-NEXT:       1f: 90                               nop
++# CHECK-NEXT:       20: c3                               retq
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            39: 89 75 f4                         movl    %esi, -12(%rbp)
++# CHECK-NEXT:       3c: 31 c0                            xorl    %eax, %eax
++# CHECK-COUNT-2:      : 90                               nop
++# CHECK:            40: c2 1e 00                         retq    $30
++
++  .text
++  .globl  foo
++  .p2align  4
++foo:
++  .rept 3
++  movl  %eax, %fs:0x1
++  .endr
++  .rept 2
++  movq  %rsp, %rbp
++  .endr
++  popq  %rdx
++  ret
++  .rept 3
++  movl  %eax, %fs:0x1
++  .endr
++  movl  %esi, -12(%rbp)
++  xorl %eax, %eax
++  ret $30
+diff --git a/llvm/test/MC/X86/align-branch-64-5a.s b/llvm/test/MC/X86/align-branch-64-5a.s
+new file mode 100644
+--- /dev/null
++++ b/llvm/test/MC/X86/align-branch-64-5a.s
+@@ -0,0 +1,43 @@
++# Check no nop is inserted if no branch cross or is against the boundary
++# RUN: llvm-mc -filetype=obj -triple x86_64-unknown-unknown --x86-align-branch-boundary=32 --x86-align-branch=fused+jcc+jmp+indirect+call+ret  %s | llvm-objdump -d  - > %t1
++# RUN: llvm-mc -filetype=obj -triple x86_64-unknown-unknown %s | llvm-objdump -d  - > %t2
++# RUN: cmp %t1 %t2
++# RUN: FileCheck --input-file=%t1 %s
++
++# CHECK: 0000000000000000 foo:
++# CHECK-COUNT-3:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            18: c1 e9 02                         shrl    $2, %ecx
++# CHECK-NEXT:       1b: 89 d1                            movl    %edx, %ecx
++# CHECK-NEXT:       1d: 75 fc                            jne     {{.*}}
++# CHECK-NEXT:       1f: 55                               pushq   %rbp
++# CHECK-NEXT:       20: f6 c2 02                         testb   $2, %dl
++# CHECK-NEXT:       23: 75 fa                            jne     {{.*}}
++# CHECK-COUNT-2:      : 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK:            35: c1 e9 02                         shrl    $2, %ecx
++# CHECK-NEXT:       38: e8 c3 ff ff ff                   callq   {{.*}}
++# CHECK-NEXT:       3d: ff e0                            jmpq    *%rax
++# CHECK-NEXT:       3f: 55                               pushq   %rbp
++# CHECK-NEXT:       40: c2 63 00                         retq    $99
++
++    .text
++    .p2align 4
++foo:
++  .rept 3
++  movl  %eax, %fs:0x1
++  .endr
++  shrl  $2, %ecx
++.L1:
++  movl  %edx, %ecx
++  jne   .L1
++.L2:
++  push  %rbp
++  testb $2, %dl
++  jne    .L2
++  .rept 2
++  movl  %eax, %fs:0x1
++  .endr
++  shrl  $2, %ecx
++  call  foo
++  jmp   *%rax
++  push  %rbp
++  ret   $99
+diff --git a/llvm/test/MC/X86/align-branch-64-5b.s b/llvm/test/MC/X86/align-branch-64-5b.s
+new file mode 100644
+--- /dev/null
++++ b/llvm/test/MC/X86/align-branch-64-5b.s
+@@ -0,0 +1,50 @@
++# Check option --x86-align-branch-boundary=32 --x86-align-branch=fused+jcc+jmp+indirect+call+ret can cowork with option --mc-relax-all
++# RUN: llvm-mc -filetype=obj -triple x86_64-unknown-unknown --x86-align-branch-boundary=32 --x86-align-branch=fused+jcc+jmp+indirect+call+ret --mc-relax-all %s | llvm-objdump -d  - > %t1
++# RUN: FileCheck --input-file=%t1 %s
++
++# CHECK: 0000000000000000 foo:
++# CHECK-NEXT:        0: 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK-NEXT:        8: 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK-NEXT:       10: 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK-NEXT:       18: c1 e9 02                         shrl    $2, %ecx
++# CHECK-NEXT:       1b: 89 d1                            movl    %edx, %ecx
++# CHECK-NEXT:       1d: 90                               nop
++# CHECK-NEXT:       1e: 90                               nop
++# CHECK-NEXT:       1f: 90                               nop
++# CHECK-NEXT:       20: 0f 85 f5 ff ff ff                jne     {{.*}}
++# CHECK-NEXT:       26: 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK-NEXT:       2e: 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK-NEXT:       36: f6 c2 02                         testb   $2, %dl
++# CHECK-NEXT:       39: 0f 85 e7 ff ff ff                jne     {{.*}}
++# CHECK-NEXT:       3f: 90                               nop
++# CHECK-NEXT:       40: e9 d6 ff ff ff                   jmp     {{.*}}
++# CHECK-NEXT:       45: 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK-NEXT:       4d: 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK-NEXT:       55: 64 89 04 25 01 00 00 00          movl    %eax, %fs:1
++# CHECK-NEXT:       5d: 90                               nop
++# CHECK-NEXT:       5e: 90                               nop
++# CHECK-NEXT:       5f: 90                               nop
++# CHECK-NEXT:       60: e8 9b ff ff ff                   callq   {{.*}}
++# CHECK-NEXT:       65: e9 bc ff ff ff                   jmp     {{.*}}
++    .text
++    .p2align 4
++foo:
++  .rept 3
++  movl  %eax, %fs:0x1
++  .endr
++  shrl  $2, %ecx
++.L1:
++  movl  %edx, %ecx
++  jne   .L1
++.L2:
++  .rept 2
++  movl  %eax, %fs:0x1
++  .endr
++  testb $2, %dl
++  jne   .L2
++  jmp   .L1
++  .rept 3
++  movl  %eax, %fs:0x1
++  .endr
++  call  foo
++  jmp   .L2
+
+

@@ -1,0 +1,42 @@
+
+fact_aarch64_init.o:	file format elf64-littleaarch64
+
+
+Disassembly of section .text.fact:
+
+0000000000000000 <fact>:
+       0: f3 0f 1e f8  	str	x19, [sp, #-32]!
+       4: fd 7b 01 a9  	stp	x29, x30, [sp, #16]
+       8: fd 43 00 91  	add	x29, sp, #16
+       c: 1f 00 00 71  	cmp	w0, #0
+      10: e0 0b 00 b9  	str	w0, [sp, #8]
+      14: cd 00 00 54  	b.le	0x2c <fact+0x2c>
+      18: f3 0b 40 b9  	ldr	w19, [sp, #8]
+      1c: 60 06 00 51  	sub	w0, w19, #1
+      20: f8 ff ff 97  	bl	0x0 <fact>
+      24: 68 7e 08 1b  	mul	w8, w19, w8
+      28: 02 00 00 14  	b	0x30 <fact+0x30>
+      2c: 28 00 80 52  	mov	w8, #1
+      30: a8 c3 1f b8  	stur	w8, [x29, #-4]
+      34: fd 7b 41 a9  	ldp	x29, x30, [sp, #16]
+      38: e8 03 08 2a  	mov	w8, w8
+      3c: f3 07 42 f8  	ldr	x19, [sp], #32
+      40: c0 03 5f d6  	ret
+
+Disassembly of section .text.main:
+
+0000000000000000 <main>:
+       0: ff 83 00 d1  	sub	sp, sp, #32
+       4: fd 7b 01 a9  	stp	x29, x30, [sp, #16]
+       8: fd 43 00 91  	add	x29, sp, #16
+       c: a0 00 80 52  	mov	w0, #5
+      10: bf c3 1f b8  	stur	wzr, [x29, #-4]
+      14: 00 00 00 94  	bl	0x14 <main+0x14>
+      18: 00 00 00 90  	adrp	x0, #0
+      1c: e1 03 08 2a  	mov	w1, w8
+      20: 00 00 00 91  	add	x0, x0, #0
+      24: 00 00 00 94  	bl	0x24 <main+0x24>
+      28: fd 7b 41 a9  	ldp	x29, x30, [sp, #16]
+      2c: e8 03 1f 2a  	mov	w8, wzr
+      30: ff 83 00 91  	add	sp, sp, #32
+      34: c0 03 5f d6  	ret

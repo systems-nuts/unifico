@@ -212,7 +212,7 @@ def compare_experiments(dir1, dir2, out_plot):
     df1 = df_from_dir(dir1, 7, 3)
     df2 = df_from_dir(dir2, 7, 2)
     serial_experiments_overhead(df1, df2, out_plot)
-    parallel_experiments_overhead(df1, df2, out_plot)
+    # parallel_experiments_overhead(df1, df2, out_plot)
 
 
 def compare_parallel_experiments(core_csv_dir1, core_csv_dir2, thread_csv_dir1, thread_csv_dir2,
@@ -257,18 +257,10 @@ def compare_parallel_experiments(core_csv_dir1, core_csv_dir2, thread_csv_dir1, 
 
 if __name__ == '__main__':
 
-    compare_experiments('results/new_arm_baseline/027_e4b0249',
-                        'results/new_arm_remove_15/183_adc8c87',
-                        'reports/plots/new_arm_remove_15')
+    compare_experiments('results/c617fca',
+                        'results/a6440f8',
+                        'reports/plots/nettuno_3_reg_to_temp')
 
-    compare_experiments('results/new_arm_baseline/039_93c1db5',
-                        'results/new_arm_remove_15/195_336fc74',
-                        'reports/plots/new_arm_remove_15')
-
-    compare_experiments('results/new_arm_baseline/051_91a87c3',
-                        'results/new_arm_remove_15/207_29e6d22',
-                        'reports/plots/new_arm_remove_15')
-
-    compare_experiments('results/new_arm_baseline/063_bdbc5bb',
-                        'results/new_arm_remove_15/219_18fc7b3',
-                        'reports/plots/new_arm_remove_15')
+    # compare_experiments('results/new_arm_baseline/027_e4b0249',
+    #                     'results/new_arm_remove_15/183_adc8c87',
+    #                     'reports/plots/new_arm_remove_15')

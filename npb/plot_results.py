@@ -149,6 +149,51 @@ def two_dataframes_boxplot(df1, df2):
         plt.show()
 
 
+def get_overhead_df(dir1, dir2):
+    """
+    Plot the graphs of the two experiments in each directory
+    @param dir1: Output files for first experiment
+    @param dir2: Output files for first experiment
+    @param out_plot: Output dir
+    @param hue: Comparison variable for boxplot
+    @param how: Compare
+    @return:
+    """
+    if not os.path.isdir(dir1):
+        print('{} result directory does not exist.'.format(dir1))
+    elif not os.path.isdir(dir2):
+        print('{} result directory does not exist.'.format(dir2))
+
+    df1 = df_from_dir(dir1)
+    df1 = df1[df1['Class'] == 'B']
+    df1 = df1[df1['Threads'] == 1]
+    df2 = df_from_dir(dir2)
+    df2 = df2[df2['Class'] == 'B']
+    df2 = df2[df2['Threads'] == 1]
+
+    df1 = df1.groupby(['Benchmark']).mean()
+    df2 = df2.groupby(['Benchmark']).mean()
+
+    info1 = get_info(os.path.join(dir1, 'info.json'))
+    info2 = get_info(os.path.join(dir2, 'info.json'))
+
+    exp1 = info1['experiment']
+    exp2 = 'remove 15 registers'
+    df2['Experiment'] = exp2
+    flag = info1['flag']
+    title = '"{}" vs "{}" {}'.format(exp2, exp1, flag)
+
+    total_df = df1.append(df2, ignore_index=True)
+    # total_df.sort_values(by=['Benchmark', 'Class', 'Threads', 'Iteration'], inplace=True)
+    df1.sort_values(by=['Benchmark', 'Threads', 'Iteration'], inplace=True)
+    df2.sort_values(by=['Benchmark', 'Threads', 'Iteration'], inplace=True)
+    df = pd.DataFrame(df1)
+    df['% Overhead'] = df['Time'].combine(df2['Time'], lambda x1, x2: (x2 / x1 - 1) * 100)
+    df.drop(['Iteration', 'Time'], axis=1, inplace=True)
+
+    return df
+
+
 def compare_experiments(dir1, dir2, out_plot, hue='Experiment', how='side'):
     """
     Plot the graphs of the two experiments in each directory
@@ -214,5 +259,18 @@ def compare_experiments(dir1, dir2, out_plot, hue='Experiment', how='side'):
 
 
 if __name__ == '__main__':
-    compare_experiments('results/1496895', 'results/remove_14_regs/ca1f7d6',
-                        'reports/plots/sole_remove_15_O1_B_large_font', hue='Class', how='overhead')
+    # compare_experiments('results/1496895', 'results/remove_14_regs/ca1f7d6',
+    #                     'reports/plots/sole_remove_15_O1_B_large_font', hue='Class', how='overhead')
+
+    df0 = get_overhead_df('results/b779a20', 'results/remove_14_regs/096c020')
+    df0 = df0.rename(columns={'% Overhead': 'Overhead -O0'})
+    df1 = get_overhead_df('results/1496895', 'results/remove_14_regs/ca1f7d6')
+    df1 = df1.rename(columns={'% Overhead': 'Overhead -O1'})
+    df2 = get_overhead_df('results/b920081', 'results/remove_14_regs/1d570f6')
+    df2 = df2.rename(columns={'% Overhead': 'Overhead -O2'})
+    df3 = get_overhead_df('results/fdb187b', 'results/remove_14_regs/9776cd6')
+    df3 = df3.rename(columns={'% Overhead': 'Overhead -O3'})
+
+    df = pd.concat([df0, df1, df2, df3], axis=1)
+    df.drop(['Threads'], axis=1, inplace=True)
+    df.to_csv('results/remove_14_regs/overheads.csv')
