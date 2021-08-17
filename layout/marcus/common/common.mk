@@ -25,14 +25,14 @@ CC  := $(LLVM_TOOLCHAIN)/clang
 OPT := $(LLVM_TOOLCHAIN)/opt
 LLC := $(LLVM_TOOLCHAIN)/llc
 
-CFLAGS 		:= -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer 
+CFLAGS 		:= -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer
 CFLAGS 		+= -O1 -Wall -nostdinc 
 HET_CFLAGS 	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec
 OPT_FLAGS 	:= -name-string-literals -static-var-sections
-LLC_FLAGS 	:= -function-sections -data-sections
-LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse -enable-misched=false
-LLC_FLAGS       += -join-liveintervals=false
-LLC_DEBUG       := -debug
+LLC_FLAGS 	:= -function-sections -data-sections --frame-pointer=all
+LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
+# LLC_FLAGS       += -enable-misched=false -join-liveintervals=false -disable-machine-licm
+LLC_DEBUG       := -debug 
 
 IR := $(SRC:.c=.ll)
 IR_NODBG := $(SRC:.c=_nodbg.ll)
@@ -72,6 +72,7 @@ X86_64_ASM         := $(SRC:.c=_x86_64.s)
 X86_64_MAP         := $(X86_64_BUILD)/map.txt
 X86_64_LD_SCRIPT   := $(X86_64_BUILD)/aligned_linker_script_x86.x
 X86_64_ALIGNED_MAP := $(X86_64_BUILD)/aligned_map.txt
+X86_64_LOG         := $(BIN)_x86_64.log
 
 X86_64_TARGET  := x86_64-linux-gnu
 X86_64_INC     := -isystem $(X86_64_MUSL)/include # FIXME
@@ -91,6 +92,7 @@ ARM64_ASM         := $(SRC:.c=_aarch64.s)
 ARM64_MAP         := $(ARM64_BUILD)/map.txt
 ARM64_LD_SCRIPT   := $(ARM64_BUILD)/aligned_linker_script_arm.x
 ARM64_ALIGNED_MAP := $(ARM64_BUILD)/aligned_map.txt
+ARM64_LOG         := $(BIN)_aarch64.log
 
 ARM64_TARGET  := aarch64-linux-gnu
 ARM64_INC     := -isystem $(ARM64_MUSL)/include
@@ -111,6 +113,7 @@ asm: asm-x86-64 asm-aarch64
 
 aligned: aligned-x86-64 aligned-aarch64
 unaligned: unaligned-x86-64 unaligned-aarch64
+log: log-x86-64 log-aarch64
 
 aligned-x86-64: $(X86_64_ALIGNED)
 unaligned-x86-64: $(X86_64_UNALIGNED)
@@ -210,6 +213,10 @@ $(X86_64_ALIGNED): $(X86_64_LD_SCRIPT)
 	@echo " [LLC] $@"
 	$(LLC) $(LLC_FLAGS) -march=x86-64 -filetype=obj -o $(<:_opt.ll=_x86_64.o) $<
 
+$(X86_64_LOG): $(BIN)_opt.ll
+	@echo " [LLC_DEBUG_PASS] $@"
+	$(LLC) $(LLC_FLAGS) $(LLC_DEBUG) -march=x86-64 $< > $@ 2>&1
+
 check_un: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	@echo " [CHECK] Checking unalignment for $^"
 	$(PYTHON) $(ALIGN_CHECK) $(ARM64_UNALIGNED) $(X86_64_UNALIGNED)
@@ -220,9 +227,9 @@ check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 
 clean:
 	@echo " [CLEAN] $(ARM64_ALIGNED) $(ARM64_BUILD) $(X86_64_ALIGNED) \
-		$(X86_64_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.o *.out"
+		$(X86_64_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.o *.out *.log *.backup"
 	@rm -rf $(ARM64_ALIGNED) $(ARM64_BUILD) $(X86_64_ALIGNED) $(X86_64_BUILD) \
-		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.o *.out
+		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.o *.out *.log *.backup
 
 .PHONY: all check clean \
         aligned aligned-aarch64 aligned-x86-64 \

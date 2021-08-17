@@ -30,7 +30,7 @@ CFLAGS 		+= -O1 -Wall -nostdinc
 HET_CFLAGS 	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec -masm=intel
 OPT_FLAGS 	:= -name-string-literals -static-var-sections
 LLC_FLAGS 	:= -function-sections -data-sections 
-LLC_FLAGS 	+= -join-liveintervals=false -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse -enable-misched=false
+LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse #-enable-misched=false -join-liveintervals=false
 LLC_DEBUG       := -debug
 
 IR := $(SRC:.c=.ll)

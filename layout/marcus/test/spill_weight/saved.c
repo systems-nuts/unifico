@@ -31,7 +31,7 @@ int saved(int r1, int r2, int r3, int r4, int r5, int r6)
 	int c10 = func(10);
 	int cc = c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 + c9 + c10;
 	int param = r1 + r2 + r3 + r4 + r5 + r6;
-	return param + cc;
+	return param / cc;
 }
 
 int main()

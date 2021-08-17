@@ -5,7 +5,7 @@ POPCORN 	   := /usr/local/popcorn
 
 LLVM_TOOLCHAIN := ~/llvm_9/toolchain/bin
 
-BIN := loop
+BIN := global
 SRC := $(BIN).c
 
 PYTHON = python3.7
@@ -26,11 +26,11 @@ OPT := $(LLVM_TOOLCHAIN)/opt
 LLC := $(LLVM_TOOLCHAIN)/llc
 
 CFLAGS 		:= -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer 
-CFLAGS 		+= -O1 -Wall -nostdinc
+CFLAGS 		+= -O1 -Wall -nostdinc 
 HET_CFLAGS 	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec -masm=intel
-OPT_FLAGS 	:= -name-string-literals -static-var-sections -loop-vectorize
+OPT_FLAGS 	:= -name-string-literals -static-var-sections
 LLC_FLAGS 	:= -function-sections -data-sections 
-LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
+LLC_FLAGS 	+= -join-liveintervals=false -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse # -disable-x86-lea-opt
 LLC_DEBUG       := -debug
 
 IR := $(SRC:.c=.ll)
