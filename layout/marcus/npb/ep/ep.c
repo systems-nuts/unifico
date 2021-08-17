@@ -84,12 +84,12 @@ int main()
 
   FILE *fp;
 
-  if ((fp = fopen("timer.flag", "r")) == NULL) {
+  //if ((fp = fopen("timer.flag", "r")) == NULL) {
     timers_enabled = false;
-  } else {
-    timers_enabled = true;
-    fclose(fp);
-  }
+  //} else {
+  //  timers_enabled = true;
+  //  fclose(fp);
+  //}
 
   //--------------------------------------------------------------------
   //  Because the size of the problem is too large to store in a 32-bit

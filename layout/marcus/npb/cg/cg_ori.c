@@ -142,15 +142,15 @@ int main(int argc, char *argv[])
   }
 
   FILE *fp;
-  //if ((fp = fopen("timer.flag", "r")) != NULL) {
-  //  timeron = true;
-  //  t_names[T_init] = "init";
-  //  t_names[T_bench] = "benchmk";
-  //  t_names[T_conj_grad] = "conjgd";
-  //  fclose(fp);
-  //} else {
+  if ((fp = fopen("timer.flag", "r")) != NULL) {
+    timeron = true;
+    t_names[T_init] = "init";
+    t_names[T_bench] = "benchmk";
+    t_names[T_conj_grad] = "conjgd";
+    fclose(fp);
+  } else {
     timeron = false;
-  //}
+  }
 
   timer_start(T_init);
 
@@ -184,10 +184,10 @@ int main(int argc, char *argv[])
     Class = 'U';
   }
 
-  // printf("\n\n NAS Parallel Benchmarks (NPB3.3-SER-C) - CG Benchmark\n\n");
-  // printf(" Size: %11d\n", NA);
-  // printf(" Iterations: %5d\n", NITER);
-  // printf("\n");
+  printf("\n\n NAS Parallel Benchmarks (NPB3.3-SER-C) - CG Benchmark\n\n");
+  printf(" Size: %11d\n", NA);
+  printf(" Iterations: %5d\n", NITER);
+  printf("\n");
 
   naa = NA;
   nzz = NZ;
@@ -284,7 +284,7 @@ int main(int argc, char *argv[])
 
   timer_stop(T_init);
 
-  //printf(" Initialization time = %15.3f seconds\n", timer_read(T_init));
+  printf(" Initialization time = %15.3f seconds\n", timer_read(T_init));
 
   timer_start(T_bench);
 
@@ -319,9 +319,9 @@ int main(int argc, char *argv[])
     norm_temp2 = 1.0 / sqrt(norm_temp2);
 
     zeta = SHIFT + 1.0 / norm_temp1;
-    //if (it == 1) 
-    //  printf("\n   iteration           ||r||                 zeta\n");
-    //printf("    %5d       %20.14E%20.13f\n", it, rnorm, zeta);
+    if (it == 1) 
+      printf("\n   iteration           ||r||                 zeta\n");
+    printf("    %5d       %20.14E%20.13f\n", it, rnorm, zeta);
 
     //---------------------------------------------------------------------
     // Normalize z to obtain x
@@ -340,7 +340,7 @@ int main(int argc, char *argv[])
   t = timer_read(T_bench);
 
   printf(" Benchmark completed\n");
-/**
+
   epsilon = 1.0e-10;
   if (Class != 'U') {
     err = fabs(zeta - zeta_verify_value) / zeta_verify_value;
@@ -360,7 +360,7 @@ int main(int argc, char *argv[])
     printf(" Problem size unknown\n");
     printf(" NO VERIFICATION PERFORMED\n");
   }
-**/
+
   if (t != 0.0) {
     mflops = (double)(2*NITER*NA)
                    * (3.0+(double)(NONZER*(NONZER+1))
@@ -370,8 +370,6 @@ int main(int argc, char *argv[])
     mflops = 0.0;
   }
 
-
-/**
   print_results("CG", Class, NA, 0, 0,
                 NITER, t,
                 mflops, "          floating point", 
@@ -398,7 +396,7 @@ int main(int argc, char *argv[])
       }
     }
   }
-**/
+
   return 0;
 }
 
