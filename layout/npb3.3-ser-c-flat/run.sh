@@ -3,13 +3,14 @@
 experiment_name=$1
 class=$2
 arch=$3
+version=$4
 
 mkdir -p bin
 mkdir -p result/${experiment_name}
 
 for benchmark in dc ft mg cg lu bt is ep sp ua; do
 
-	bin=${benchmark}/${benchmark}_${arch}_unaligned.out
+	bin=${benchmark}/${benchmark}_${arch}_${version}.out
 
 	for iteration in 1 2 3; do
 

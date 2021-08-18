@@ -8,5 +8,5 @@ NPB in a flat directory
 # How to run
 
 ```bash
-./run.sh <experiment_name> <class name> [aarch64|x86_64]
+./run.sh <experiment_name> <class name> [aarch64|x86_64] [unaligned|init]
 ```

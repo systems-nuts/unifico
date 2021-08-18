@@ -9,12 +9,17 @@ asm:
 		make -C $$W asm; \
 	done
 
+init:
+	for W in bt cg dc ep ft is lu mg sp ua; do \
+		make -C $$W init; \
+	done
+
 json:
 	for W in bt cg dc ep ft is lu mg sp ua; do \
 		make -C $$W json; \
 	done
 
-.PHONY: asm json clean
+.PHONY: asm init json clean
 clean:
 	for W in bt cg dc ep ft is lu mg sp ua; do \
 		make -C $$W clean; \
@@ -31,4 +36,4 @@ B: clean
 
 .PHONY: help
 help:
-	@echo "make {all | asm | json | S | A | B | clean}"
+	@echo "make {all | asm | init | json | S | A | B | clean}"

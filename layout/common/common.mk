@@ -71,6 +71,7 @@ X86_64_POPCORN     := $(POPCORN)/x86_64
 X86_64_BUILD       := build_x86-64
 X86_64_ALIGNED     := $(BIN)_x86_64_aligned.out
 X86_64_UNALIGNED   := $(BIN)_x86_64_unaligned.out
+X86_64_INIT        := $(BIN)_x86_64_init.out
 X86_64_OBJ_INIT    := $(SRC:.c=_x86_64_init.o) # Initial object files
 X86_64_OBJ         := $(SRC:.c=_x86_64.o) # With callsite alignment
 X86_64_ASM         := $(SRC:.c=_x86_64.s)
@@ -93,6 +94,7 @@ ARM64_POPCORN 	  := $(POPCORN)/aarch64
 ARM64_BUILD       := build_aarch64
 ARM64_ALIGNED     := $(BIN)_aarch64_aligned.out
 ARM64_UNALIGNED   := $(BIN)_aarch64_unaligned.out
+ARM64_INIT        := $(BIN)_aarch64_init.out
 ARM64_OBJ_INIT    := $(SRC:.c=_aarch64_init.o) # Initial object files
 ARM64_OBJ         := $(SRC:.c=_aarch64.o) # With callsite alignment
 ARM64_ASM         := $(SRC:.c=_aarch64.s)
@@ -122,9 +124,11 @@ json: json-x86-64 json-aarch64
 
 aligned: aligned-x86-64 aligned-aarch64
 unaligned: unaligned-x86-64 unaligned-aarch64
+init: init-x86-64 init-aarch64
 
 aligned-x86-64: $(X86_64_ALIGNED)
 unaligned-x86-64: $(X86_64_UNALIGNED)
+init-x86-64: $(X86_64_INIT)
 obj-x86-64-init: $(X86_64_OBJ_INIT)
 obj-x86-64: $(X86_64_OBJ)
 asm-x86-64: $(X86_64_ASM)
@@ -132,6 +136,7 @@ json-x86-64: $(X86_64_JSON)
 
 aligned-aarch64: $(ARM64_ALIGNED)
 unaligned-aarch64: $(ARM64_UNALIGNED)
+init-aarch64: $(ARM64_INIT)
 obj-aarch64-init: $(ARM64_OBJ_INIT)
 obj-aarch64: $(ARM64_OBJ)
 asm-aarch64: $(ARM64_ASM)
@@ -192,7 +197,11 @@ json-aarch64: $(ARM64_JSON)
 
 %_aarch64.o: %_cs_align.json %_opt.ll
 	@echo " [LLC CALLSITE ALIGN] $@"
-	$(LLC) $(LLC_FLAGS) -march=aarch64 -filetype=obj -o $@ $(word 2,$^)
+	$(LLC) $(LLC_FLAGS) -march=aarch64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
+
+$(ARM64_INIT): $(ARM64_OBJ_INIT)
+	@echo " [LD] $@"
+	$(LD) -o $@ $^ $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
 
 $(ARM64_UNALIGNED): $(ARM64_OBJ)
 	@echo " [LD] $@"
@@ -224,11 +233,15 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 
 %_x86_64.o: %_cs_align.json %_opt.ll %_aarch64.o
 	@echo " [LLC CALLSITE ALIGN] $@"
-	$(LLC) $(LLC_FLAGS) -march=x86-64 -filetype=obj -o $@ $(word 2,$^)
-	#@echo " [CHECK CALLSITE ALIGN] $@ $(word 3,$^)"
-	#$(OBJDUMP) -d $@ >$(X86_64_BUILD)/x86_64.objdump
-	#$(OBJDUMP) -d $(word 3,$^) >$(ARM64_BUILD)/aarch64.objdump 
-	#$(PYTHON) $(CALLSITE_ALIGN_CHECK) $(X86_64_BUILD)/x86_64.objdump  $(ARM64_BUILD)/aarch64.objdump
+	$(LLC) $(LLC_FLAGS) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
+	@echo " [CHECK CALLSITE ALIGN] $@ $(word 3,$^)"
+	$(OBJDUMP) -d $@ >$(X86_64_BUILD)/x86_64.objdump
+	$(OBJDUMP) -d $(word 3,$^) >$(ARM64_BUILD)/aarch64.objdump 
+	$(PYTHON) $(CALLSITE_ALIGN_CHECK) $(X86_64_BUILD)/x86_64.objdump  $(ARM64_BUILD)/aarch64.objdump
+
+$(X86_64_INIT): $(X86_64_OBJ_INIT)
+	@echo " [LD] $@"
+	$(LD) -o $@ $^ $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_MAP)
 
 $(X86_64_UNALIGNED): $(X86_64_OBJ)
 	@echo " [LD] $@"
