@@ -113,38 +113,38 @@ int main()
   // Read in and broadcast input data
   //---------------------------------------------------------------------
   FILE *fp;
-  if ((fp = fopen("timer.flag", "r")) != NULL) {
-    timeron = true;
-    t_names[T_init] = "init";
-    t_names[T_bench] = "benchmk";
-    t_names[T_mg3P] = "mg3P";
-    t_names[T_psinv] = "psinv";
-    t_names[T_resid] = "resid";
-    t_names[T_rprj3] = "rprj3";
-    t_names[T_interp] = "interp";
-    t_names[T_norm2] = "norm2";
-    t_names[T_comm3] = "comm3";
-    fclose(fp);
-  } else {
+  //if ((fp = fopen("timer.flag", "r")) != NULL) {
+  //  timeron = true;
+  //  t_names[T_init] = "init";
+  //  t_names[T_bench] = "benchmk";
+  //  t_names[T_mg3P] = "mg3P";
+  //  t_names[T_psinv] = "psinv";
+  //  t_names[T_resid] = "resid";
+  //  t_names[T_rprj3] = "rprj3";
+  //  t_names[T_interp] = "interp";
+  //  t_names[T_norm2] = "norm2";
+  //  t_names[T_comm3] = "comm3";
+  //  fclose(fp);
+  //} else {
     timeron = false;
-  }
+  //}
 
   printf("\n\n NAS Parallel Benchmarks (NPB3.3-SER-C) - MG Benchmark\n\n");
 
-  if ((fp = fopen("mg.input", "r")) != NULL) {
-    int result;
-    printf(" Reading from input file mg.input\n");
-    result = fscanf(fp, "%d\n", &lt);
-    while (fgetc(fp) != '\n');
-    result = fscanf(fp, "%d%d%d", &nx[lt], &ny[lt], &nz[lt]);
-    while (fgetc(fp) != '\n');
-    result = fscanf(fp, "%d", &nit);
-    while (fgetc(fp) != '\n');
-    for (i = 0; i <= 7; i++) {
-      result = fscanf(fp, "%d", &debug_vec[i]);
-    }
-    fclose(fp);
-  } else {
+  //if ((fp = fopen("mg.input", "r")) != NULL) {
+  //  int result;
+  //  printf(" Reading from input file mg.input\n");
+  //  result = fscanf(fp, "%d\n", &lt);
+  //  while (fgetc(fp) != '\n');
+  //  result = fscanf(fp, "%d%d%d", &nx[lt], &ny[lt], &nz[lt]);
+  //  while (fgetc(fp) != '\n');
+  //  result = fscanf(fp, "%d", &nit);
+  //  while (fgetc(fp) != '\n');
+  //  for (i = 0; i <= 7; i++) {
+  //    result = fscanf(fp, "%d", &debug_vec[i]);
+  //  }
+  //  fclose(fp);
+  //} else {
     printf(" No input file. Using compiled defaults \n");
     lt = LT_DEFAULT;
     nit = NIT_DEFAULT;
@@ -154,7 +154,7 @@ int main()
     for (i = 0; i <= 7; i++) {
       debug_vec[i] = DEBUG_DEFAULT;
     }
-  }
+  //}
 
   if ( (nx[lt] != ny[lt]) || (nx[lt] != nz[lt]) ) {
     Class = 'U';

@@ -55,12 +55,12 @@ int main(int argc, char *argv[])
   logical verified;
 
   FILE *fp;
-  if ((fp = fopen("timer.flag", "r")) != NULL) {
-    timers_enabled = true;
-    fclose(fp);
-  } else {
+  //if ((fp = fopen("timer.flag", "r")) != NULL) {
+  //  timers_enabled = true;
+  //  fclose(fp);
+  //} else {
     timers_enabled = false;
-  }
+  //}
 
   niter = NITER_DEFAULT;
 

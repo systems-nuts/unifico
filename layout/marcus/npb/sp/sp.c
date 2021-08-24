@@ -102,47 +102,47 @@ int main(int argc, char *argv[])
   // defaults from parameters
   //---------------------------------------------------------------------
   FILE *fp;
-  if ((fp = fopen("timer.flag", "r")) != NULL) {
-    timeron = true;
-    t_names[t_total] = "total";
-    t_names[t_rhsx] = "rhsx";
-    t_names[t_rhsy] = "rhsy";
-    t_names[t_rhsz] = "rhsz";
-    t_names[t_rhs] = "rhs";
-    t_names[t_xsolve] = "xsolve";
-    t_names[t_ysolve] = "ysolve";
-    t_names[t_zsolve] = "zsolve";
-    t_names[t_rdis1] = "redist1";
-    t_names[t_rdis2] = "redist2";
-    t_names[t_tzetar] = "tzetar";
-    t_names[t_ninvr] = "ninvr";
-    t_names[t_pinvr] = "pinvr";
-    t_names[t_txinvr] = "txinvr";
-    t_names[t_add] = "add";
-    fclose(fp);
-  } else {
+  //if ((fp = fopen("timer.flag", "r")) != NULL) {
+  //  timeron = true;
+  //  t_names[t_total] = "total";
+  //  t_names[t_rhsx] = "rhsx";
+  //  t_names[t_rhsy] = "rhsy";
+  //  t_names[t_rhsz] = "rhsz";
+  //  t_names[t_rhs] = "rhs";
+  //  t_names[t_xsolve] = "xsolve";
+  //  t_names[t_ysolve] = "ysolve";
+  //  t_names[t_zsolve] = "zsolve";
+  //  t_names[t_rdis1] = "redist1";
+  //  t_names[t_rdis2] = "redist2";
+  //  t_names[t_tzetar] = "tzetar";
+  //  t_names[t_ninvr] = "ninvr";
+  //  t_names[t_pinvr] = "pinvr";
+  //  t_names[t_txinvr] = "txinvr";
+  //  t_names[t_add] = "add";
+  //  fclose(fp);
+  //} else {
     timeron = false;
-  }
+  //}
 
   printf("\n\n NAS Parallel Benchmarks (NPB3.3-SER-C) - SP Benchmark\n\n");
 
-  if ((fp = fopen("inputsp.data", "r")) != NULL) {
-    int result;
-    printf(" Reading from input file inputsp.data\n");
-    result = fscanf(fp, "%d", &niter);
-    while (fgetc(fp) != '\n');
-    result = fscanf(fp, "%lf", &dt);
-    while (fgetc(fp) != '\n');
-    result = fscanf(fp, "%d%d%d", &grid_points[0], &grid_points[1], &grid_points[2]);
-    fclose(fp);
-  } else {
+  //if ((fp = fopen("inputsp.data", "r")) != NULL) {
+  //  int result;
+  //  printf(" Reading from input file inputsp.data\n");
+  //  result = fscanf(fp, "%d", &niter);
+  //  while (fgetc(fp) != '\n');
+  //  result = fscanf(fp, "%lf", &dt);
+  //  while (fgetc(fp) != '\n');
+  //  result = fscanf(fp, "%d%d%d", &grid_points[0], &grid_points[1], &grid_points[2]);
+  //  fclose(fp);
+  //} else {
     printf(" No input file inputsp.data. Using compiled defaults\n");
     niter = NITER_DEFAULT;
     dt    = DT_DEFAULT;
     grid_points[0] = PROBLEM_SIZE;
     grid_points[1] = PROBLEM_SIZE;
     grid_points[2] = PROBLEM_SIZE;
-  }
+  //}
 
   printf(" Size: %4dx%4dx%4d\n", 
       grid_points[0], grid_points[1], grid_points[2]);

@@ -251,45 +251,45 @@ int main(int argc, char *argv[])
   // defaults from parameters
   //---------------------------------------------------------------------
   FILE *fp;
-  if ((fp = fopen("timer.flag", "r")) != NULL) {
-    timeron = true;
-    t_names[t_total] = "total";
-    t_names[t_init] = "init";
-    t_names[t_convect] = "convect";
-    t_names[t_transfb_c] = "transfb_c";
-    t_names[t_diffusion] = "diffusion";
-    t_names[t_transf] = "transf";
-    t_names[t_transfb] = "transfb";
-    t_names[t_adaptation] = "adaptation";
-    t_names[t_transf2] = "transf+b";
-    t_names[t_add2] = "add2";
-    fclose(fp);
-  } else {
+  //if ((fp = fopen("timer.flag", "r")) != NULL) {
+  //  timeron = true;
+  //  t_names[t_total] = "total";
+  //  t_names[t_init] = "init";
+  //  t_names[t_convect] = "convect";
+  //  t_names[t_transfb_c] = "transfb_c";
+  //  t_names[t_diffusion] = "diffusion";
+  //  t_names[t_transf] = "transf";
+  //  t_names[t_transfb] = "transfb";
+  //  t_names[t_adaptation] = "adaptation";
+  //  t_names[t_transf2] = "transf+b";
+  //  t_names[t_add2] = "add2";
+  //  fclose(fp);
+  //} else {
     timeron = false;
-  }
+  //}
 
   printf("\n\n NAS Parallel Benchmarks (NPB3.3-SER-C) - UA Benchmark\n\n");
 
-  if ((fp = fopen("inputua.data", "r")) != NULL) {
-    int result;
-    printf(" Reading from input file inputua.data\n");
-    result = fscanf(fp, "%d", &fre);
-    while (fgetc(fp) != '\n');
-    result = fscanf(fp, "%d", &niter);
-    while (fgetc(fp) != '\n');
-    result = fscanf(fp, "%d", &nmxh);
-    while (fgetc(fp) != '\n');
-    result = fscanf(fp, "%lf", &alpha);
-    Class = 'U';
-    fclose(fp);
-  } else {
+  //if ((fp = fopen("inputua.data", "r")) != NULL) {
+  //  int result;
+  //  printf(" Reading from input file inputua.data\n");
+  //  result = fscanf(fp, "%d", &fre);
+  //  while (fgetc(fp) != '\n');
+  //  result = fscanf(fp, "%d", &niter);
+  //  while (fgetc(fp) != '\n');
+  //  result = fscanf(fp, "%d", &nmxh);
+ //   while (fgetc(fp) != '\n');
+ //   result = fscanf(fp, "%lf", &alpha);
+ //   Class = 'U';
+ //   fclose(fp);
+ // } else {
     printf(" No input file inputua.data. Using compiled defaults\n");
     fre   = FRE_DEFAULT;
     niter = NITER_DEFAULT;
     nmxh  = NMXH_DEFAULT;
     alpha = ALPHA_DEFAULT;
     Class = CLASS_DEFAULT;
-  }
+  //}
 
   dlmin = pow(0.5, REFINE_MAX);
   dtime = 0.04*dlmin;

@@ -752,7 +752,7 @@ int main( int argc, char **argv )
     if (timer_on) timer_stop( 3 );
 
 
-/*  The final printout  */
+/*  The final printout */ 
     if( passed_verification != 5*MAX_ITERATIONS + 1 )
         passed_verification = 0;
     c_print_results( "IS",
@@ -776,7 +776,7 @@ int main( int argc, char **argv )
                      CLINKFLAGS );
 
 
-/*  Print additional timers  */
+/*  Print additional timers */ 
     if (timer_on) {
        double t_total, t_percent;
 
@@ -794,7 +794,6 @@ int main( int argc, char **argv )
        t_percent = timecounter/t_total * 100.;
        printf(" Sorting        : %8.3f (%5.2f%%)\n", timecounter, t_percent);
     }
-
 
     return 0;
          /**************************/

@@ -140,29 +140,29 @@ int main(int argc, char *argv[])
   // Setup info for timers
   //---------------------------------------------------------------------
   FILE *fp;
-  if ((fp = fopen("timer.flag", "r")) != NULL) {
-    timeron = true;
-    t_names[t_total] = "total";
-    t_names[t_rhsx] = "rhsx";
-    t_names[t_rhsy] = "rhsy";
-    t_names[t_rhsz] = "rhsz";
-    t_names[t_rhs] = "rhs";
-    t_names[t_jacld] = "jacld";
-    t_names[t_blts] = "blts";
-    t_names[t_jacu] = "jacu";
-    t_names[t_buts] = "buts";
-    t_names[t_add] = "add";
-    t_names[t_l2norm] = "l2norm";
-    fclose(fp);
-  } else {
+  //if ((fp = fopen("timer.flag", "r")) != NULL) {
+  //  timeron = true;
+  //  t_names[t_total] = "total";
+  //  t_names[t_rhsx] = "rhsx";
+  //  t_names[t_rhsy] = "rhsy";
+  //  t_names[t_rhsz] = "rhsz";
+  //  t_names[t_rhs] = "rhs";
+  //  t_names[t_jacld] = "jacld";
+  //  t_names[t_blts] = "blts";
+  //  t_names[t_jacu] = "jacu";
+  //  t_names[t_buts] = "buts";
+  //  t_names[t_add] = "add";
+  //  t_names[t_l2norm] = "l2norm";
+  //  fclose(fp);
+  //} else {
     timeron = false;
-  }
+  //}
 
   //migrate(1, NULL, NULL);
   //---------------------------------------------------------------------
   // read input data
   //---------------------------------------------------------------------
-  read_input();
+  //read_input();
 
   //---------------------------------------------------------------------
   // set up domain sizes

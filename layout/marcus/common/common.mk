@@ -31,7 +31,7 @@ HET_CFLAGS 	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec
 OPT_FLAGS 	:= -name-string-literals -static-var-sections
 LLC_FLAGS 	:= -function-sections -data-sections --frame-pointer=all
 LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
-# LLC_FLAGS       += -enable-misched=false -join-liveintervals=false -disable-machine-licm
+LLC_FLAGS       += -enable-misched=false -join-liveintervals=false -disable-machine-licm
 LLC_DEBUG       := -debug 
 
 IR := $(SRC:.c=.ll)
