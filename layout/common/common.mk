@@ -3,15 +3,14 @@
 ###############################################################################
 POPCORN 	   ?= /usr/local/popcorn
 
-LLVM_TOOLCHAIN ?= ~/llvm_9/toolchain/bin
+LLVM_TOOLCHAIN ?= ~/llvm-9/toolchain/bin
 
 PYTHON ?= python3.9
 
 # Lib musl directories per architecture
-ARM64_MUSL  ?= ~/musl_toolchains/musl_popcorn_toolchain_reloc/toolchain_aarch64
-X86_64_MUSL	?= ~/musl_toolchains/musl_popcorn_toolchain_reloc/toolchain_x86-64
-#ARM64_MUSL  := ~/popcorn-compiler/lib/musl-1.1.18/toolchain_aarch64
-#X86_64_MUSL	:= ~/popcorn-compiler/lib/musl-1.1.18/toolchain_x86-64
+MUSL_TOOLCHAIN 	?= ~/musl-toolchains/llvm-9
+ARM64_MUSL  	?= $(MUSL_TOOLCHAIN)/aarch64
+X86_64_MUSL		?= $(MUSL_TOOLCHAIN)/x86-64
 
 # Directory of libgcc & libgcc_eh for aarch64 compiler
 ARM64_LIBGCC   ?= $(shell dirname \
@@ -237,7 +236,7 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	@echo " [CHECK CALLSITE ALIGN] $@ $(word 3,$^)"
 	$(OBJDUMP) -d $@ >$(X86_64_BUILD)/x86_64.objdump
 	$(OBJDUMP) -d $(word 3,$^) >$(ARM64_BUILD)/aarch64.objdump 
-	$(PYTHON) $(CALLSITE_ALIGN_CHECK) $(X86_64_BUILD)/x86_64.objdump  $(ARM64_BUILD)/aarch64.objdump
+	#$(PYTHON) $(CALLSITE_ALIGN_CHECK) $(X86_64_BUILD)/x86_64.objdump  $(ARM64_BUILD)/aarch64.objdump
 
 $(X86_64_INIT): $(X86_64_OBJ_INIT)
 	@echo " [LD] $@"
@@ -274,4 +273,5 @@ clean:
 
 .PHONY: all check clean \
         aligned aligned-aarch64 aligned-x86-64 \
-        unaligned aligned-aarch64 aligned-x86-64
+        unaligned unaligned-aarch64 unaligned-x86-64 \
+        init init-aarch64 init-x86-64
