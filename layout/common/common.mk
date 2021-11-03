@@ -30,8 +30,8 @@ OPT 	:= $(LLVM_TOOLCHAIN)/opt
 LLC 	:= $(LLVM_TOOLCHAIN)/llc
 OBJDUMP	:= $(LLVM_TOOLCHAIN)/llvm-objdump
 
-CFLAGS 		:= -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer 
-CFLAGS 		+= -O0 -Wall -nostdinc 
+CFLAGS 		:= -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer
+CFLAGS 		+= -O1 -Wall -nostdinc
 HET_CFLAGS 	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec
 OPT_FLAGS 	:= -name-string-literals -static-var-sections
 LLC_FLAGS 	:= -function-sections -data-sections
@@ -48,7 +48,7 @@ ARM64_LD := $(POPCORN)/bin/aarch64-popcorn-linux-gnu-ld.gold
 #LD       := ~/musl-cross-make/output/x86_64-linux-musl/bin/ld
 #ARM64_LD := ~/musl-cross-make/output/aarch64-linux-musl/bin/ld
 
-LDFLAGS := -z noexecstack -z relro --hash-style=gnu --build-id -static 
+LDFLAGS := -z noexecstack -z relro --hash-style=gnu --build-id -static
 LIBS    := /lib/crt1.o \
            /lib/libc.a \
            /lib/libm.a
@@ -201,6 +201,7 @@ json-aarch64: $(ARM64_JSON)
 $(ARM64_INIT): $(ARM64_OBJ_INIT)
 	@echo " [LD] $@"
 	$(LD) -o $@ $^ $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
+	sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`
 
 $(ARM64_UNALIGNED): $(ARM64_OBJ)
 	@echo " [LD] $@"

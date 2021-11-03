@@ -1,7 +1,7 @@
 #makefile format from 
 #http://stackoverflow.com/questions/8440790/how-should-i-link-to-llvm-libraries
 CC = g++
-LLVM_CONFIG = ~/llvm_13/toolchain/bin/llvm-config
+LLVM_CONFIG = ~/llvm-13/toolchain/bin/llvm-config
 
 LDFLAGS+=$(shell $(LLVM_CONFIG) --ldflags)
 CXXFLAGS+=$(COMMON_FLAGS) $(shell $(LLVM_CONFIG) --cxxflags) -fno-rtti
