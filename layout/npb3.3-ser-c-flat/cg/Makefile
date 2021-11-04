@@ -10,4 +10,8 @@ MUSL_TOOLCHAIN = ~/musl-toolchains/llvm-9
 
 include ../../common/common.mk
 
-LLC_FLAGS += -disable-machine-licm -no-x86-call-frame-opt -join-liveintervals=false -enable-misched=false # -code-model=large
+LLC_FLAGS += -disable-machine-licm 
+LLC_FLAGS += -no-x86-call-frame-opt 
+LLC_FLAGS += -enable-misched=false 
+#LLC_FLAGS += -join-liveintervals=false 
+#LLC_FLAGS += -code-model=large
