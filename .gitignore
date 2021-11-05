@@ -534,6 +534,7 @@ utilities/lstopo_p.txt
 *x86-64
 spec2017/results/
 npb/results/
+npb/test/results
 layout/npb3.3-ser-c-flat/unasl-sizes
 temp_files/
 scripts
