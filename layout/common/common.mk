@@ -173,9 +173,9 @@ json-aarch64: $(ARM64_JSON)
 
 %_cs_align.json: %_x86_64_init.o %_aarch64_init.o # TODO improve objdump output names
 	@echo " [CALLSITE ALIGN] $@"
-	$(OBJDUMP) -d $< >$(X86_64_BUILD)/x86_64.objdump
-	$(OBJDUMP) -d $(word 2,$^) >$(ARM64_BUILD)/aarch64.objdump 
-	$(PYTHON) $(CALLSITE_ALIGN) $(X86_64_BUILD)/x86_64.objdump $(ARM64_BUILD)/aarch64.objdump >$@
+	$(OBJDUMP) -d $< >$(X86_64_BUILD)/$*_x86_64_init.objdump
+	$(OBJDUMP) -d $(word 2,$^) >$(ARM64_BUILD)/$*_aarch64_init.objdump 
+	$(PYTHON) $(CALLSITE_ALIGN) $(X86_64_BUILD)/$*_x86_64_init.objdump $(ARM64_BUILD)/$*_aarch64_init.objdump >$@
 
 ###########
 # AArch64 #
@@ -235,9 +235,9 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	@echo " [LLC CALLSITE ALIGN] $@"
 	$(LLC) $(LLC_FLAGS) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
 	@echo " [CHECK CALLSITE ALIGN] $@ $(word 3,$^)"
-	$(OBJDUMP) -d $@ >$(X86_64_BUILD)/x86_64.objdump
-	$(OBJDUMP) -d $(word 3,$^) >$(ARM64_BUILD)/aarch64.objdump 
-	#$(PYTHON) $(CALLSITE_ALIGN_CHECK) $(X86_64_BUILD)/x86_64.objdump  $(ARM64_BUILD)/aarch64.objdump
+	$(OBJDUMP) -d $@ >$(X86_64_BUILD)/$*_x86_64.objdump
+	$(OBJDUMP) -d $(word 3,$^) >$(ARM64_BUILD)/$*_aarch64.objdump 
+	$(PYTHON) $(CALLSITE_ALIGN_CHECK) $(X86_64_BUILD)/$*_x86_64.objdump  $(ARM64_BUILD)/$*_aarch64.objdump
 
 $(X86_64_INIT): $(X86_64_OBJ_INIT)
 	@echo " [LD] $@"
