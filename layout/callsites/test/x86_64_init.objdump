@@ -1,0 +1,31 @@
+
+wtime_x86_64_init.o:	file format ELF64-x86-64
+
+
+Disassembly of section .text.wtime_:
+
+0000000000000000 wtime_:
+       0: 55                           	pushq	%rbp
+       1: 48 89 e5                     	movq	%rsp, %rbp
+       4: 53                           	pushq	%rbx
+       5: 48 83 ec 18                  	subq	$24, %rsp
+       9: 48 89 fb                     	movq	%rdi, %rbx
+       c: 48 8d 7d e8                  	leaq	-24(%rbp), %rdi
+      10: 31 f6                        	xorl	%esi, %esi
+      12: e8 00 00 00 00               	callq	0 <wtime_+0x17>
+      17: 83 3d 00 00 00 00 00         	cmpl	$0, (%rip)
+      1e: 79 09                        	jns	9 <wtime_+0x29>
+      20: 8b 45 e8                     	movl	-24(%rbp), %eax
+      23: 89 05 00 00 00 00            	movl	%eax, (%rip)
+      29: 48 8b 45 e8                  	movq	-24(%rbp), %rax
+      2d: 48 63 0d 00 00 00 00         	movslq	(%rip), %rcx
+      34: 48 29 c8                     	subq	%rcx, %rax
+      37: f2 48 0f 2a c0               	cvtsi2sd	%rax, %xmm0
+      3c: f2 48 0f 2a 4d f0            	cvtsi2sdq	-16(%rbp), %xmm1
+      42: f2 0f 59 0d 00 00 00 00      	mulsd	(%rip), %xmm1
+      4a: f2 0f 58 c8                  	addsd	%xmm0, %xmm1
+      4e: f2 0f 11 0b                  	movsd	%xmm1, (%rbx)
+      52: 48 83 c4 18                  	addq	$24, %rsp
+      56: 5b                           	popq	%rbx
+      57: 5d                           	popq	%rbp
+      58: c3                           	retq
