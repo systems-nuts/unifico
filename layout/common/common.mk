@@ -31,10 +31,10 @@ LLC 	:= $(LLVM_TOOLCHAIN)/llc
 OBJDUMP	:= $(LLVM_TOOLCHAIN)/llvm-objdump
 
 CFLAGS 		:= -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer
-CFLAGS 		+= -O1 -Wall -nostdinc
+CFLAGS 		+= -O0 -Wall -nostdinc
 HET_CFLAGS 	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec
 OPT_FLAGS 	:= -name-string-literals -static-var-sections
-LLC_FLAGS 	:= -function-sections -data-sections
+LLC_FLAGS 	:= -function-sections -data-sections # --mc-relax-all TODO
 LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
 
 IR := $(SRC:.c=.ll)
