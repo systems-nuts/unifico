@@ -1,4 +1,10 @@
+#define _GNU_SOURCE
+#include <assert.h>
+#include <sched.h>
+#include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <time.h>
 
 #define nop ({ __asm__ volatile ("nop\n\t" : : : "memory"); })
@@ -22,9 +28,47 @@ double what_time_is_it()
 	return now.tv_sec + now.tv_nsec*1e-9;
 }
 
+// Code taken from https://stackoverflow.com/questions/10490756/how-to-use-sched-getaffinity-and-sched-setaffinity-in-linux-from-c
+void print_affinity() {
+	cpu_set_t mask;
+	long nproc, i;
+
+	if (sched_getaffinity(0, sizeof(cpu_set_t), &mask) == -1) {
+		perror("sched_getaffinity");
+		assert(false);
+	}
+	nproc = sysconf(_SC_NPROCESSORS_ONLN);
+	printf("sched_getaffinity = ");
+	for (i = 0; i < nproc; i++) {
+		printf("%d ", CPU_ISSET(i, &mask));
+	}
+	printf("\n");
+}
 
 int main()
 {
+	// FIFO scheduling
+	struct sched_param sp = {
+		.sched_priority = 90
+	};
+	sched_setscheduler(0, SCHED_FIFO, &sp);
+
+	// Affinity setting
+	cpu_set_t mask;
+
+	//print_affinity();
+	printf("sched_getcpu = %d\n", sched_getcpu());
+
+	CPU_ZERO(&mask);
+	CPU_SET(0, &mask);
+	if (sched_setaffinity(0, sizeof(cpu_set_t), &mask) == -1) {
+		perror("sched_setaffinity");
+		assert(false);
+	}
+	//print_affinity();
+	/* TODO is it guaranteed to have taken effect already? Always worked on my tests. */
+	printf("sched_getcpu = %d\n", sched_getcpu());
+
 	double t0 = what_time_is_it();
 	for (int i = 0; i < ITERATIONS; ++i)
 		nop;
