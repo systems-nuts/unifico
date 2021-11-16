@@ -20,8 +20,8 @@
 #define nop1024 ({nop512; nop512;})
 
 //static const unsigned ITERATIONS = 1000;
-static const unsigned ITERATIONS = 1000000;
-//static const unsigned ITERATIONS = 1000000000;
+//static const unsigned ITERATIONS = 1000000;
+static const unsigned ITERATIONS = 1000000000;
 
 
 double what_time_is_it()

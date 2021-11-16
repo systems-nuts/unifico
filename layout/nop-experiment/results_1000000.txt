@@ -1,0 +1,94 @@
+# x86
+
+sched_getcpu = 4
+sched_getcpu = 0
+Time in micro seconds:
+nop,0.002208
+nop2,0.002676
+nop4,0.002043
+nop8,0.001650
+nop16,0.003498
+nop32,0.004232
+nop64,0.006923
+nop128,0.012332
+nop256,0.023429
+nop512,0.044112
+nop1024,0.086838
+-----
+sched_getcpu = 4
+sched_getcpu = 0
+Time in micro seconds:
+nop,0.002187
+nop2,0.002278
+nop4,0.002070
+nop8,0.001602
+nop16,0.003304
+nop32,0.004064
+nop64,0.007000
+nop128,0.012079
+nop256,0.023001
+nop512,0.044054
+nop1024,0.086846
+-----
+sched_getcpu = 11
+sched_getcpu = 0
+Time in micro seconds:
+nop,0.002141
+nop2,0.002135
+nop4,0.002071
+nop8,0.001618
+nop16,0.003543
+nop32,0.004205
+nop64,0.006970
+nop128,0.012801
+nop256,0.023954
+nop512,0.044475
+nop1024,0.086850
+
+# arm
+
+sched_getcpu = 219
+sched_getcpu = 0
+Time in micro seconds:
+nop,0.005904
+nop2,0.005905
+nop4,0.005896
+nop8,0.004593
+nop16,0.005375
+nop32,0.004992
+nop64,0.008622
+nop128,0.015883
+nop256,0.030406
+nop512,0.059519
+nop1024,0.117525
+sched_getcpu = 219
+sched_getcpu = 0
+--------------------------
+Time in micro seconds:
+nop,0.005903
+nop2,0.005905
+nop4,0.005898
+nop8,0.004987
+nop16,0.005376
+nop32,0.004991
+nop64,0.008657
+nop128,0.016094
+nop256,0.030408
+nop512,0.059435
+nop1024,0.117488
+--------------------------
+sched_getcpu = 219
+sched_getcpu = 0
+Time in micro seconds:
+nop,0.005902
+nop2,0.005904
+nop4,0.005908
+nop8,0.004740
+nop16,0.005386
+nop32,0.005021
+nop64,0.008628
+nop128,0.015884
+nop256,0.030404
+nop512,0.059421
+nop1024,0.117509
+
