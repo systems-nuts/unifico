@@ -1,0 +1,54 @@
+
+call_leaf_aarch64.o:	file format ELF64-aarch64-little
+
+
+Disassembly of section .text.add_7:
+
+0000000000000000 add_7:
+       0: ff c3 00 d1                  	sub	sp, sp, #48
+       4: fd 7b 02 a9                  	stp	x29, x30, [sp, #32]
+       8: fd 83 00 91                  	add	x29, sp, #32
+       c: 08 00 01 0b                  	add	w8, w0, w1
+      10: 08 01 02 0b                  	add	w8, w8, w2
+      14: b0 13 40 b9                  	ldr	w16, [x29, #16]
+      18: 08 01 03 0b                  	add	w8, w8, w3
+      1c: a1 03 3f 29                  	stp	w1, w0, [x29, #-8]
+      20: a2 43 1f b8                  	stur	w2, [x29, #-12]
+      24: 08 01 04 0b                  	add	w8, w8, w4
+      28: fd 7b 42 a9                  	ldp	x29, x30, [sp, #32]
+      2c: 08 01 05 0b                  	add	w8, w8, w5
+      30: 08 01 10 0b                  	add	w8, w8, w16
+      34: e4 8f 01 29                  	stp	w4, w3, [sp, #12]
+      38: e8 97 00 29                  	stp	w8, w5, [sp, #4]
+      3c: ff c3 00 91                  	add	sp, sp, #48
+      40: c0 03 5f d6                  	ret
+
+Disassembly of section .text.main:
+
+0000000000000000 main:
+       0: ff c3 00 d1                  	sub	sp, sp, #48
+       4: fd 7b 02 a9                  	stp	x29, x30, [sp, #32]
+       8: fd 83 00 91                  	add	x29, sp, #32
+       c: a0 7f 3f 29                  	stp	w0, wzr, [x29, #-8]
+      10: e1 0b 00 f9                  	str	x1, [sp, #16]
+      14: e8 00 80 52                  	mov	w8, #7
+      18: 20 00 80 52                  	mov	w0, #1
+      1c: 41 00 80 52                  	mov	w1, #2
+      20: 62 00 80 52                  	mov	w2, #3
+      24: 83 00 80 52                  	mov	w3, #4
+      28: a4 00 80 52                  	mov	w4, #5
+      2c: c5 00 80 52                  	mov	w5, #6
+      30: e8 03 00 b9                  	str	w8, [sp]
+      34: 1f 20 03 d5                  	nop
+      38: 1f 20 03 d5                  	nop
+      3c: 1f 20 03 d5                  	nop
+      40: 00 00 00 94                  	bl	#0 <main+0x40>
+      44: 00 00 00 90                  	adrp	x0, #0
+      48: e1 03 08 2a                  	mov	w1, w8
+      4c: 00 00 00 91                  	add	x0, x0, #0
+      50: e8 0f 00 b9                  	str	w8, [sp, #12]
+      54: 00 00 00 94                  	bl	#0 <main+0x54>
+      58: fd 7b 42 a9                  	ldp	x29, x30, [sp, #32]
+      5c: e8 03 1f 2a                  	mov	w8, wzr
+      60: ff c3 00 91                  	add	sp, sp, #48
+      64: c0 03 5f d6                  	ret
