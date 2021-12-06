@@ -1,0 +1,1648 @@
+
+cg_aarch64_init.o:	file format ELF64-aarch64-little
+
+
+Disassembly of section .text.main:
+
+0000000000000000 main:
+        ff 83 04 d1                  	sub	sp, sp, #288
+        f4 4f 10 a9                  	stp	x20, x19, [sp, #256]
+        fd 7b 11 a9                  	stp	x29, x30, [sp, #272]
+        fd 43 04 91                  	add	x29, sp, #272
+       e8 03 1f 2a                  	mov	w8, wzr
+       a0 7f 3c 29                  	stp	w0, wzr, [x29, #-32]
+       a1 83 1d f8                  	stur	x1, [x29, #-40]
+       bf 43 1d b8                  	stur	wzr, [x29, #-44]
+       a8 43 5d b8                  	ldur	w8, [x29, #-44]
+       1f 09 00 71                  	cmp	w8, #2
+       ec 00 00 54                  	b.gt	#28 <main+0x44>
+       a0 43 5d b8                  	ldur	w0, [x29, #-44]
+       00 00 00 94                  	bl	#0 <main+0x30>
+       a8 43 5d b8                  	ldur	w8, [x29, #-44]
+       08 05 00 11                  	add	w8, w8, #1
+       a8 43 1d b8                  	stur	w8, [x29, #-44]
+       f8 ff ff 17                  	b	#-32 <main+0x20>
+       00 00 00 90                  	adrp	x0, #0
+       01 00 00 90                  	adrp	x1, #0
+       00 00 00 91                  	add	x0, x0, #0
+       21 00 00 91                  	add	x1, x1, #0
+       00 00 00 94                  	bl	#0 <main+0x54>
+       e8 2f 00 f9                  	str	x8, [sp, #88]
+       08 02 00 b4                  	cbz	x8, #64 <main+0x9c>
+       08 00 00 90                  	adrp	x8, #0
+       30 00 80 52                  	mov	w16, #1
+       10 01 00 b9                  	str	w16, [x8]
+       08 00 00 90                  	adrp	x8, #0
+       08 01 00 91                  	add	x8, x8, #0
+       e8 33 00 f9                  	str	x8, [sp, #96]
+       08 00 00 90                  	adrp	x8, #0
+       e0 2f 40 f9                  	ldr	x0, [sp, #88]
+       08 01 00 91                  	add	x8, x8, #0
+       e8 37 00 f9                  	str	x8, [sp, #104]
+       08 00 00 90                  	adrp	x8, #0
+       08 01 00 91                  	add	x8, x8, #0
+       e8 3b 00 f9                  	str	x8, [sp, #112]
+       00 00 00 94                  	bl	#0 <main+0x94>
+       04 00 00 14                  	b	#16 <main+0xa8>
+       08 00 00 90                  	adrp	x8, #0
+       f0 03 1f 2a                  	mov	w16, wzr
+       1f 01 00 b9                  	str	wzr, [x8]
+       13 9f 84 52                  	mov	w19, #9464
+       e0 03 1f 2a                  	mov	w0, wzr
+       33 00 a0 72                  	movk	w19, #1, lsl #16
+       f4 03 1f 2a                  	mov	w20, wzr
+       00 00 00 94                  	bl	#0 <main+0xb8>
+       08 00 00 90                  	adrp	x8, #0
+       14 01 00 b9                  	str	w20, [x8]
+       08 9f 84 52                  	mov	w8, #9464
+       28 00 a0 72                  	movk	w8, #1, lsl #16
+       08 05 00 51                  	sub	w8, w8, #1
+       10 00 00 90                  	adrp	x16, #0
+       08 02 00 b9                  	str	w8, [x16]
+       10 00 00 90                  	adrp	x16, #0
+       14 02 00 b9                  	str	w20, [x16]
+       10 00 00 90                  	adrp	x16, #0
+       08 02 00 b9                  	str	w8, [x16]
+       48 08 80 52                  	mov	w8, #66
+       a8 c3 18 38                  	sturb	w8, [x29, #-116]
+       48 b3 88 d2                  	mov	x8, #17818
+       48 9d af f2                  	movk	x8, #31978, lsl #16
+       c8 ce d6 f2                  	movk	x8, #46710, lsl #32
+       00 00 00 90                  	adrp	x0, #0
+      c8 06 e8 f2                  	movk	x8, #16438, lsl #48
+      00 00 00 91                  	add	x0, x0, #0
+      a8 03 18 f8                  	stur	x8, [x29, #-128]
+      00 00 00 94                  	bl	#0 <main+0x10c>
+      00 00 00 90                  	adrp	x0, #0
+      01 9f 84 52                  	mov	w1, #9464
+      00 00 00 91                  	add	x0, x0, #0
+      21 00 a0 72                  	movk	w1, #1, lsl #16
+      00 00 00 94                  	bl	#0 <main+0x120>
+      00 00 00 90                  	adrp	x0, #0
+      00 00 00 91                  	add	x0, x0, #0
+      61 09 80 52                  	mov	w1, #75
+      00 00 00 94                  	bl	#0 <main+0x130>
+      00 00 00 90                  	adrp	x0, #0
+      00 00 00 91                  	add	x0, x0, #0
+      00 00 00 94                  	bl	#0 <main+0x13c>
+      10 9f 84 52                  	mov	w16, #9464
+      08 00 00 90                  	adrp	x8, #0
+      30 00 a0 72                  	movk	w16, #1, lsl #16
+      10 01 00 b9                  	str	w16, [x8]
+      08 bc 89 52                  	mov	w8, #19936
+      10 00 00 90                  	adrp	x16, #0
+      08 1c a0 72                  	movk	w8, #224, lsl #16
+      08 02 00 b9                  	str	w8, [x16]
+      08 20 b4 d2                  	mov	x8, #2701131776
+      00 00 00 90                  	adrp	x0, #0
+      08 36 d7 f2                  	movk	x8, #47536, lsl #32
+      10 a8 bc d2                  	mov	x16, #3846176768
+      00 00 00 91                  	add	x0, x0, #0
+      48 36 e8 f2                  	movk	x8, #16818, lsl #48
+      90 13 c6 f2                  	movk	x16, #12444, lsl #32
+      08 00 00 f9                  	str	x8, [x0]
+      08 00 00 90                  	adrp	x8, #0
+      50 3a e8 f2                  	movk	x16, #16850, lsl #48
+      10 01 00 f9                  	str	x16, [x8]
+      08 00 00 90                  	adrp	x8, #0
+      00 01 40 fd                  	ldr	d0, [x8]
+      00 00 00 94                  	bl	#0 <main+0x194>
+      08 00 00 90                  	adrp	x8, #0
+      12 00 00 90                  	adrp	x18, #0
+      00 01 40 b9                  	ldr	w0, [x8]
+      08 00 00 90                  	adrp	x8, #0
+      52 02 00 91                  	add	x18, x18, #0
+      e2 03 00 91                  	mov	x2, sp
+      01 01 40 b9                  	ldr	w1, [x8]
+      08 00 00 90                  	adrp	x8, #0
+      52 18 00 f9                  	str	x18, [x2, #48]
+      12 00 00 90                  	adrp	x18, #0
+      05 01 40 b9                  	ldr	w5, [x8]
+      08 00 00 90                  	adrp	x8, #0
+      10 00 00 90                  	adrp	x16, #0
+      11 00 00 90                  	adrp	x17, #0
+      52 02 00 91                  	add	x18, x18, #0
+      08 01 40 b9                  	ldr	w8, [x8]
+      10 02 40 b9                  	ldr	w16, [x16]
+      31 02 40 b9                  	ldr	w17, [x17]
+      52 14 00 f9                  	str	x18, [x2, #40]
+      12 00 00 90                  	adrp	x18, #0
+      52 02 00 91                  	add	x18, x18, #0
+      52 10 00 f9                  	str	x18, [x2, #32]
+      12 00 00 90                  	adrp	x18, #0
+      52 02 00 91                  	add	x18, x18, #0
+      52 0c 00 f9                  	str	x18, [x2, #24]
+      51 10 00 b9                  	str	w17, [x2, #16]
+      50 08 00 b9                  	str	w16, [x2, #8]
+      48 00 00 b9                  	str	w8, [x2]
+      02 00 00 90                  	adrp	x2, #0
+      03 00 00 90                  	adrp	x3, #0
+      04 00 00 90                  	adrp	x4, #0
+      42 00 00 91                  	add	x2, x2, #0
+      63 00 00 91                  	add	x3, x3, #0
+      84 00 00 91                  	add	x4, x4, #0
+      a0 03 1c fc                  	stur	d0, [x29, #-64]
+      00 00 00 94                  	bl	#0 <main+0x224>
+      b4 03 1d b8                  	stur	w20, [x29, #-48]
+      04 00 00 14                  	b	#16 <main+0x23c>
+      a8 03 5d b8                  	ldur	w8, [x29, #-48]
+      08 05 00 11                  	add	w8, w8, #1
+      a8 03 1d b8                  	stur	w8, [x29, #-48]
+      10 00 00 90                  	adrp	x16, #0
+      11 00 00 90                  	adrp	x17, #0
+      10 02 40 b9                  	ldr	w16, [x16]
+      31 02 40 b9                  	ldr	w17, [x17]
+      a8 03 5d b8                  	ldur	w8, [x29, #-48]
+      10 02 11 4b                  	sub	w16, w16, w17
+      10 06 00 11                  	add	w16, w16, #1
+      1f 01 10 6b                  	cmp	w8, w16
+      4a 03 00 54                  	b.ge	#104 <main+0x2c4>
+      a8 03 9d b8                  	ldursw	x8, [x29, #-48]
+      10 00 00 90                  	adrp	x16, #0
+      10 02 00 91                  	add	x16, x16, #0
+      08 7a 68 b8                  	ldr	w8, [x16, x8, lsl #2]
+      b0 03 9d b8                  	ldursw	x16, [x29, #-48]
+      11 00 00 90                  	adrp	x17, #0
+      31 02 00 91                  	add	x17, x17, #0
+      a8 c3 1c b8                  	stur	w8, [x29, #-52]
+      30 0a 10 8b                  	add	x16, x17, x16, lsl #2
+      10 06 40 b9                  	ldr	w16, [x16, #4]
+      e8 03 08 2a                  	mov	w8, w8
+      1f 01 10 6b                  	cmp	w8, w16
+      0a fd ff 54                  	b.ge	#-96 <main+0x230>
+      a8 c3 9c b8                  	ldursw	x8, [x29, #-52]
+      11 00 00 90                  	adrp	x17, #0
+      31 02 00 91                  	add	x17, x17, #0
+      00 00 00 90                  	adrp	x0, #0
+      f0 03 08 2a                  	mov	w16, w8
+      08 f5 7e d3                  	lsl	x8, x8, #2
+      32 6a 68 b8                  	ldr	w18, [x17, x8]
+      00 00 40 b9                  	ldr	w0, [x0]
+      52 02 00 4b                  	sub	w18, w18, w0
+      32 6a 28 b8                  	str	w18, [x17, x8]
+      08 06 00 11                  	add	w8, w16, #1
+      ec ff ff 17                  	b	#-80 <main+0x270>
+      11 00 00 90                  	adrp	x17, #0
+      31 02 00 91                  	add	x17, x17, #0
+      12 fe e7 d2                  	mov	x18, #4607182418800017408
+      e8 03 1f 2a                  	mov	w8, wzr
+      bf 43 1d b8                  	stur	wzr, [x29, #-44]
+      a8 43 5d b8                  	ldur	w8, [x29, #-44]
+      70 06 00 11                  	add	w16, w19, #1
+      1f 01 10 6b                  	cmp	w8, w16
+      ea 00 00 54                  	b.ge	#28 <main+0x300>
+      a8 43 9d b8                  	ldursw	x8, [x29, #-44]
+      f0 03 08 2a                  	mov	w16, w8
+      32 7a 28 f8                  	str	x18, [x17, x8, lsl #3]
+      08 05 00 11                  	add	w8, w8, #1
+      a8 43 1d b8                  	stur	w8, [x29, #-44]
+      f7 ff ff 17                  	b	#-36 <main+0x2d8>
+      e8 03 1f 2a                  	mov	w8, wzr
+      bf 03 1d b8                  	stur	wzr, [x29, #-48]
+      10 00 00 90                  	adrp	x16, #0
+      11 00 00 90                  	adrp	x17, #0
+      10 02 40 b9                  	ldr	w16, [x16]
+      31 02 40 b9                  	ldr	w17, [x17]
+      a8 03 5d b8                  	ldur	w8, [x29, #-48]
+      10 02 11 4b                  	sub	w16, w16, w17
+      10 06 00 11                  	add	w16, w16, #1
+      1f 01 10 6b                  	cmp	w8, w16
+      8a 02 00 54                  	b.ge	#80 <main+0x378>
+      a8 03 9d b8                  	ldursw	x8, [x29, #-48]
+      11 00 00 90                  	adrp	x17, #0
+      31 02 00 91                  	add	x17, x17, #0
+      f2 03 1f aa                  	mov	x18, xzr
+      f0 03 08 2a                  	mov	w16, w8
+      08 f1 7d d3                  	lsl	x8, x8, #3
+      3f 6a 28 f8                  	str	xzr, [x17, x8]
+      11 00 00 90                  	adrp	x17, #0
+      31 02 00 91                  	add	x17, x17, #0
+      3f 6a 28 f8                  	str	xzr, [x17, x8]
+      11 00 00 90                  	adrp	x17, #0
+      31 02 00 91                  	add	x17, x17, #0
+      3f 6a 28 f8                  	str	xzr, [x17, x8]
+      11 00 00 90                  	adrp	x17, #0
+      31 02 00 91                  	add	x17, x17, #0
+      3f 6a 28 f8                  	str	xzr, [x17, x8]
+      08 06 00 11                  	add	w8, w16, #1
+      a8 03 1d b8                  	stur	w8, [x29, #-48]
+      e5 ff ff 17                  	b	#-108 <main+0x308>
+      e8 03 1f aa                  	mov	x8, xzr
+      28 00 80 52                  	mov	w8, #1
+      bf 03 1c f8                  	stur	xzr, [x29, #-64]
+      03 00 00 14                  	b	#12 <main+0x390>
+      a8 83 5c b8                  	ldur	w8, [x29, #-56]
+      08 05 00 11                  	add	w8, w8, #1
+      a8 83 1c b8                  	stur	w8, [x29, #-56]
+      e8 03 08 2a                  	mov	w8, w8
+      1f 05 00 71                  	cmp	w8, #1
+      4c 0b 00 54                  	b.gt	#360 <main+0x504>
+      e8 03 00 91                  	mov	x8, sp
+      b0 23 01 d1                  	sub	x16, x29, #72
+      10 09 00 f9                  	str	x16, [x8, #16]
+      10 00 00 90                  	adrp	x16, #0
+      10 02 00 91                  	add	x16, x16, #0
+      10 05 00 f9                  	str	x16, [x8, #8]
+      10 00 00 90                  	adrp	x16, #0
+      00 00 00 90                  	adrp	x0, #0
+      01 00 00 90                  	adrp	x1, #0
+      02 00 00 90                  	adrp	x2, #0
+      03 00 00 90                  	adrp	x3, #0
+      04 00 00 90                  	adrp	x4, #0
+      05 00 00 90                  	adrp	x5, #0
+      10 02 00 91                  	add	x16, x16, #0
+      00 00 00 91                  	add	x0, x0, #0
+      21 00 00 91                  	add	x1, x1, #0
+      42 00 00 91                  	add	x2, x2, #0
+      63 00 00 91                  	add	x3, x3, #0
+      84 00 00 91                  	add	x4, x4, #0
+      a5 00 00 91                  	add	x5, x5, #0
+      10 01 00 f9                  	str	x16, [x8]
+      00 00 00 94                  	bl	#0 <main+0x3f4>
+      e8 03 1f aa                  	mov	x8, xzr
+      bf ff 3a a9                  	stp	xzr, xzr, [x29, #-88]
+      e8 03 1f 2a                  	mov	w8, wzr
+      bf 03 1d b8                  	stur	wzr, [x29, #-48]
+      10 00 00 90                  	adrp	x16, #0
+      11 00 00 90                  	adrp	x17, #0
+      10 02 40 b9                  	ldr	w16, [x16]
+      31 02 40 b9                  	ldr	w17, [x17]
+      a8 03 5d b8                  	ldur	w8, [x29, #-48]
+      10 02 11 4b                  	sub	w16, w16, w17
+      10 06 00 11                  	add	w16, w16, #1
+      1f 01 10 6b                  	cmp	w8, w16
+      aa 02 00 54                  	b.ge	#84 <main+0x47c>
+      a8 03 9d b8                  	ldursw	x8, [x29, #-48]
+      11 00 00 90                  	adrp	x17, #0
+      31 02 00 91                  	add	x17, x17, #0
+      a0 03 5b fc                  	ldur	d0, [x29, #-80]
+      f0 03 08 2a                  	mov	w16, w8
+      08 f1 7d d3                  	lsl	x8, x8, #3
+      21 6a 68 fc                  	ldr	d1, [x17, x8]
+      11 00 00 90                  	adrp	x17, #0
+      31 02 00 91                  	add	x17, x17, #0
+      22 6a 68 fc                  	ldr	d2, [x17, x8]
+      08 06 00 11                  	add	w8, w16, #1
+      a8 03 1d b8                  	stur	w8, [x29, #-48]
+      21 08 62 1e                  	fmul	d1, d1, d2
+      00 28 61 1e                  	fadd	d0, d0, d1
+      a0 03 1b fc                  	stur	d0, [x29, #-80]
+      a0 83 5a fc                  	ldur	d0, [x29, #-88]
+      41 08 62 1e                  	fmul	d1, d2, d2
+      00 28 61 1e                  	fadd	d0, d0, d1
+      a0 83 1a fc                  	stur	d0, [x29, #-88]
+      e4 ff ff 17                  	b	#-112 <main+0x408>
+      a0 83 5a fc                  	ldur	d0, [x29, #-88]
+      01 c0 61 1e                  	fsqrt	d1, d0
+      20 20 61 1e                  	fcmp	d1, d1
+      67 00 00 54                  	b.vc	#12 <main+0x494>
+      00 00 00 94                  	bl	#0 <main+0x48c>
+      01 1c a0 4e                  	mov	v1.16b, v0.16b
+      00 10 6e 1e                  	fmov	d0, #1.00000000
+      00 18 61 1e                  	fdiv	d0, d0, d1
+      a0 83 1a fc                  	stur	d0, [x29, #-88]
+      e8 03 1f 2a                  	mov	w8, wzr
+      bf 03 1d b8                  	stur	wzr, [x29, #-48]
+      10 00 00 90                  	adrp	x16, #0
+      11 00 00 90                  	adrp	x17, #0
+      10 02 40 b9                  	ldr	w16, [x16]
+      31 02 40 b9                  	ldr	w17, [x17]
+      a8 03 5d b8                  	ldur	w8, [x29, #-48]
+      10 02 11 4b                  	sub	w16, w16, w17
+      10 06 00 11                  	add	w16, w16, #1
+      1f 01 10 6b                  	cmp	w8, w16
+      0a f6 ff 54                  	b.ge	#-320 <main+0x388>
+      a8 03 9d b8                  	ldursw	x8, [x29, #-48]
+      11 00 00 90                  	adrp	x17, #0
+      31 02 00 91                  	add	x17, x17, #0
+      a0 83 5a fc                  	ldur	d0, [x29, #-88]
+      f0 03 08 2a                  	mov	w16, w8
+      08 f1 7d d3                  	lsl	x8, x8, #3
+      21 6a 68 fc                  	ldr	d1, [x17, x8]
+      11 00 00 90                  	adrp	x17, #0
+      31 02 00 91                  	add	x17, x17, #0
+      00 08 61 1e                  	fmul	d0, d0, d1
+      20 6a 28 fc                  	str	d0, [x17, x8]
+      08 06 00 11                  	add	w8, w16, #1
+      a8 03 1d b8                  	stur	w8, [x29, #-48]
+      ea ff ff 17                  	b	#-88 <main+0x4a8>
+      11 00 00 90                  	adrp	x17, #0
+      31 02 00 91                  	add	x17, x17, #0
+      12 fe e7 d2                  	mov	x18, #4607182418800017408
+      e8 03 1f 2a                  	mov	w8, wzr
+      bf 43 1d b8                  	stur	wzr, [x29, #-44]
+      a8 43 5d b8                  	ldur	w8, [x29, #-44]
+      70 06 00 11                  	add	w16, w19, #1
+      1f 01 10 6b                  	cmp	w8, w16
+      ea 00 00 54                  	b.ge	#28 <main+0x540>
+      a8 43 9d b8                  	ldursw	x8, [x29, #-44]
+      f0 03 08 2a                  	mov	w16, w8
+      32 7a 28 f8                  	str	x18, [x17, x8, lsl #3]
+      08 05 00 11                  	add	w8, w8, #1
+      a8 43 1d b8                  	stur	w8, [x29, #-44]
+      f7 ff ff 17                  	b	#-36 <main+0x518>
+      e0 03 1f 2a                  	mov	w0, wzr
+      bf 03 1c f8                  	stur	xzr, [x29, #-64]
+      f4 03 1f 2a                  	mov	w20, wzr
+      00 00 00 94                  	bl	#0 <main+0x54c>
+      e0 03 14 2a                  	mov	w0, w20
+      00 00 00 94                  	bl	#0 <main+0x554>
+      00 00 00 90                  	adrp	x0, #0
+      00 00 00 91                  	add	x0, x0, #0
+      00 00 00 94                  	bl	#0 <main+0x560>
+      34 00 80 52                  	mov	w20, #1
+      e0 03 14 2a                  	mov	w0, w20
+      00 00 00 94                  	bl	#0 <main+0x56c>
+      b4 83 1c b8                  	stur	w20, [x29, #-56]
+      04 00 00 14                  	b	#16 <main+0x584>
+      a8 83 5c b8                  	ldur	w8, [x29, #-56]
+      08 05 00 11                  	add	w8, w8, #1
+      a8 83 1c b8                  	stur	w8, [x29, #-56]
+      a8 83 5c b8                  	ldur	w8, [x29, #-56]
+      1f 2d 01 71                  	cmp	w8, #75
+      ac 0e 00 54                  	b.gt	#468 <main+0x760>
+      08 00 00 90                  	adrp	x8, #0
+      08 01 40 b9                  	ldr	w8, [x8]
+      68 00 00 34                  	cbz	w8, #12 <main+0x5a4>
+      40 00 80 52                  	mov	w0, #2
+      00 00 00 94                  	bl	#0 <main+0x5a0>
+      e8 03 00 91                  	mov	x8, sp
+      b0 23 01 d1                  	sub	x16, x29, #72
+      10 09 00 f9                  	str	x16, [x8, #16]
+      10 00 00 90                  	adrp	x16, #0
+      10 02 00 91                  	add	x16, x16, #0
+      10 05 00 f9                  	str	x16, [x8, #8]
+      10 00 00 90                  	adrp	x16, #0
+      00 00 00 90                  	adrp	x0, #0
+      01 00 00 90                  	adrp	x1, #0
+      02 00 00 90                  	adrp	x2, #0
+      03 00 00 90                  	adrp	x3, #0
+      04 00 00 90                  	adrp	x4, #0
+      05 00 00 90                  	adrp	x5, #0
+      10 02 00 91                  	add	x16, x16, #0
+      00 00 00 91                  	add	x0, x0, #0
+      21 00 00 91                  	add	x1, x1, #0
+      42 00 00 91                  	add	x2, x2, #0
+      63 00 00 91                  	add	x3, x3, #0
+      84 00 00 91                  	add	x4, x4, #0
+      a5 00 00 91                  	add	x5, x5, #0
+      10 01 00 f9                  	str	x16, [x8]
+      00 00 00 94                  	bl	#0 <main+0x5f8>
+      08 00 00 90                  	adrp	x8, #0
+      08 01 40 b9                  	ldr	w8, [x8]
+      68 00 00 34                  	cbz	w8, #12 <main+0x610>
+      40 00 80 52                  	mov	w0, #2
+      00 00 00 94                  	bl	#0 <main+0x60c>
+      e8 03 1f aa                  	mov	x8, xzr
+      bf ff 3a a9                  	stp	xzr, xzr, [x29, #-88]
+      e8 03 1f 2a                  	mov	w8, wzr
+      bf 03 1d b8                  	stur	wzr, [x29, #-48]
+      10 00 00 90                  	adrp	x16, #0
+      11 00 00 90                  	adrp	x17, #0
+      10 02 40 b9                  	ldr	w16, [x16]
+      31 02 40 b9                  	ldr	w17, [x17]
+      a8 03 5d b8                  	ldur	w8, [x29, #-48]
+      10 02 11 4b                  	sub	w16, w16, w17
+      10 06 00 11                  	add	w16, w16, #1
+      1f 01 10 6b                  	cmp	w8, w16
+      aa 02 00 54                  	b.ge	#84 <main+0x694>
+      a8 03 9d b8                  	ldursw	x8, [x29, #-48]
+      11 00 00 90                  	adrp	x17, #0
+      31 02 00 91                  	add	x17, x17, #0
+      a0 03 5b fc                  	ldur	d0, [x29, #-80]
+      f0 03 08 2a                  	mov	w16, w8
+      08 f1 7d d3                  	lsl	x8, x8, #3
+      21 6a 68 fc                  	ldr	d1, [x17, x8]
+      11 00 00 90                  	adrp	x17, #0
+      31 02 00 91                  	add	x17, x17, #0
+      22 6a 68 fc                  	ldr	d2, [x17, x8]
+      08 06 00 11                  	add	w8, w16, #1
+      a8 03 1d b8                  	stur	w8, [x29, #-48]
+      21 08 62 1e                  	fmul	d1, d1, d2
+      00 28 61 1e                  	fadd	d0, d0, d1
+      a0 03 1b fc                  	stur	d0, [x29, #-80]
+      a0 83 5a fc                  	ldur	d0, [x29, #-88]
+      41 08 62 1e                  	fmul	d1, d2, d2
+      00 28 61 1e                  	fadd	d0, d0, d1
+      a0 83 1a fc                  	stur	d0, [x29, #-88]
+      e4 ff ff 17                  	b	#-112 <main+0x620>
+      a0 83 5a fc                  	ldur	d0, [x29, #-88]
+      01 c0 61 1e                  	fsqrt	d1, d0
+      20 20 61 1e                  	fcmp	d1, d1
+      67 00 00 54                  	b.vc	#12 <main+0x6ac>
+      00 00 00 94                  	bl	#0 <main+0x6a4>
+      01 1c a0 4e                  	mov	v1.16b, v0.16b
+      00 10 6e 1e                  	fmov	d0, #1.00000000
+      01 18 61 1e                  	fdiv	d1, d0, d1
+      a1 83 1a fc                  	stur	d1, [x29, #-88]
+      a1 03 5b fc                  	ldur	d1, [x29, #-80]
+      c8 09 e8 d2                  	mov	x8, #4633641066610819072
+      00 18 61 1e                  	fdiv	d0, d0, d1
+      01 01 67 9e                  	fmov	d1, x8
+      a8 83 5c b8                  	ldur	w8, [x29, #-56]
+      00 28 61 1e                  	fadd	d0, d0, d1
+      a0 03 1c fc                  	stur	d0, [x29, #-64]
+      1f 05 00 71                  	cmp	w8, #1
+      81 00 00 54                  	b.ne	#16 <main+0x6e8>
+      00 00 00 90                  	adrp	x0, #0
+      00 00 00 91                  	add	x0, x0, #0
+      00 00 00 94                  	bl	#0 <main+0x6e4>
+      a1 83 5c b8                  	ldur	w1, [x29, #-56]
+      a0 87 7b 6d                  	ldp	d0, d1, [x29, #-72]
+      00 00 00 90                  	adrp	x0, #0
+      00 00 00 91                  	add	x0, x0, #0
+      00 00 00 94                  	bl	#0 <main+0x6f8>
+      e8 03 1f 2a                  	mov	w8, wzr
+      bf 03 1d b8                  	stur	wzr, [x29, #-48]
+      10 00 00 90                  	adrp	x16, #0
+      11 00 00 90                  	adrp	x17, #0
+      10 02 40 b9                  	ldr	w16, [x16]
+      31 02 40 b9                  	ldr	w17, [x17]
+      a8 03 5d b8                  	ldur	w8, [x29, #-48]
+      10 02 11 4b                  	sub	w16, w16, w17
+      10 06 00 11                  	add	w16, w16, #1
+      1f 01 10 6b                  	cmp	w8, w16
+      aa f2 ff 54                  	b.ge	#-428 <main+0x578>
+      a8 03 9d b8                  	ldursw	x8, [x29, #-48]
+      11 00 00 90                  	adrp	x17, #0
+      31 02 00 91                  	add	x17, x17, #0
+      a0 83 5a fc                  	ldur	d0, [x29, #-88]
+      f0 03 08 2a                  	mov	w16, w8
+      08 f1 7d d3                  	lsl	x8, x8, #3
+      21 6a 68 fc                  	ldr	d1, [x17, x8]
+      11 00 00 90                  	adrp	x17, #0
+      31 02 00 91                  	add	x17, x17, #0
+      00 08 61 1e                  	fmul	d0, d0, d1
+      20 6a 28 fc                  	str	d0, [x17, x8]
+      08 06 00 11                  	add	w8, w16, #1
+      a8 03 1d b8                  	stur	w8, [x29, #-48]
+      ea ff ff 17                  	b	#-88 <main+0x704>
+      34 00 80 52                  	mov	w20, #1
+      e0 03 14 2a                  	mov	w0, w20
+      00 00 00 94                  	bl	#0 <main+0x768>
+      e0 03 14 2a                  	mov	w0, w20
+      00 00 00 94                  	bl	#0 <main+0x770>
+      00 00 00 90                  	adrp	x0, #0
+      00 00 00 91                  	add	x0, x0, #0
+      a0 03 1a fc                  	stur	d0, [x29, #-96]
+      00 00 00 94                  	bl	#0 <main+0x780>
+      68 b7 97 d2                  	mov	x8, #48571
+      e8 3a bb f2                  	movk	x8, #55767, lsl #16
+      e8 9b cf f2                  	movk	x8, #31967, lsl #32
+      68 bb e7 f2                  	movk	x8, #15835, lsl #48
+      e8 47 00 f9                  	str	x8, [sp, #136]
+      a8 c3 d8 38                  	ldursb	w8, [x29, #-116]
+      1f 55 01 71                  	cmp	w8, #85
+      c0 02 00 54                  	b.eq	#88 <main+0x7f8>
+      a0 03 5c fc                  	ldur	d0, [x29, #-64]
+      a1 03 58 fc                  	ldur	d1, [x29, #-128]
+      00 d4 e1 7e                  	fabd	d0, d0, d1
+      00 18 61 1e                  	fdiv	d0, d0, d1
+      e1 47 40 fd                  	ldr	d1, [sp, #136]
+      e0 43 00 fd                  	str	d0, [sp, #128]
+      00 20 61 1e                  	fcmp	d0, d1
+      c8 02 00 54                  	b.hi	#88 <main+0x818>
+      00 00 00 90                  	adrp	x0, #0
+      28 00 80 52                  	mov	w8, #1
+      00 00 00 91                  	add	x0, x0, #0
+      a8 83 18 b8                  	stur	w8, [x29, #-120]
+      00 00 00 94                  	bl	#0 <main+0x7d4>
+      a0 03 5c fc                  	ldur	d0, [x29, #-64]
+      00 00 00 90                  	adrp	x0, #0
+      00 00 00 91                  	add	x0, x0, #0
+      00 00 00 94                  	bl	#0 <main+0x7e4>
+      e0 43 40 fd                  	ldr	d0, [sp, #128]
+      00 00 00 90                  	adrp	x0, #0
+      00 00 00 91                  	add	x0, x0, #0
+      14 00 00 14                  	b	#80 <main+0x844>
+      00 00 00 90                  	adrp	x0, #0
+      00 00 00 91                  	add	x0, x0, #0
+      bf 83 18 b8                  	stur	wzr, [x29, #-120]
+      00 00 00 94                  	bl	#0 <main+0x804>
+      00 00 00 90                  	adrp	x0, #0
+      00 00 00 91                  	add	x0, x0, #0
+      00 00 00 94                  	bl	#0 <main+0x810>
+      0d 00 00 14                  	b	#52 <main+0x848>
+      00 00 00 90                  	adrp	x0, #0
+      00 00 00 91                  	add	x0, x0, #0
+      bf 83 18 b8                  	stur	wzr, [x29, #-120]
+      00 00 00 94                  	bl	#0 <main+0x824>
+      a0 03 5c fc                  	ldur	d0, [x29, #-64]
+      00 00 00 90                  	adrp	x0, #0
+      00 00 00 91                  	add	x0, x0, #0
+      00 00 00 94                  	bl	#0 <main+0x834>
+      a0 03 58 fc                  	ldur	d0, [x29, #-128]
+      00 00 00 90                  	adrp	x0, #0
+      00 00 00 91                  	add	x0, x0, #0
+      00 00 00 94                  	bl	#0 <main+0x844>
+      a0 03 5a fc                  	ldur	d0, [x29, #-96]
+      08 20 60 1e                  	fcmp	d0, #0.0
+      60 01 00 54                  	b.eq	#44 <main+0x87c>
+      08 00 00 90                  	adrp	x8, #0
+      a0 03 5a fc                  	ldur	d0, [x29, #-96]
+      01 01 40 fd                  	ldr	d1, [x8]
+      08 90 d0 d2                  	mov	x8, #145685290680320
+      c8 25 e8 f2                  	movk	x8, #16686, lsl #48
+      20 18 60 1e                  	fdiv	d0, d1, d0
+      01 01 67 9e                  	fmov	d1, x8
+      00 18 61 1e                  	fdiv	d0, d0, d1
+      a0 83 19 fc                  	stur	d0, [x29, #-104]
+      03 00 00 14                  	b	#12 <main+0x884>
+      e8 03 1f aa                  	mov	x8, xzr
+      bf 83 19 f8                  	stur	xzr, [x29, #-104]
+      10 00 00 90                  	adrp	x16, #0
+      10 02 00 91                  	add	x16, x16, #0
+      f1 03 00 91                  	mov	x17, sp
+      30 2a 00 f9                  	str	x16, [x17, #80]
+      10 00 00 90                  	adrp	x16, #0
+      10 02 00 91                  	add	x16, x16, #0
+      30 26 00 f9                  	str	x16, [x17, #72]
+      10 00 00 90                  	adrp	x16, #0
+      10 02 00 91                  	add	x16, x16, #0
+      30 22 00 f9                  	str	x16, [x17, #64]
+      10 00 00 90                  	adrp	x16, #0
+      10 02 00 91                  	add	x16, x16, #0
+      30 1e 00 f9                  	str	x16, [x17, #56]
+      10 00 00 90                  	adrp	x16, #0
+      10 02 00 91                  	add	x16, x16, #0
+      30 1a 00 f9                  	str	x16, [x17, #48]
+      10 00 00 90                  	adrp	x16, #0
+      10 02 00 91                  	add	x16, x16, #0
+      a8 83 58 b8                  	ldur	w8, [x29, #-120]
+      30 16 00 f9                  	str	x16, [x17, #40]
+      10 00 00 90                  	adrp	x16, #0
+      10 02 00 91                  	add	x16, x16, #0
+      a1 c3 d8 38                  	ldursb	w1, [x29, #-116]
+      a1 83 79 6d                  	ldp	d1, d0, [x29, #-104]
+      30 12 00 f9                  	str	x16, [x17, #32]
+      10 00 00 90                  	adrp	x16, #0
+      10 02 00 91                  	add	x16, x16, #0
+      30 0e 00 f9                  	str	x16, [x17, #24]
+      10 00 00 90                  	adrp	x16, #0
+      28 0a 00 b9                  	str	w8, [x17, #8]
+      08 00 00 90                  	adrp	x8, #0
+      00 00 00 90                  	adrp	x0, #0
+      10 02 00 91                  	add	x16, x16, #0
+      08 01 00 91                  	add	x8, x8, #0
+      00 00 00 91                  	add	x0, x0, #0
+      e3 03 1f 2a                  	mov	w3, wzr
+      65 09 80 52                  	mov	w5, #75
+      e2 03 13 2a                  	mov	w2, w19
+      e4 03 1f 2a                  	mov	w4, wzr
+      30 0a 00 f9                  	str	x16, [x17, #16]
+      28 02 00 f9                  	str	x8, [x17]
+      00 00 00 94                  	bl	#0 <main+0x928>
+      08 00 00 90                  	adrp	x8, #0
+      08 01 40 b9                  	ldr	w8, [x8]
+      28 07 00 34                  	cbz	w8, #228 <main+0xa18>
+      20 00 80 52                  	mov	w0, #1
+      00 00 00 94                  	bl	#0 <main+0x93c>
+      08 20 60 1e                  	fcmp	d0, #0.0
+      a0 03 19 fc                  	stur	d0, [x29, #-112]
+      61 00 00 54                  	b.ne	#12 <main+0x954>
+      08 fe e7 d2                  	mov	x8, #4607182418800017408
+      a8 03 19 f8                  	stur	x8, [x29, #-112]
+      00 00 00 90                  	adrp	x0, #0
+      00 00 00 91                  	add	x0, x0, #0
+      00 00 00 94                  	bl	#0 <main+0x95c>
+      e8 03 1f 2a                  	mov	w8, wzr
+      bf 43 1d b8                  	stur	wzr, [x29, #-44]
+      07 00 00 14                  	b	#28 <main+0x984>
+      00 00 00 90                  	adrp	x0, #0
+      00 00 00 91                  	add	x0, x0, #0
+      00 00 00 94                  	bl	#0 <main+0x974>
+      a8 43 5d b8                  	ldur	w8, [x29, #-44]
+      08 05 00 11                  	add	w8, w8, #1
+      a8 43 1d b8                  	stur	w8, [x29, #-44]
+      a8 43 5d b8                  	ldur	w8, [x29, #-44]
+      1f 09 00 71                  	cmp	w8, #2
+      6c 04 00 54                  	b.gt	#140 <main+0xa18>
+      a0 43 5d b8                  	ldur	w0, [x29, #-44]
+      00 00 00 94                  	bl	#0 <main+0x994>
+      a8 43 9d b8                  	ldursw	x8, [x29, #-44]
+      f1 83 01 91                  	add	x17, sp, #96
+      a0 03 1a fc                  	stur	d0, [x29, #-96]
+      21 7a 68 f8                  	ldr	x1, [x17, x8, lsl #3]
+      f0 03 08 2a                  	mov	w16, w8
+      08 fe ff 34                  	cbz	w8, #-64 <main+0x96c>
+      a1 03 5a fc                  	ldur	d1, [x29, #-96]
+      28 0b e8 d2                  	mov	x8, #4636737291354636288
+      02 01 67 9e                  	fmov	d2, x8
+      00 00 00 90                  	adrp	x0, #0
+      21 08 62 1e                  	fmul	d1, d1, d2
+      a2 03 59 fc                  	ldur	d2, [x29, #-112]
+      00 00 00 91                  	add	x0, x0, #0
+      21 18 62 1e                  	fdiv	d1, d1, d2
+      00 00 00 94                  	bl	#0 <main+0x9d0>
+      a8 43 5d b8                  	ldur	w8, [x29, #-44]
+      1f 09 00 71                  	cmp	w8, #2
+      e1 fc ff 54                  	b.ne	#-100 <main+0x978>
+      a1 03 59 fc                  	ldur	d1, [x29, #-112]
+      a0 03 5a fc                  	ldur	d0, [x29, #-96]
+      28 0b e8 d2                  	mov	x8, #4636737291354636288
+      02 01 67 9e                  	fmov	d2, x8
+      00 00 00 90                  	adrp	x0, #0
+      20 38 60 1e                  	fsub	d0, d1, d0
+      02 08 62 1e                  	fmul	d2, d0, d2
+      01 00 00 90                  	adrp	x1, #0
+      41 18 61 1e                  	fdiv	d1, d2, d1
+      00 00 00 91                  	add	x0, x0, #0
+      21 00 00 91                  	add	x1, x1, #0
+      a0 03 1a fc                  	stur	d0, [x29, #-96]
+      00 00 00 94                  	bl	#0 <main+0xa10>
+      d9 ff ff 17                  	b	#-156 <main+0x978>
+      fd 7b 51 a9                  	ldp	x29, x30, [sp, #272]
+      f4 4f 50 a9                  	ldp	x20, x19, [sp, #256]
+      e8 03 1f 2a                  	mov	w8, wzr
+      ff 83 04 91                  	add	sp, sp, #288
+      c0 03 5f d6                  	ret
+
+Disassembly of section .text.mak
+
+0000000000000000 mak
+        ff 03 05 d1                  	sub	sp, sp, #320
+        f4 4f 12 a9                  	stp	x20, x19, [sp, #288]
+        fd 7b 13 a9                  	stp	x29, x30, [sp, #304]
+        fd c3 04 91                  	add	x29, sp, #304
+       28 00 80 52                  	mov	w8, #1
+       a1 03 3c 29                  	stp	w1, w0, [x29, #-32]
+       a3 0b 3d a9                  	stp	x3, x2, [x29, #-48]
+       a4 83 1c f8                  	stur	x4, [x29, #-56]
+       a5 43 1c b8                  	stur	w5, [x29, #-60]
+       a8 43 1b b8                  	stur	w8, [x29, #-76]
+       a8 43 5b b8                  	ldur	w8, [x29, #-76]
+       b0 43 5e b8                  	ldur	w16, [x29, #-28]
+       08 79 1f 53                  	lsl	w8, w8, #1
+       1f 01 10 6b                  	cmp	w8, w16
+       a8 43 1b b8                  	stur	w8, [x29, #-76]
+       6b ff ff 54                  	b.lt	#-20 <makea+0x28>
+       e8 03 1f 2a                  	mov	w8, wzr
+       bf 03 1c b8                  	stur	wzr, [x29, #-64]
+       04 00 00 14                  	b	#16 <makea+0x58>
+       a8 03 5c b8                  	ldur	w8, [x29, #-64]
+       08 05 00 11                  	add	w8, w8, #1
+       a8 03 1c b8                  	stur	w8, [x29, #-64]
+       a8 03 5c b8                  	ldur	w8, [x29, #-64]
+       b0 43 5e b8                  	ldur	w16, [x29, #-28]
+       1f 01 10 6b                  	cmp	w8, w16
+       0a 06 00 54                  	b.ge	#192 <makea+0x124>
+       a0 43 5e b8                  	ldur	w0, [x29, #-28]
+       a2 43 5b b8                  	ldur	w2, [x29, #-76]
+       f3 c3 00 91                  	add	x19, sp, #48
+       b4 43 02 d1                  	sub	x20, x29, #144
+       a1 01 80 52                  	mov	w1, #13
+       e3 03 13 aa                  	mov	x3, x19
+       e4 03 14 aa                  	mov	x4, x20
+       a1 83 1b b8                  	stur	w1, [x29, #-72]
+       00 00 00 94                  	bl	#0 <makea+0x88>
+       a8 03 5c b8                  	ldur	w8, [x29, #-64]
+       a0 43 5e b8                  	ldur	w0, [x29, #-28]
+       a3 23 01 d1                  	sub	x3, x29, #72
+       00 10 6c 1e                  	fmov	d0, #0.50000000
+       04 05 00 11                  	add	w4, w8, #1
+       e1 03 13 aa                  	mov	x1, x19
+       e2 03 14 aa                  	mov	x2, x20
+       00 00 00 94                  	bl	#0 <makea+0xa8>
+       a8 83 5b b8                  	ldur	w8, [x29, #-72]
+       b0 17 40 f9                  	ldr	x16, [x29, #40]
+       b1 03 9c b8                  	ldursw	x17, [x29, #-64]
+       08 7a 31 b8                  	str	w8, [x16, x17, lsl #2]
+       e8 03 1f 2a                  	mov	w8, wzr
+       bf c3 1b b8                  	stur	wzr, [x29, #-68]
+       b0 23 77 29                  	ldp	w16, w8, [x29, #-72]
+       1f 01 10 6b                  	cmp	w8, w16
+       0a fc ff 54                  	b.ge	#-128 <makea+0x4c>
+       a8 cb 77 69                  	ldpsw	x8, x18, [x29, #-68]
+       b0 43 02 d1                  	sub	x16, x29, #144
+       b1 1b 40 f9                  	ldr	x17, [x29, #48]
+       00 07 80 52                  	mov	w0, #56
+       08 f5 7e d3                  	lsl	x8, x8, #2
+       10 6a 68 b8                  	ldr	w16, [x16, x8]
+       51 46 00 9b                  	madd	x17, x18, x0, x17
+       12 0e 80 52                  	mov	w18, #112
+       10 06 00 51                  	sub	w16, w16, #1
+       30 6a 28 b8                  	str	w16, [x17, x8]
+       a8 c7 77 69                  	ldpsw	x8, x17, [x29, #-68]
+       f0 c3 00 91                  	add	x16, sp, #48
+      08 f1 7d d3                  	lsl	x8, x8, #3
+      00 6a 68 fc                  	ldr	d0, [x16, x8]
+      b0 1f 40 f9                  	ldr	x16, [x29, #56]
+      30 42 12 9b                  	madd	x16, x17, x18, x16
+      00 6a 28 fc                  	str	d0, [x16, x8]
+      a8 c3 5b b8                  	ldur	w8, [x29, #-68]
+      08 05 00 11                  	add	w8, w8, #1
+      a8 c3 1b b8                  	stur	w8, [x29, #-68]
+      e9 ff ff 17                  	b	#-92 <makea+0xc4>
+      a8 cb 43 a9                  	ldp	x8, x18, [x29, #56]
+      a0 83 c2 3c                  	ldur	q0, [x29, #40]
+      e5 03 00 91                  	mov	x5, sp
+      b0 43 5c b8                  	ldur	w16, [x29, #-60]
+      b1 13 40 b9                  	ldr	w17, [x29, #16]
+      a8 08 00 f9                  	str	x8, [x5, #16]
+      08 00 00 90                  	adrp	x8, #0
+      a1 03 7d a9                  	ldp	x1, x0, [x29, #-48]
+      a2 83 5c f8                  	ldur	x2, [x29, #-56]
+      a4 0f 7c 29                  	ldp	w4, w3, [x29, #-32]
+      a0 00 80 3d                  	str	q0, [x5]
+      00 01 40 fd                  	ldr	d0, [x8]
+      c8 09 e8 d2                  	mov	x8, #4633641066610819072
+      b2 14 00 f9                  	str	x18, [x5, #40]
+      b1 20 00 b9                  	str	w17, [x5, #32]
+      b0 18 00 b9                  	str	w16, [x5, #24]
+      01 01 67 9e                  	fmov	d1, x8
+      a5 01 80 52                  	mov	w5, #13
+      00 00 00 94                  	bl	#0 <makea+0x16c>
+      fd 7b 53 a9                  	ldp	x29, x30, [sp, #304]
+      f4 4f 52 a9                  	ldp	x20, x19, [sp, #288]
+      ff 03 05 91                  	add	sp, sp, #320
+      c0 03 5f d6                  	ret
+
+Disassembly of section .text.conj_gr
+
+0000000000000000 conj_gr
+        ff 03 02 d1                  	sub	sp, sp, #128
+        fd 7b 07 a9                  	stp	x29, x30, [sp, #112]
+        fd c3 01 91                  	add	x29, sp, #112
+        28 03 80 52                  	mov	w8, #25
+       e8 33 00 b9                  	str	w8, [sp, #48]
+       e8 03 1f aa                  	mov	x8, xzr
+       a1 03 3f a9                  	stp	x1, x0, [x29, #-16]
+       a3 0b 3e a9                  	stp	x3, x2, [x29, #-32]
+       a5 13 3d a9                  	stp	x5, x4, [x29, #-48]
+       ff 0f 00 f9                  	str	xzr, [sp, #24]
+       e8 03 1f 2a                  	mov	w8, wzr
+       bf c3 1c b8                  	stur	wzr, [x29, #-52]
+       10 00 00 90                  	adrp	x16, #0
+       10 02 40 b9                  	ldr	w16, [x16]
+       a8 c3 5c b8                  	ldur	w8, [x29, #-52]
+       10 06 00 11                  	add	w16, w16, #1
+       1f 01 10 6b                  	cmp	w8, w16
+       0a 03 00 54                  	b.ge	#96 <conj_grad+0xa4>
+       a8 0b 40 f9                  	ldr	x8, [x29, #16]
+       b0 c3 9c b8                  	ldursw	x16, [x29, #-52]
+       f1 03 1f aa                  	mov	x17, xzr
+       1f 79 30 f8                  	str	xzr, [x8, x16, lsl #3]
+       a8 03 5e f8                  	ldur	x8, [x29, #-32]
+       b0 c3 9c b8                  	ldursw	x16, [x29, #-52]
+       1f 79 30 f8                  	str	xzr, [x8, x16, lsl #3]
+       b0 c3 9c b8                  	ldursw	x16, [x29, #-52]
+       a8 83 5e f8                  	ldur	x8, [x29, #-24]
+       10 f2 7d d3                  	lsl	x16, x16, #3
+       00 69 70 fc                  	ldr	d0, [x8, x16]
+       a8 0f 40 f9                  	ldr	x8, [x29, #24]
+       00 69 30 fc                  	str	d0, [x8, x16]
+       b0 c3 9c b8                  	ldursw	x16, [x29, #-52]
+       a8 0f 40 f9                  	ldr	x8, [x29, #24]
+       10 f2 7d d3                  	lsl	x16, x16, #3
+       00 69 70 fc                  	ldr	d0, [x8, x16]
+       a8 03 5d f8                  	ldur	x8, [x29, #-48]
+       00 69 30 fc                  	str	d0, [x8, x16]
+       a8 c3 5c b8                  	ldur	w8, [x29, #-52]
+       08 05 00 11                  	add	w8, w8, #1
+       a8 c3 1c b8                  	stur	w8, [x29, #-52]
+       e4 ff ff 17                  	b	#-112 <conj_grad+0x30>
+       e8 03 1f 2a                  	mov	w8, wzr
+       bf c3 1c b8                  	stur	wzr, [x29, #-52]
+       10 00 00 90                  	adrp	x16, #0
+       11 00 00 90                  	adrp	x17, #0
+       10 02 40 b9                  	ldr	w16, [x16]
+       31 02 40 b9                  	ldr	w17, [x17]
+       a8 c3 5c b8                  	ldur	w8, [x29, #-52]
+       10 02 11 4b                  	sub	w16, w16, w17
+       10 06 00 11                  	add	w16, w16, #1
+       1f 01 10 6b                  	cmp	w8, w16
+       8a 01 00 54                  	b.ge	#48 <conj_grad+0xfc>
+       a8 0f 40 f9                  	ldr	x8, [x29, #24]
+       b0 c3 9c b8                  	ldursw	x16, [x29, #-52]
+       e0 0f 40 fd                  	ldr	d0, [sp, #24]
+       01 79 70 fc                  	ldr	d1, [x8, x16, lsl #3]
+       08 06 00 11                  	add	w8, w16, #1
+       f1 03 10 2a                  	mov	w17, w16
+       a8 c3 1c b8                  	stur	w8, [x29, #-52]
+       21 08 61 1e                  	fmul	d1, d1, d1
+       00 28 61 1e                  	fadd	d0, d0, d1
+       e0 0f 00 fd                  	str	d0, [sp, #24]
+       ed ff ff 17                  	b	#-76 <conj_grad+0xac>
+       28 00 80 52                  	mov	w8, #1
+      03 00 00 14                  	b	#12 <conj_grad+0x10c>
+      e8 37 40 b9                  	ldr	w8, [sp, #52]
+      08 05 00 11                  	add	w8, w8, #1
+      f0 33 40 b9                  	ldr	w16, [sp, #48]
+      e8 37 00 b9                  	str	w8, [sp, #52]
+      e8 03 08 2a                  	mov	w8, w8
+      1f 01 10 6b                  	cmp	w8, w16
+      6c 14 00 54                  	b.gt	#652 <conj_grad+0x3a8>
+      e8 03 1f 2a                  	mov	w8, wzr
+      bf c3 1c b8                  	stur	wzr, [x29, #-52]
+      07 00 00 14                  	b	#28 <conj_grad+0x144>
+      a8 0b 40 f9                  	ldr	x8, [x29, #16]
+      b0 c3 9c b8                  	ldursw	x16, [x29, #-52]
+      00 79 30 fc                  	str	d0, [x8, x16, lsl #3]
+      a8 c3 5c b8                  	ldur	w8, [x29, #-52]
+      08 05 00 11                  	add	w8, w8, #1
+      a8 c3 1c b8                  	stur	w8, [x29, #-52]
+      10 00 00 90                  	adrp	x16, #0
+      11 00 00 90                  	adrp	x17, #0
+      10 02 40 b9                  	ldr	w16, [x16]
+      31 02 40 b9                  	ldr	w17, [x17]
+      a8 c3 5c b8                  	ldur	w8, [x29, #-52]
+      10 02 11 4b                  	sub	w16, w16, w17
+      10 06 00 11                  	add	w16, w16, #1
+      1f 01 10 6b                  	cmp	w8, w16
+      8a 03 00 54                  	b.ge	#112 <conj_grad+0x1d4>
+      e8 03 1f aa                  	mov	x8, xzr
+      a8 03 5f f8                  	ldur	x8, [x29, #-16]
+      b0 c3 9c b8                  	ldursw	x16, [x29, #-52]
+      ff 13 00 f9                  	str	xzr, [sp, #32]
+      08 79 70 b8                  	ldr	w8, [x8, x16, lsl #2]
+      b0 03 5f f8                  	ldur	x16, [x29, #-16]
+      b1 c3 9c b8                  	ldursw	x17, [x29, #-52]
+      e8 3b 00 b9                  	str	w8, [sp, #56]
+      e0 13 40 fd                  	ldr	d0, [sp, #32]
+      e8 03 08 2a                  	mov	w8, w8
+      10 0a 11 8b                  	add	x16, x16, x17, lsl #2
+      10 06 40 b9                  	ldr	w16, [x16, #4]
+      1f 01 10 6b                  	cmp	w8, w16
+      8a fc ff 54                  	b.ge	#-112 <conj_grad+0x12c>
+      a8 83 5d f8                  	ldur	x8, [x29, #-40]
+      f0 3b 80 b9                  	ldrsw	x16, [sp, #56]
+      b2 83 5f f8                  	ldur	x18, [x29, #-8]
+      f1 03 10 2a                  	mov	w17, w16
+      01 79 70 fc                  	ldr	d1, [x8, x16, lsl #3]
+      a8 03 5d f8                  	ldur	x8, [x29, #-48]
+      50 7a b0 b8                  	ldrsw	x16, [x18, x16, lsl #2]
+      02 79 70 fc                  	ldr	d2, [x8, x16, lsl #3]
+      28 06 00 11                  	add	w8, w17, #1
+      21 08 62 1e                  	fmul	d1, d1, d2
+      00 28 61 1e                  	fadd	d0, d0, d1
+      e0 13 00 fd                  	str	d0, [sp, #32]
+      eb ff ff 17                  	b	#-84 <conj_grad+0x17c>
+      e8 03 1f aa                  	mov	x8, xzr
+      ff 17 00 f9                  	str	xzr, [sp, #40]
+      e8 03 1f 2a                  	mov	w8, wzr
+      bf c3 1c b8                  	stur	wzr, [x29, #-52]
+      10 00 00 90                  	adrp	x16, #0
+      11 00 00 90                  	adrp	x17, #0
+      10 02 40 b9                  	ldr	w16, [x16]
+      31 02 40 b9                  	ldr	w17, [x17]
+      a8 c3 5c b8                  	ldur	w8, [x29, #-52]
+      10 02 11 4b                  	sub	w16, w16, w17
+      10 06 00 11                  	add	w16, w16, #1
+      1f 01 10 6b                  	cmp	w8, w16
+      ea 01 00 54                  	b.ge	#60 <conj_grad+0x240>
+      b0 c3 9c b8                  	ldursw	x16, [x29, #-52]
+      a8 03 5d f8                  	ldur	x8, [x29, #-48]
+      e0 17 40 fd                  	ldr	d0, [sp, #40]
+      f1 03 10 2a                  	mov	w17, w16
+      10 f2 7d d3                  	lsl	x16, x16, #3
+      01 69 70 fc                  	ldr	d1, [x8, x16]
+      a8 0b 40 f9                  	ldr	x8, [x29, #16]
+      02 69 70 fc                  	ldr	d2, [x8, x16]
+      28 06 00 11                  	add	w8, w17, #1
+      a8 c3 1c b8                  	stur	w8, [x29, #-52]
+      21 08 62 1e                  	fmul	d1, d1, d2
+      00 28 61 1e                  	fadd	d0, d0, d1
+      e0 17 00 fd                  	str	d0, [sp, #40]
+      ea ff ff 17                  	b	#-88 <conj_grad+0x1e4>
+      e0 0f 40 fd                  	ldr	d0, [sp, #24]
+      e1 17 40 fd                  	ldr	d1, [sp, #40]
+      e8 03 1f aa                  	mov	x8, xzr
+      ff 0f 00 f9                  	str	xzr, [sp, #24]
+      e8 03 1f 2a                  	mov	w8, wzr
+      01 18 61 1e                  	fdiv	d1, d0, d1
+      e1 83 00 6d                  	stp	d1, d0, [sp, #8]
+      bf c3 1c b8                  	stur	wzr, [x29, #-52]
+      10 00 00 90                  	adrp	x16, #0
+      11 00 00 90                  	adrp	x17, #0
+      10 02 40 b9                  	ldr	w16, [x16]
+      31 02 40 b9                  	ldr	w17, [x17]
+      a8 c3 5c b8                  	ldur	w8, [x29, #-52]
+      10 02 11 4b                  	sub	w16, w16, w17
+      10 06 00 11                  	add	w16, w16, #1
+      1f 01 10 6b                  	cmp	w8, w16
+      0a 03 00 54                  	b.ge	#96 <conj_grad+0x2e0>
+      b0 c3 9c b8                  	ldursw	x16, [x29, #-52]
+      b1 03 5d f8                  	ldur	x17, [x29, #-48]
+      a8 03 5e f8                  	ldur	x8, [x29, #-32]
+      e1 07 40 fd                  	ldr	d1, [sp, #8]
+      10 f2 7d d3                  	lsl	x16, x16, #3
+      22 6a 70 fc                  	ldr	d2, [x17, x16]
+      00 69 70 fc                  	ldr	d0, [x8, x16]
+      21 08 62 1e                  	fmul	d1, d1, d2
+      00 28 61 1e                  	fadd	d0, d0, d1
+      00 69 30 fc                  	str	d0, [x8, x16]
+      b0 c3 9c b8                  	ldursw	x16, [x29, #-52]
+      b1 23 41 a9                  	ldp	x17, x8, [x29, #16]
+      e1 07 40 fd                  	ldr	d1, [sp, #8]
+      10 f2 7d d3                  	lsl	x16, x16, #3
+      22 6a 70 fc                  	ldr	d2, [x17, x16]
+      00 69 70 fc                  	ldr	d0, [x8, x16]
+      21 08 62 1e                  	fmul	d1, d1, d2
+      00 38 61 1e                  	fsub	d0, d0, d1
+      00 69 30 fc                  	str	d0, [x8, x16]
+      a8 c3 5c b8                  	ldur	w8, [x29, #-52]
+      08 05 00 11                  	add	w8, w8, #1
+      a8 c3 1c b8                  	stur	w8, [x29, #-52]
+      e1 ff ff 17                  	b	#-124 <conj_grad+0x260>
+      e8 03 1f 2a                  	mov	w8, wzr
+      bf c3 1c b8                  	stur	wzr, [x29, #-52]
+      10 00 00 90                  	adrp	x16, #0
+      11 00 00 90                  	adrp	x17, #0
+      10 02 40 b9                  	ldr	w16, [x16]
+      31 02 40 b9                  	ldr	w17, [x17]
+      a8 c3 5c b8                  	ldur	w8, [x29, #-52]
+      e0 0f 40 fd                  	ldr	d0, [sp, #24]
+      10 02 11 4b                  	sub	w16, w16, w17
+      10 06 00 11                  	add	w16, w16, #1
+      1f 01 10 6b                  	cmp	w8, w16
+      6a 01 00 54                  	b.ge	#44 <conj_grad+0x338>
+      a8 0f 40 f9                  	ldr	x8, [x29, #24]
+      b0 c3 9c b8                  	ldursw	x16, [x29, #-52]
+      01 79 70 fc                  	ldr	d1, [x8, x16, lsl #3]
+      08 06 00 11                  	add	w8, w16, #1
+      f1 03 10 2a                  	mov	w17, w16
+      a8 c3 1c b8                  	stur	w8, [x29, #-52]
+      21 08 61 1e                  	fmul	d1, d1, d1
+      00 28 61 1e                  	fadd	d0, d0, d1
+      e0 0f 00 fd                  	str	d0, [sp, #24]
+      ed ff ff 17                  	b	#-76 <conj_grad+0x2e8>
+      e1 0b 40 fd                  	ldr	d1, [sp, #16]
+      e8 03 1f 2a                  	mov	w8, wzr
+      bf c3 1c b8                  	stur	wzr, [x29, #-52]
+      00 18 61 1e                  	fdiv	d0, d0, d1
+      e0 03 00 fd                  	str	d0, [sp]
+      10 00 00 90                  	adrp	x16, #0
+      11 00 00 90                  	adrp	x17, #0
+      10 02 40 b9                  	ldr	w16, [x16]
+      31 02 40 b9                  	ldr	w17, [x17]
+      a8 c3 5c b8                  	ldur	w8, [x29, #-52]
+      10 02 11 4b                  	sub	w16, w16, w17
+      10 06 00 11                  	add	w16, w16, #1
+      1f 01 10 6b                  	cmp	w8, w16
+      ca ec ff 54                  	b.ge	#-616 <conj_grad+0x104>
+      b0 c3 9c b8                  	ldursw	x16, [x29, #-52]
+      a8 0f 40 f9                  	ldr	x8, [x29, #24]
+      e1 03 40 fd                  	ldr	d1, [sp]
+      10 f2 7d d3                  	lsl	x16, x16, #3
+      00 69 70 fc                  	ldr	d0, [x8, x16]
+      a8 03 5d f8                  	ldur	x8, [x29, #-48]
+      02 69 70 fc                  	ldr	d2, [x8, x16]
+      21 08 62 1e                  	fmul	d1, d1, d2
+      00 28 61 1e                  	fadd	d0, d0, d1
+      00 69 30 fc                  	str	d0, [x8, x16]
+      a8 c3 5c b8                  	ldur	w8, [x29, #-52]
+      08 05 00 11                  	add	w8, w8, #1
+      a8 c3 1c b8                  	stur	w8, [x29, #-52]
+      ea ff ff 17                  	b	#-88 <conj_grad+0x34c>
+      e8 03 1f aa                  	mov	x8, xzr
+      ff 13 00 f9                  	str	xzr, [sp, #32]
+      e8 03 1f 2a                  	mov	w8, wzr
+      bf c3 1c b8                  	stur	wzr, [x29, #-52]
+      07 00 00 14                  	b	#28 <conj_grad+0x3d4>
+      a8 0f 40 f9                  	ldr	x8, [x29, #24]
+      b0 c3 9c b8                  	ldursw	x16, [x29, #-52]
+      00 79 30 fc                  	str	d0, [x8, x16, lsl #3]
+      a8 c3 5c b8                  	ldur	w8, [x29, #-52]
+      08 05 00 11                  	add	w8, w8, #1
+      a8 c3 1c b8                  	stur	w8, [x29, #-52]
+      10 00 00 90                  	adrp	x16, #0
+      11 00 00 90                  	adrp	x17, #0
+      10 02 40 b9                  	ldr	w16, [x16]
+      31 02 40 b9                  	ldr	w17, [x17]
+      a8 c3 5c b8                  	ldur	w8, [x29, #-52]
+      10 02 11 4b                  	sub	w16, w16, w17
+      10 06 00 11                  	add	w16, w16, #1
+      1f 01 10 6b                  	cmp	w8, w16
+      8a 03 00 54                  	b.ge	#112 <conj_grad+0x464>
+      e8 03 1f aa                  	mov	x8, xzr
+      a8 03 5f f8                  	ldur	x8, [x29, #-16]
+      b0 c3 9c b8                  	ldursw	x16, [x29, #-52]
+      ff 17 00 f9                  	str	xzr, [sp, #40]
+      08 79 70 b8                  	ldr	w8, [x8, x16, lsl #2]
+      b0 03 5f f8                  	ldur	x16, [x29, #-16]
+      b1 c3 9c b8                  	ldursw	x17, [x29, #-52]
+      e8 3b 00 b9                  	str	w8, [sp, #56]
+      e0 17 40 fd                  	ldr	d0, [sp, #40]
+      e8 03 08 2a                  	mov	w8, w8
+      10 0a 11 8b                  	add	x16, x16, x17, lsl #2
+      10 06 40 b9                  	ldr	w16, [x16, #4]
+      1f 01 10 6b                  	cmp	w8, w16
+      8a fc ff 54                  	b.ge	#-112 <conj_grad+0x3bc>
+      a8 83 5d f8                  	ldur	x8, [x29, #-40]
+      f0 3b 80 b9                  	ldrsw	x16, [sp, #56]
+      b2 83 5f f8                  	ldur	x18, [x29, #-8]
+      f1 03 10 2a                  	mov	w17, w16
+      01 79 70 fc                  	ldr	d1, [x8, x16, lsl #3]
+      a8 03 5e f8                  	ldur	x8, [x29, #-32]
+      50 7a b0 b8                  	ldrsw	x16, [x18, x16, lsl #2]
+      02 79 70 fc                  	ldr	d2, [x8, x16, lsl #3]
+      28 06 00 11                  	add	w8, w17, #1
+      21 08 62 1e                  	fmul	d1, d1, d2
+      00 28 61 1e                  	fadd	d0, d0, d1
+      e0 17 00 fd                  	str	d0, [sp, #40]
+      eb ff ff 17                  	b	#-84 <conj_grad+0x40c>
+      e8 03 1f 2a                  	mov	w8, wzr
+      bf c3 1c b8                  	stur	wzr, [x29, #-52]
+      10 00 00 90                  	adrp	x16, #0
+      11 00 00 90                  	adrp	x17, #0
+      10 02 40 b9                  	ldr	w16, [x16]
+      31 02 40 b9                  	ldr	w17, [x17]
+      a8 c3 5c b8                  	ldur	w8, [x29, #-52]
+      10 02 11 4b                  	sub	w16, w16, w17
+      10 06 00 11                  	add	w16, w16, #1
+      1f 01 10 6b                  	cmp	w8, w16
+      2a 02 00 54                  	b.ge	#68 <conj_grad+0x4d0>
+      b0 c3 9c b8                  	ldursw	x16, [x29, #-52]
+      a8 83 5e f8                  	ldur	x8, [x29, #-24]
+      f1 03 10 2a                  	mov	w17, w16
+      10 f2 7d d3                  	lsl	x16, x16, #3
+      00 69 70 fc                  	ldr	d0, [x8, x16]
+      a8 0f 40 f9                  	ldr	x8, [x29, #24]
+      01 69 70 fc                  	ldr	d1, [x8, x16]
+      28 06 00 11                  	add	w8, w17, #1
+      a8 c3 1c b8                  	stur	w8, [x29, #-52]
+      00 38 61 1e                  	fsub	d0, d0, d1
+      e1 13 40 fd                  	ldr	d1, [sp, #32]
+      e0 17 00 fd                  	str	d0, [sp, #40]
+      00 08 60 1e                  	fmul	d0, d0, d0
+      20 28 60 1e                  	fadd	d0, d1, d0
+      e0 13 00 fd                  	str	d0, [sp, #32]
+      e8 ff ff 17                  	b	#-96 <conj_grad+0x46c>
+      e0 13 40 fd                  	ldr	d0, [sp, #32]
+      01 c0 61 1e                  	fsqrt	d1, d0
+      20 20 61 1e                  	fcmp	d1, d1
+      67 00 00 54                  	b.vc	#12 <conj_grad+0x4e8>
+      00 00 00 94                  	bl	#0 <conj_grad+0x4e0>
+      01 1c a0 4e                  	mov	v1.16b, v0.16b
+      a8 13 40 f9                  	ldr	x8, [x29, #32]
+      01 01 00 fd                  	str	d1, [x8]
+      fd 7b 47 a9                  	ldp	x29, x30, [sp, #112]
+      ff 03 02 91                  	add	sp, sp, #128
+      c0 03 5f d6                  	ret
+
+Disassembly of section .text.sprnv
+
+0000000000000000 sprnv
+        ff c3 01 d1                  	sub	sp, sp, #112
+        f4 4f 05 a9                  	stp	x20, x19, [sp, #80]
+        fd 7b 06 a9                  	stp	x29, x30, [sp, #96]
+        fd 83 01 91                  	add	x29, sp, #96
+       13 00 00 90                  	adrp	x19, #0
+       14 00 00 90                  	adrp	x20, #0
+       73 02 00 91                  	add	x19, x19, #0
+       a1 03 3d 29                  	stp	w1, w0, [x29, #-24]
+       a2 43 1e b8                  	stur	w2, [x29, #-28]
+       a3 83 1d f8                  	stur	x3, [x29, #-40]
+       e4 1b 00 f9                  	str	x4, [sp, #48]
+       e8 03 1f 2a                  	mov	w8, wzr
+       ff 2f 00 b9                  	str	wzr, [sp, #44]
+       e8 2f 40 b9                  	ldr	w8, [sp, #44]
+       b0 83 5e b8                  	ldur	w16, [x29, #-24]
+       1f 01 10 6b                  	cmp	w8, w16
+       0a 06 00 54                  	b.ge	#192 <sprnvc+0x100>
+       80 02 40 fd                  	ldr	d0, [x20]
+       e0 03 13 aa                  	mov	x0, x19
+       00 00 00 94                  	bl	#0 <sprnvc+0x4c>
+       e0 0f 00 fd                  	str	d0, [sp, #24]
+       80 02 40 fd                  	ldr	d0, [x20]
+       e0 03 13 aa                  	mov	x0, x19
+       00 00 00 94                  	bl	#0 <sprnvc+0x5c>
+       a0 43 5e b8                  	ldur	w0, [x29, #-28]
+       e0 0b 00 fd                  	str	d0, [sp, #16]
+       00 00 00 94                  	bl	#0 <sprnvc+0x68>
+       b0 c3 5e b8                  	ldur	w16, [x29, #-20]
+       08 05 00 11                  	add	w8, w8, #1
+       e8 27 00 b9                  	str	w8, [sp, #36]
+       1f 01 10 6b                  	cmp	w8, w16
+       cc fd ff 54                  	b.gt	#-72 <sprnvc+0x34>
+       e8 03 1f 2a                  	mov	w8, wzr
+       ff 0f 00 b9                  	str	wzr, [sp, #12]
+       ff 2b 00 b9                  	str	wzr, [sp, #40]
+       e8 43 45 29                  	ldp	w8, w16, [sp, #40]
+       1f 01 10 6b                  	cmp	w8, w16
+       aa 01 00 54                  	b.ge	#52 <sprnvc+0xc8>
+       e8 1b 40 f9                  	ldr	x8, [sp, #48]
+       f0 2b 80 b9                  	ldrsw	x16, [sp, #40]
+       08 79 70 b8                  	ldr	w8, [x8, x16, lsl #2]
+       f0 27 40 b9                  	ldr	w16, [sp, #36]
+       1f 01 10 6b                  	cmp	w8, w16
+       a0 00 00 54                  	b.eq	#20 <sprnvc+0xc0>
+       e8 2b 40 b9                  	ldr	w8, [sp, #40]
+       08 05 00 11                  	add	w8, w8, #1
+       e8 2b 00 b9                  	str	w8, [sp, #40]
+       f4 ff ff 17                  	b	#-48 <sprnvc+0x8c>
+       28 00 80 52                  	mov	w8, #1
+       e8 0f 00 b9                  	str	w8, [sp, #12]
+       e8 0f 40 b9                  	ldr	w8, [sp, #12]
+       48 fb ff 35                  	cbnz	w8, #-152 <sprnvc+0x34>
+       e0 0f 40 fd                  	ldr	d0, [sp, #24]
+       a8 83 5d f8                  	ldur	x8, [x29, #-40]
+       f0 2f 80 b9                  	ldrsw	x16, [sp, #44]
+       00 79 30 fc                  	str	d0, [x8, x16, lsl #3]
+       e8 27 40 b9                  	ldr	w8, [sp, #36]
+       f0 1b 40 f9                  	ldr	x16, [sp, #48]
+       f1 2f 80 b9                  	ldrsw	x17, [sp, #44]
+       08 7a 31 b8                  	str	w8, [x16, x17, lsl #2]
+       e8 2f 40 b9                  	ldr	w8, [sp, #44]
+       08 05 00 11                  	add	w8, w8, #1
+       e8 2f 00 b9                  	str	w8, [sp, #44]
+       ce ff ff 17                  	b	#-200 <sprnvc+0x34>
+      fd 7b 46 a9                  	ldp	x29, x30, [sp, #96]
+      f4 4f 45 a9                  	ldp	x20, x19, [sp, #80]
+      ff c3 01 91                  	add	sp, sp, #112
+      c0 03 5f d6                  	ret
+
+Disassembly of section .text.vecset:
+
+0000000000000000 vecset:
+        ff 43 01 d1                  	sub	sp, sp, #80
+        fd 7b 04 a9                  	stp	x29, x30, [sp, #64]
+        fd 03 01 91                  	add	x29, sp, #64
+        a0 c3 1f b8                  	stur	w0, [x29, #-4]
+       a2 87 3e a9                  	stp	x2, x1, [x29, #-24]
+       e3 13 00 f9                  	str	x3, [sp, #32]
+       e4 1f 00 b9                  	str	w4, [sp, #28]
+       e0 0b 00 fd                  	str	d0, [sp, #16]
+       e8 03 1f 2a                  	mov	w8, wzr
+       ff 07 00 f9                  	str	xzr, [sp, #8]
+       04 00 00 14                  	b	#16 <vecset+0x38>
+       e8 0f 40 b9                  	ldr	w8, [sp, #12]
+       08 05 00 11                  	add	w8, w8, #1
+       e8 0f 00 b9                  	str	w8, [sp, #12]
+       f0 13 40 f9                  	ldr	x16, [sp, #32]
+       e8 0f 40 b9                  	ldr	w8, [sp, #12]
+       10 02 40 b9                  	ldr	w16, [x16]
+       1f 01 10 6b                  	cmp	w8, w16
+       ca 01 00 54                  	b.ge	#56 <vecset+0x80>
+       a8 83 5e f8                  	ldur	x8, [x29, #-24]
+       f0 0f 80 b9                  	ldrsw	x16, [sp, #12]
+       08 79 70 b8                  	ldr	w8, [x8, x16, lsl #2]
+       f0 1f 40 b9                  	ldr	w16, [sp, #28]
+       1f 01 10 6b                  	cmp	w8, w16
+       61 fe ff 54                  	b.ne	#-52 <vecset+0x2c>
+       e0 0b 40 fd                  	ldr	d0, [sp, #16]
+       a8 03 5f f8                  	ldur	x8, [x29, #-16]
+       f0 0f 80 b9                  	ldrsw	x16, [sp, #12]
+       00 79 30 fc                  	str	d0, [x8, x16, lsl #3]
+       28 00 80 52                  	mov	w8, #1
+       e8 0b 00 b9                  	str	w8, [sp, #8]
+       ec ff ff 17                  	b	#-80 <vecset+0x2c>
+       e8 0b 40 b9                  	ldr	w8, [sp, #8]
+       e8 01 00 35                  	cbnz	w8, #60 <vecset+0xc0>
+       f0 13 40 f9                  	ldr	x16, [sp, #32]
+       e0 0b 40 fd                  	ldr	d0, [sp, #16]
+       a8 03 5f f8                  	ldur	x8, [x29, #-16]
+       10 02 80 b9                  	ldrsw	x16, [x16]
+       00 79 30 fc                  	str	d0, [x8, x16, lsl #3]
+       f1 13 40 f9                  	ldr	x17, [sp, #32]
+       e8 1f 40 b9                  	ldr	w8, [sp, #28]
+       b0 83 5e f8                  	ldur	x16, [x29, #-24]
+       31 02 80 b9                  	ldrsw	x17, [x17]
+       08 7a 31 b8                  	str	w8, [x16, x17, lsl #2]
+       e8 13 40 f9                  	ldr	x8, [sp, #32]
+       10 01 40 b9                  	ldr	w16, [x8]
+       10 06 00 11                  	add	w16, w16, #1
+       10 01 00 b9                  	str	w16, [x8]
+       fd 7b 44 a9                  	ldp	x29, x30, [sp, #64]
+       ff 43 01 91                  	add	sp, sp, #80
+       c0 03 5f d6                  	ret
+
+Disassembly of section .text.spars
+
+0000000000000000 spars
+        ff 83 02 d1                  	sub	sp, sp, #160
+        fd 7b 09 a9                  	stp	x29, x30, [sp, #144]
+        fd 43 02 91                  	add	x29, sp, #144
+        a8 33 40 b9                  	ldr	w8, [x29, #48]
+       b0 2b 40 b9                  	ldr	w16, [x29, #40]
+       a1 03 3f a9                  	stp	x1, x0, [x29, #-16]
+       a2 83 1e f8                  	stur	x2, [x29, #-24]
+       a4 0f 3c 29                  	stp	w4, w3, [x29, #-32]
+       08 01 10 4b                  	sub	w8, w8, w16
+       08 05 00 11                  	add	w8, w8, #1
+       a5 c3 1d b8                  	stur	w5, [x29, #-36]
+       a1 83 3c 6d                  	stp	d1, d0, [x29, #-56]
+       a8 43 1c b8                  	stur	w8, [x29, #-60]
+       e8 03 1f 2a                  	mov	w8, wzr
+       bf c3 1b b8                  	stur	wzr, [x29, #-68]
+       b0 43 5c b8                  	ldur	w16, [x29, #-60]
+       a8 c3 5b b8                  	ldur	w8, [x29, #-68]
+       10 06 00 11                  	add	w16, w16, #1
+       1f 01 10 6b                  	cmp	w8, w16
+       2a 01 00 54                  	b.ge	#36 <sparse+0x70>
+       a8 83 5e f8                  	ldur	x8, [x29, #-24]
+       b0 c3 9b b8                  	ldursw	x16, [x29, #-68]
+       f1 03 1f 2a                  	mov	w17, wzr
+       1f 79 30 b8                  	str	wzr, [x8, x16, lsl #2]
+       a8 c3 5b b8                  	ldur	w8, [x29, #-68]
+       08 05 00 11                  	add	w8, w8, #1
+       a8 c3 1b b8                  	stur	w8, [x29, #-68]
+       f4 ff ff 17                  	b	#-48 <sparse+0x3c>
+       e8 03 1f 2a                  	mov	w8, wzr
+       bf 03 1c b8                  	stur	wzr, [x29, #-64]
+       04 00 00 14                  	b	#16 <sparse+0x88>
+       a8 03 5c b8                  	ldur	w8, [x29, #-64]
+       08 05 00 11                  	add	w8, w8, #1
+       a8 03 1c b8                  	stur	w8, [x29, #-64]
+       a8 03 5c b8                  	ldur	w8, [x29, #-64]
+       b0 43 5e b8                  	ldur	w16, [x29, #-28]
+       1f 01 10 6b                  	cmp	w8, w16
+       6a 03 00 54                  	b.ge	#108 <sparse+0x100>
+       e8 03 1f 2a                  	mov	w8, wzr
+       ff 43 00 b9                  	str	wzr, [sp, #64]
+       b0 0b 40 f9                  	ldr	x16, [x29, #16]
+       b1 03 9c b8                  	ldursw	x17, [x29, #-64]
+       e8 43 40 b9                  	ldr	w8, [sp, #64]
+       10 7a 71 b8                  	ldr	w16, [x16, x17, lsl #2]
+       1f 01 10 6b                  	cmp	w8, w16
+       4a fe ff 54                  	b.ge	#-56 <sparse+0x7c>
+       a0 23 41 a9                  	ldp	x0, x8, [x29, #16]
+       b0 03 9c b8                  	ldursw	x16, [x29, #-64]
+       11 07 80 52                  	mov	w17, #56
+       08 22 11 9b                  	madd	x8, x16, x17, x8
+       f1 43 80 b9                  	ldrsw	x17, [sp, #64]
+       08 79 71 b8                  	ldr	w8, [x8, x17, lsl #2]
+       b1 83 5e f8                  	ldur	x17, [x29, #-24]
+       08 05 00 11                  	add	w8, w8, #1
+       a8 c3 1b b8                  	stur	w8, [x29, #-68]
+       10 78 70 b8                  	ldr	w16, [x0, x16, lsl #2]
+       08 7d 7e 93                  	sbfiz	x8, x8, #2, #32
+       32 6a 68 b8                  	ldr	w18, [x17, x8]
+       50 02 10 0b                  	add	w16, w18, w16
+       30 6a 28 b8                  	str	w16, [x17, x8]
+       e8 43 40 b9                  	ldr	w8, [sp, #64]
+       08 05 00 11                  	add	w8, w8, #1
+       e8 43 00 b9                  	str	w8, [sp, #64]
+       e9 ff ff 17                  	b	#-92 <sparse+0xa0>
+      a8 83 5e f8                  	ldur	x8, [x29, #-24]
+      f0 03 1f 2a                  	mov	w16, wzr
+      1f 01 00 b9                  	str	wzr, [x8]
+      28 00 80 52                  	mov	w8, #1
+      a8 c3 1b b8                  	stur	w8, [x29, #-68]
+      f0 03 08 2a                  	mov	w16, w8
+      a8 43 5c b8                  	ldur	w8, [x29, #-60]
+      11 05 00 11                  	add	w17, w8, #1
+      a8 83 5e f8                  	ldur	x8, [x29, #-24]
+      1f 02 11 6b                  	cmp	w16, w17
+      8a 01 00 54                  	b.ge	#48 <sparse+0x158>
+      b0 c3 9b b8                  	ldursw	x16, [x29, #-68]
+      b1 83 5e f8                  	ldur	x17, [x29, #-24]
+      10 f6 7e d3                  	lsl	x16, x16, #2
+      08 69 70 b8                  	ldr	w8, [x8, x16]
+      30 02 10 8b                  	add	x16, x17, x16
+      11 c2 5f b8                  	ldur	w17, [x16, #-4]
+      08 01 11 0b                  	add	w8, w8, w17
+      08 02 00 b9                  	str	w8, [x16]
+      a8 c3 5b b8                  	ldur	w8, [x29, #-68]
+      08 05 00 11                  	add	w8, w8, #1
+      ef ff ff 17                  	b	#-68 <sparse+0x110>
+      b0 43 9c b8                  	ldursw	x16, [x29, #-60]
+      08 79 70 b8                  	ldr	w8, [x8, x16, lsl #2]
+      b0 03 5e b8                  	ldur	w16, [x29, #-32]
+      08 05 00 51                  	sub	w8, w8, #1
+      1f 01 10 6b                  	cmp	w8, w16
+      e8 43 00 b9                  	str	w8, [sp, #64]
+      0c 28 00 54                  	b.gt	#1280 <sparse+0x670>
+      e8 03 1f 2a                  	mov	w8, wzr
+      bf c3 1b b8                  	stur	wzr, [x29, #-68]
+      08 00 00 14                  	b	#32 <sparse+0x19c>
+      a8 1f 40 f9                  	ldr	x8, [x29, #56]
+      b0 c3 9b b8                  	ldursw	x16, [x29, #-68]
+      f1 03 1f 2a                  	mov	w17, wzr
+      1f 79 30 b8                  	str	wzr, [x8, x16, lsl #2]
+      a8 c3 5b b8                  	ldur	w8, [x29, #-68]
+      08 05 00 11                  	add	w8, w8, #1
+      a8 c3 1b b8                  	stur	w8, [x29, #-68]
+      a8 c3 5b b8                  	ldur	w8, [x29, #-68]
+      b0 43 5c b8                  	ldur	w16, [x29, #-60]
+      1f 01 10 6b                  	cmp	w8, w16
+      ea 02 00 54                  	b.ge	#92 <sparse+0x204>
+      a8 83 5e f8                  	ldur	x8, [x29, #-24]
+      b0 c3 9b b8                  	ldursw	x16, [x29, #-68]
+      08 79 70 b8                  	ldr	w8, [x8, x16, lsl #2]
+      b0 83 5e f8                  	ldur	x16, [x29, #-24]
+      b1 c3 9b b8                  	ldursw	x17, [x29, #-68]
+      e8 3f 00 b9                  	str	w8, [sp, #60]
+      e8 03 08 2a                  	mov	w8, w8
+      10 0a 11 8b                  	add	x16, x16, x17, lsl #2
+      10 06 40 b9                  	ldr	w16, [x16, #4]
+      1f 01 10 6b                  	cmp	w8, w16
+      6a fd ff 54                  	b.ge	#-84 <sparse+0x180>
+      a8 83 5f f8                  	ldur	x8, [x29, #-8]
+      f0 3f 80 b9                  	ldrsw	x16, [sp, #60]
+      f1 03 1f aa                  	mov	x17, xzr
+      11 00 80 12                  	mov	w17, #-1
+      1f 79 30 f8                  	str	xzr, [x8, x16, lsl #3]
+      a8 03 5f f8                  	ldur	x8, [x29, #-16]
+      f0 3f 80 b9                  	ldrsw	x16, [sp, #60]
+      11 79 30 b8                  	str	w17, [x8, x16, lsl #2]
+      e8 3f 40 b9                  	ldr	w8, [sp, #60]
+      08 05 00 11                  	add	w8, w8, #1
+      ee ff ff 17                  	b	#-72 <sparse+0x1b8>
+      a1 43 5e bc                  	ldur	s1, [x29, #-28]
+      a0 03 5d fc                  	ldur	d0, [x29, #-48]
+      21 a4 20 0f                  	sshll	v1.2d, v1.2s, #0
+      02 10 6e 1e                  	fmov	d2, #1.00000000
+      21 d8 61 5e                  	scvtf	d1, d1
+      08 fe e7 d2                  	mov	x8, #4607182418800017408
+      41 18 61 1e                  	fdiv	d1, d2, d1
+      e8 17 00 f9                  	str	x8, [sp, #40]
+      00 00 00 94                  	bl	#0 <sparse+0x224>
+      e0 0f 00 fd                  	str	d0, [sp, #24]
+      e8 03 1f 2a                  	mov	w8, wzr
+      bf 03 1c b8                  	stur	wzr, [x29, #-64]
+      08 00 00 14                  	b	#32 <sparse+0x254>
+      e0 17 40 fd                  	ldr	d0, [sp, #40]
+      e1 0f 40 fd                  	ldr	d1, [sp, #24]
+      a8 03 5c b8                  	ldur	w8, [x29, #-64]
+      00 08 61 1e                  	fmul	d0, d0, d1
+      08 05 00 11                  	add	w8, w8, #1
+      e0 17 00 fd                  	str	d0, [sp, #40]
+      a8 03 1c b8                  	stur	w8, [x29, #-64]
+      a8 03 5c b8                  	ldur	w8, [x29, #-64]
+      b0 43 5e b8                  	ldur	w16, [x29, #-28]
+      1f 01 10 6b                  	cmp	w8, w16
+      8a 13 00 54                  	b.ge	#624 <sparse+0x4d0>
+      e8 03 1f 2a                  	mov	w8, wzr
+      ff 43 00 b9                  	str	wzr, [sp, #64]
+      04 00 00 14                  	b	#16 <sparse+0x27c>
+      e8 43 40 b9                  	ldr	w8, [sp, #64]
+      08 05 00 11                  	add	w8, w8, #1
+      e8 43 00 b9                  	str	w8, [sp, #64]
+      b0 0b 40 f9                  	ldr	x16, [x29, #16]
+      b1 03 9c b8                  	ldursw	x17, [x29, #-64]
+      e8 43 40 b9                  	ldr	w8, [sp, #64]
+      10 7a 71 b8                  	ldr	w16, [x16, x17, lsl #2]
+      1f 01 10 6b                  	cmp	w8, w16
+      4a fd ff 54                  	b.ge	#-88 <sparse+0x238>
+      a8 0f 40 f9                  	ldr	x8, [x29, #24]
+      b0 03 9c b8                  	ldursw	x16, [x29, #-64]
+      11 07 80 52                  	mov	w17, #56
+      12 0e 80 52                  	mov	w18, #112
+      e0 17 40 fd                  	ldr	d0, [sp, #40]
+      08 22 11 9b                  	madd	x8, x16, x17, x8
+      f1 43 80 b9                  	ldrsw	x17, [sp, #64]
+      08 79 71 b8                  	ldr	w8, [x8, x17, lsl #2]
+      a8 c3 1b b8                  	stur	w8, [x29, #-68]
+      a8 13 40 f9                  	ldr	x8, [x29, #32]
+      08 22 12 9b                  	madd	x8, x16, x18, x8
+      01 79 71 fc                  	ldr	d1, [x8, x17, lsl #3]
+      e8 03 1f 2a                  	mov	w8, wzr
+      ff 37 00 b9                  	str	wzr, [sp, #52]
+      00 08 61 1e                  	fmul	d0, d0, d1
+      e0 13 00 fd                  	str	d0, [sp, #32]
+      b0 0b 40 f9                  	ldr	x16, [x29, #16]
+      b1 03 9c b8                  	ldursw	x17, [x29, #-64]
+      e8 37 40 b9                  	ldr	w8, [sp, #52]
+      10 7a 71 b8                  	ldr	w16, [x16, x17, lsl #2]
+      1f 01 10 6b                  	cmp	w8, w16
+      4a fc ff 54                  	b.ge	#-120 <sparse+0x270>
+      a8 cb 41 a9                  	ldp	x8, x18, [x29, #24]
+      b0 03 9c b8                  	ldursw	x16, [x29, #-64]
+      11 07 80 52                  	mov	w17, #56
+      00 0e 80 52                  	mov	w0, #112
+      e1 13 40 fd                  	ldr	d1, [sp, #32]
+      08 22 11 9b                  	madd	x8, x16, x17, x8
+      f1 37 80 b9                  	ldrsw	x17, [sp, #52]
+      10 4a 00 9b                  	madd	x16, x16, x0, x18
+      08 79 71 b8                  	ldr	w8, [x8, x17, lsl #2]
+      e8 33 00 b9                  	str	w8, [sp, #48]
+      00 7a 71 fc                  	ldr	d0, [x16, x17, lsl #3]
+      b0 c3 5b b8                  	ldur	w16, [x29, #-68]
+      00 08 61 1e                  	fmul	d0, d0, d1
+      1f 01 10 6b                  	cmp	w8, w16
+      e0 0b 00 fd                  	str	d0, [sp, #16]
+      41 01 00 54                  	b.ne	#40 <sparse+0x350>
+      a8 c3 77 29                  	ldp	w8, w16, [x29, #-68]
+      1f 01 10 6b                  	cmp	w8, w16
+      e1 00 00 54                  	b.ne	#28 <sparse+0x350>
+      e0 0b 40 fd                  	ldr	d0, [sp, #16]
+      a1 03 5d fc                  	ldur	d1, [x29, #-48]
+      00 28 61 1e                  	fadd	d0, d0, d1
+      a1 83 5c fc                  	ldur	d1, [x29, #-56]
+      00 38 61 1e                  	fsub	d0, d0, d1
+      e0 0b 00 fd                  	str	d0, [sp, #16]
+      e8 03 1f 2a                  	mov	w8, wzr
+      a8 83 5e f8                  	ldur	x8, [x29, #-24]
+      b0 c3 9b b8                  	ldursw	x16, [x29, #-68]
+      ff 0f 00 b9                  	str	wzr, [sp, #12]
+      08 79 70 b8                  	ldr	w8, [x8, x16, lsl #2]
+      b0 83 5e f8                  	ldur	x16, [x29, #-24]
+      b1 c3 9b b8                  	ldursw	x17, [x29, #-68]
+      e8 3f 00 b9                  	str	w8, [sp, #60]
+      e8 03 08 2a                  	mov	w8, w8
+      10 0a 11 8b                  	add	x16, x16, x17, lsl #2
+      10 06 40 b9                  	ldr	w16, [x16, #4]
+      1f 01 10 6b                  	cmp	w8, w16
+      ea 08 00 54                  	b.ge	#284 <sparse+0x49c>
+      a8 03 5f f8                  	ldur	x8, [x29, #-16]
+      f0 3f 80 b9                  	ldrsw	x16, [sp, #60]
+      08 79 70 b8                  	ldr	w8, [x8, x16, lsl #2]
+      f0 33 40 b9                  	ldr	w16, [sp, #48]
+      1f 01 10 6b                  	cmp	w8, w16
+      ec 01 00 54                  	b.gt	#60 <sparse+0x3d4>
+      a8 03 5f f8                  	ldur	x8, [x29, #-16]
+      f0 3f 80 b9                  	ldrsw	x16, [sp, #60]
+      08 79 70 b8                  	ldr	w8, [x8, x16, lsl #2]
+      1f 05 00 31                  	cmn	w8, #1
+      e0 05 00 54                  	b.eq	#188 <sparse+0x468>
+      a8 03 5f f8                  	ldur	x8, [x29, #-16]
+      f0 3f 80 b9                  	ldrsw	x16, [sp, #60]
+      08 79 70 b8                  	ldr	w8, [x8, x16, lsl #2]
+      f0 33 40 b9                  	ldr	w16, [sp, #48]
+      1f 01 10 6b                  	cmp	w8, w16
+      c0 05 00 54                  	b.eq	#184 <sparse+0x47c>
+      e8 3f 40 b9                  	ldr	w8, [sp, #60]
+      08 05 00 11                  	add	w8, w8, #1
+      e5 ff ff 17                  	b	#-108 <sparse+0x364>
+      a8 83 5e f8                  	ldur	x8, [x29, #-24]
+      b0 c3 9b b8                  	ldursw	x16, [x29, #-68]
+      08 09 10 8b                  	add	x8, x8, x16, lsl #2
+      08 05 40 b9                  	ldr	w8, [x8, #4]
+      08 09 00 51                  	sub	w8, w8, #2
+      03 00 00 14                  	b	#12 <sparse+0x3f4>
+      e8 3b 40 b9                  	ldr	w8, [sp, #56]
+      08 05 00 51                  	sub	w8, w8, #1
+      f0 3f 40 b9                  	ldr	w16, [sp, #60]
+      e8 3b 00 b9                  	str	w8, [sp, #56]
+      e8 03 08 2a                  	mov	w8, w8
+      1f 01 10 6b                  	cmp	w8, w16
+      0b 02 00 54                  	b.lt	#64 <sparse+0x444>
+      a8 03 5f f8                  	ldur	x8, [x29, #-16]
+      f0 3b 80 b9                  	ldrsw	x16, [sp, #56]
+      08 79 70 b8                  	ldr	w8, [x8, x16, lsl #2]
+      c8 fe ff 37                  	tbnz	w8, #31, #-40 <sparse+0x3ec>
+      a8 83 5f f8                  	ldur	x8, [x29, #-8]
+      f0 3b 80 b9                  	ldrsw	x16, [sp, #56]
+      08 0d 10 8b                  	add	x8, x8, x16, lsl #3
+      00 01 40 fd                  	ldr	d0, [x8]
+      00 05 00 fd                  	str	d0, [x8, #8]
+      a8 03 5f f8                  	ldur	x8, [x29, #-16]
+      f0 3b 80 b9                  	ldrsw	x16, [sp, #56]
+      08 09 10 8b                  	add	x8, x8, x16, lsl #2
+      10 01 40 b9                  	ldr	w16, [x8]
+      10 05 00 b9                  	str	w16, [x8, #4]
+      eb ff ff 17                  	b	#-84 <sparse+0x3ec>
+      e8 33 40 b9                  	ldr	w8, [sp, #48]
+      b0 03 5f f8                  	ldur	x16, [x29, #-16]
+      f1 3f 80 b9                  	ldrsw	x17, [sp, #60]
+      08 7a 31 b8                  	str	w8, [x16, x17, lsl #2]
+      a8 83 5f f8                  	ldur	x8, [x29, #-8]
+      f0 3f 80 b9                  	ldrsw	x16, [sp, #60]
+      f1 03 1f aa                  	mov	x17, xzr
+      1f 79 30 f8                  	str	xzr, [x8, x16, lsl #3]
+      0c 00 00 14                  	b	#48 <sparse+0x494>
+      e8 33 40 b9                  	ldr	w8, [sp, #48]
+      b0 03 5f f8                  	ldur	x16, [x29, #-16]
+      f1 3f 80 b9                  	ldrsw	x17, [sp, #60]
+      08 7a 31 b8                  	str	w8, [x16, x17, lsl #2]
+      07 00 00 14                  	b	#28 <sparse+0x494>
+      b0 c3 9b b8                  	ldursw	x16, [x29, #-68]
+      a8 1f 40 f9                  	ldr	x8, [x29, #56]
+      10 f6 7e d3                  	lsl	x16, x16, #2
+      11 69 70 b8                  	ldr	w17, [x8, x16]
+      31 06 00 11                  	add	w17, w17, #1
+      11 69 30 b8                  	str	w17, [x8, x16]
+      28 00 80 52                  	mov	w8, #1
+      e8 0f 00 b9                  	str	w8, [sp, #12]
+      e8 0f 40 b9                  	ldr	w8, [sp, #12]
+      a8 0d 00 34                  	cbz	w8, #436 <sparse+0x654>
+      f0 3f 80 b9                  	ldrsw	x16, [sp, #60]
+      a8 83 5f f8                  	ldur	x8, [x29, #-8]
+      e1 0b 40 fd                  	ldr	d1, [sp, #16]
+      10 f2 7d d3                  	lsl	x16, x16, #3
+      00 69 70 fc                  	ldr	d0, [x8, x16]
+      00 28 61 1e                  	fadd	d0, d0, d1
+      00 69 30 fc                  	str	d0, [x8, x16]
+      e8 37 40 b9                  	ldr	w8, [sp, #52]
+      08 05 00 11                  	add	w8, w8, #1
+      e8 37 00 b9                  	str	w8, [sp, #52]
+      82 ff ff 17                  	b	#-504 <sparse+0x2d4>
+      28 00 80 52                  	mov	w8, #1
+      b0 43 5c b8                  	ldur	w16, [x29, #-60]
+      a8 c3 1b b8                  	stur	w8, [x29, #-68]
+      e8 03 08 2a                  	mov	w8, w8
+      1f 01 10 6b                  	cmp	w8, w16
+      4a 01 00 54                  	b.ge	#40 <sparse+0x50c>
+      a8 1f 40 f9                  	ldr	x8, [x29, #56]
+      b0 c3 9b b8                  	ldursw	x16, [x29, #-68]
+      08 09 10 8b                  	add	x8, x8, x16, lsl #2
+      11 c1 7f 29                  	ldp	w17, w16, [x8, #-4]
+      10 02 11 0b                  	add	w16, w16, w17
+      10 01 00 b9                  	str	w16, [x8]
+      a8 c3 5b b8                  	ldur	w8, [x29, #-68]
+      08 05 00 11                  	add	w8, w8, #1
+      f3 ff ff 17                  	b	#-52 <sparse+0x4d4>
+      e8 03 1f 2a                  	mov	w8, wzr
+      bf c3 1b b8                  	stur	wzr, [x29, #-68]
+      04 00 00 14                  	b	#16 <sparse+0x524>
+      a8 c3 5b b8                  	ldur	w8, [x29, #-68]
+      08 05 00 11                  	add	w8, w8, #1
+      a8 c3 1b b8                  	stur	w8, [x29, #-68]
+      a8 c3 5b b8                  	ldur	w8, [x29, #-68]
+      b0 43 5c b8                  	ldur	w16, [x29, #-60]
+      1f 01 10 6b                  	cmp	w8, w16
+      ca 05 00 54                  	b.ge	#184 <sparse+0x5e8>
+      a8 c3 5b b8                  	ldur	w8, [x29, #-68]
+      1f 05 00 71                  	cmp	w8, #1
+      6b 01 00 54                  	b.lt	#44 <sparse+0x568>
+      b0 c3 9b b8                  	ldursw	x16, [x29, #-68]
+      a8 83 5e f8                  	ldur	x8, [x29, #-24]
+      b1 1f 40 f9                  	ldr	x17, [x29, #56]
+      10 f6 7e d3                  	lsl	x16, x16, #2
+      08 69 70 b8                  	ldr	w8, [x8, x16]
+      10 02 11 8b                  	add	x16, x16, x17
+      10 c2 5f b8                  	ldur	w16, [x16, #-4]
+      08 01 10 4b                  	sub	w8, w8, w16
+      e8 4b 00 b9                  	str	w8, [sp, #72]
+      03 00 00 14                  	b	#12 <sparse+0x570>
+      e8 03 1f 2a                  	mov	w8, wzr
+      ff 4b 00 b9                  	str	wzr, [sp, #72]
+      b0 c3 9b b8                  	ldursw	x16, [x29, #-68]
+      a8 83 5e f8                  	ldur	x8, [x29, #-24]
+      b2 1f 40 f9                  	ldr	x18, [x29, #56]
+      10 f6 7e d3                  	lsl	x16, x16, #2
+      08 02 08 8b                  	add	x8, x16, x8
+      08 45 40 29                  	ldp	w8, w17, [x8]
+      50 6a 70 b8                  	ldr	w16, [x18, x16]
+      30 02 10 4b                  	sub	w16, w17, w16
+      e8 43 08 29                  	stp	w8, w16, [sp, #64]
+      e8 4b 40 b9                  	ldr	w8, [sp, #72]
+      f0 47 40 b9                  	ldr	w16, [sp, #68]
+      e8 3f 00 b9                  	str	w8, [sp, #60]
+      e8 03 08 2a                  	mov	w8, w8
+      1f 01 10 6b                  	cmp	w8, w16
+      8a fb ff 54                  	b.ge	#-144 <sparse+0x518>
+      a8 83 5f f8                  	ldur	x8, [x29, #-8]
+      f1 c3 47 69                  	ldpsw	x17, x16, [sp, #60]
+      00 79 70 fc                  	ldr	d0, [x8, x16, lsl #3]
+      f0 3f 80 b9                  	ldrsw	x16, [sp, #60]
+      00 79 30 fc                  	str	d0, [x8, x16, lsl #3]
+      a8 03 5f f8                  	ldur	x8, [x29, #-16]
+      f0 43 80 b9                  	ldrsw	x16, [sp, #64]
+      10 79 70 b8                  	ldr	w16, [x8, x16, lsl #2]
+      10 79 31 b8                  	str	w16, [x8, x17, lsl #2]
+      e8 43 40 b9                  	ldr	w8, [sp, #64]
+      08 05 00 11                  	add	w8, w8, #1
+      e8 43 00 b9                  	str	w8, [sp, #64]
+      e8 3f 40 b9                  	ldr	w8, [sp, #60]
+      08 05 00 11                  	add	w8, w8, #1
+      ed ff ff 17                  	b	#-76 <sparse+0x598>
+      28 00 80 52                  	mov	w8, #1
+      a8 c3 1b b8                  	stur	w8, [x29, #-68]
+      f0 03 08 2a                  	mov	w16, w8
+      a8 43 5c b8                  	ldur	w8, [x29, #-60]
+      11 05 00 11                  	add	w17, w8, #1
+      a8 83 5e f8                  	ldur	x8, [x29, #-24]
+      1f 02 11 6b                  	cmp	w16, w17
+      aa 01 00 54                  	b.ge	#52 <sparse+0x638>
+      b0 c3 9b b8                  	ldursw	x16, [x29, #-68]
+      b1 1f 40 f9                  	ldr	x17, [x29, #56]
+      10 f6 7e d3                  	lsl	x16, x16, #2
+      11 02 11 8b                  	add	x17, x16, x17
+      08 69 70 b8                  	ldr	w8, [x8, x16]
+      31 c2 5f b8                  	ldur	w17, [x17, #-4]
+      08 01 11 4b                  	sub	w8, w8, w17
+      b1 83 5e f8                  	ldur	x17, [x29, #-24]
+      28 6a 30 b8                  	str	w8, [x17, x16]
+      a8 c3 5b b8                  	ldur	w8, [x29, #-68]
+      08 05 00 11                  	add	w8, w8, #1
+      ee ff ff 17                  	b	#-72 <sparse+0x5ec>
+      b0 43 9c b8                  	ldursw	x16, [x29, #-60]
+      fd 7b 49 a9                  	ldp	x29, x30, [sp, #144]
+      08 79 70 b8                  	ldr	w8, [x8, x16, lsl #2]
+      08 05 00 51                  	sub	w8, w8, #1
+      e8 43 00 b9                  	str	w8, [sp, #64]
+      ff 83 02 91                  	add	sp, sp, #160
+      c0 03 5f d6                  	ret
+      a1 03 5c b8                  	ldur	w1, [x29, #-64]
+      00 00 00 90                  	adrp	x0, #0
+      00 00 00 91                  	add	x0, x0, #0
+      00 00 00 94                  	bl	#0 <sparse+0x660>
+      20 00 80 52                  	mov	w0, #1
+      00 00 00 94                  	bl	#0 <sparse+0x668>
+      20 00 20 d4                  	brk	#0x1
+      00 00 00 90                  	adrp	x0, #0
+      00 00 00 91                  	add	x0, x0, #0
+      00 00 00 94                  	bl	#0 <sparse+0x678>
+      e1 43 40 b9                  	ldr	w1, [sp, #64]
+      a2 03 5e b8                  	ldur	w2, [x29, #-32]
+      00 00 00 90                  	adrp	x0, #0
+      00 00 00 91                  	add	x0, x0, #0
+      00 00 00 94                  	bl	#0 <sparse+0x68c>
+      f5 ff ff 17                  	b	#-44 <sparse+0x664>
+
+Disassembly of section .text.icnvrt:
+
+0000000000000000 icnvrt:
+        ff 83 00 d1                  	sub	sp, sp, #32
+        fd 7b 01 a9                  	stp	x29, x30, [sp, #16]
+        fd 43 00 91                  	add	x29, sp, #16
+        fd 7b 41 a9                  	ldp	x29, x30, [sp, #16]
+       01 00 62 1e                  	scvtf	d1, w0
+       e0 07 00 fd                  	str	d0, [sp, #8]
+       20 08 60 1e                  	fmul	d0, d1, d0
+       e0 07 00 b9                  	str	w0, [sp, #4]
+       08 00 78 1e                  	fcvtzs	w8, d0
+       ff 83 00 91                  	add	sp, sp, #32
+       c0 03 5f d6                  	ret
