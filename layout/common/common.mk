@@ -237,7 +237,8 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	$(LLC) $(LLC_FLAGS) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
 	@echo " [CHECK CALLSITE ALIGNMENT] $@ $(word 3,$^)"
 	$(OBJDUMP) -d $@ >$(X86_64_BUILD)/$*_x86_64.objdump
-	$(OBJDUMP) -d $(word 3,$^) >$(ARM64_BUILD)/$*_aarch64.objdump 
+	$(OBJDUMP) -d $(word 3,$^) >$(ARM64_BUILD)/$*_aarch64.objdump
+	export PYTHONPATH=$(PYTHON_MODULE) # TODO: put this elsewhere
 	$(PYTHON) $(CALLSITE_ALIGN_CHECK) $(ARM64_BUILD)/$*_aarch64.objdump $(X86_64_BUILD)/$*_x86_64.objdump
 
 $(X86_64_INIT): $(X86_64_OBJ_INIT)
