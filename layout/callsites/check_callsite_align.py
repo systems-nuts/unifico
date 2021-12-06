@@ -1,6 +1,6 @@
 import sys
 
-from layout.callsites.callsite_align import get_return_addresses
+from layout.callsites.callsite_align import get_return_addresses, check_callsite_number
 
 
 def check_callsite_align(text1, text2):
@@ -16,6 +16,8 @@ def check_callsite_align(text1, text2):
     """
     d1 = get_return_addresses(text1, 'aarch64')
     d2 = get_return_addresses(text2, 'x86-64')
+
+    check_callsite_number(d1, d2)
 
     if d1 == d2:
         return
