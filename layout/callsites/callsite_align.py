@@ -116,11 +116,11 @@ def check_callsite_number(d1, d2):
     @return: Return iff verification was successful, otherwise exit with failure
     """
     if d1.keys() != d2.keys():
-        print('Error: Different number of functions.')
-        print('aarch64 `set difference` x86-64: ')
-        print(set(d1.keys()) - set(d2.keys()))
-        print('x86-64 `set difference` aarch64: ')
-        print(set(d2.keys()) - set(d1.keys()))
+        print('Error: Different number of functions.', file=sys.stderr)
+        print('aarch64 `set difference` x86-64: ', file=sys.stderr)
+        print(set(d1.keys()) - set(d2.keys()), file=sys.stderr)
+        print('x86-64 `set difference` aarch64: ', file=sys.stderr)
+        print(set(d2.keys()) - set(d1.keys()), file=sys.stderr)
         exit(1)
 
     for function in d1.keys():
@@ -129,11 +129,11 @@ def check_callsite_number(d1, d2):
         callsites2 = d2[function]
 
         if callsites1.keys() != callsites2.keys():
-            print('Error: Different number of callsites in function {}.', function)
-            print('aarch64 `set difference` x86-64: ')
-            print(set(callsites1.keys()) - set(callsites2.keys()))
-            print('x86-64 `set difference` aarch64: ')
-            print(set(callsites2.keys()) - set(callsites1.keys()))
+            print('Error: Different number of callsites in function {}.', function, file=sys.stderr)
+            print('aarch64 `set difference` x86-64: ', file=sys.stderr)
+            print(set(callsites1.keys()) - set(callsites2.keys()), file=sys.stderr)
+            print('x86-64 `set difference` aarch64: ', file=sys.stderr)
+            print(set(callsites2.keys()) - set(callsites1.keys()), file=sys.stderr)
             exit(1)
 
     return
