@@ -192,6 +192,7 @@ def align(text1, text2):
             total_padding_arm = total_padding_arm + padding_arm
             total_padding_x86 = total_padding_x86 + padding_x86
 
+    print(json.dumps(padding_dict, indent=4))
     return padding_dict
 
 
