@@ -95,6 +95,50 @@ def get_return_addresses(objdump_output, arch):
     return result
 
 
+def check_callsite_number(d1, d2):
+    """ Verify that both dictionaries have the same number of callsites per function.
+    
+    Given to callsite dictionaries, verify that they contain the same functions,
+    and each function has the same number of callsites.
+    A callsite dictionary has the following form:
+    
+    {
+        'add': {
+            '.Ladd0': 12,
+        },
+        'main': {
+            '.Lmain0': 2,
+            '.Lmain1': 1
+        }
+    }
+    @param d1: callsite dictionary
+    @param d2: callsite dictionary
+    @return: Return iff verification was successful, otherwise exit with failure
+    """
+    if d1.keys() != d2.keys():
+        print('Error: Different number of functions.')
+        print('aarch64 `set difference` x86-64: ')
+        print(set(d1.keys()) - set(d2.keys()))
+        print('x86-64 `set difference` aarch64: ')
+        print(set(d2.keys()) - set(d1.keys()))
+        exit(1)
+
+    for function in d1.keys():
+
+        callsites1 = d1[function]
+        callsites2 = d2[function]
+
+        if callsites1.keys() != callsites2.keys():
+            print('Error: Different number of callsites in function {}.', function)
+            print('aarch64 `set difference` x86-64: ')
+            print(set(callsites1.keys()) - set(callsites2.keys()))
+            print('x86-64 `set difference` aarch64: ')
+            print(set(callsites2.keys()) - set(callsites1.keys()))
+            exit(1)
+
+    return
+
+
 def align(text1, text2):
     """ Return the callsite padding as a lit for two different objdump outputs.
 
@@ -108,10 +152,12 @@ def align(text1, text2):
 
     @param text1: objdump input for arm-v8
     @param text2: objdump input for x86-64
-    @return:
+    @return: Padding dictionary or 1 in the case of failure
     """
     d1 = get_return_addresses(text1, 'aarch64')
     d2 = get_return_addresses(text2, 'x86-64')
+
+    check_callsite_number(d1, d2)
 
     padding_dict = {'aarch64': {}, 'x86-64': {}}
     for function in d1.keys():
@@ -146,7 +192,6 @@ def align(text1, text2):
             total_padding_arm = total_padding_arm + padding_arm
             total_padding_x86 = total_padding_x86 + padding_x86
 
-    print(json.dumps(padding_dict, indent=4))
     return padding_dict
 
 
