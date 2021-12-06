@@ -34,7 +34,7 @@ CFLAGS 		:= -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -m
 CFLAGS 		+= -O0 -Wall -nostdinc
 HET_CFLAGS 	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec
 OPT_FLAGS 	:= -name-string-literals -static-var-sections
-LLC_FLAGS 	:= -function-sections -data-sections # --mc-relax-all TODO
+LLC_FLAGS 	:= -function-sections -data-sections --mc-relax-all # TODO
 LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
 
 IR := $(SRC:.c=.ll)
