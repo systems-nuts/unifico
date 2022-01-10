@@ -33,8 +33,8 @@ OBJDUMP	:= $(LLVM_TOOLCHAIN)/llvm-objdump
 CFLAGS 		:= -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer
 CFLAGS 		+= -O0 -Wall -nostdinc
 HET_CFLAGS 	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec
-OPT_FLAGS 	:= -name-string-literals -static-var-sections
-LLC_FLAGS 	:= -function-sections -data-sections --mc-relax-all # TODO
+OPT_FLAGS 	:= -name-string-literals -static-var-sections -live-values -insert-stackmaps
+LLC_FLAGS 	:= -function-sections -data-sections --mc-relax-all
 LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
 
 IR := $(SRC:.c=.ll)
@@ -62,6 +62,12 @@ ALIGN 					:= $(POPCORN)/bin/pyalign
 ALIGN_CHECK 			:= $(POPCORN)/bin/check-align.py
 CALLSITE_ALIGN			:= /home/nikos/phd/unified_abi/layout/callsites/callsite_align.py
 CALLSITE_ALIGN_CHECK	:= /home/nikos/phd/unified_abi/layout/callsites/check_callsite_align.py
+
+###############################################################################
+# Stackmaps
+###############################################################################
+STACKMAP_DUMP	:= ../../stack-metadata/dump-llvm-stackmap
+STACKMAP_CHECK 	:= ../../stack-metadata/check-stackmaps
 
 ###############################################################################
 # X86-64
@@ -142,6 +148,19 @@ asm-aarch64: $(ARM64_ASM)
 json-aarch64: $(ARM64_JSON)
 
 .PRECIOUS: $(BIN)_cs_align.json
+
+#############
+# Stackmaps #
+#############
+
+stackmaps-dump: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
+	@echo " [STACKMAP DUMP] $^"
+	@$(STACKMAP_DUMP) -f $(ARM64_ALIGNED)
+	@$(STACKMAP_DUMP) -f $(X86_64_ALIGNED)
+
+stackmaps-check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
+	@echo " [STACKMAPS CHECK] Checking stackmaps for $^"
+	@$(STACKMAP_CHECK) -a $(ARM64_ALIGNED) -x $(X86_64_ALIGNED)
 
 ##########
 # Common #
@@ -238,7 +257,7 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	@echo " [CHECK CALLSITE ALIGNMENT] $@ $(word 3,$^)"
 	$(OBJDUMP) -d $@ >$(X86_64_BUILD)/$*_x86_64.objdump
 	$(OBJDUMP) -d $(word 3,$^) >$(ARM64_BUILD)/$*_aarch64.objdump
-	export PYTHONPATH=$(PYTHON_MODULE) # TODO: put this elsewhere
+	export PYTHONPATH=../../..
 	$(PYTHON) $(CALLSITE_ALIGN_CHECK) $(ARM64_BUILD)/$*_aarch64.objdump $(X86_64_BUILD)/$*_x86_64.objdump
 
 $(X86_64_INIT): $(X86_64_OBJ_INIT)
@@ -277,4 +296,5 @@ clean:
 .PHONY: all check clean \
         aligned aligned-aarch64 aligned-x86-64 \
         unaligned unaligned-aarch64 unaligned-x86-64 \
-        init init-aarch64 init-x86-64
+        init init-aarch64 init-x86-64 \
+		stackmaps-dump stackmaps-check
