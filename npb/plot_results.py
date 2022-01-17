@@ -165,14 +165,14 @@ def two_dataframes_boxplot(df1, df2):
         plt.show()
 
 
-def get_overhead_df(dir1, dir2, arch):
+def get_overhead_df(dir1, dir2, arch, npb_class='B'):
     """
-    Plot the graphs of the two experiments in each directory
+    Get the overhead dataframe between two different experiments.
+
     @param dir1: Output files for first experiment
-    @param dir2: Output files for first experiment
-    @param out_plot: Output dir
-    @param hue: Comparison variable for boxplot
-    @param how: Compare
+    @param dir2: Output files for second experiment
+    @param arch: Architecture to focus on
+    @param npb_class: Which NPB class to examine
     @return:
     """
     if not os.path.isdir(dir1):
@@ -182,12 +182,11 @@ def get_overhead_df(dir1, dir2, arch):
 
     df1 = df_from_dir(dir1)
     df1 = df1[df1['Architecture'] == arch]
-    df1 = df1[df1['Class'] == 'B']
-    # df1 = df1[df1['Threads'] == 1]
+    df1 = df1[df1['Class'] == npb_class]
+
     df2 = df_from_dir(dir2)
     df2 = df2[df2['Architecture'] == arch]
-    df2 = df2[df2['Class'] == 'B']
-    # df2 = df2[df2['Threads'] == 1]
+    df2 = df2[df2['Class'] == npb_class]
 
     exp1 = df1.iloc[0, 0]
     exp2 = df2.iloc[0, 0]
