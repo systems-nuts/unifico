@@ -31,6 +31,12 @@ if __name__ == '__main__':
                             type=str,
                             default='B')
 
+    arg_parser.add_argument('-o',
+                            '--out_file',
+                            required=False,
+                            help='Output csv file',
+                            type=str)
+
     args = arg_parser.parse_args()
 
     for arch in args.archs.split(','):

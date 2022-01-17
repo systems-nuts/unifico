@@ -102,7 +102,6 @@ def df_from_dir(results_dir):
         rows.append(out_dict)
 
     df = pd.DataFrame(rows)
-    df.to_csv('npb/results/csv/' + experiment + '.csv', index=False)
 
     return df
 
@@ -165,7 +164,7 @@ def two_dataframes_boxplot(df1, df2):
         plt.show()
 
 
-def get_overhead_df(dir1, dir2, arch, npb_class='B'):
+def get_overhead_df(dir1, dir2, arch, npb_class='B', out_file=None):
     """
     Get the overhead dataframe between two different experiments.
 
@@ -173,6 +172,7 @@ def get_overhead_df(dir1, dir2, arch, npb_class='B'):
     @param dir2: Output files for second experiment
     @param arch: Architecture to focus on
     @param npb_class: Which NPB class to examine
+    @param out_file: Optional path to csv output
     @return:
     """
     if not os.path.isdir(dir1):
@@ -210,6 +210,8 @@ def get_overhead_df(dir1, dir2, arch, npb_class='B'):
     df['Experiment'] = exp2
     df.reset_index(drop=True, inplace=True)
 
+    if out_file:
+        df.to_csv(out_file, index=False)
     return df
 
 
