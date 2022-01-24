@@ -6,7 +6,7 @@ all:
 	+$(MAKE) -C global
 
 clean:
-	+$(MAKE) -C clean bubble_sort
-	+$(MAKE) -C clean call_leaf
-	+$(MAKE) -C clean fact
-	+$(MAKE) -C clean global
+	+$(MAKE) -C bubble_sort clean
+	+$(MAKE) -C call_leaf clean
+	+$(MAKE) -C fact clean
+	+$(MAKE) -C global clean
