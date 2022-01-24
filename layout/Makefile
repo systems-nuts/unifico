@@ -1,12 +1,14 @@
+TEST_SUITE ?= bubble_sort call_leaf fact global
+
+.PHONY: clean
 
 all:
-	+$(MAKE) -C bubble_sort
-	+$(MAKE) -C call_leaf
-	+$(MAKE) -C fact
-	+$(MAKE) -C global
+	for W in $(TEST_SUITE); do \
+		make -C $$W; \
+	done
 
 clean:
-	+$(MAKE) -C bubble_sort clean
-	+$(MAKE) -C call_leaf clean
-	+$(MAKE) -C fact clean
-	+$(MAKE) -C global clean
+	for W in $(TEST_SUITE); do \
+		make -C $$W clean; \
+	done
+
