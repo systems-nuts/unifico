@@ -1,4 +1,5 @@
 import argparse
+import matplotlib.pyplot as plt
 
 from npb.plot_results import get_overhead_df
 
@@ -37,6 +38,8 @@ if __name__ == '__main__':
                             help='Output csv file',
                             type=str)
 
+    arg_parser.add_argument('-p', '--plot', action='store_true')
+
     args = arg_parser.parse_args()
 
     for arch in args.archs.split(','):
@@ -47,3 +50,14 @@ if __name__ == '__main__':
         print('NPB overheads for architecture {}'.format(arch))
         print(df_overhead)
         print('----------------')
+
+        if args.plot:
+            df_overhead.plot(
+                x='Benchmark',
+                y='% Overhead',
+                kind='bar',
+                rot=45,
+                colormap='Paired',
+                title='Overhead compared to baseline - Class B - {}'.format(
+                    arch))
+            plt.show()
