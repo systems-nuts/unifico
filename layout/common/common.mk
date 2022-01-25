@@ -6,6 +6,9 @@ POPCORN 	   ?= /usr/local/popcorn
 LLVM_TOOLCHAIN ?= ~/llvm-9/toolchain/bin
 
 PYTHON ?= python3.9
+ifndef PYTHONPATH
+$(error PYTHONPATH is not set.)
+endif
 
 # Lib musl directories per architecture
 MUSL_TOOLCHAIN 	?= ~/musl-toolchains/llvm-9
