@@ -521,6 +521,9 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# Auxiliary empty target of common/common.mk
+src_changed
+
 utilities/lstopo_p.txt
 *.gdb_history
 *.s
@@ -538,3 +541,4 @@ npb/test/results
 layout/npb3.3-ser-c-flat/unasl-sizes
 temp_files/
 scripts
+
