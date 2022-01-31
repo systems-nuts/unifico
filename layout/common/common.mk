@@ -169,7 +169,7 @@ stackmaps-check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 # Common #
 ##########
 
-%.ll: %.c
+%.ll: %.c src_changed
 	@echo " [IR] $@"
 	$(CC) $(HET_CFLAGS) -ggdb3 -S -emit-llvm $(ARM64_INC) -o $@ $<
 	# Remove the x86-64-related information
@@ -198,6 +198,12 @@ stackmaps-check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	$(OBJDUMP) -d $< >$(X86_64_BUILD)/$*_x86_64_init.objdump
 	$(OBJDUMP) -d $(word 2,$^) >$(ARM64_BUILD)/$*_aarch64_init.objdump 
 	$(PYTHON) $(CALLSITE_ALIGN) $(ARM64_BUILD)/$*_aarch64_init.objdump $(X86_64_BUILD)/$*_x86_64_init.objdump >$@
+
+src_changed: *.c
+	@echo " [SOURCE FILES CHANGED]"
+	echo $?
+	touch $@
+	sshpass -f "/home/nikos/docs/pass.txt" scp $^ nikos@sole:`pwd`
 
 ###########
 # AArch64 #
