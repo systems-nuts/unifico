@@ -1,6 +1,8 @@
-#
+# Passing global fp constant as parameter
 
-## Differences
+## Status: OK
+
+## Differences without LLVM modifications
 
 ```
 Reading section .llvm_pcn_stackmaps: Found 1 stackmaps
