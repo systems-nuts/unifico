@@ -69,8 +69,8 @@ CALLSITE_ALIGN_CHECK	:= /home/nikos/phd/unified_abi/layout/callsites/check_calls
 ###############################################################################
 # Stackmaps
 ###############################################################################
-STACKMAP_DUMP	:= ../../stack-metadata/dump-llvm-stackmap
-STACKMAP_CHECK 	:= ../../stack-metadata/check-stackmaps
+STACKMAP_DUMP	:= /home/nikos/phd/unified_abi/stack-metadata/dump-llvm-stackmap
+STACKMAP_CHECK 	:= /home/nikos/phd/unified_abi/stack-metadata/check-stackmaps
 
 ###############################################################################
 # X86-64
