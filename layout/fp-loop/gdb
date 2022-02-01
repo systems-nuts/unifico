@@ -1,3 +1,5 @@
-source frame.py
-all_frame
-quit
+source ../common/frame.py
+b fmul
+r
+c
+frame_info
