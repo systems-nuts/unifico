@@ -133,6 +133,7 @@ json: json-x86-64 json-aarch64
 aligned: aligned-x86-64 aligned-aarch64
 unaligned: unaligned-x86-64 unaligned-aarch64
 init: init-x86-64 init-aarch64
+stackmaps-dump: stackmaps-dump-x86-64 stackmaps-dump-aarch64
 
 aligned-x86-64: $(X86_64_ALIGNED)
 unaligned-x86-64: $(X86_64_UNALIGNED)
@@ -156,9 +157,12 @@ json-aarch64: $(ARM64_JSON)
 # Stackmaps #
 #############
 
-stackmaps-dump: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
+stackmaps-dump-aarch64: $(ARM64_ALIGNED)
 	@echo " [STACKMAP DUMP] $^"
 	@$(STACKMAP_DUMP) -f $(ARM64_ALIGNED)
+
+stackmaps-dump-x86-64: $(X86_64_ALIGNED)
+	@echo " [STACKMAP DUMP] $^"
 	@$(STACKMAP_DUMP) -f $(X86_64_ALIGNED)
 
 stackmaps-check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
