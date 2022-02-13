@@ -152,6 +152,7 @@ asm-aarch64: $(ARM64_ASM)
 json-aarch64: $(ARM64_JSON)
 
 .PRECIOUS: $(BIN)_cs_align.json
+.PRECIOUS: $(BIN)_opt.ll
 
 #############
 # Stackmaps #
