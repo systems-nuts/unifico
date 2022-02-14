@@ -6,4 +6,6 @@ SRC := bt.c c_timers.c c_print_results.c wtime.c add.c adi.c error.c \
 
 vpath %.h $(shell pwd)
 
+PROJECT_DIR := ../../..
+
 include ../../common/common.mk

@@ -10,6 +10,8 @@ ifndef PYTHONPATH
 $(error PYTHONPATH is not set.)
 endif
 
+PROJECT_DIR ?= ../..
+
 # Lib musl directories per architecture
 MUSL_TOOLCHAIN 	?= ~/musl-toolchains/llvm-9
 ARM64_MUSL  	?= $(MUSL_TOOLCHAIN)/aarch64
@@ -63,14 +65,14 @@ LIBGCC := --start-group -lgcc -lgcc_eh --end-group
 ###############################################################################
 ALIGN 					:= $(POPCORN)/bin/pyalign
 ALIGN_CHECK 			:= $(POPCORN)/bin/check-align.py
-CALLSITE_ALIGN			:= /home/nikos/phd/unified_abi/layout/callsites/callsite_align.py
-CALLSITE_ALIGN_CHECK	:= /home/nikos/phd/unified_abi/layout/callsites/check_callsite_align.py
+CALLSITE_ALIGN			:= $(PROJECT_DIR)/layout/callsites/callsite_align.py
+CALLSITE_ALIGN_CHECK	:= $(PROJECT_DIR)/layout/callsites/check_callsite_align.py
 
 ###############################################################################
 # Stackmaps
 ###############################################################################
-STACKMAP_DUMP	:= /home/nikos/phd/unified_abi/stack-metadata/dump-llvm-stackmap
-STACKMAP_CHECK 	:= /home/nikos/phd/unified_abi/stack-metadata/check-stackmaps
+STACKMAP_DUMP	:= $(PROJECT_DIR)/stack-metadata/dump-llvm-stackmap
+STACKMAP_CHECK 	:= $(PROJECT_DIR)/stack-metadata/check-stackmaps
 
 ###############################################################################
 # X86-64
@@ -208,7 +210,7 @@ src_changed: *.c
 	@echo " [SOURCE FILES CHANGED]"
 	echo $?
 	touch $@
-	sshpass -f "/home/nikos/docs/pass.txt" scp $^ nikos@sole:`pwd`
+	-sshpass -f "/home/nikos/docs/pass.txt" scp $^ nikos@sole:`pwd`
 
 ###########
 # AArch64 #
@@ -234,7 +236,7 @@ src_changed: *.c
 $(ARM64_INIT): $(ARM64_OBJ_INIT)
 	@echo " [LD] $@"
 	$(LD) -o $@ $^ $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
-	sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`
+	-sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`
 
 $(ARM64_UNALIGNED): $(ARM64_OBJ)
 	@echo " [LD] $@"
@@ -246,7 +248,7 @@ $(ARM64_LD_SCRIPT): $(X86_64_LD_SCRIPT)
 $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	@echo " [LD] $@"
 	$(LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_ALIGNED_MAP) -T $<
-	sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`
+	-sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`
 
 ##########
 # x86-64 #
