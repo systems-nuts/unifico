@@ -5,4 +5,6 @@ SRC := blts.c buts.c domain.c erhs.c error.c exact.c c_timers.c \
 	 setcoeff.c setiv.c ssor.c verify.c print_results.c randdp.c \
 	 c_print_results.c wtime.c
 
+PROJECT_DIR := ../../..
+
 include ../../common/common.mk
