@@ -136,7 +136,7 @@ static inline bool dump_arch_location(arch_live_value *record)
   switch(record->inst_type) {
 #define X(name) \
   case name: printf(", " #name " "); break;
-#include "StackTransformTypes.def"
+#include "../common/include/StackTransformTypes.def"
 VALUE_GEN_INST
 #undef X
   default:

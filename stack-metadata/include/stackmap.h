@@ -25,7 +25,7 @@
 
 #include "definitions.h"
 #include "bin.h"
-#include "call_site.h"
+#include "../common/include/call_site.h"
 
 /* A stack size record for a function. */
 typedef struct __attribute__((__packed__)) function_record {
@@ -93,7 +93,7 @@ typedef struct stack_map_section {
 /**
  * Read stack map information from a binary.
  * @param b a binary
- * @param sm a pointer that will be initialized to an array of stack map
+ * @param sm_ptr a pointer that will be initialized to an array of stack map
  *        structs
  * @param num_sm number of stackmap structs parsed
  * @return 0 if successful, an error code otherwise

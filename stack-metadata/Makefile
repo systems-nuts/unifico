@@ -7,7 +7,7 @@ COMPRESS	:= compress
 
 POPCORN        := /usr/local/popcorn
 POPCORN_X86_64 := $(POPCORN)/x86_64
-COMMON         := $(shell readlink -f ../common)
+COMMON         := $(shell readlink -f common)
 
 CC		:= gcc
 CFLAGS		:= -O3 -g -Wall -Iinclude -I$(COMMON)/include \

@@ -10,7 +10,7 @@
 
 #include "definitions.h"
 #include "bin.h"
-#include "call_site.h"
+#include "../common/include/call_site.h"
 
 /**
  * Print warning message.
