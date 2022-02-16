@@ -175,6 +175,7 @@ ret_t check_stackmaps(bin *a, stack_map_section *sm_a, size_t num_sm_a,
         /*
          * The raw location record count may be different, so count
          * non-duplicated records, i.e., ignore backing stack slot locations.
+         * TODO
          */
         unsigned num_a = 0, num_b = 0;
         for(k = 0; k < sm_a[i].call_sites[j].num_locations; k++)
@@ -274,9 +275,27 @@ ret_t check_stackmaps(bin *a, stack_map_section *sm_a, size_t num_sm_a,
           while(sm_b[i].call_sites[j].locations[l+1].is_duplicate) l++;
         }
 
-        // Note: don't check architecture-specific live values because they're
-        // by nature going to be different
-      }
+		num_a = sm_a[i].call_sites[j].num_arch_live;
+		if(num_a > 0)
+		{
+			  snprintf(buf, BUF_SIZE, "%s: stackmap %lu, location has "
+									  "architecture specific live locations (%u)",
+					   sym_a_name, sm_a[i].call_sites[j].id, num_a);
+			  warn(buf);
+			  ret = DIFFERENT_STACK_LAYOUT;
+		}
+
+		num_b = sm_b[i].call_sites[j].num_arch_live;
+		if(num_b > 0)
+		{
+			  snprintf(buf, BUF_SIZE, "%s: stackmap %lu, location has "
+									  "architecture specific live locations (%u)",
+					   sym_b_name, sm_b[i].call_sites[j].id, num_b);
+			  warn(buf);
+			  ret = DIFFERENT_STACK_LAYOUT;
+		}
+
+	  }
     }
   }
 
