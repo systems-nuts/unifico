@@ -257,6 +257,18 @@ ret_t check_stackmaps(bin *a, stack_map_section *sm_a, size_t num_sm_a,
             }
           }
 
+		  flag_a = sm_a[i].call_sites[j].locations[k].type;
+		  flag_b = sm_b[i].call_sites[j].locations[l].type;
+		  if(flag_a != flag_b)
+		  {
+			  snprintf(buf, BUF_SIZE, "%s: stackmap %lu, location %lu/%lu has "
+									  "different location type (%u vs. %u)",
+					   sym_a_name, sm_a[i].call_sites[j].id, k, l, flag_a,
+					   flag_b);
+			  warn(buf);
+			  ret = DIFFERENT_STACK_LAYOUT;
+		  }
+
           /* Skip backing stack slot records */
           while(sm_a[i].call_sites[j].locations[k+1].is_duplicate) k++;
           while(sm_b[i].call_sites[j].locations[l+1].is_duplicate) l++;
