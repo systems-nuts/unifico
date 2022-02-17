@@ -71,8 +71,9 @@ CALLSITE_ALIGN_CHECK	:= $(PROJECT_DIR)/layout/callsites/check_callsite_align.py
 ###############################################################################
 # Stackmaps
 ###############################################################################
-STACKMAP_DUMP	:= $(PROJECT_DIR)/stack-metadata/dump-llvm-stackmap
-STACKMAP_CHECK 	:= $(PROJECT_DIR)/stack-metadata/check-stackmaps
+STACKMAP_DUMP	    := $(PROJECT_DIR)/stack-metadata/dump-llvm-stackmap
+STACKMAP_CHECK 	    := $(PROJECT_DIR)/stack-metadata/check-stackmaps
+STACKMAP_SRC_DIR 	:= $(PROJECT_DIR)/stack-metadata/
 
 ###############################################################################
 # X86-64
@@ -170,6 +171,7 @@ stackmaps-dump-x86-64: $(X86_64_ALIGNED)
 
 stackmaps-check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	@echo " [STACKMAPS CHECK] Checking stackmaps for $^"
+	make -C $(STACKMAP_SRC_DIR)
 	@$(STACKMAP_CHECK) -a $(ARM64_ALIGNED) -x $(X86_64_ALIGNED)
 
 ##########
