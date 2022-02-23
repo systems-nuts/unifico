@@ -3,6 +3,7 @@
 import argparse
 import os
 import subprocess
+import shlex
 
 
 def execute_bash_command(bash_cmd):
@@ -11,7 +12,7 @@ def execute_bash_command(bash_cmd):
 
     :return:
     """
-    process = subprocess.Popen(bash_cmd.split(),
+    process = subprocess.Popen(shlex.split(bash_cmd),
                                stdout=subprocess.PIPE,
                                stderr=subprocess.DEVNULL)
     process.communicate()
