@@ -1,22 +1,18 @@
 #include <stdio.h>
 
-#define A 1220703125.0
+#define A 1220703126.0
 
 double mul(double x, double y) {
 	return x * y;
 }
 
-double div(double x, double y) {
-	return x / y;
-}
 
 int main()
 {
-	double c1, c2, t;
+	double res, temp;
 
-	t = A;
-	c1 = mul(t, t);
-	c2 = div(t, t);
-	printf("%f/n", c1 + c2);
+	temp = A;
+	res = mul(temp, temp);
+	printf("%f/n", res);
 	return 0;
 }
