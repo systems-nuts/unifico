@@ -15,8 +15,9 @@ def execute_bash_command(bash_cmd):
     process = subprocess.Popen(shlex.split(bash_cmd),
                                stdout=subprocess.PIPE,
                                stderr=subprocess.DEVNULL)
-    process.communicate()
-    return process.returncode
+    output, error = process.communicate()
+
+    return output, error, process.returncode
 
 
 def powerset(seq):
@@ -80,8 +81,9 @@ def flag_iteration(flag_file, src_dir, tool, flag_num=1):
         os.chdir(src_dir)
 
         execute_bash_command('make clean')
-        ret_code = execute_bash_command('make stackmaps-check {}={}'.format(
-            tool_flags[tool], flag_combo))
+        cmd = 'make stackmaps-check {}="{}"'.format(tool_flags[tool],
+                                                    flag_combo)
+        _, _, ret_code = execute_bash_command(cmd)
         if ret_code == 0:
             print('SUCCESS:', flag_combo)
 
