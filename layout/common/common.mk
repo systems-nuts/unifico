@@ -29,26 +29,21 @@ MCA_RESULT_DIR 	?= ../mca-results/reg-pressure-O0
 
 ###############################################################################
 # LLVM Tools and Flags
-# The "extra" flags will be given when invoking make,
-# in case we are e.g., experimenting by iterating over some flags.
 ###############################################################################
 CC  	:= $(LLVM_TOOLCHAIN)/clang
 OPT 	:= $(LLVM_TOOLCHAIN)/opt
 LLC 	:= $(LLVM_TOOLCHAIN)/llc
 OBJDUMP	:= $(LLVM_TOOLCHAIN)/llvm-objdump
 
-CFLAGS 		:= -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer
-CFLAGS 		+= -O0 -Wall -nostdinc
-CFLAGS      += $(EXTRA_CFLAGS)
+override CFLAGS += -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer
+override CFLAGS += -O0 -Wall -nostdinc
+
+override OPT_FLAGS 	+= -name-string-literals -static-var-sections -live-values -insert-stackmaps
+
+override LLC_FLAGS 	+= -function-sections -data-sections --mc-relax-all
+override LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
 
 HET_CFLAGS 	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec
-
-OPT_FLAGS 	:= -name-string-literals -static-var-sections -live-values -insert-stackmaps
-OPT_FLAGS   += $(EXTRA_OPT_FLAGS)
-
-LLC_FLAGS 	:= -function-sections -data-sections --mc-relax-all
-LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
-LLC_FLAGS   += $(EXTRA_LLC_FLAGS)
 
 IR := $(SRC:.c=.ll)
 IR_NODBG := $(SRC:.c=_nodbg.ll)
