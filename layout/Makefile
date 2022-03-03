@@ -1,5 +1,6 @@
 TEST_SUITE := bubble-sort call-leaf factorial long-int-slot fp-args fp-spill-weight fp-stack-slot int-loop
 TEST_SUITE += int-loop-accumulate many-add-mul read-write-global-array spill-weight-short spill-weight
+TEST_SUITE += csr-example
 
 .PHONY: clean
 
