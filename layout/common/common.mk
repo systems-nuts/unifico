@@ -40,7 +40,7 @@ override CFLAGS += -O0 -Wall -nostdinc
 
 override OPT_FLAGS 	+= -name-string-literals -static-var-sections -live-values -insert-stackmaps
 
-override LLC_FLAGS 	+= -function-sections -data-sections --mc-relax-all
+override LLC_FLAGS 	+= -function-sections -data-sections -disable-block-align --mc-relax-all
 override LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
 
 HET_CFLAGS 	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec
