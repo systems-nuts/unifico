@@ -20,7 +20,7 @@
 // Configuration
 ///////////////////////////////////////////////////////////////////////////////
 
-static const char *args = "ha:x:p:";
+static const char *args = "ha:x:p:f:";
 static const char *help =
 		"check-stackmaps - check LLVM stackmap sections for matching metadata across "
 		"binaries\n\n\
@@ -31,6 +31,7 @@ Options:\n\
 \t-a file : name of AArch64 executable\n\
 \t-x file : name of x86-64 executable\n\n\
 \t-p file : name of PowerPC64 executable\n\n\
+\t-f function : name of function to check\n\n\
 \
 Note: this tool assumes binaries have been through the alignment tool, as it \
 checks stackmaps based on function addresses";
@@ -38,6 +39,7 @@ checks stackmaps based on function addresses";
 static const char *bin_aarch64_fn = NULL;
 static const char *bin_powerpc64_fn = NULL;
 static const char *bin_x86_64_fn = NULL;
+static const char *func_name = NULL;
 bool verbose = false;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -69,6 +71,9 @@ static void parse_args(int argc, char **argv)
 				break;
 			case 'p':
 				bin_powerpc64_fn = optarg;
+				break;
+			case 'f':
+				func_name = optarg;
 				break;
 			default:
 				fprintf(stderr, "Unknown argument '%c'\n", arg);
