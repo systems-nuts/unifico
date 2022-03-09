@@ -98,7 +98,7 @@ static void parse_args(int argc, char **argv)
  * The goal of the checker is to print out as much non-matching information as
  * possible rather than to die on errors.
  * So, we'll iterate over everything and print out where we find inconsistencies.
- * If `function_name` is given, we only check the callsites of this function.
+ * If `func_name` is given, we only check the callsites of this function.
  */
 ret_t check_stackmaps(bin *a, stack_map_section *sm_a, size_t num_sm_a,
 					  bin *b, stack_map_section *sm_b, size_t num_sm_b)
