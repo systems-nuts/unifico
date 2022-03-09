@@ -1,4 +1,16 @@
-# Directory structure 
+# Useful LLVM flags
+
+| Flag                        | Description                                                                     |   Type | Custom |
+|:----------------------------|:--------------------------------------------------------------------------------|-------:|-------:|
+| disable-lsr                 | Disable loop strength reduction solver                                          |   bool |    Yes |
+| simplify-regalloc           | Simplify costs in greedy register allocation                                    |   bool |    Yes |
+| aarch64-csr-alignment       | Set the alignment of single callee-saved registers for AArch64 (defaults to 16) |    int |    Yes |
+| disable-x86-frame-obj-order | Disable heuristic for frame object ordering in X86 frame lowering               |   bool |    Yes |
+| disable-block-align         | Disable alignment at the beginning of basic blocks                              |   bool |    Yes |
+| callsite-padding            | JSON file with padding values for callsites                                     | string |    Yes |
+
+
+## Directory structure
 
 * *common/*: Contains some common functionality files
 
@@ -8,7 +20,7 @@
 * `sudo apt-get install python-dev`
 * [Instructions](http://www.gdbtutorial.com/tutorial/how-install-gdb), but use `./configure --with-python instead`
 
-## Observations
+## Observations - Old
 
 ### fact.c 
 It seems to be going ok with `-O0`, but with `-O1` the `x29,x30` pair is put on the top of the stack, instead of the bottom.
