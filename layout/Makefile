@@ -11,7 +11,7 @@ all:
 
 test:
 	for W in $(TEST_SUITE); do \
-		make -C $$W stackmaps-check; \
+		(make -C $$W stackmaps-check) || exit 1; \
 	done
 
 clean:
