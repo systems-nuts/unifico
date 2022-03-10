@@ -14,7 +14,7 @@ def execute_bash_command(bash_cmd):
     """
     process = subprocess.Popen(shlex.split(bash_cmd),
                                stdout=subprocess.PIPE,
-                               stderr=subprocess.DEVNULL)
+                               stderr=subprocess.PIPE)
     output, error = process.communicate()
 
     return output, error, process.returncode
@@ -54,7 +54,7 @@ def cartesian_product(seq):
             yield x + ' ' + y
 
 
-def flag_iteration(flag_file, src_dir, tool, flag_num=1):
+def flag_iteration(flag_file, src_dir, tool, flag_num=1, verbose=False):
     """
     Iterate over LLVM flags using Makefile, running stackmaps-check.
     Assumes that each flag is in a separate line.
@@ -63,6 +63,7 @@ def flag_iteration(flag_file, src_dir, tool, flag_num=1):
     @param src_dir: Where to run the commands (assumes it is a subdir of layout/)
     @param tool: Which LLVM tool are we using to test its flags
     @param flag_num: How many combinations of flags to try (currently 1 or 2 are supported)
+    @param verbose: Whether to print Makefile output
     @return:
     """
     tool_flags = {
@@ -83,9 +84,11 @@ def flag_iteration(flag_file, src_dir, tool, flag_num=1):
         execute_bash_command('make clean')
         cmd = 'make stackmaps-check {}="{}"'.format(tool_flags[tool],
                                                     flag_combo)
-        _, _, ret_code = execute_bash_command(cmd)
+        output, error, ret_code = execute_bash_command(cmd)
         if ret_code == 0:
             print('SUCCESS:', flag_combo)
+        elif verbose:
+            print(error.decode('utf-8'))
 
         os.chdir('..')
 
@@ -109,10 +112,16 @@ if __name__ == '__main__':
                         type=int,
                         required=False,
                         default=1)
+    parser.add_argument('-v',
+                        '--verbose',
+                        action='store_true',
+                        required=False,
+                        default=False)
 
     args = parser.parse_args()
 
     flag_iteration(flag_file=args.flags_file,
                    src_dir=args.src_dir,
                    tool=args.llvm_tool,
-                   flag_num=args.flag_num)
+                   flag_num=args.flag_num,
+                   verbose=args.verbose)
