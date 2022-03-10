@@ -54,12 +54,12 @@ def cartesian_product(seq):
         start_point += 1
 
 
-def flag_iteration(flag_file, src_dir, tool, flag_num=1, verbose=False):
+def flag_iteration(flags, src_dir, tool, flag_num=1, verbose=False):
     """
     Iterate over LLVM flags using Makefile, running stackmaps-check.
     Assumes that each flag is in a separate line.
 
-    @param flag_file: list of flags
+    @param flags: list of flags
     @param src_dir: Where to run the commands (assumes it is a subdir of layout/)
     @param tool: Which LLVM tool are we using to test its flags
     @param flag_num: How many combinations of flags to try (currently 1 or 2 are supported)
@@ -71,9 +71,6 @@ def flag_iteration(flag_file, src_dir, tool, flag_num=1, verbose=False):
         'opt': 'OPT_FLAGS',
         'llc': 'LLC_FLAGS',
     }
-
-    flags = flag_file.read()
-    flags = flags.split('\n')[:-1]  # Assumes flag file ends with empty line
 
     if flag_num == 2:
         flags = cartesian_product(flags)
@@ -99,10 +96,11 @@ if __name__ == '__main__':
         'A script to iterate over LLVM flags. Run it inside unified_abi/layout/'
     )
 
-    parser.add_argument('-f', '--flags-file', type=argparse.FileType('r'))
-    parser.add_argument('-s', '--src-dir', type=str)
-    parser.add_argument('-t',
-                        '--llvm-tool',
+    parser.add_argument('--flags-file',
+                        required=False,
+                        type=argparse.FileType('r'))
+    parser.add_argument('--src-dir', type=str)
+    parser.add_argument('--llvm-tool',
                         type=str,
                         required=False,
                         choices=['clang', 'opt', 'llc'],
@@ -118,9 +116,15 @@ if __name__ == '__main__':
                         required=False,
                         default=False)
 
-    args = parser.parse_args()
+    args, unknown_args = parser.parse_known_args()
 
-    flag_iteration(flag_file=args.flags_file,
+    flags = unknown_args
+    if args.flags_file:
+        file_flags = args.flags_file.read()
+        # Assumes flag file ends with empty line
+        flags += file_flags.split('\n')[:-1]
+
+    flag_iteration(flags=flags,
                    src_dir=args.src_dir,
                    tool=args.llvm_tool,
                    flag_num=args.flag_num,
