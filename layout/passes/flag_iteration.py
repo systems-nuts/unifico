@@ -49,9 +49,9 @@ def cartesian_product(seq):
     """
     start_point = 1
     for x in seq:
-        start_point += 1
         for y in seq[start_point:]:
             yield x + ' ' + y
+        start_point += 1
 
 
 def flag_iteration(flag_file, src_dir, tool, flag_num=1, verbose=False):
