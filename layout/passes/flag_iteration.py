@@ -66,9 +66,9 @@ def flag_iteration(flag_file, src_dir, tool, flag_num=1):
     @return:
     """
     tool_flags = {
-        'clang': 'EXTRA_CLANG_FLAGS',
-        'opt': 'EXTRA_OPT_FLAGS',
-        'llc': 'EXTRA_LLC_FLAGS',
+        'clang': 'CLANG_FLAGS',
+        'opt': 'OPT_FLAGS',
+        'llc': 'LLC_FLAGS',
     }
 
     flags = flag_file.read()
