@@ -96,11 +96,14 @@ if __name__ == '__main__':
         'A script to iterate over LLVM flags. Run it inside unified_abi/layout/'
     )
 
-    parser.add_argument('--flags-file',
+    parser.add_argument('-f',
+                        '--flags-file',
                         required=False,
                         type=argparse.FileType('r'))
-    parser.add_argument('--src-dir', type=str)
-    parser.add_argument('--llvm-tool',
+    parser.add_argument('flags', nargs='*')
+    parser.add_argument('-s', '--src-dir', type=str)
+    parser.add_argument('-t',
+                        '--llvm-tool',
                         type=str,
                         required=False,
                         choices=['clang', 'opt', 'llc'],
@@ -116,13 +119,15 @@ if __name__ == '__main__':
                         required=False,
                         default=False)
 
-    args, unknown_args = parser.parse_known_args()
+    args = parser.parse_args()
 
-    flags = unknown_args
+    flags = []
     if args.flags_file:
         file_flags = args.flags_file.read()
         # Assumes flag file ends with empty line
         flags += file_flags.split('\n')[:-1]
+    if args.flags:
+        flags += args.flags
 
     flag_iteration(flags=flags,
                    src_dir=args.src_dir,
