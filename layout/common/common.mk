@@ -177,7 +177,14 @@ stackmaps-dump-x86-64: $(X86_64_ALIGNED)
 stackmaps-check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	@echo " [STACKMAPS CHECK] Checking stackmaps for $^"
 	make -C $(STACKMAP_SRC_DIR)
-	@$(STACKMAP_CHECK) -a $(ARM64_ALIGNED) -x $(X86_64_ALIGNED)
+	@{ \
+    if [ -z ${TARGET_FUNC} ]; then \
+        $(STACKMAP_CHECK) -a $(ARM64_ALIGNED) -x $(X86_64_ALIGNED); \
+    else \
+        $(STACKMAP_CHECK) -a $(ARM64_ALIGNED) -x $(X86_64_ALIGNED) -f $(TARGET_FUNC); \
+    fi \
+    }
+
 
 ##########
 # Common #
