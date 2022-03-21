@@ -62,7 +62,7 @@ def flag_iteration(flags, src_dir, tool, flag_num=1, verbose=False):
     @param flags: list of flags
     @param src_dir: Where to run the commands (assumes it is a subdir of layout/)
     @param tool: Which LLVM tool are we using to test its flags
-    @param flag_num: How many combinations of flags to try (currently 1 or 2 are supported)
+    @param flag_num: How many combinations of flags to try (anything over 2 gives the power set).
     @param verbose: Whether to print Makefile output
     @return:
     """
@@ -74,8 +74,13 @@ def flag_iteration(flags, src_dir, tool, flag_num=1, verbose=False):
 
     if flag_num == 2:
         flags = cartesian_product(flags)
+    elif flag_num > 2:
+        flags = powerset(flags)
 
     for flag_combo in flags:
+        if flag_num > 2:
+            flag_combo = ' '.join(flag_combo)
+        print(flag_combo)
         os.chdir(src_dir)
 
         execute_bash_command('make clean')
