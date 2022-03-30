@@ -43,7 +43,9 @@ override OPT_FLAGS 	+= -name-string-literals -static-var-sections -live-values -
 override LLC_FLAGS 	+= -function-sections -data-sections
 override LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
 # Callsite-related
-override LLC_FLAGS	+= -disable-block-align --mc-relax-all
+override LLC_FLAGS  += -disable-block-align --mc-relax-all
+# Custom
+override LLC_FLAGS  += -disable-x86-frame-obj-order -aarch64-csr-alignment=8 -simplify-regalloc -disable-lsr-solver
 
 HET_CFLAGS 	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec
 
