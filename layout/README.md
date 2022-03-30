@@ -2,7 +2,7 @@
 
 | Flag                        | Description                                                                     |   Type | Custom |
 |:----------------------------|:--------------------------------------------------------------------------------|-------:|-------:|
-| disable-lsr                 | Disable loop strength reduction solver                                          |   bool |    Yes |
+| disable-lsr-solver          | Disable loop strength reduction solver                                          |   bool |    Yes |
 | simplify-regalloc           | Simplify costs in greedy register allocation                                    |   bool |    Yes |
 | aarch64-csr-alignment       | Set the alignment of single callee-saved registers for AArch64 (defaults to 16) |    int |    Yes |
 | disable-x86-frame-obj-order | Disable heuristic for frame object ordering in X86 frame lowering               |   bool |    Yes |
