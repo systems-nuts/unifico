@@ -45,7 +45,7 @@ override LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regall
 # Callsite-related
 override LLC_FLAGS  += -disable-block-align --mc-relax-all
 # Custom
-override LLC_FLAGS  += -disable-x86-frame-obj-order -aarch64-csr-alignment=8 -simplify-regalloc -disable-lsr-solver
+override LLC_FLAGS  += -disable-x86-frame-obj-order -aarch64-csr-alignment=8 -simplify-regalloc -disable-lsr-solver -sink-insts-to-avoid-spills
 
 HET_CFLAGS 	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec
 
