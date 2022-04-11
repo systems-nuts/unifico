@@ -307,7 +307,6 @@ ret_t check_stackmaps(bin *a, stack_map_section *sm_a, size_t num_sm_a,
 											"architecture specific live locations (%u)",
 							 sym_a_name, sm_a[i].call_sites[j].id, num_a);
 					warn(buf);
-					ret = DIFFERENT_STACK_LAYOUT;
 				}
 
 				num_b = sm_b[i].call_sites[j].num_arch_live;
@@ -317,9 +316,16 @@ ret_t check_stackmaps(bin *a, stack_map_section *sm_a, size_t num_sm_a,
 											"architecture specific live locations (%u)",
 							 sym_b_name, sm_b[i].call_sites[j].id, num_b);
 					warn(buf);
-					ret = DIFFERENT_STACK_LAYOUT;
 				}
 
+				if (num_a != num_b)
+				{
+					snprintf(buf, BUF_SIZE, "%s: stackmap %lu, location has "
+											"different number of architecture specific live locations (%u vs %u)",
+							 sym_b_name, sm_b[i].call_sites[j].id, num_a, num_b);
+					warn(buf);
+					ret = DIFFERENT_STACK_LAYOUT;
+				}
 			}
 		}
 	}
