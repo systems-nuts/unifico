@@ -346,6 +346,16 @@ ret_t check_stackmaps(bin *a, stack_map_section *sm_a, size_t num_sm_a,
 						warn(buf);
 						ret = DIFFERENT_STACK_LAYOUT;
 					}
+
+					int64_t value_a = sm_a[i].call_sites[j].arch_live[k].operand_offset_or_constant;
+					int64_t value_b = sm_b[i].call_sites[j].arch_live[l].operand_offset_or_constant;
+					if(value_a != value_b)
+					{
+						snprintf(buf, BUF_SIZE, "%s, callsite %lu: arch-specific live value %lu/%lu has "
+												"different location operand offset or constant (%ld vs. %ld)",
+								 sym_a_name, sm_a[i].call_sites[j].id, k, l, value_a, value_b);
+						warn(buf);
+					}
 				}
 			}
 		}
