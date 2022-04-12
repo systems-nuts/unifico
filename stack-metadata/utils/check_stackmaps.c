@@ -311,6 +311,42 @@ ret_t check_stackmaps(bin *a, stack_map_section *sm_a, size_t num_sm_a,
 					warn(buf);
 					ret = DIFFERENT_STACK_LAYOUT;
 				}
+
+				for(k = 0, l = 0; k < num_a && l < num_b; k++, l++)
+				{
+					flag_a = sm_a[i].call_sites[j].arch_live[k].type;
+					flag_b = sm_b[i].call_sites[j].arch_live[l].type;
+					if(flag_a != flag_b)
+					{
+						snprintf(buf, BUF_SIZE, "%s, callsite %lu: arch-specific live value %lu/%lu has "
+												"different location type (%d vs. %d)",
+								 sym_a_name, sm_a[i].call_sites[j].id, k, l, flag_a, flag_b);
+						warn(buf);
+						ret = DIFFERENT_STACK_LAYOUT;
+					}
+
+					flag_a = sm_a[i].call_sites[j].arch_live[k].inst_type;
+					flag_b = sm_b[i].call_sites[j].arch_live[l].inst_type;
+					if(flag_a != flag_b)
+					{
+						snprintf(buf, BUF_SIZE, "%s, callsite %lu: arch-specific live value %lu/%lu has "
+												"different location instruction type (%d vs. %d)",
+								 sym_a_name, sm_a[i].call_sites[j].id, k, l, flag_a, flag_b);
+						warn(buf);
+						ret = DIFFERENT_STACK_LAYOUT;
+					}
+
+					flag_a = sm_a[i].call_sites[j].arch_live[k].operand_type;
+					flag_b = sm_b[i].call_sites[j].arch_live[l].operand_type;
+					if(flag_a != flag_b)
+					{
+						snprintf(buf, BUF_SIZE, "%s, callsite %lu: arch-specific live value %lu/%lu has "
+												"different location operand type (%d vs. %d)",
+								 sym_a_name, sm_a[i].call_sites[j].id, k, l, flag_a, flag_b);
+						warn(buf);
+						ret = DIFFERENT_STACK_LAYOUT;
+					}
+				}
 			}
 		}
 	}
