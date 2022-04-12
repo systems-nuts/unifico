@@ -301,22 +301,7 @@ ret_t check_stackmaps(bin *a, stack_map_section *sm_a, size_t num_sm_a,
 				}
 
 				num_a = sm_a[i].call_sites[j].num_arch_live;
-				if(num_a > 0)
-				{
-					snprintf(buf, BUF_SIZE, "%s: stackmap %lu, location has "
-											"architecture specific live locations (%u)",
-							 sym_a_name, sm_a[i].call_sites[j].id, num_a);
-					warn(buf);
-				}
-
 				num_b = sm_b[i].call_sites[j].num_arch_live;
-				if(num_b > 0)
-				{
-					snprintf(buf, BUF_SIZE, "%s: stackmap %lu, location has "
-											"architecture specific live locations (%u)",
-							 sym_b_name, sm_b[i].call_sites[j].id, num_b);
-					warn(buf);
-				}
 
 				if (num_a != num_b)
 				{
