@@ -170,11 +170,23 @@ json-aarch64: $(ARM64_JSON)
 
 stackmaps-dump-aarch64: $(ARM64_ALIGNED)
 	@echo " [STACKMAP DUMP] $^"
-	@$(STACKMAP_DUMP) -f $(ARM64_ALIGNED)
+	@{ \
+    if [ -z ${TARGET_FUNC} ]; then \
+        $(STACKMAP_DUMP) -f $(ARM64_ALIGNED); \
+    else \
+        $(STACKMAP_DUMP) -f $(ARM64_ALIGNED) -n $(TARGET_FUNC); \
+    fi \
+    }
 
 stackmaps-dump-x86-64: $(X86_64_ALIGNED)
 	@echo " [STACKMAP DUMP] $^"
-	@$(STACKMAP_DUMP) -f $(X86_64_ALIGNED)
+	@{ \
+    if [ -z ${TARGET_FUNC} ]; then \
+        $(STACKMAP_DUMP) -f $(X86_64_ALIGNED); \
+    else \
+        $(STACKMAP_DUMP) -f $(X86_64_ALIGNED) -n $(TARGET_FUNC); \
+    fi \
+    }
 
 stackmaps-check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	@echo " [STACKMAPS CHECK] Checking stackmaps for $^"
