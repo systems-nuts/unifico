@@ -533,6 +533,7 @@ utilities/lstopo_p.txt
 *.pptx
 *.docx
 *.json
+*_objdump.txt
 *aarch64
 *x86-64
 spec2017/results/

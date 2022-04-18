@@ -277,6 +277,7 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	@echo " [LD] $@"
 	$(LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_ALIGNED_MAP) -T $<
 	-sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`
+	$(OBJDUMP) -d --print-imm-hex $@ >aarch64_objdump.txt
 
 ##########
 # x86-64 #
@@ -322,6 +323,7 @@ $(X86_64_LD_SCRIPT): $(ARM64_UNALIGNED) $(X86_64_UNALIGNED)
 $(X86_64_ALIGNED): $(X86_64_LD_SCRIPT)
 	@echo " [LD] $@"
 	$(LD) -o $@ $(X86_64_OBJ) $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_ALIGNED_MAP) -T $<
+	objdump -d -M intel $@ >x86_objdump.txt
 
 check_un: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	@echo " [CHECK] Checking unalignment for $^"
