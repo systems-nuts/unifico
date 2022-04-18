@@ -200,7 +200,7 @@ static inline bool dump_stackmaps(bin* b, stack_map_section *sm, size_t num_sm)
 {
 	size_t i;
 	uint32_t j;
-	uint32_t func_idx;  // If func_name is given, then this will be its index in the function records.
+	int64_t func_idx = -1;  // If func_name is given, then this will be its index in the function records.
 	uint64_t func;
 	GElf_Sym sym;
 	const char *sym_name;
@@ -208,7 +208,6 @@ static inline bool dump_stackmaps(bin* b, stack_map_section *sm, size_t num_sm)
 	printf("Found %lu stackmaps\n", num_sm);
 	for(i = 0; i < num_sm; i++)
 	{
-		func_idx = -1;  // Reset the target function index.
 		printf("Stackmap v%u: %u functions, %u constants, %u call sites\n",
 			   sm[i].version, sm[i].num_functions, sm[i].num_constants,
 			   sm[i].num_records);
@@ -227,7 +226,10 @@ static inline bool dump_stackmaps(bin* b, stack_map_section *sm, size_t num_sm)
 			{
 				continue;
 			}
-			func_idx = j;
+			else
+			{
+				func_idx = j;
+			}
 			printf("  Function %u: address=%lx, stack size=%lu, number of unwinding "
 				   "entries: %u, offset into unwinding section: %u\n",
 				   j, sm[i].function_records[j].func_addr,
@@ -242,7 +244,7 @@ static inline bool dump_stackmaps(bin* b, stack_map_section *sm, size_t num_sm)
 
 		for(j = 0; j < sm[i].num_records; j++)
 		{
-			if (func_idx >= 0 && func_idx != sm[i].call_sites[j].func_idx)
+			if (func_name && func_idx != sm[i].call_sites[j].func_idx)
 			{
 				continue;
 			}
