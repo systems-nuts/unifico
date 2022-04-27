@@ -47,6 +47,8 @@ override LLC_FLAGS  += -disable-block-align --mc-relax-all
 # Custom
 override LLC_FLAGS  += -disable-x86-frame-obj-order -aarch64-csr-alignment=8 -simplify-regalloc -disable-lsr-solver
 
+override LLC_FLAGS_X86 += -mattr=+aarch64-sized-imm
+
 HET_CFLAGS 	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec
 
 IR := $(SRC:.c=.ll)
@@ -285,7 +287,7 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 
 %_x86_64.s: %_opt_nodbg.ll
 	@echo " [LLC ASSEMBLY] $@"
-	$(LLC) $(LLC_FLAGS) -march=x86-64 --x86-asm-syntax=intel -o $(X86_64_BUILD)/$(<:_opt_nodbg.ll=_x86_64.s) $<
+	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 --x86-asm-syntax=intel -o $(X86_64_BUILD)/$(<:_opt_nodbg.ll=_x86_64.s) $<
 
 %_x86_64.json: %_x86_64.s
 	@echo " [LLVM-MCA] $@"
@@ -294,11 +296,11 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 
 %_x86_64_init.o: %_opt.ll
 	@echo " [LLC] $@"
-	$(LLC) $(LLC_FLAGS) -march=x86-64 -filetype=obj -o $(<:_opt.ll=_x86_64_init.o) $<
+	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -o $(<:_opt.ll=_x86_64_init.o) $<
 
 %_x86_64.o: %_cs_align.json %_opt.ll %_aarch64.o
 	@echo " [LLC WITH CALLSITE ALIGNMENT] $@"
-	$(LLC) $(LLC_FLAGS) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
+	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
 	@echo " [CHECK CALLSITE ALIGNMENT] $@ $(word 3,$^)"
 	$(OBJDUMP) -d $@ >$(X86_64_BUILD)/$*_x86_64.objdump
 	$(OBJDUMP) -d $(word 3,$^) >$(ARM64_BUILD)/$*_aarch64.objdump
