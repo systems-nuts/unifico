@@ -230,9 +230,9 @@ static inline bool dump_stackmaps(bin* b, stack_map_section *sm, size_t num_sm)
 			{
 				func_idx = j;
 			}
-			printf("  Function %u: address=%lx, stack size=%lu, number of unwinding "
+			printf("  Function %s: address=%lx, stack size=%lu, number of unwinding "
 				   "entries: %u, offset into unwinding section: %u\n",
-				   j, sm[i].function_records[j].func_addr,
+				   sym_name, sm[i].function_records[j].func_addr,
 				   sm[i].function_records[j].stack_size,
 				   sm[i].function_records[j].num_unwind,
 				   sm[i].function_records[j].unwind_offset);
