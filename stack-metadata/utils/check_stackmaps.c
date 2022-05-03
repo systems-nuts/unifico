@@ -224,7 +224,7 @@ ret_t check_stackmaps(bin *a, stack_map_section *sm_a, size_t num_sm_a,
 					flag_b = sm_b[i].call_sites[j].locations[l].size;
 					if(flag_a != flag_b)
 					{
-						snprintf(buf, BUF_SIZE, "%s: stackmap %lu, location %lu/%lu has "
+						snprintf(buf, BUF_SIZE, "%s: callsite %lu, value locations %lu/%lu have "
 												"different size (%d vs. %d)",
 								 sym_a_name, sm_a[i].call_sites[j].id, k, l, flag_a,
 								 flag_b);
@@ -236,7 +236,7 @@ ret_t check_stackmaps(bin *a, stack_map_section *sm_a, size_t num_sm_a,
 					flag_b = sm_b[i].call_sites[j].locations[l].is_ptr;
 					if(flag_a != flag_b)
 					{
-						snprintf(buf, BUF_SIZE, "%s: stackmap %lu, location %lu/%lu has "
+						snprintf(buf, BUF_SIZE, "%s: callsite %lu, locations %lu/%lu have "
 												"mismatched pointer flag (%d vs. %d)",
 								 sym_a_name, sm_a[i].call_sites[j].id, k, l, flag_a,
 								 flag_b);
@@ -248,7 +248,7 @@ ret_t check_stackmaps(bin *a, stack_map_section *sm_a, size_t num_sm_a,
 					flag_b = sm_b[i].call_sites[j].locations[l].is_alloca;
 					if(flag_a != flag_b)
 					{
-						snprintf(buf, BUF_SIZE, "%s: stackmap %lu, location %lu/%lu has "
+						snprintf(buf, BUF_SIZE, "%s: callsite %lu, value locations %lu/%lu have "
 												"mismatched alloca flag (%d vs. %d)",
 								 sym_a_name, sm_a[i].call_sites[j].id, k, l, flag_a,
 								 flag_b);
@@ -262,7 +262,7 @@ ret_t check_stackmaps(bin *a, stack_map_section *sm_a, size_t num_sm_a,
 						size_b = sm_b[i].call_sites[j].locations[l].alloca_size;
 						if(size_a != size_b)
 						{
-							snprintf(buf, BUF_SIZE, "%s: stackmap %lu, location %lu/%lu has "
+							snprintf(buf, BUF_SIZE, "%s: callsite %lu, value locations %lu/%lu have "
 													"different size (%d vs. %d)",
 									 sym_a_name, sm_a[i].call_sites[j].id, k, l,
 									 size_a, size_b);
@@ -275,7 +275,7 @@ ret_t check_stackmaps(bin *a, stack_map_section *sm_a, size_t num_sm_a,
 					flag_b = sm_b[i].call_sites[j].locations[l].type;
 					if(flag_a != flag_b)
 					{
-						snprintf(buf, BUF_SIZE, "%s: stackmap %lu, location %lu/%lu has "
+						snprintf(buf, BUF_SIZE, "%s: callsite %lu, value locations %lu/%lu have "
 												"different location type (%d vs. %d)",
 								 sym_a_name, sm_a[i].call_sites[j].id, k, l, flag_a,
 								 flag_b);
@@ -287,7 +287,7 @@ ret_t check_stackmaps(bin *a, stack_map_section *sm_a, size_t num_sm_a,
 					flag_b = sm_b[i].call_sites[j].locations[l].offset_or_constant;
 					if(flag_a != flag_b)
 					{
-						snprintf(buf, BUF_SIZE, "%s: stackmap %lu, location %lu/%lu has "
+						snprintf(buf, BUF_SIZE, "%s: callsite %lu, value locations %lu/%lu have "
 												"different location offset or  different constant (%d vs. %d)",
 								 sym_a_name, sm_a[i].call_sites[j].id, k, l, flag_a,
 								 flag_b);
@@ -305,7 +305,7 @@ ret_t check_stackmaps(bin *a, stack_map_section *sm_a, size_t num_sm_a,
 
 				if (num_a != num_b)
 				{
-					snprintf(buf, BUF_SIZE, "%s: stackmap %lu, location has "
+					snprintf(buf, BUF_SIZE, "%s: callsite %lu has "
 											"different number of architecture specific live locations (%u vs %u)",
 							 sym_b_name, sm_b[i].call_sites[j].id, num_a, num_b);
 					warn(buf);
