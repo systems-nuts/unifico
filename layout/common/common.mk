@@ -47,6 +47,7 @@ override LLC_FLAGS  += -disable-block-align --mc-relax-all
 # Custom
 override LLC_FLAGS  += -disable-x86-frame-obj-order -aarch64-csr-alignment=8 -simplify-regalloc -disable-lsr-solver
 
+override LLC_FLAGS_ARM64 += -mattr=+disable-hoist-in-lowering
 override LLC_FLAGS_X86 += -mattr=+aarch64-sized-imm
 
 HET_CFLAGS 	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec
@@ -248,7 +249,7 @@ src_changed: *.c
 
 %_aarch64.s: %_opt_nodbg.ll
 	@echo " [LLC ASSEMBLY] $@"
-	$(LLC) $(LLC_FLAGS) -march=aarch64 -o $(ARM64_BUILD)/$(<:_opt_nodbg.ll=_aarch64.s) $<
+	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -o $(ARM64_BUILD)/$(<:_opt_nodbg.ll=_aarch64.s) $<
 
 %_aarch64.json: %_aarch64.s
 	@echo " [LLVM-MCA] $@"
@@ -257,11 +258,11 @@ src_changed: *.c
 
 %_aarch64_init.o: %_opt.ll 
 	@echo " [LLC] $@"
-	$(LLC) $(LLC_FLAGS) -march=aarch64 -filetype=obj -o $(<:_opt.ll=_aarch64_init.o) $<
+	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -o $(<:_opt.ll=_aarch64_init.o) $<
 
 %_aarch64.o: %_cs_align.json %_opt.ll
 	@echo " [LLC WITH CALLSITE ALIGNMENT] $@"
-	$(LLC) $(LLC_FLAGS) -march=aarch64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
+	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
 
 $(ARM64_INIT): $(ARM64_OBJ_INIT)
 	@echo " [LD] $@"
