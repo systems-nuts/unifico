@@ -36,7 +36,7 @@ LLC 	:= $(LLVM_TOOLCHAIN)/llc
 OBJDUMP	:= $(LLVM_TOOLCHAIN)/llvm-objdump
 
 override CFLAGS += -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer
-override CFLAGS += -O0 -Wall -nostdinc
+override CFLAGS += -O0 -Wall -mllvm -align-bytes
 
 override OPT_FLAGS 	+= -name-string-literals -static-var-sections -live-values -insert-stackmaps
 
@@ -45,7 +45,7 @@ override LLC_FLAGS 	+= -relocation-model=pic --trap-unreachable -optimize-regall
 # Callsite-related
 override LLC_FLAGS  += -disable-block-align --mc-relax-all
 # Custom
-override LLC_FLAGS  += -disable-x86-frame-obj-order -aarch64-csr-alignment=8 -disable-lsr-solver
+override LLC_FLAGS  += -disable-x86-frame-obj-order -aarch64-csr-alignment=8 -disable-lsr-solver -align-bytes-to-four
 
 override LLC_FLAGS_ARM64 += -mattr=+disable-hoist-in-lowering,+disable-fp-imm-materialize
 override LLC_FLAGS_X86 += -mattr=+aarch64-sized-imm -no-x86-call-frame-opt
