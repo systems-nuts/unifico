@@ -233,8 +233,8 @@ stackmaps-check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 
 %_cs_align.json: %_x86_64_init.o %_aarch64_init.o # TODO improve objdump output names
 	@echo " [CALLSITE ALIGN] $@"
-	$(OBJDUMP) -d $< >$(X86_64_BUILD)/$*_x86_64_init.objdump
-	$(OBJDUMP) -d $(word 2,$^) >$(ARM64_BUILD)/$*_aarch64_init.objdump 
+	objdump -d -M intel $< >$(X86_64_BUILD)/$*_x86_64_init.objdump
+	$(OBJDUMP) -d --print-imm-hex $(word 2,$^) >$(ARM64_BUILD)/$*_aarch64_init.objdump
 	$(PYTHON) $(CALLSITE_ALIGN) $(ARM64_BUILD)/$*_aarch64_init.objdump $(X86_64_BUILD)/$*_x86_64_init.objdump >$@
 
 src_changed: *.c
@@ -280,7 +280,7 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	@echo " [LD] $@"
 	$(LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_ALIGNED_MAP) -T $<
 	@-sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`
-	$(OBJDUMP) -d --print-imm-hex $@ >aarch64_objdump.txt
+	$(OBJDUMP) -d -S --print-imm-hex $@ >aarch64_objdump.txt
 
 ##########
 # x86-64 #
@@ -303,8 +303,8 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	@echo " [LLC WITH CALLSITE ALIGNMENT] $@"
 	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
 	@echo " [CHECK CALLSITE ALIGNMENT] $@ $(word 3,$^)"
-	$(OBJDUMP) -d $@ >$(X86_64_BUILD)/$*_x86_64.objdump
-	$(OBJDUMP) -d $(word 3,$^) >$(ARM64_BUILD)/$*_aarch64.objdump
+	objdump -d -M intel $@ >$(X86_64_BUILD)/$*_x86_64.objdump
+	$(OBJDUMP) -d --print-imm-hex $(word 3,$^) >$(ARM64_BUILD)/$*_aarch64.objdump
 	export PYTHONPATH=../../..
 	$(PYTHON) $(CALLSITE_ALIGN_CHECK) $(ARM64_BUILD)/$*_aarch64.objdump $(X86_64_BUILD)/$*_x86_64.objdump
 
@@ -326,7 +326,7 @@ $(X86_64_LD_SCRIPT): $(ARM64_UNALIGNED) $(X86_64_UNALIGNED)
 $(X86_64_ALIGNED): $(X86_64_LD_SCRIPT)
 	@echo " [LD] $@"
 	$(LD) -o $@ $(X86_64_OBJ) $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_ALIGNED_MAP) -T $<
-	objdump -d -M intel $@ >x86_objdump.txt
+	objdump -d -S -M intel $@ >x86_objdump.txt
 
 check_un: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	@echo " [CHECK] Checking unalignment for $^"
