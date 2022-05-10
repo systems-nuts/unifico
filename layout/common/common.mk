@@ -50,6 +50,8 @@ override LLC_FLAGS  += -disable-x86-frame-obj-order -aarch64-csr-alignment=8 -di
 override LLC_FLAGS_ARM64 += -mattr=+disable-hoist-in-lowering,+disable-fp-imm-materialize
 override LLC_FLAGS_X86 += -mattr=+aarch64-sized-imm -no-x86-call-frame-opt
 
+LLC_PASSES_TO_DEBUG	:= isel regalloc stackmaps stacktransform
+
 HET_CFLAGS 	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec
 
 IR := $(SRC:.c=.ll)
@@ -263,6 +265,9 @@ src_changed: *.c
 %_aarch64.o: %_cs_align.json %_opt.ll
 	@echo " [LLC WITH CALLSITE ALIGNMENT] $@"
 	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
+	for PASS in $(LLC_PASSES_TO_DEBUG); do \
+		$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -debug-only=$$PASS 2>a_$$PASS.txt; \
+	done
 
 $(ARM64_INIT): $(ARM64_OBJ_INIT)
 	@echo " [LD] $@"
@@ -305,6 +310,9 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	@echo " [CHECK CALLSITE ALIGNMENT] $@ $(word 3,$^)"
 	objdump -d -M intel $@ >$(X86_64_BUILD)/$*_x86_64.objdump
 	$(OBJDUMP) -d --print-imm-hex $(word 3,$^) >$(ARM64_BUILD)/$*_aarch64.objdump
+	for PASS in $(LLC_PASSES_TO_DEBUG); do \
+		$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -debug-only=$$PASS 2>x_$$PASS.txt; \
+	done
 	$(PYTHON) $(CALLSITE_ALIGN_CHECK) $(ARM64_BUILD)/$*_aarch64.objdump $(X86_64_BUILD)/$*_x86_64.objdump
 
 $(X86_64_INIT): $(X86_64_OBJ_INIT)
