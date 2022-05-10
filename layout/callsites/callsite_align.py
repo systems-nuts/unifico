@@ -12,7 +12,7 @@ FUNCTION_REGEX = re.compile(r"""
 
 # Will be used with re.search
 CALLSITE_REGEX = {
-    'x86-64': r'\s(callq)\s',
+    'x86-64': r'\s(callq?)\s',
     'aarch64': r'\s(bl)\s'
 }
 
