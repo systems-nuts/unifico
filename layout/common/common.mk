@@ -305,7 +305,6 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	@echo " [CHECK CALLSITE ALIGNMENT] $@ $(word 3,$^)"
 	objdump -d -M intel $@ >$(X86_64_BUILD)/$*_x86_64.objdump
 	$(OBJDUMP) -d --print-imm-hex $(word 3,$^) >$(ARM64_BUILD)/$*_aarch64.objdump
-	export PYTHONPATH=../../..
 	$(PYTHON) $(CALLSITE_ALIGN_CHECK) $(ARM64_BUILD)/$*_aarch64.objdump $(X86_64_BUILD)/$*_x86_64.objdump
 
 $(X86_64_INIT): $(X86_64_OBJ_INIT)
