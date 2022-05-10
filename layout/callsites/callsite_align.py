@@ -129,7 +129,7 @@ def check_callsite_number(d1, d2):
         callsites2 = d2[function]
 
         if callsites1.keys() != callsites2.keys():
-            print('Error: Different number of callsites in function {}.', function, file=sys.stderr)
+            print('Error: Different number of callsites in function `{}`.'.format(function), file=sys.stderr)
             print('aarch64 `set difference` x86-64: ', file=sys.stderr)
             print(set(callsites1.keys()) - set(callsites2.keys()), file=sys.stderr)
             print('x86-64 `set difference` aarch64: ', file=sys.stderr)
