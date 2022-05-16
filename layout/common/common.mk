@@ -343,6 +343,16 @@ check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	@echo " [CHECK] Checking alignment for $^"
 	$(PYTHON) $(ALIGN_CHECK) $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 
+debug_pass_%: %_cs_align.json %_opt.ll %_aarch64.o
+	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -debug-only=$(PASS) 2>$(X86_64_BUILD)/$*_$(PASS).txt
+	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -debug-only=$(PASS) 2>$(ARM64_BUILD)/$*_$(PASS).txt
+
+before_after_pass_%: %_cs_align.json %_opt.ll %_aarch64.o
+	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -print-before=$(PASS) 2>$(X86_64_BUILD)/$*_before_$(PASS).txt
+	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -print-after=$(PASS) 2>$(X86_64_BUILD)/$*_after_$(PASS).txt
+	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -print-before=$(PASS) 2>$(ARM64_BUILD)/$*_before_$(PASS).txt
+	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -print-after=$(PASS) 2>$(ARM64_BUILD)/$*_after_$(PASS).txt
+
 clean:
 	@echo " [CLEAN] $(ARM64_ALIGNED) $(ARM64_BUILD) $(ARM64_JSON_DIR) $(X86_64_ALIGNED) $(X86_64_BUILD) $(X86_64_JSON_DIR) \
 		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.json *.o *.out"
