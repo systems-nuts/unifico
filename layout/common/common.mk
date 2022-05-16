@@ -258,7 +258,7 @@ src_changed: *.c
 	#$(MCA) -march=aarch64 -mcpu=$(ARM64_CPU) -json -o $(ARM64_JSON_DIR)/$(<:.s=.json) $(ARM64_BUILD)/$<
 	$(MCA) -march=aarch64 -mcpu=$(ARM64_CPU) -register-file-stats -o $(ARM64_JSON_DIR)/$(<:.s=.json) $(ARM64_BUILD)/$<
 
-%_aarch64_init.o: %_opt.ll 
+%_aarch64_init.o: %_opt.ll
 	@echo " [LLC] $@"
 	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -o $(<:_opt.ll=_aarch64_init.o) $<
 
@@ -266,7 +266,7 @@ src_changed: *.c
 	@echo " [LLC WITH CALLSITE ALIGNMENT] $@"
 	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
 	for PASS in $(LLC_PASSES_TO_DEBUG); do \
-		$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -debug-only=$$PASS 2>a_$$PASS.txt; \
+		$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -debug-only=$$PASS 2>$(ARM64_BUILD)/$*_$$PASS.txt; \
 	done
 
 $(ARM64_INIT): $(ARM64_OBJ_INIT)
@@ -311,7 +311,7 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	objdump -d -M intel $@ >$(X86_64_BUILD)/$*_x86_64.objdump
 	$(OBJDUMP) -d --print-imm-hex $(word 3,$^) >$(ARM64_BUILD)/$*_aarch64.objdump
 	for PASS in $(LLC_PASSES_TO_DEBUG); do \
-		$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -debug-only=$$PASS 2>x_$$PASS.txt; \
+		$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -debug-only=$$PASS 2>$(X86_64_BUILD)/$*_$$PASS.txt; \
 	done
 	$(PYTHON) $(CALLSITE_ALIGN_CHECK) $(ARM64_BUILD)/$*_aarch64.objdump $(X86_64_BUILD)/$*_x86_64.objdump
 
