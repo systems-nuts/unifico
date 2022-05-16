@@ -36,7 +36,7 @@ LLC 	:= $(LLVM_TOOLCHAIN)/llc
 OBJDUMP	:= $(LLVM_TOOLCHAIN)/llvm-objdump
 
 override CFLAGS += -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer
-override CFLAGS += -O0 -Wall -mllvm -align-bytes
+override CFLAGS += -O0 -Wall -mllvm -align-bytes-to-four
 
 override OPT_FLAGS 	+= -name-string-literals -static-var-sections -live-values -insert-stackmaps
 
