@@ -4,6 +4,11 @@ import sys
 import re
 import json
 
+# TODO fix return behaviour to use return values (failure exit should be
+# invoked by script code).
+# TODO move script commandline code to main script at the top-level of this
+# module
+
 # This verbose and more readable regex form, requires the re.VERBOSE flag in re.compile
 FUNCTION_REGEX = re.compile(r"""
  \d+        # Function symbol address
