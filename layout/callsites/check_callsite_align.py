@@ -1,9 +1,8 @@
+#!/usr/bin/env python3
+
 import sys
 
-from layout.callsites.callsite_align import (
-    get_return_addresses,
-    check_callsite_number,
-)
+from align.callsite_align import get_return_addresses, check_callsite_number
 
 
 def check_callsite_align(text1, text2):
