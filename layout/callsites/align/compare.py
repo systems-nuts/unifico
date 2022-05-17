@@ -2,6 +2,9 @@ import sys
 
 from align.callsite_align import get_return_addresses, check_callsite_number
 
+# TODO fix return behaviour to use return values (failure exit should be
+# invoked by script code).
+
 
 def compare_callsite_align(text1, text2):
     """Check that the callsites of two different objdump outputs are padded.
