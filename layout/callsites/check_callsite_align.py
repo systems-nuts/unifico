@@ -5,7 +5,7 @@ import sys
 from align.callsite_align import get_return_addresses, check_callsite_number
 
 
-def check_callsite_align(text1, text2):
+def compare_callsite_align(text1, text2):
     """Check that the callsites of two different objdump outputs are padded.
 
     Get a clean output of objdump by keeping only line of the .text section
@@ -39,4 +39,4 @@ if __name__ == "__main__":
         print("Usage: ", sys.argv[0], " <objdump_aarch64> <objdump_x86-64>")
         sys.exit(1)
 
-    check_callsite_align(sys.argv[1], sys.argv[2])
+    compare_callsite_align(sys.argv[1], sys.argv[2])
