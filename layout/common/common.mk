@@ -5,10 +5,6 @@ POPCORN 	   ?= /usr/local/popcorn
 
 LLVM_TOOLCHAIN ?= ~/llvm-9/toolchain/bin
 
-PYTHON ?= python3.9
-ifndef PYTHONPATH
-$(error PYTHONPATH is not set.)
-endif
 
 PROJECT_DIR ?= ../..
 
@@ -75,9 +71,9 @@ LIBGCC := --start-group -lgcc -lgcc_eh --end-group
 ###############################################################################
 # Alignment
 ###############################################################################
-ALIGN 					:= $(POPCORN)/bin/pyalign
-ALIGN_CHECK 			:= $(POPCORN)/bin/check-align.py
-CALLSITE_ALIGN			:= $(PROJECT_DIR)/layout/callsites/callsite_align.py
+ALIGN	:= $(POPCORN)/bin/pyalign
+ALIGN_CHECK	:= $(POPCORN)/bin/check-align.py
+CALLSITE_ALIGN	:= $(PROJECT_DIR)/layout/callsites/align/callsite_align.py
 CALLSITE_ALIGN_CHECK	:= $(PROJECT_DIR)/layout/callsites/check_callsite_align.py
 
 ###############################################################################
@@ -237,7 +233,7 @@ stackmaps-check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	@echo " [CALLSITE ALIGN] $@"
 	objdump -d -M intel $< >$(X86_64_BUILD)/$*_x86_64_init.objdump
 	$(OBJDUMP) -d --print-imm-hex $(word 2,$^) >$(ARM64_BUILD)/$*_aarch64_init.objdump
-	$(PYTHON) $(CALLSITE_ALIGN) $(ARM64_BUILD)/$*_aarch64_init.objdump $(X86_64_BUILD)/$*_x86_64_init.objdump >$@
+	$(CALLSITE_ALIGN) $(ARM64_BUILD)/$*_aarch64_init.objdump $(X86_64_BUILD)/$*_x86_64_init.objdump >$@
 
 src_changed: *.c
 	@echo " [SOURCE FILES CHANGED]"
@@ -312,8 +308,8 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	$(OBJDUMP) -d --print-imm-hex $(word 3,$^) >$(ARM64_BUILD)/$*_aarch64.objdump
 	for PASS in $(LLC_PASSES_TO_DEBUG); do \
 		$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -debug-only=$$PASS 2>$(X86_64_BUILD)/$*_$$PASS.txt; \
-	done
-	$(PYTHON) $(CALLSITE_ALIGN_CHECK) $(ARM64_BUILD)/$*_aarch64.objdump $(X86_64_BUILD)/$*_x86_64.objdump
+		done
+	$(CALLSITE_ALIGN_CHECK) $(ARM64_BUILD)/$*_aarch64.objdump $(X86_64_BUILD)/$*_x86_64.objdump
 
 $(X86_64_INIT): $(X86_64_OBJ_INIT)
 	@echo " [LD] $@"
@@ -337,11 +333,11 @@ $(X86_64_ALIGNED): $(X86_64_LD_SCRIPT)
 
 check_un: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	@echo " [CHECK] Checking unalignment for $^"
-	$(PYTHON) $(ALIGN_CHECK) $(ARM64_UNALIGNED) $(X86_64_UNALIGNED)
+	$(ALIGN_CHECK) $(ARM64_UNALIGNED) $(X86_64_UNALIGNED)
 
 check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	@echo " [CHECK] Checking alignment for $^"
-	$(PYTHON) $(ALIGN_CHECK) $(ARM64_ALIGNED) $(X86_64_ALIGNED)
+	$(ALIGN_CHECK) $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 
 debug_pass_%: %_cs_align.json %_opt.ll %_aarch64.o
 	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -debug-only=$(PASS) 2>$(X86_64_BUILD)/$*_$(PASS).txt
