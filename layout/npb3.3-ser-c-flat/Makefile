@@ -1,40 +1,16 @@
 BENCHMARKS ?= bt cg dc ep ft is lu mg sp ua
 
-all:
-	for W in $(BENCHMARKS); do \
-		make -C $$W; \
-	done
+.DEFAULT_GOAL: all
 
-asm:
-	for W in $(BENCHMARKS); do \
-		make -C $$W asm; \
-	done
+.PHONY: all asm init json clean
+all asm init json clean:
+	$(foreach BMK,$(BENCHMARKS), $(if $(filter all, $@), make -C $(BMK), make -C $(BMK) $@))
+	$(foreach BMK,$(BENCHMARKS), $(if $(filter clean, $@), rm -f $(BMK)/npbparams.h))
 
-init:
-	for W in $(BENCHMARKS); do \
-		make -C $$W init; \
-	done
-
-json:
-	for W in $(BENCHMARKS); do \
-		make -C $$W json; \
-	done
-
-.PHONY: asm init json clean
-clean:
-	for W in $(BENCHMARKS); do \
-		make -C $$W clean; \
-		rm -f $$W/npbparams.h; \
-	done
-
-.PHONY: S A B
-S: clean
-	./setclass.sh S
-A: clean
-	./setclass.sh A
-B: clean
-	./setclass.sh B
+.PHONY: S A B C
+S A B C: clean
+	./setclass.sh $@
 
 .PHONY: help
 help:
-	@echo "make {all | asm | init | json | S | A | B | clean}"
+	@echo "make {all | asm | init | json | S | A | B | C | clean}"
