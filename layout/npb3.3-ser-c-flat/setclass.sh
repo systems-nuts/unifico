@@ -16,8 +16,8 @@ for W in bt cg dc ep ft is lu mg sp ua; do
 
   BMK_CLASS=$CLASS
   if [[ $W == "dc" && $CLASS == "C" ]]; then
-    echo "warning: using class ${BMK_CLASS} for benchmark ${W}"
     BMK_CLASS="B"
+    echo "warning: using class ${BMK_CLASS} for benchmark ${W}"
   fi
 
   ln -s npbparams-${BMK_CLASS}.h ${HEADER_FILE}
