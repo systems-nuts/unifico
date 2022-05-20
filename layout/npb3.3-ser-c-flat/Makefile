@@ -4,7 +4,7 @@ BENCHMARKS ?= bt cg dc ep ft is lu mg sp ua
 
 .PHONY: all asm init json clean
 all asm init json clean:
-	$(foreach BMK,$(BENCHMARKS), $(if $(filter all, $@), make -C $(BMK), make -C $(BMK) $@))
+	$(foreach BMK,$(BENCHMARKS), $(if $(filter all, $@), make -C $(BMK), make -C $(BMK) $@);)
 	$(foreach BMK,$(BENCHMARKS), $(if $(filter clean, $@), rm -f $(BMK)/npbparams.h))
 
 .PHONY: S A B C
