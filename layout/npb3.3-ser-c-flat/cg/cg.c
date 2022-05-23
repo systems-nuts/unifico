@@ -719,7 +719,7 @@ static void sparse(double a[],
   if (nza > nz) {
     printf("Space for matrix elements exceeded in sparse\n");
     printf("nza, nzmax = %d, %d\n", nza, nz);
-    exit(EXIT_FAILURE);
+    /*exit(EXIT_FAILURE);*/ /* TODO temporary handling for UnASL */
   }
 
   //---------------------------------------------------------------------
@@ -787,7 +787,7 @@ static void sparse(double a[],
         }
         if (cont40 == false) {
           printf("internal error in sparse: i=%d\n", i);
-          exit(EXIT_FAILURE);
+          /*exit(EXIT_FAILURE);*/ /* TODO temporary handling for UnASL */
         }
         a[k] = a[k] + va;
       }
