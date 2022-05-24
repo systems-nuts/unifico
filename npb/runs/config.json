@@ -1,0 +1,15 @@
+{
+    "info": {},
+    "tags": [ "exec_time" ],
+    "executables": [ "is_x86_64_aligned.out" ],
+
+    "*": {
+        "bindir": "bins",
+        "env": {},
+        "prepend": [],
+        "append": [],
+        "precmd": [],
+        "postcmd": [],
+        "iterations": 1
+    }
+}
