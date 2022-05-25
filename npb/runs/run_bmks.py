@@ -26,13 +26,17 @@ def execute_cmd(args, dryrun=False, **kwargs):
     if "output" in kwargs:
         f = Template(kwargs["output"]).safe_substitute(**kwargs)
         kwargs["output"] = f
-        output = open(f, "wb")
+        if not dryrun:
+            output = open(f, "wb")
 
     sargs = []
     for arg in args:
         sargs.append(Template(arg).safe_substitute(**kwargs))
 
-    subprocess.run(" ".join(sargs), shell=True, stderr=STDOUT, stdout=output)
+    if not dryrun:
+        subprocess.run(
+            " ".join(sargs), shell=True, stderr=STDOUT, stdout=output
+        )
 
 
 def execute_bmks(config, executable, dryrun=False):
@@ -47,25 +51,29 @@ def execute_bmks(config, executable, dryrun=False):
 
     for c in commands:
         print(f'executing command: "{c}"')
-        if not dryrun and c["before"]:
-            execute_cmd(c["args"], executable=executable, output=c["output"])
+        if c["before"]:
+            execute_cmd(
+                c["args"], dryrun, executable=executable, output=c["output"]
+            )
 
     cmd = os.path.join(f"{config['bindir']}", f"{executable}")
 
     print(f'executing ({config["iterations"]} times) command: "{cmd}"')
-    if not dryrun:
-        for i in range(config["iterations"]):
-            execute_cmd(
-                [*config["prepend"], cmd, *config["append"]],
-                executable=executable,
-                iteration=i,
-                output=config["output"],
-            )
+    for i in range(config["iterations"]):
+        execute_cmd(
+            [*config["prepend"], cmd, *config["append"]],
+            dryrun,
+            executable=executable,
+            iteration=i,
+            output=config["output"],
+        )
 
     for c in commands:
         print(f'executing command: "{c}"')
-        if not dryrun and not c["before"]:
-            execute_cmd(c["args"], executable=executable, output=c["output"])
+        if not c["before"]:
+            execute_cmd(
+                c["args"], dryrun, executable=executable, output=c["output"]
+            )
 
 
 #
