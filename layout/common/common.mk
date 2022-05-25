@@ -28,7 +28,7 @@ override LLC_FLAGS	+= -relocation-model=pic --trap-unreachable -optimize-regallo
 # Callsite-related
 override LLC_FLAGS  += -disable-block-align --mc-relax-all
 # Custom
-override LLC_FLAGS  += -disable-x86-frame-obj-order -aarch64-csr-alignment=8 -disable-lsr-solver -align-bytes-to-four
+override LLC_FLAGS  += -disable-x86-frame-obj-order -aarch64-csr-alignment=8 -disable-lsr-solver -align-bytes-to-four -reg-scavenging-slot
 
 override LLC_FLAGS_ARM64 += -mattr=+disable-hoist-in-lowering,+disable-fp-imm-materialize
 override LLC_FLAGS_X86 += -mattr=+aarch64-sized-imm,-multiply-with-imm,-non-zero-imm-to-mem -no-x86-call-frame-opt
