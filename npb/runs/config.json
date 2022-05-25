@@ -6,15 +6,29 @@
     "*": {
         "bindir": "bins",
         "env": {},
-        "iterations": 1,
+        "iterations": 2,
         "output": "run_${executable}_${iteration}.log",
         "prepend": [],
         "append": [],
         "commands": [
             {
                 "before": false,
-                "args": ["grep", "\"Time in\"", "run_${executable}*.log" ],
+                "args": [ "grep", "-h", "\"Time in\"", "run_${executable}*.log" ],
                 "output": "time_${executable}.log"
+            },
+            {
+                "before": false,
+                "args": [
+                    "awk",
+                    "'BEGIN{E = exp(1)} $5>0{tot+=log($5); c++} END{m=tot/c; printf \"%.2f\\n\", E^m}'",
+                    "time_${executable}.log"
+                ],
+                "output": "geomean.log"
+            },
+            {
+                "before": false,
+                "args": [ "rm", "-rf", "run_${executable}*.log" ],
+                "output": ""
             }
         ]
     }
