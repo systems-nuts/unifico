@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+# TODO consider eliding prepend/append from config
+# TODO extend string templating
+# TODO consider JSON schema for config file
+
 import os
 import sys
 import argparse
