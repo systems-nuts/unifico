@@ -17,11 +17,11 @@ def get_abs_dir(cwd, bindir):
     return bindir if os.path.isabs(bindir) else os.path.join(cwd, bindir)
 
 
-def shell_execute(c):
+def execute_cmd(c, **kwargs):
     subprocess.run(c, shell=True)
 
 
-def execute_cmd(config, executable, dryrun=False):
+def execute_bmks(config, executable, dryrun=False):
     env = config["env"]
 
     for k in env:
@@ -32,7 +32,7 @@ def execute_cmd(config, executable, dryrun=False):
     for c in config["precmd"]:
         print(f'executing pre command: "{c}"')
         if not dryrun:
-            shell_execute(c)
+            execute_cmd(c)
 
     cmd = os.path.join(f"{config['bindir']}", f"{executable}")
 
@@ -45,12 +45,11 @@ def execute_cmd(config, executable, dryrun=False):
                 stderr=subprocess.STDOUT,
                 stdout=open(log_file, "wb"),
             )
-            print(rc.args)
 
     for c in config["postcmd"]:
         print(f'executing post command: "{c}"')
         if not dryrun:
-            shell_execute(c)
+            execute_cmd(c)
 
 
 #
@@ -109,4 +108,4 @@ if __name__ == "__main__":
 
         ecfg["bindir"] = get_abs_dir(cwd, ecfg["bindir"])
 
-        execute_cmd(ecfg, e, args.dryrun)
+        execute_bmks(ecfg, e, args.dryrun)
