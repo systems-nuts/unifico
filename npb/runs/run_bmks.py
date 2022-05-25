@@ -2,11 +2,14 @@
 
 import os
 import sys
-import subprocess
 import argparse
 import json
 
+import subprocess
+from subprocess import STDOUT, DEVNULL
+
 from datetime import datetime
+from string import Template
 
 
 def eprint(*args, **kwargs):
@@ -17,8 +20,19 @@ def get_abs_dir(cwd, bindir):
     return bindir if os.path.isabs(bindir) else os.path.join(cwd, bindir)
 
 
-def execute_cmd(c, **kwargs):
-    subprocess.run(c, shell=True)
+def execute_cmd(args, dryrun=False, **kwargs):
+    output = DEVNULL
+
+    if "output" in kwargs:
+        f = Template(kwargs["output"]).safe_substitute(**kwargs)
+        kwargs["output"] = f
+        output = open(f, "wb")
+
+    sargs = []
+    for arg in args:
+        sargs.append(Template(arg).safe_substitute(**kwargs))
+
+    subprocess.run(" ".join(sargs), shell=True, stderr=STDOUT, stdout=output)
 
 
 def execute_bmks(config, executable, dryrun=False):
@@ -29,27 +43,29 @@ def execute_bmks(config, executable, dryrun=False):
         if not dryrun:
             os.environ[k] = env[k]
 
-    for c in config["precmd"]:
-        print(f'executing pre command: "{c}"')
-        if not dryrun:
-            execute_cmd(c)
+    commands = config["commands"]
+
+    for c in commands:
+        print(f'executing command: "{c}"')
+        if not dryrun and c["before"]:
+            execute_cmd(c["args"], executable=executable, output=c["output"])
 
     cmd = os.path.join(f"{config['bindir']}", f"{executable}")
 
     print(f'executing ({config["iterations"]} times) command: "{cmd}"')
     if not dryrun:
         for i in range(config["iterations"]):
-            log_file = f"run_{executable}_{i}.log"
-            rc = subprocess.run(
+            execute_cmd(
                 [*config["prepend"], cmd, *config["append"]],
-                stderr=subprocess.STDOUT,
-                stdout=open(log_file, "wb"),
+                executable=executable,
+                iteration=i,
+                output=config["output"],
             )
 
-    for c in config["postcmd"]:
-        print(f'executing post command: "{c}"')
-        if not dryrun:
-            execute_cmd(c)
+    for c in commands:
+        print(f'executing command: "{c}"')
+        if not dryrun and not c["before"]:
+            execute_cmd(c["args"], executable=executable, output=c["output"])
 
 
 #

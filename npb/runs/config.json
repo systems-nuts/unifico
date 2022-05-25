@@ -6,10 +6,16 @@
     "*": {
         "bindir": "bins",
         "env": {},
+        "iterations": 1,
+        "output": "run_${executable}_${iteration}.log",
         "prepend": [],
         "append": [],
-        "precmd": [],
-        "postcmd": [],
-        "iterations": 1
+        "commands": [
+            {
+                "before": false,
+                "args": ["grep", "\"Time in\"", "run_${executable}*.log" ],
+                "output": "time_${executable}.log"
+            }
+        ]
     }
 }
