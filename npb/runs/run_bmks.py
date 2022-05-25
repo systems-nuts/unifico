@@ -29,10 +29,9 @@ def execute_cmd(args, dryrun=False, **kwargs):
         if not dryrun:
             output = open(f, "wb")
 
-    sargs = []
-    for arg in args:
-        sargs.append(Template(arg).safe_substitute(**kwargs))
+    sargs = [Template(arg).safe_substitute(**kwargs) for arg in args]
 
+    print(f'executing command: {" ".join(sargs)}')
     if not dryrun:
         subprocess.run(
             " ".join(sargs), shell=True, stderr=STDOUT, stdout=output
@@ -50,7 +49,6 @@ def execute_bmks(config, executable, dryrun=False):
     commands = config["commands"]
 
     for c in commands:
-        print(f'executing command: "{c}"')
         if c["before"]:
             execute_cmd(
                 c["args"], dryrun, executable=executable, output=c["output"]
@@ -58,7 +56,6 @@ def execute_bmks(config, executable, dryrun=False):
 
     cmd = os.path.join(f"{config['bindir']}", f"{executable}")
 
-    print(f'executing ({config["iterations"]} times) command: "{cmd}"')
     for i in range(config["iterations"]):
         execute_cmd(
             [*config["prepend"], cmd, *config["append"]],
@@ -69,7 +66,6 @@ def execute_bmks(config, executable, dryrun=False):
         )
 
     for c in commands:
-        print(f'executing command: "{c}"')
         if not c["before"]:
             execute_cmd(
                 c["args"], dryrun, executable=executable, output=c["output"]
