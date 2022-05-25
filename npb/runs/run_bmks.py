@@ -23,11 +23,10 @@ def get_abs_dir(cwd, bindir):
 def execute_cmd(args, dryrun=False, **kwargs):
     output = DEVNULL
 
-    if "output" in kwargs:
-        f = Template(kwargs["output"]).safe_substitute(**kwargs)
-        kwargs["output"] = f
-        if not dryrun:
-            output = open(f, "wb")
+    f = Template(kwargs["output"]).safe_substitute(**kwargs).strip()
+    kwargs["output"] = f
+    if f != "" and not dryrun:
+        output = open(f, "wb")
 
     sargs = [Template(arg).safe_substitute(**kwargs) for arg in args]
 
