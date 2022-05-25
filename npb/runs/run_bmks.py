@@ -8,6 +8,7 @@ import os
 import sys
 import argparse
 import json
+import textwrap
 
 import subprocess
 from subprocess import STDOUT, DEVNULL
@@ -78,7 +79,23 @@ def execute_bmks(config, executable, dryrun=False):
 #
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run benchmarks.")
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description="Run benchmarks.",
+        epilog=textwrap.dedent(
+            """
+            The following $-based substitutions are supported:
+            - ${executable}: The current executable being used from the
+            \"executables\" config parameter.
+            - ${iteration}: The current iteration being performed based on the
+            "iterations" config parameter.
+
+            These are applied to the following config parameters:
+            - "args"
+            - "output"
+            """
+        ),
+    )
     parser.add_argument(
         "-c",
         "--config",
