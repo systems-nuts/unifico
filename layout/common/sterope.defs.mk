@@ -1,11 +1,13 @@
 POPCORN ?= /usr/local/popcorn
 
-LLVM_TOOLCHAIN ?= /bulk/wb/unasl-project/toolchain-unasl/bin
+PREFIX := /bulk/wb/unasl-project
+
+LLVM_TOOLCHAIN ?= ${PREFIX}/toolchain-unasl/bin
 
 PROJECT_DIR ?= ../..
 
 # Lib musl directories per architecture
-MUSL_TOOLCHAIN ?= /bulk/wb/unasl-project/musl-toolchains/llvm-9
+MUSL_TOOLCHAIN ?= ${PREFIX}/musl-toolchains/llvm-9
 ARM64_MUSL	?= $(MUSL_TOOLCHAIN)/aarch64
 X86_64_MUSL	?= $(MUSL_TOOLCHAIN)/x86-64
 
