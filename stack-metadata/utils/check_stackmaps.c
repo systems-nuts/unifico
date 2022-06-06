@@ -185,6 +185,10 @@ ret_t check_stackmaps(bin *a, stack_map_section *sm_a, size_t num_sm_a,
 				{
 					continue;
 				}
+
+				bubbleSort(sm_a[i].call_sites, num_records);
+				bubbleSort(sm_b[i].call_sites, num_records);
+
 				/*
 				 * The raw location record count may be different, so count
 				 * non-duplicated records, i.e., ignore backing stack slot locations.

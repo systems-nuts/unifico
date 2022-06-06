@@ -10,7 +10,7 @@ POPCORN_X86_64 := $(POPCORN)/x86_64
 COMMON         := $(shell readlink -f common)
 
 CC		:= gcc
-CFLAGS		:= -O3 -g -Wall -Iinclude -I$(COMMON)/include \
+CFLAGS	:= -g -Wall -Iinclude -I$(COMMON)/include \
 		   -specs $(POPCORN_X86_64)/lib/musl-gcc.specs
 LDFLAGS	:= -static
 LIB    	:= -lelf

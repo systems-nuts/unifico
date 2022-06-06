@@ -108,5 +108,13 @@ ret_t init_stackmap(bin *b, stack_map_section **sm_ptr, size_t *num_sm);
  */
 ret_t free_stackmaps(stack_map_section *sm, size_t num_sm);
 
+/**
+ * Sort the callsites of the function based on id,
+ * i.e., based on appearance in the LLVM IR, not in assembly.
+ * @param arr call site array
+ * @param num_sm number of call sites
+ */
+void bubbleSort(call_site_record arr[], unsigned int n);
+
 #endif
 
