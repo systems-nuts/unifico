@@ -186,3 +186,22 @@ ret_t free_stackmaps(stack_map_section *sm, size_t num_sm)
   return SUCCESS;
 }
 
+void swap(call_site_record* xp, call_site_record* yp)
+{
+	call_site_record temp = *xp;
+	*xp = *yp;
+	*yp = temp;
+}
+
+// A function to implement bubble sort
+void bubbleSort(call_site_record arr[], unsigned int n)
+{
+	unsigned int i, j;
+	for (i = 0; i < n - 1; i++)
+
+		// Last i elements are already in place
+		for (j = 0; j < n - i - 1; j++)
+			if (arr[j].id > arr[j + 1].id)
+				swap(&arr[j], &arr[j + 1]);
+}
+
