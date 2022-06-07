@@ -188,5 +188,10 @@ ret_t free_stackmaps(stack_map_section *sm, size_t num_sm)
 
 int cmp_callsites(const void *a, const void *b)
 {
-	return (int)(((call_site_record*)a)->id - ((call_site_record*)b)->id);
+	call_site_record* left = (call_site_record*)a;
+	call_site_record* right = (call_site_record*)b;
+
+	if (left->func_idx != right->func_idx)
+		return 0;
+	return (int)(left->id - right->id);
 }
