@@ -186,13 +186,6 @@ ret_t free_stackmaps(stack_map_section *sm, size_t num_sm)
   return SUCCESS;
 }
 
-void swap(call_site_record* xp, call_site_record* yp)
-{
-	call_site_record temp = *xp;
-	*xp = *yp;
-	*yp = temp;
-}
-
 int cmp_callsites(const void *a, const void *b)
 {
 	return (int)(((call_site_record*)a)->id - ((call_site_record*)b)->id);
