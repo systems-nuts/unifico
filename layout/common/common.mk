@@ -16,6 +16,7 @@ CC		:= $(LLVM_TOOLCHAIN)/clang
 OPT		:= $(LLVM_TOOLCHAIN)/opt
 LLC		:= $(LLVM_TOOLCHAIN)/llc
 OBJDUMP	:= $(LLVM_TOOLCHAIN)/llvm-objdump
+X86_64_OBJDUMP := x86_64-linux-gnu-objdump
 
 override CFLAGS += -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer
 override CFLAGS += -O0 -Wall
@@ -218,7 +219,7 @@ stackmaps-check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 
 %_cs_align.json: %_x86_64_init.o %_aarch64_init.o # TODO improve objdump output names
 	@echo " [CALLSITE ALIGN] $@"
-	objdump -d -M intel $< >$(X86_64_BUILD)/$*_x86_64_init.objdump
+	$(X86_64_OBJDUMP) -d -M intel $< >$(X86_64_BUILD)/$*_x86_64_init.objdump
 	$(OBJDUMP) -d --print-imm-hex $(word 2,$^) >$(ARM64_BUILD)/$*_aarch64_init.objdump
 	$(CALLSITE_ALIGN) $(ARM64_BUILD)/$*_aarch64_init.objdump $(X86_64_BUILD)/$*_x86_64_init.objdump >$@
 
@@ -291,7 +292,7 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	@echo " [LLC WITH CALLSITE ALIGNMENT] $@"
 	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
 	@echo " [CHECK CALLSITE ALIGNMENT] $@ $(word 3,$^)"
-	objdump -d -M intel $@ >$(X86_64_BUILD)/$*_x86_64.objdump
+	$(X86_64_OBJDUMP) -d -M intel $@ >$(X86_64_BUILD)/$*_x86_64.objdump
 	$(OBJDUMP) -d --print-imm-hex $(word 3,$^) >$(ARM64_BUILD)/$*_aarch64.objdump
 	for PASS in $(LLC_PASSES_TO_DEBUG); do \
 		$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -debug-only=$$PASS 2>$(X86_64_BUILD)/$*_$$PASS.txt; \
@@ -316,7 +317,7 @@ $(X86_64_LD_SCRIPT): $(ARM64_UNALIGNED) $(X86_64_UNALIGNED)
 $(X86_64_ALIGNED): $(X86_64_LD_SCRIPT)
 	@echo " [LD] $@"
 	$(LD) -o $@ $(X86_64_OBJ) $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_ALIGNED_MAP) -T $<
-	objdump -d -S -M intel $@ >x86_objdump.txt
+	$(X86_64_OBJDUMP) -d -S -M intel $@ >x86_objdump.txt
 
 check_un: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	@echo " [CHECK] Checking unalignment for $^"
