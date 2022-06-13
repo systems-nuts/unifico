@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import gdb
+import json
 
 
 class CoredumpBreakpoint(gdb.Breakpoint):
@@ -9,14 +10,20 @@ class CoredumpBreakpoint(gdb.Breakpoint):
         return False
 
 
-class _BreakCore(gdb.Command):
+class _Migrate(gdb.Command):
     def __init__(self) -> None:
         gdb.Command.__init__(
-            self, "break-core", gdb.COMMAND_BREAKPOINTS, gdb.COMPLETE_FILENAME
+            self, "migrate", gdb.COMMAND_BREAKPOINTS, gdb.COMPLETE_FILENAME
         )
 
     def invoke(self, arg, from_tty) -> None:
-        gdb.execute("echo doing break-core\\n")
+        with open(arg) as jsonfile:
+            cfg = json.load(jsonfile)
+            self.info = cfg["point"]["info"]
+            self.filename = cfg["point"]["filename"]
+            self.line = cfg["point"]["line"]
+
+        CoredumpBreakpoint(f"{self.filename}:{self.line}", gdb.BP_BREAKPOINT)
 
 
-_BreakCore()
+_Migrate()
