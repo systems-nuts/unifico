@@ -5,7 +5,7 @@ import gdb
 
 class CoredumpBreakpoint(gdb.Breakpoint):
     def stop(self):
-        gdb.execute(f"generate-core-file dump.bp.{self.number}.core")
+        gdb.execute(f"generate-core-file dump-{self.location}.core")
         return False
 
 
