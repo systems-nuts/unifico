@@ -3,7 +3,7 @@
 import gdb
 
 
-class GenerateCoreBreakpoint(gdb.Breakpoint):
+class CoredumpBreakpoint(gdb.Breakpoint):
     def stop(self):
         gdb.execute(f"generate-core-file dump.bp.{self.number}.core")
         return False
