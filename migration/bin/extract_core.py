@@ -52,7 +52,7 @@ if __name__ == "__main__":
         "gdb",
         f"-x {os.path.abspath(lib)}",
         f'-ex "migrate {args.config[0]}"',
-        '-ex "run"',
+        '-ex "timed-run"',
         '-ex "quit"',
     ]
 
