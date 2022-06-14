@@ -9,33 +9,35 @@ tstamp = None
 
 class CoredumpBreakpoint(gdb.Breakpoint):
     def stop(self):
-        gdb.execute(f"generate-core-file dump-{self.location}.core")
+        gdb.execute("generate-core-file dump-{}.core".format(self.location))
         return True
 
 
 class _Migrate(gdb.Command):
-    def __init__(self) -> None:
+    def __init__(self):
         gdb.Command.__init__(
             self, "migrate", gdb.COMMAND_BREAKPOINTS, gdb.COMPLETE_FILENAME
         )
 
-    def invoke(self, arg, from_tty) -> None:
+    def invoke(self, arg, from_tty):
         with open(arg) as jsonfile:
             cfg = json.load(jsonfile)
             self.info = cfg["point"]["info"]
             self.filename = cfg["point"]["filename"]
             self.line = cfg["point"]["line"]
 
-        CoredumpBreakpoint(f"{self.filename}:{self.line}", gdb.BP_BREAKPOINT)
+        CoredumpBreakpoint(
+            "{}:{}".format(self.filename, self.line), gdb.BP_BREAKPOINT
+        )
 
 
 class _TimedRun(gdb.Command):
-    def __init__(self) -> None:
+    def __init__(self):
         gdb.Command.__init__(
             self, "timed-run", gdb.COMMAND_RUNNING, gdb.COMPLETE_FILENAME
         )
 
-    def invoke(self, arg, from_tty) -> None:
+    def invoke(self, arg, from_tty):
         global tstamp
         tstamp = time.time()
 
