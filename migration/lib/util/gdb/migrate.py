@@ -42,5 +42,31 @@ class _TimedRun(gdb.Command):
         gdb.execute("run")
 
 
+def cbpHandler(bpEvent):
+    if isinstance(bpEvent, gdb.BreakpointEvent):
+        bps = bpEvent.breakpoints
+        if len(bps) == 1 and isinstance(bps[0], CoredumpBreakpoint):
+            global tstamp
+            t = time.time()
+            elapsed = t - tstamp
+            tstamp = t
+            print(elapsed)
+
+            gdb.execute("cont")
+
+    return
+
+
+def exitedHandler(exitEvent):
+    global tstamp
+    elapsed = time.time() - tstamp
+    print(elapsed)
+
+    return
+
+
+gdb.events.stop.connect(cbpHandler)
+gdb.events.exited.connect(exitedHandler)
+
 _Migrate()
 _TimedRun()
