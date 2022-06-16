@@ -3,7 +3,7 @@ TEST_SUITE += int-loop-accumulate many-add-mul read-write-global-array spill-wei
 TEST_SUITE += csr-example lsr-simple global-const global-fp-mul fp-loop-simple fp-loop
 TEST_SUITE += char-arg create-seq c-print-results-1 c-print-results-call is-1 is-2 is-3 is-4 is-5
 TEST_SUITE += cg-sparse-1 cg-sparse cg-sprnvc-1 cg-sprnvc-2 cg-sprnvc-4 cg-sprnvc-5 cg-makea-1 cg-makea-2 cg-makea-3 cg-makea-4 cg-main-1 cg-main-2 cg-main-3 cg-main-4
-TEST_SUITE += ep-main-1
+TEST_SUITE += ep-main-1 ep-main-2 ep-main
 
 .PHONY: clean
 
