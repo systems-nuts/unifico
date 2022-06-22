@@ -1,4 +1,7 @@
 BIN := main
-SRC := $(BIN).c
+
+SRC := main.c
+
+PROJECT_DIR := ../..
 
 include ../common/common.mk
