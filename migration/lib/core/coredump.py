@@ -181,8 +181,11 @@ class coredump_generator:
         ehdr.e_ident[elf.EI_VERSION] = elf.EV_CURRENT
 
         ehdr.e_type = elf.ET_CORE
-        # ehdr.e_machine = elf.EM_X86_64
-        ehdr.e_machine = lief.ELF.ARCH.AARCH64
+        ehdr.e_machine = (
+            elf.EM_X86_64
+            if self.input_core.header.machine_type == lief.ELF.ARCH.AARCH64
+            else elf.EM_AARCH64
+        )
         ehdr.e_version = elf.EV_CURRENT
         ehdr.e_phoff = ctypes.sizeof(elf.Elf64_Ehdr())
         ehdr.e_ehsize = ctypes.sizeof(elf.Elf64_Ehdr())
