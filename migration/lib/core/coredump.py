@@ -60,7 +60,7 @@ status = {
     "VMA_AREA_SOCKET": 1 << 11,
     "VMA_AREA_VVAR": 1 << 12,
     "VMA_AREA_AIORING": 1 << 13,
-    "VMA_AREA_UNSUPP": 1 << 31
+    "VMA_AREA_UNSUPP": 1 << 31,
 }
 
 prot = {"PROT_READ": 0x1, "PROT_WRITE": 0x2, "PROT_EXEC": 0x4}
@@ -77,20 +77,13 @@ class coredump:
     A class to keep elf core dump components inside and
     functions to properly write them to file.
     """
+
     ehdr = None  # Elf ehdr;
     phdrs = []  # Array of Phdrs;
     notes = []  # Array of elf_notes;
     vmas = []  # Array of BytesIO with memory content;
 
     # FIXME keeping all vmas in memory is a bad idea;
-
-
-    # def read(self, f):
-        # """
-        # Read core dump from file f.
-        # """
-        # buf = io.BytesIO()
-        # buf.write(self.ehdr)
 
     def write(self, f):
         """
@@ -136,6 +129,7 @@ class coredump_generator:
     """
     Generate core dump from criu images.
     """
+
     input_core = None
     output_core = None
 
@@ -153,7 +147,7 @@ class coredump_generator:
         return self.output_core
 
     def write(self, coredumps_dir):
-        with open(coredumps_dir + "/" + "dump-xformed.core", 'wb+') as f:
+        with open(coredumps_dir + "/" + "dump-xformed.core", "wb+") as f:
             self.output_core.write(f)
 
     def _gen_coredump(self):
@@ -161,7 +155,7 @@ class coredump_generator:
         Generate core dump.
         """
         cd = coredump()
-        pid = 0 # TODO remove
+        pid = 0  # TODO remove
 
         # Generate everything backwards so it is easier to calculate offset.
         # cd.vmas = self._gen_vmas(pid)
@@ -266,21 +260,22 @@ class coredump_generator:
         TASK_STOPPED = 0x3
 
         # if core["tc"]["task_state"] == TASK_ALIVE:
-            # prpsinfo.pr_state = 0
+        # prpsinfo.pr_state = 0
         # if core["tc"]["task_state"] == TASK_DEAD:
-            # prpsinfo.pr_state = 4
+        # prpsinfo.pr_state = 4
         # if core["tc"]["task_state"] == TASK_STOPPED:
-            # prpsinfo.pr_state = 3
+        # prpsinfo.pr_state = 3
 
         prpsinfo.pr_state = 0
 
         # Don't even ask me why it is so, just borrowed from linux
         # source and made pr_state match.
-        prpsinfo.pr_sname = b'.' if prpsinfo.pr_state > 5 else b"RSDTZW" [
-            prpsinfo.pr_state]
+        prpsinfo.pr_sname = (
+            b"." if prpsinfo.pr_state > 5 else b"RSDTZW"[prpsinfo.pr_state]
+        )
         prpsinfo.pr_zomb = 1 if prpsinfo.pr_state == 4 else 0
         # prpsinfo.pr_nice = core["thread_core"][
-            # "sched_prio"] if "sched_prio" in core["thread_core"] else 0
+        # "sched_prio"] if "sched_prio" in core["thread_core"] else 0
         prpsinfo.pr_nice = 0
         # prpsinfo.pr_flag = core["tc"]["flags"]
         prpsinfo.pr_flag = 0
@@ -293,7 +288,7 @@ class coredump_generator:
         prpsinfo.pr_pgrp = 0
         prpsinfo.pr_sid = 0
         prpsinfo.pr_psargs = self._gen_cmdline(pid)
-        if (sys.version_info > (3, 0)):
+        if sys.version_info > (3, 0):
             # prpsinfo.pr_fname = core["tc"]["comm"].encode()
             prpsinfo.pr_fname = "foo".encode()
         else:
@@ -388,9 +383,9 @@ class coredump_generator:
         # fpregset.mxcsr = regs["mxcsr"]
         # fpregset.mxcr_mask = regs["mxcsr_mask"]
         # fpregset.st_space = (ctypes.c_uint * len(regs["st_space"]))(
-            # *regs["st_space"])
+        # *regs["st_space"])
         # fpregset.xmm_space = (ctypes.c_uint * len(regs["xmm_space"]))(
-            # *regs["xmm_space"])
+        # *regs["xmm_space"])
 
         nhdr = elf.Elf64_Nhdr()
         nhdr.n_namesz = 5
@@ -423,15 +418,15 @@ class coredump_generator:
         # data.i387.mxcsr = fpregs["mxcsr"]
         # data.i387.mxcsr_mask = fpregs["mxcsr_mask"]
         # data.i387.st_space = (ctypes.c_uint * len(fpregs["st_space"]))(
-            # *fpregs["st_space"])
+        # *fpregs["st_space"])
         # data.i387.xmm_space = (ctypes.c_uint * len(fpregs["xmm_space"]))(
-            # *fpregs["xmm_space"])
+        # *fpregs["xmm_space"])
 
         # if "xsave" in fpregs:
-            # data.xsave_hdr.xstate_bv = fpregs["xsave"]["xstate_bv"]
-            # data.ymmh.ymmh_space = (ctypes.c_uint *
-                                    # len(fpregs["xsave"]["ymmh_space"]))(
-                                        # *fpregs["xsave"]["ymmh_space"])
+        # data.xsave_hdr.xstate_bv = fpregs["xsave"]["xstate_bv"]
+        # data.ymmh.ymmh_space = (ctypes.c_uint *
+        # len(fpregs["xsave"]["ymmh_space"]))(
+        # *fpregs["xsave"]["ymmh_space"])
 
         nhdr = elf.Elf64_Nhdr()
         nhdr.n_namesz = 6
@@ -478,8 +473,8 @@ class coredump_generator:
 
         auxv = elf_auxv()
         # for i in range(num_auxv):
-            # auxv.auxv[i].a_type = mm["mm_saved_auxv"][i]
-            # auxv.auxv[i].a_val = mm["mm_saved_auxv"][i + 1]
+        # auxv.auxv[i].a_type = mm["mm_saved_auxv"][i]
+        # auxv.auxv[i].a_val = mm["mm_saved_auxv"][i + 1]
 
         nhdr = elf.Elf64_Nhdr()
         nhdr.n_namesz = 5
@@ -546,7 +541,8 @@ class coredump_generator:
             fields.append(("file_ofs" + str(i), ctypes.c_long))
         for i in range(len(infos)):
             fields.append(
-                ("name" + str(i), ctypes.c_char * (len(infos[i].name) + 1)))
+                ("name" + str(i), ctypes.c_char * (len(infos[i].name) + 1))
+            )
 
         class elf_files(ctypes.Structure):
             _fields_ = fields
@@ -559,7 +555,7 @@ class coredump_generator:
             setattr(data, "start" + str(i), info.start)
             setattr(data, "end" + str(i), info.end)
             setattr(data, "file_ofs" + str(i), info.file_ofs)
-            if (sys.version_info > (3, 0)):
+            if sys.version_info > (3, 0):
                 setattr(data, "name" + str(i), info.name.encode())
             else:
                 setattr(data, "name" + str(i), info.name)
@@ -644,25 +640,30 @@ class coredump_generator:
         chunk = b""
 
         # Replace all '\0's with spaces.
-        return chunk.replace(b'\0', b' ')
+        return chunk.replace(b"\0", b" ")
 
     def _get_vma_dump_size(self, vma):
         """
         Calculate amount of vma to put into core dump.
         """
-        if (vma["status"] & status["VMA_AREA_VVAR"] or
-                vma["status"] & status["VMA_AREA_VSYSCALL"] or
-                vma["status"] & status["VMA_AREA_VDSO"]):
+        if (
+            vma["status"] & status["VMA_AREA_VVAR"]
+            or vma["status"] & status["VMA_AREA_VSYSCALL"]
+            or vma["status"] & status["VMA_AREA_VDSO"]
+        ):
             size = vma["end"] - vma["start"]
         elif vma["prot"] == 0:
             size = 0
-        elif (vma["prot"] & prot["PROT_READ"] and
-              vma["prot"] & prot["PROT_EXEC"]):
+        elif (
+            vma["prot"] & prot["PROT_READ"] and vma["prot"] & prot["PROT_EXEC"]
+        ):
             size = PAGESIZE
-        elif (vma["status"] & status["VMA_ANON_SHARED"] or
-              vma["status"] & status["VMA_FILE_SHARED"] or
-              vma["status"] & status["VMA_ANON_PRIVATE"] or
-              vma["status"] & status["VMA_FILE_PRIVATE"]):
+        elif (
+            vma["status"] & status["VMA_ANON_SHARED"]
+            or vma["status"] & status["VMA_FILE_SHARED"]
+            or vma["status"] & status["VMA_ANON_PRIVATE"]
+            or vma["status"] & status["VMA_FILE_PRIVATE"]
+        ):
             size = vma["end"] - vma["start"]
         else:
             size = 0
@@ -675,13 +676,13 @@ class coredump_generator:
         """
         flags = 0
 
-        if vma['prot'] & prot["PROT_READ"]:
+        if vma["prot"] & prot["PROT_READ"]:
             flags = flags | elf.PF_R
 
-        if vma['prot'] & prot["PROT_WRITE"]:
+        if vma["prot"] & prot["PROT_WRITE"]:
             flags = flags | elf.PF_W
 
-        if vma['prot'] & prot["PROT_EXEC"]:
+        if vma["prot"] & prot["PROT_EXEC"]:
             flags = flags | elf.PF_X
 
         return flags
