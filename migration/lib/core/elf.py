@@ -39,6 +39,7 @@ ET_CORE = 4  # #define ET_CORE         4               /* Core file */
 
 # Legal values for e_machine (architecture).
 EM_X86_64 = 62  # #define EM_X86_64       62              /* AMD x86-64 architecture */
+EM_AARCH64 = 183  # #define EM_AARCH64       183              /* Arm Aarch64 architecture */
 
 # Legal values for e_version (version).
 EV_CURRENT = 1  # #define EV_CURRENT      1               /* Current version */
