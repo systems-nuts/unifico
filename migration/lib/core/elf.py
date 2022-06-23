@@ -219,7 +219,7 @@ class timeval(ctypes.Structure):  # struct timeval
     ]
 
 
-class user_regs_struct(ctypes.Structure):  # struct user_regs_struct
+class user_regs_struct(ctypes.Structure):  # struct user_regs_struct for x86_64
     _fields_ = [
         ("r15",
          ctypes.c_ulonglong),  # __extension__ unsigned long long int r15;
@@ -277,14 +277,84 @@ class user_regs_struct(ctypes.Structure):  # struct user_regs_struct
          )  # __extension__ unsigned long long int gs;
     ]
 
+class user_pt_regs_struct(ctypes.Structure):  # struct user_regs_struct for AArch64
+    _fields_ = [
+        ("x0",
+         ctypes.c_ulonglong),  # __u64 regs[31];
+        ("x1",
+         ctypes.c_ulonglong),
+        ("x2",
+         ctypes.c_ulonglong),
+        ("x3",
+         ctypes.c_ulonglong),
+        ("x4",
+         ctypes.c_ulonglong),
+        ("x5",
+         ctypes.c_ulonglong),
+        ("x6",
+         ctypes.c_ulonglong),
+        ("x7",
+         ctypes.c_ulonglong),
+        ("x8",
+         ctypes.c_ulonglong),
+        ("x9",
+         ctypes.c_ulonglong),
+        ("x10",
+         ctypes.c_ulonglong),
+        ("x11",
+         ctypes.c_ulonglong),
+        ("x12",
+         ctypes.c_ulonglong),
+        ("x13",
+         ctypes.c_ulonglong),
+        ("x14",
+         ctypes.c_ulonglong),
+        ("x15",
+         ctypes.c_ulonglong),
+        ("x16",
+         ctypes.c_ulonglong),
+        ("x17",
+         ctypes.c_ulonglong),
+        ("x18",
+         ctypes.c_ulonglong),
+        ("x19",
+         ctypes.c_ulonglong),
+        ("x20",
+         ctypes.c_ulonglong),
+        ("x21",
+         ctypes.c_ulonglong),
+        ("x22",
+         ctypes.c_ulonglong),
+        ("x23",
+         ctypes.c_ulonglong),
+        ("x24",
+         ctypes.c_ulonglong),
+        ("x25",
+         ctypes.c_ulonglong),
+        ("x26",
+         ctypes.c_ulonglong),
+        ("x27",
+         ctypes.c_ulonglong),
+        ("x28",
+         ctypes.c_ulonglong),
+        ("x29",
+         ctypes.c_ulonglong),
+        ("x30",
+         ctypes.c_ulonglong),
+        ("sp",
+         ctypes.c_ulonglong),
+        ("pc",
+         ctypes.c_ulonglong),
+        ("pstate",
+         ctypes.c_ulonglong)
+    ]
 
-# elf_greg_t    = ctypes.c_ulonglong
-# ELF_NGREG = ctypes.sizeof(user_regs_struct)/ctypes.sizeof(elf_greg_t)
-# elf_gregset_t = elf_greg_t*ELF_NGREG
-elf_gregset_t = user_regs_struct
+
+elf_x86_64_gregset_t = user_regs_struct
+elf_aarch64_gregset_t = user_pt_regs_struct
 
 
-class elf_prstatus(ctypes.Structure):  # struct elf_prstatus
+class elf_x86_64_prstatus(ctypes.Structure):  # struct elf_prstatus
     _fields_ = [
         (
             # Info associated with signal
@@ -349,7 +419,7 @@ class elf_prstatus(ctypes.Structure):  # struct elf_prstatus
         (
             # GP registers
             # elf_gregset_t pr_reg;
-            "pr_reg", elf_gregset_t
+            "pr_reg", elf_x86_64_gregset_t
         ),
         (
             # True if math copro being used
@@ -358,6 +428,79 @@ class elf_prstatus(ctypes.Structure):  # struct elf_prstatus
         )
     ]
 
+class elf_aarch64_prstatus(ctypes.Structure):  # struct elf_prstatus
+    _fields_ = [
+        (
+            # Info associated with signal
+            # struct elf_siginfo pr_info;
+            "pr_info", elf_siginfo
+        ),
+        (
+            # Current signal
+            # short int pr_cursig;
+            "pr_cursig", ctypes.c_short
+        ),
+        (
+            # Set of pending signals
+            # unsigned long int pr_sigpend;
+            "pr_sigpend", ctypes.c_ulong
+        ),
+        (
+            # Set of held signals
+            # unsigned long int pr_sighold;
+            "pr_sighold", ctypes.c_ulong
+        ),
+        (
+            # Process ID
+            # __pid_t pr_pid;
+            "pr_pid", ctypes.c_int
+        ),
+        (
+            # Parent process ID
+            # __pid_t pr_ppid;
+            "pr_ppid", ctypes.c_int
+        ),
+        (
+            # Parent group ID
+            # __pid_t pr_pgrp;
+            "pr_pgrp", ctypes.c_int
+        ),
+        (
+            # Parent session ID
+            # __pid_t pr_sid;
+            "pr_sid", ctypes.c_int
+        ),
+        (
+            # User time
+            # struct timeval pr_utime;
+            "pr_utime", timeval
+        ),
+        (
+            # System time
+            # struct timeval pr_stime;
+            "pr_stime", timeval
+        ),
+        (
+            # Cumulative user time
+            # struct timeval pr_cutime;
+            "pr_cutime", timeval
+        ),
+        (
+            # Cumulative system time
+            # struct timeval pr_cstime;
+            "pr_cstime", timeval
+        ),
+        (
+            # GP registers
+            # elf_gregset_t pr_reg;
+            "pr_reg", elf_aarch64_gregset_t
+        ),
+        (
+            # True if math copro being used
+            # int pr_fpvalid;
+            "pr_fpvalid", ctypes.c_int
+        )
+    ]
 
 # elf_prpsinfo related constants.
 
