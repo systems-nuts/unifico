@@ -25,43 +25,46 @@
 \begin{adjustwidth}{-4.3cm}{-4.3cm}
 \begin{tabular}{|l|l|l|l|}
     \hline
-    \textbf{x86-64} & \textbf{Aarch64} & \textbf{Virtual Register} & \textbf{Usage} \\
+    \textbf{x86-64} & \textbf{Aarch64} & \textbf{Virtual Register (ignore)} & \textbf{Usage} \\
     \hline
-    \%rsp & SP & \$sp & The Stack Pointer \\
+    \%rdi, \%rsi, \%rdx, \%rcx, \%r8, \%r9 & r0, r1, r2, r3, r4, r5 & \$a0, \$a1, \$v1, \$a3, \$a4, \$a5 & Functions Arguments \\
     \hline
-    \%r11 & r30 (LR) & \$lr & The Link Register (optionally) \\
+    \%r10 & r6 & \$scp & Temp \\
     \hline
-    \%rbp & r29 (FP) & \$fp & The Frame Pointer (optionally) \\
-    \hline
-    \%rbx & r19 & \$s0 & Callee Saved Registers \\
-    \hline
-    \%r12 & r18 & \$pr & \pbox{20cm}{Temp register \\ The Platform Register} \\
-    \hline
-    \%r13, \%r14 & r16, r17 & \$ip1, \$ip2 & \pbox{20cm}{Intra-procedure-call registers \\ temp registers} \\
+    \%r11 & r7 & \$scp & Temp \\
     \hline
     \%rax & r8 & \$v0 & \pbox{20cm}{Temp, \\  Var args \\ 1st Return Register \\ Indirect Result Location} \\
     \hline
-    \%rdi, \%rsi, \%rdx, \%rcx, \%r8, \%r9 & r0, r1, r2, r7, r4, r5 & \$a0, \$a1, \$v1, \$a3, \$a4, \$a5 & Functions Arguments \\
+    \%r13, \%r14 & r16, r17 & \$ip1, \$ip2 & \pbox{20cm}{Intra-procedure-call registers \\ temp registers} \\
     \hline
-    \%rdi, \%rsi, \%rdx, \%r10, \%r8, \%r9 & r0, r1, r2, r3, r4, r5 & \$a0, \$a1, \$v1, \$scp, \$a4, \$a5 & Kernel Arguments \\
+    \%r12 & r18 & \$pr & \pbox{20cm}{Temp register \\ The Platform Register} \\
     \hline
-    \%rax, \%rdx & r8, r2 & \$v0, \$v1 & Return Registers \\
-    \hline
-    \%r10 & r3 & \$scp & \pbox{20cm}{Temp, Static Chain Pointer \\ 4th Kernel Argument} \\
+    \%rbx & r19 & \$s0 & Callee Saved Registers \\
     \hline
     \%r15 & r20 & \$gbp & \pbox{20cm}{Callee Saved Register \\ GOT Base Pointer (optionally)} \\
+    \hline
+    \%rbp & r29 (FP) & \$fp & The Frame Pointer (optionally) \\
+    \hline
+    NA & r30 (LR) & \$lr & The Link Register (optionally) \\
+    \hline
+    \%rsp & SP & \$sp & The Stack Pointer \\
+    \hline
+    \%rip & PC & \$ip & Instruction Pointer \\
+    \hline
+    \%rdi, \%rsi, \%rdx, \%r10, \%r8, \%r9 & r0, r1, r2, r3, r4, r5 & \$a0, \$a1, \$v1, \$scp, \$a4, \$a5 & Kernel Arguments (ignore)\\
+    \hline
+    \%rax, \%rdx & r8, r2 & \$v0, \$v1 & Return Registers \\
     \hline
 \end{tabular}
 \end{adjustwidth}\label{tab:mappings_per_func}
 \end{table}
 
     \begin{itemize}
+        \item We removed registers x9-x15 and x21-x28 from AArch64.
+        \item For now, we do not map X86's registers: cs, flags, ss, fs\_base, gs\_base, ds, es, fs, gs.
+        \item For now, we do not map AArch64's registers: pstate.
         \item Maybe leave kernel arguments for later.
         Otherwise need to have r0, r1, r2, r7, r4, r5 as arguments
-        \item Keep only r19, r20 as CSR
-        \item Unsure about \%rax - r8 mapping
-        \item What about r18?
-        \item What about r16/r17?
         \item see "man syscall" for details on the kernel interface
     \end{itemize}
 
