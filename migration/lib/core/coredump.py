@@ -361,19 +361,18 @@ class coredump_generator:
 
     def _gen_prstatus(self):
         """ Generate NT_PRSTATUS note from coredump. """
-        in_prstatus = elf.elf_aarch64_prstatus()
+        in_note = elf_note_get_detail(self.input_core, elf.NT_PRSTATUS)
+        in_prstatus = in_note.data
 
-        out_prstatus = elf.elf_x86_64_prstatus()
+        prstatus = elf.elf_x86_64_prstatus()
 
-        ctypes.memset(
-            ctypes.addressof(out_prstatus), 0, ctypes.sizeof(out_prstatus)
-        )
+        ctypes.memset(ctypes.addressof(prstatus), 0, ctypes.sizeof(prstatus))
 
         # FIXME setting only some of the fields for now. Revisit later.
-        out_prstatus.pr_pid = in_prstatus.pr_pid
-        out_prstatus.pr_ppid = in_prstatus.pr_ppid
-        out_prstatus.pr_pgrp = in_prstatus.pr_pgrp
-        out_prstatus.pr_sid = in_prstatus.pr_sid
+        prstatus.pr_pid = in_prstatus.pr_pid
+        prstatus.pr_ppid = in_prstatus.pr_ppid
+        prstatus.pr_pgrp = in_prstatus.pr_pgrp
+        prstatus.pr_sid = in_prstatus.pr_sid
 
         # AArch64 registers that have been excluded from use
         # in_prstatus.pr_reg.x9
@@ -396,58 +395,58 @@ class coredump_generator:
         # in_prstatus.pr_reg.pstate
 
         # usage: function arguments
-        out_prstatus.pr_reg.rdi = in_prstatus.pr_reg.x0
-        out_prstatus.pr_reg.rsi = in_prstatus.pr_reg.x1
-        out_prstatus.pr_reg.rdx = in_prstatus.pr_reg.x2
-        out_prstatus.pr_reg.rcx = in_prstatus.pr_reg.x3
-        out_prstatus.pr_reg.r8 = in_prstatus.pr_reg.x4
-        out_prstatus.pr_reg.r9 = in_prstatus.pr_reg.x5
+        prstatus.pr_reg.rdi = in_prstatus.pr_reg.x0
+        prstatus.pr_reg.rsi = in_prstatus.pr_reg.x1
+        prstatus.pr_reg.rdx = in_prstatus.pr_reg.x2
+        prstatus.pr_reg.rcx = in_prstatus.pr_reg.x3
+        prstatus.pr_reg.r8 = in_prstatus.pr_reg.x4
+        prstatus.pr_reg.r9 = in_prstatus.pr_reg.x5
 
         # usage: temp
-        out_prstatus.pr_reg.r10 = in_prstatus.pr_reg.x6
-        out_prstatus.pr_reg.r11 = in_prstatus.pr_reg.x7
+        prstatus.pr_reg.r10 = in_prstatus.pr_reg.x6
+        prstatus.pr_reg.r11 = in_prstatus.pr_reg.x7
 
         # usage: temp, varargs, 1st return reg, indirect result location
-        out_prstatus.pr_reg.rax = in_prstatus.pr_reg.x8
+        prstatus.pr_reg.rax = in_prstatus.pr_reg.x8
 
         # usage: intra-proc call regs, temp
-        out_prstatus.pr_reg.r13 = in_prstatus.pr_reg.x16
-        out_prstatus.pr_reg.r14 = in_prstatus.pr_reg.x17
+        prstatus.pr_reg.r13 = in_prstatus.pr_reg.x16
+        prstatus.pr_reg.r14 = in_prstatus.pr_reg.x17
 
         # usage: temp, platform reg
-        out_prstatus.pr_reg.r12 = in_prstatus.pr_reg.x18
+        prstatus.pr_reg.r12 = in_prstatus.pr_reg.x18
 
         # usage: callee saved regs
-        out_prstatus.pr_reg.rbx = in_prstatus.pr_reg.x19
+        prstatus.pr_reg.rbx = in_prstatus.pr_reg.x19
 
         # usage: callee saved regs, GOT base pointer (optionally)
-        out_prstatus.pr_reg.r15 = in_prstatus.pr_reg.x20
+        prstatus.pr_reg.r15 = in_prstatus.pr_reg.x20
 
         # usage: frame pointer (FP) (optionally)
-        out_prstatus.pr_reg.rbp = in_prstatus.pr_reg.x29
+        prstatus.pr_reg.rbp = in_prstatus.pr_reg.x29
 
         # usage: link register (LR) (optionally), no correspondence
         # in_prstatus.pr_reg.x30
 
         # usage: stack pointer (SP)
-        out_prstatus.pr_reg.rsp = in_prstatus.pr_reg.sp
+        prstatus.pr_reg.rsp = in_prstatus.pr_reg.sp
 
         # usage: program counter (PC)
-        out_prstatus.pr_reg.rip = in_prstatus.pr_reg.pc
+        prstatus.pr_reg.rip = in_prstatus.pr_reg.pc
 
         # usage: return regs (mapping already done above)
-        # out_prstatus.pr_reg.rax = in_prstatus.pr_reg.x8
-        # out_prstatus.pr_reg.rdx = in_prstatus.pr_reg.x2
+        # prstatus.pr_reg.rax = in_prstatus.pr_reg.x8
+        # prstatus.pr_reg.rdx = in_prstatus.pr_reg.x2
 
         nhdr = elf.Elf64_Nhdr()
-        nhdr.n_namesz = 5
-        nhdr.n_descsz = ctypes.sizeof(out_prstatus)
+        nhdr.n_namesz = in_note.nhdr.n_namesz
+        nhdr.n_descsz = ctypes.sizeof(prstatus)
         nhdr.n_type = elf.NT_PRSTATUS
 
         note = elf_note()
         note.nhdr = nhdr
-        note.owner = b"CORE"
-        note.data = out_prstatus
+        note.owner = in_note.owner
+        note.data = prstatus
 
         return note
 
