@@ -73,6 +73,11 @@ class elf_note:
     data = None  # Ctypes structure with note data;
 
 
+def align_up(n, alignment):
+    r = n % alignment
+    return n if r == 0 else n + (alignment - r)
+
+
 class coredump:
     """
     A class to keep elf core dump components inside and
@@ -396,9 +401,9 @@ class coredump_generator:
         nhdr.n_type = elf.NT_PRSTATUS
 
         note = elf_note()
-        note.data = out_prstatus
-        note.owner = b"CORE"
         note.nhdr = nhdr
+        note.owner = b"CORE"
+        note.data = out_prstatus
 
         return note
 
