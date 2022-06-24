@@ -529,23 +529,24 @@ class coredump_generator:
 
         return note
 
-    def _gen_siginfo(self, pid, tid):
-        """
-        Generate NT_SIGINFO note for thread tid of process pid.
-        """
+    def _gen_siginfo(self):
+        """ Generate NT_SIGINFO note for core dump.  """
         siginfo = elf.siginfo_t()
+
         # FIXME zeroify everything for now
         ctypes.memset(ctypes.addressof(siginfo), 0, ctypes.sizeof(siginfo))
 
+        name = b"CORE"
+
         nhdr = elf.Elf64_Nhdr()
-        nhdr.n_namesz = 5
+        nhdr.n_namesz = len(name) + 1
         nhdr.n_descsz = ctypes.sizeof(elf.siginfo_t())
         nhdr.n_type = elf.NT_SIGINFO
 
         note = elf_note()
-        note.data = siginfo
-        note.owner = b"CORE"
         note.nhdr = nhdr
+        note.owner = name
+        note.data = siginfo
 
         return note
 
@@ -669,7 +670,7 @@ class coredump_generator:
         notes.append(self._gen_prstatus())
         # notes.append(self._gen_fpregset())
         # notes.append(self._gen_x86_xstate())
-        notes.append(self._gen_siginfo(pid, tid))
+        notes.append(self._gen_siginfo())
 
         return notes
 
