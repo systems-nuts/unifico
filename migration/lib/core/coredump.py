@@ -497,13 +497,8 @@ class coredump_generator:
 
         return note
 
-    def _gen_x86_xstate(self, pid, tid):
-        """
-        Generate NT_X86_XSTATE note for thread tid of process pid.
-        """
-        # core = self.cores[tid]
-        # fpregs = core["thread_info"]["fpregs"]
-
+    def _gen_x86_xstate(self):
+        """ Generate NT_X86_XSTATE note for core dump.  """
         data = elf.elf_xsave_struct()
         ctypes.memset(ctypes.addressof(data), 0, ctypes.sizeof(data))
 
@@ -532,9 +527,9 @@ class coredump_generator:
         nhdr.n_type = elf.NT_X86_XSTATE
 
         note = elf_note()
-        note.data = data
-        note.owner = b"LINUX"
         note.nhdr = nhdr
+        note.owner = b"LINUX"
+        note.data = data
 
         return note
 
@@ -677,7 +672,7 @@ class coredump_generator:
 
         notes.append(self._gen_prstatus())
         notes.append(self._gen_fpregset(pid, tid))
-        notes.append(self._gen_x86_xstate(pid, tid))
+        # notes.append(self._gen_x86_xstate())
         notes.append(self._gen_siginfo(pid, tid))
 
         return notes
