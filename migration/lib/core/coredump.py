@@ -347,14 +347,16 @@ class coredump_generator:
         else:
             prpsinfo.pr_fname = core["tc"]["comm"]
 
+        name = b"CORE"
+
         nhdr = elf.Elf64_Nhdr()
-        nhdr.n_namesz = 5
+        nhdr.n_namesz = len(name) + 1
         nhdr.n_descsz = ctypes.sizeof(elf.elf_prpsinfo())
         nhdr.n_type = elf.NT_PRPSINFO
 
         note = elf_note()
         note.data = prpsinfo
-        note.owner = b"CORE"
+        note.owner = name
         note.nhdr = nhdr
 
         return note
@@ -481,14 +483,16 @@ class coredump_generator:
         # fpregset.xmm_space = (ctypes.c_uint * len(regs["xmm_space"]))(
         # *regs["xmm_space"])
 
+        name = b"CORE"
+
         nhdr = elf.Elf64_Nhdr()
-        nhdr.n_namesz = 5
+        nhdr.n_namesz = len(name) + 1
         nhdr.n_descsz = ctypes.sizeof(elf.elf_fpregset_t())
         nhdr.n_type = elf.NT_FPREGSET
 
         note = elf_note()
         note.nhdr = nhdr
-        note.owner = b"CORE"
+        note.owner = name
         note.data = fpregset
 
         return note
@@ -566,14 +570,16 @@ class coredump_generator:
         # auxv.auxv[i].a_type = mm["mm_saved_auxv"][i]
         # auxv.auxv[i].a_val = mm["mm_saved_auxv"][i + 1]
 
+        name = b"CORE"
+
         nhdr = elf.Elf64_Nhdr()
-        nhdr.n_namesz = 5
+        nhdr.n_namesz = len(name) + 1
         nhdr.n_descsz = ctypes.sizeof(elf_auxv())
         nhdr.n_type = elf.NT_AUXV
 
         note = elf_note()
         note.data = auxv
-        note.owner = b"CORE"
+        note.owner = name
         note.nhdr = nhdr
 
         return note
@@ -652,13 +658,15 @@ class coredump_generator:
 
         nhdr = elf.Elf64_Nhdr()
 
-        nhdr.n_namesz = 5  # strlen + 1
+        name = b"CORE"
+
+        nhdr.n_namesz = len(name) + 1
         nhdr.n_descsz = ctypes.sizeof(elf_files())
         nhdr.n_type = elf.NT_FILE
 
         note = elf_note()
         note.nhdr = nhdr
-        note.owner = b"CORE"
+        note.owner = name
         note.data = data
 
         return note
