@@ -462,12 +462,8 @@ class coredump_generator:
 
         return note
 
-    def _gen_fpregset(self, pid, tid):
-        """
-        Generate NT_FPREGSET note for thread tid of process pid.
-        """
-        # core = self.cores[tid]
-        # regs = core["thread_info"]["fpregs"]
+    def _gen_fpregset(self):
+        """ Generate NT_FPREGSET note for core dump.  """
 
         fpregset = elf.elf_fpregset_t()
         ctypes.memset(ctypes.addressof(fpregset), 0, ctypes.sizeof(fpregset))
@@ -491,9 +487,9 @@ class coredump_generator:
         nhdr.n_type = elf.NT_FPREGSET
 
         note = elf_note()
-        note.data = fpregset
-        note.owner = b"CORE"
         note.nhdr = nhdr
+        note.owner = b"CORE"
+        note.data = fpregset
 
         return note
 
@@ -671,7 +667,7 @@ class coredump_generator:
         pid = tid = 0  # TODO to remove
 
         notes.append(self._gen_prstatus())
-        notes.append(self._gen_fpregset(pid, tid))
+        # notes.append(self._gen_fpregset())
         # notes.append(self._gen_x86_xstate())
         notes.append(self._gen_siginfo(pid, tid))
 
