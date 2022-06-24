@@ -44,6 +44,7 @@ except ImportError:
 
 # Some memory-related constants
 PAGESIZE = 4096
+
 status = {
     "VMA_AREA_NONE": 0 << 0,
     "VMA_AREA_REGULAR": 1 << 0,
@@ -159,7 +160,7 @@ class coredump_generator:
 
         # Generate everything backwards so it is easier to calculate offset.
         # cd.vmas = self._gen_vmas(pid)
-        cd.notes = self._gen_notes(pid)
+        cd.notes = self._gen_notes()
         cd.phdrs = self._gen_phdrs(pid, cd.notes, cd.vmas)
         cd.ehdr = self._gen_ehdr(cd.phdrs)
 
@@ -309,59 +310,93 @@ class coredump_generator:
 
         return note
 
-    def _gen_prstatus(self, pid, tid):
-        """
-        Generate NT_PRSTATUS note for thread tid of process pid.
-        """
-        # core = self.cores[tid]
-        # regs = core["thread_info"]["gpregs"]
+    def _gen_prstatus(self):
+        """ Generate NT_PRSTATUS note from coredump. """
+        in_prstatus = elf.elf_aarch64_prstatus()
 
-        prstatus = elf.elf_prstatus()
+        out_prstatus = elf.elf_x86_64_prstatus()
 
-        ctypes.memset(ctypes.addressof(prstatus), 0, ctypes.sizeof(prstatus))
+        ctypes.memset(
+            ctypes.addressof(out_prstatus), 0, ctypes.sizeof(out_prstatus)
+        )
 
         # FIXME setting only some of the fields for now. Revisit later.
-        prstatus.pr_pid = tid
-        prstatus.pr_ppid = 0
-        prstatus.pr_pgrp = 0
-        prstatus.pr_sid = 0
+        out_prstatus.pr_pid = in_prstatus.pr_pid
+        out_prstatus.pr_ppid = in_prstatus.pr_ppid
+        out_prstatus.pr_pgrp = in_prstatus.pr_pgrp
+        out_prstatus.pr_sid = in_prstatus.pr_sid
 
-        # prstatus.pr_reg.r15 = regs["r15"]
-        # prstatus.pr_reg.r14 = regs["r14"]
-        # prstatus.pr_reg.r14 = regs["r14"]
-        # prstatus.pr_reg.r13 = regs["r13"]
-        # prstatus.pr_reg.r12 = regs["r12"]
-        # prstatus.pr_reg.rbp = regs["bp"]
-        # prstatus.pr_reg.rbx = regs["bx"]
-        # prstatus.pr_reg.r11 = regs["r11"]
-        # prstatus.pr_reg.r10 = regs["r10"]
-        # prstatus.pr_reg.r9 = regs["r9"]
-        # prstatus.pr_reg.r8 = regs["r8"]
-        # prstatus.pr_reg.rax = regs["ax"]
-        # prstatus.pr_reg.rcx = regs["cx"]
-        # prstatus.pr_reg.rdx = regs["dx"]
-        # prstatus.pr_reg.rsi = regs["si"]
-        # prstatus.pr_reg.rdi = regs["di"]
-        # prstatus.pr_reg.orig_rax = regs["orig_ax"]
-        # prstatus.pr_reg.rip = regs["ip"]
-        # prstatus.pr_reg.cs = regs["cs"]
-        # prstatus.pr_reg.eflags = regs["flags"]
-        # prstatus.pr_reg.rsp = regs["sp"]
-        # prstatus.pr_reg.ss = regs["ss"]
-        # prstatus.pr_reg.fs_base = regs["fs_base"]
-        # prstatus.pr_reg.gs_base = regs["gs_base"]
-        # prstatus.pr_reg.ds = regs["ds"]
-        # prstatus.pr_reg.es = regs["es"]
-        # prstatus.pr_reg.fs = regs["fs"]
-        # prstatus.pr_reg.gs = regs["gs"]
+        # AArch64 registers that have been excluded from use
+        # in_prstatus.pr_reg.x9
+        # in_prstatus.pr_reg.x10
+        # in_prstatus.pr_reg.x11
+        # in_prstatus.pr_reg.x12
+        # in_prstatus.pr_reg.x13
+        # in_prstatus.pr_reg.x14
+        # in_prstatus.pr_reg.x15
+        # in_prstatus.pr_reg.x21
+        # in_prstatus.pr_reg.x22
+        # in_prstatus.pr_reg.x23
+        # in_prstatus.pr_reg.x24
+        # in_prstatus.pr_reg.x25
+        # in_prstatus.pr_reg.x26
+        # in_prstatus.pr_reg.x27
+        # in_prstatus.pr_reg.x28
+
+        # AArch64 registers that have not been mapped
+        # in_prstatus.pr_reg.pstate
+
+        # usage: function arguments
+        out_prstatus.pr_reg.rdi = in_prstatus.pr_reg.x0
+        out_prstatus.pr_reg.rsi = in_prstatus.pr_reg.x1
+        out_prstatus.pr_reg.rdx = in_prstatus.pr_reg.x2
+        out_prstatus.pr_reg.rcx = in_prstatus.pr_reg.x3
+        out_prstatus.pr_reg.r8 = in_prstatus.pr_reg.x4
+        out_prstatus.pr_reg.r9 = in_prstatus.pr_reg.x5
+
+        # usage: temp
+        out_prstatus.pr_reg.r10 = in_prstatus.pr_reg.x6
+        out_prstatus.pr_reg.r11 = in_prstatus.pr_reg.x7
+
+        # usage: temp, varargs, 1st return reg, indirect result location
+        out_prstatus.pr_reg.rax = in_prstatus.pr_reg.x8
+
+        # usage: intra-proc call regs, temp
+        out_prstatus.pr_reg.r13 = in_prstatus.pr_reg.x16
+        out_prstatus.pr_reg.r14 = in_prstatus.pr_reg.x17
+
+        # usage: temp, platform reg
+        out_prstatus.pr_reg.r12 = in_prstatus.pr_reg.x18
+
+        # usage: callee saved regs
+        out_prstatus.pr_reg.rbx = in_prstatus.pr_reg.x19
+
+        # usage: callee saved regs, GOT base pointer (optionally)
+        out_prstatus.pr_reg.r15 = in_prstatus.pr_reg.x20
+
+        # usage: frame pointer (FP) (optionally)
+        out_prstatus.pr_reg.rbp = in_prstatus.pr_reg.x29
+
+        # usage: link register (LR) (optionally), no correspondence
+        # in_prstatus.pr_reg.x30
+
+        # usage: stack pointer (SP)
+        out_prstatus.pr_reg.rsp = in_prstatus.pr_reg.sp
+
+        # usage: program counter (PC)
+        out_prstatus.pr_reg.rip = in_prstatus.pr_reg.pc
+
+        # usage: return regs (mapping already done above)
+        # out_prstatus.pr_reg.rax = in_prstatus.pr_reg.x8
+        # out_prstatus.pr_reg.rdx = in_prstatus.pr_reg.x2
 
         nhdr = elf.Elf64_Nhdr()
         nhdr.n_namesz = 5
-        nhdr.n_descsz = ctypes.sizeof(elf.elf_prstatus())
+        nhdr.n_descsz = ctypes.sizeof(out_prstatus)
         nhdr.n_type = elf.NT_PRSTATUS
 
         note = elf_note()
-        note.data = prstatus
+        note.data = out_prstatus
         note.owner = b"CORE"
         note.nhdr = nhdr
 
@@ -576,26 +611,28 @@ class coredump_generator:
 
         return note
 
-    def _gen_thread_notes(self, pid, tid):
+    def _gen_thread_notes(self):
         notes = []
+        pid = tid = 0  # TODO to remove
 
-        notes.append(self._gen_prstatus(pid, tid))
+        notes.append(self._gen_prstatus())
         notes.append(self._gen_fpregset(pid, tid))
         notes.append(self._gen_x86_xstate(pid, tid))
         notes.append(self._gen_siginfo(pid, tid))
 
         return notes
 
-    def _gen_notes(self, pid):
-        """
-        Generate notes for core dump of process pid.
-        """
+    def _gen_notes(self):
+        """ Generate notes for core dump. """
+        pid = 0  # TODO to remove
+
         notes = []
 
-        notes.append(self._gen_prpsinfo(pid))
+        # TODO not required? TBD
+        # notes.append(self._gen_prpsinfo(pid))
 
         # Main thread first
-        notes += self._gen_thread_notes(pid, pid)
+        notes += self._gen_thread_notes()
 
         notes.append(self._gen_auxv(pid))
         notes.append(self._gen_files(pid))
