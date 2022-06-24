@@ -368,11 +368,22 @@ class coredump_generator:
 
         ctypes.memset(ctypes.addressof(prstatus), 0, ctypes.sizeof(prstatus))
 
-        # FIXME setting only some of the fields for now. Revisit later.
+        # common data members
+        prstatus.pr_info = in_prstatus.pr_info
+        prstatus.pr_cursig = in_prstatus.pr_cursig
+        prstatus.pr_sigpend = in_prstatus.pr_sigpend
+        prstatus.pr_sighold = in_prstatus.pr_sighold
         prstatus.pr_pid = in_prstatus.pr_pid
         prstatus.pr_ppid = in_prstatus.pr_ppid
         prstatus.pr_pgrp = in_prstatus.pr_pgrp
         prstatus.pr_sid = in_prstatus.pr_sid
+        prstatus.pr_utime = in_prstatus.pr_utime
+        prstatus.pr_stime = in_prstatus.pr_stime
+        prstatus.pr_cutime = in_prstatus.pr_cutime
+        prstatus.pr_cstime = in_prstatus.pr_cstime
+        prstatus.pr_fpvalid = in_prstatus.pr_fpvalid
+
+        # arch-specific data members
 
         # AArch64 registers that have been excluded from use
         # in_prstatus.pr_reg.x9
@@ -438,6 +449,7 @@ class coredump_generator:
         # prstatus.pr_reg.rax = in_prstatus.pr_reg.x8
         # prstatus.pr_reg.rdx = in_prstatus.pr_reg.x2
 
+        # note packaging, first header info and then data
         nhdr = elf.Elf64_Nhdr()
         nhdr.n_namesz = in_note.nhdr.n_namesz
         nhdr.n_descsz = ctypes.sizeof(prstatus)
