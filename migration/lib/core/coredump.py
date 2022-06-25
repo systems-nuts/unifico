@@ -81,6 +81,7 @@ def align_up(n, alignment):
 # TODO either preparse or provide an generator interface
 def elf_note_get_detail(core, note_type):
     notes = [s for s in core.sections if s.type == lief.ELF.SECTION_TYPES.NOTE]
+    mt = core.header.machine_type
 
     for n in notes:
         buf = n.content
@@ -90,34 +91,44 @@ def elf_note_get_detail(core, note_type):
         while offset < len(buf):
             nhdr = elf.Elf64_Nhdr.from_buffer_copy(buf[offset:])
 
+            note = elf_note()
+
+            note.nhdr = nhdr
+            offset += nhdr_sz
+
+            namesz = align_up(nhdr.n_namesz, 4)
+            note.owner = ctypes.create_string_buffer(
+                bytes(buf[offset : offset + namesz])
+            ).value
+
+            offset += namesz
+
+            descsz = align_up(nhdr.n_descsz, 4)
+
             if nhdr.n_type == note_type:
-                mt = core.header.machine_type
-                note = elf_note()
-
-                note.nhdr = nhdr
-                offset += nhdr_sz
-
-                namesz = align_up(nhdr.n_namesz, 4)
-                note.owner = ctypes.create_string_buffer(
-                    bytes(buf[offset : offset + namesz])
-                ).value
-
-                offset += namesz
-
-                descsz = align_up(nhdr.n_descsz, 4)
-
+                print("found type {}".format(note_type))
                 if mt == lief.ELF.ARCH.AARCH64:
-                    prstatus_t = elf.elf_aarch64_nt_detail_types.get(note_type)
+                    data_t = elf.elf_aarch64_nt_detail_types.get(note_type)
                 else:
-                    prstatus_t = elf.elf_x86_64_nt_detail_types.get(note_type)
+                    data_t = elf.elf_x86_64_nt_detail_types.get(note_type)
 
-                note.data = prstatus_t.from_buffer_copy(
+                if nhdr.n_type == elf.NT_AUXV:
+                    num_auxv = int(descsz / ctypes.sizeof(elf.Elf64_auxv_t))
+
+                    class elf_auxv(ctypes.Structure):
+                        _fields_ = [("auxv", elf.Elf64_auxv_t * num_auxv)]
+
+                    data_t = elf_auxv
+
+                note.data = data_t.from_buffer_copy(
                     buf[offset : offset + descsz]
                 )
 
-                offset += descsz
+                print("{} {} {}".format(nhdr_sz, namesz, descsz))
 
                 return note
+
+            offset += descsz
 
     return None
 
