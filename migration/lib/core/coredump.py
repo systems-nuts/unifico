@@ -565,37 +565,31 @@ class coredump_generator:
 
         return note
 
-    def _gen_auxv(self, pid):
-        """
-        Generate NT_AUXV note for thread tid of process pid.
-        """
-        # mm = self.mms[pid]
-        # num_auxv = len(mm["mm_saved_auxv"]) // 2
-        num_auxv = 1
-
-        class elf_auxv(ctypes.Structure):
-            _fields_ = [("auxv", elf.Elf64_auxv_t * num_auxv)]
-
-        auxv = elf_auxv()
+    def _gen_auxv(self):
+        """ Generate NT_AUXV note for core dump.  """
+        # num_auxv = 1
+        # class elf_auxv(ctypes.Structure):
+        # _fields_ = [("auxv", elf.Elf64_auxv_t * num_auxv)]
+        # auxv = elf_auxv()
         # for i in range(num_auxv):
         # auxv.auxv[i].a_type = mm["mm_saved_auxv"][i]
         # auxv.auxv[i].a_val = mm["mm_saved_auxv"][i + 1]
 
-        name = b"CORE"
+        in_note = elf_note_get_detail(self.input_core, elf.NT_AUXV)
 
-        nhdr = elf.Elf64_Nhdr()
-        nhdr.n_namesz = len(name) + 1
-        nhdr.n_descsz = ctypes.sizeof(elf_auxv())
-        nhdr.n_type = elf.NT_AUXV
+        # nhdr = elf.Elf64_Nhdr()
+        # nhdr.n_namesz = in_note.nhdr.n_namesz
+        # nhdr.n_descsz = in_note.nhdr.n_descsz
+        # nhdr.n_type = elf.NT_AUXV
 
         note = elf_note()
-        note.data = auxv
-        note.owner = name
-        note.nhdr = nhdr
+        note.nhdr = in_note.nhdr
+        note.owner = in_note.owner
+        note.data = in_note.data
 
         return note
 
-    def _gen_files(self, pid):
+    def _gen_files(self):
         """
         Generate NT_FILE note for process pid.
         """
@@ -684,7 +678,6 @@ class coredump_generator:
 
     def _gen_thread_notes(self):
         notes = []
-        pid = tid = 0  # TODO to remove
 
         notes.append(self._gen_prstatus())
         # notes.append(self._gen_fpregset())
@@ -695,8 +688,6 @@ class coredump_generator:
 
     def _gen_notes(self):
         """ Generate notes for core dump. """
-        pid = 0  # TODO to remove
-
         notes = []
 
         # TODO not required? TBD
@@ -705,8 +696,8 @@ class coredump_generator:
         # Main thread first
         notes += self._gen_thread_notes()
 
-        notes.append(self._gen_auxv(pid))
-        notes.append(self._gen_files(pid))
+        notes.append(self._gen_auxv())
+        # notes.append(self._gen_files())
 
         return notes
 
