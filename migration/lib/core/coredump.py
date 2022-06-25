@@ -567,20 +567,8 @@ class coredump_generator:
 
     def _gen_auxv(self):
         """ Generate NT_AUXV note for core dump.  """
-        # num_auxv = 1
-        # class elf_auxv(ctypes.Structure):
-        # _fields_ = [("auxv", elf.Elf64_auxv_t * num_auxv)]
-        # auxv = elf_auxv()
-        # for i in range(num_auxv):
-        # auxv.auxv[i].a_type = mm["mm_saved_auxv"][i]
-        # auxv.auxv[i].a_val = mm["mm_saved_auxv"][i + 1]
 
         in_note = elf_note_get_detail(self.input_core, elf.NT_AUXV)
-
-        # nhdr = elf.Elf64_Nhdr()
-        # nhdr.n_namesz = in_note.nhdr.n_namesz
-        # nhdr.n_descsz = in_note.nhdr.n_descsz
-        # nhdr.n_type = elf.NT_AUXV
 
         note = elf_note()
         note.nhdr = in_note.nhdr
@@ -696,7 +684,7 @@ class coredump_generator:
         # Main thread first
         notes += self._gen_thread_notes()
 
-        notes.append(self._gen_auxv())
+        # notes.append(self._gen_auxv())
         # notes.append(self._gen_files())
 
         return notes
