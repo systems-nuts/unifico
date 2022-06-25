@@ -1090,6 +1090,12 @@ class elf_xsave_struct(ctypes.Structure):  # struct xsave_struct {
     ]  # } __aligned(FP_MIN_ALIGN_BYTES) __packed;
 
 
-elf_x86_64_nt_detail_types = {NT_PRSTATUS: elf_x86_64_prstatus}
+elf_x86_64_nt_detail_types = {
+    NT_PRSTATUS: elf_x86_64_prstatus,
+    NT_AUXV: Elf64_auxv_t,
+}
 
-elf_aarch64_nt_detail_types = {NT_PRSTATUS: elf_aarch64_prstatus}
+elf_aarch64_nt_detail_types = {
+    NT_PRSTATUS: elf_aarch64_prstatus,
+    NT_AUXV: Elf64_auxv_t,
+}
