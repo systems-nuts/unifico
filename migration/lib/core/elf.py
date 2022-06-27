@@ -138,6 +138,31 @@ class Elf64_auxv_t(ctypes.Structure):  # typedef struct
     ]  # } Elf64_auxv_t;
 
 
+# Elf64_ntfile_t related constants
+
+#  * Format of NT_FILE note:
+#  *
+#  * long count     -- how many files are mapped
+#  * long page_size -- units for file_ofs
+#  * array of [COUNT] elements of
+#  *   long start
+#  *   long end
+#  *   long file_ofs
+#  * followed by COUNT filenames in ASCII: "FILE1" NUL "FILE2" NUL...
+
+
+class Elf64_ntfile_hdr_t(ctypes.Structure):
+    _fields_ = [("count", ctypes.c_long), ("page_size", ctypes.c_long)]
+
+
+class Elf64_ntfile_vma_t(ctypes.Structure):
+    _fields_ = [
+        ("start", ctypes.c_long),
+        ("end", ctypes.c_long),
+        ("file_ofs", ctypes.c_long),
+    ]
+
+
 # Elf64_Nhdr related constants.
 
 NT_PRSTATUS = (
@@ -1093,9 +1118,11 @@ class elf_xsave_struct(ctypes.Structure):  # struct xsave_struct {
 elf_x86_64_nt_detail_types = {
     NT_PRSTATUS: elf_x86_64_prstatus,
     NT_AUXV: Elf64_auxv_t,
+    NT_FILE: Elf64_ntfile_hdr_t,
 }
 
 elf_aarch64_nt_detail_types = {
     NT_PRSTATUS: elf_aarch64_prstatus,
     NT_AUXV: Elf64_auxv_t,
+    NT_FILE: Elf64_ntfile_hdr_t,
 }
