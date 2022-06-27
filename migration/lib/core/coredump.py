@@ -36,11 +36,7 @@ import lief
 # from . import elf
 import elf
 
-
-try:
-    from itertools import ifilter as filter
-except ImportError:
-    pass
+# print("from lief: {}".format(self.input_core.notes[0].details[lief.ELF.CorePrStatus.REGISTERS.AARCH64_PC]))
 
 # Some memory-related constants
 PAGESIZE = 4096
@@ -78,6 +74,35 @@ def align_up(n, alignment):
     return n if r == 0 else n + (alignment - r)
 
 
+def elf_note_get_ntfile_type(buf):
+    hdr_t = elf.elf_x86_64_nt_detail_types.get(elf.NT_FILE)
+    hdr = hdr_t.from_buffer_copy(buf)
+
+    names_sz = (
+        len(buf)
+        - ctypes.sizeof(elf.Elf64_ntfile_hdr_t)
+        - ctypes.sizeof(elf.Elf64_ntfile_vma_t) * hdr.count
+    )
+
+    fields = elf.Elf64_ntfile_hdr_t._fields_
+    fields.append(("vmas", elf.Elf64_ntfile_vma_t * hdr.count))
+    fields.append(("rest", ctypes.c_byte * names_sz))
+
+    class elf_files_t(ctypes.Structure):
+        _pack_ = 1
+        _fields_ = fields
+
+    # files = elf_files_t.from_buffer_copy(buf)
+    # files.fnames = []
+
+    # what = bytes(files.rest).decode("utf-8").split("\x00")
+
+    # for i in range(0, hdr.count):
+    # files.fnames.append(what[i])
+
+    return elf_files_t
+
+
 # TODO either preparse or provide an generator interface
 def elf_note_get_detail(core, note_type):
     notes = [s for s in core.sections if s.type == lief.ELF.SECTION_TYPES.NOTE]
@@ -106,25 +131,26 @@ def elf_note_get_detail(core, note_type):
             descsz = align_up(nhdr.n_descsz, 4)
 
             if nhdr.n_type == note_type:
-                print("found type {}".format(note_type))
                 if mt == lief.ELF.ARCH.AARCH64:
                     data_t = elf.elf_aarch64_nt_detail_types.get(note_type)
                 else:
                     data_t = elf.elf_x86_64_nt_detail_types.get(note_type)
 
                 if nhdr.n_type == elf.NT_AUXV:
-                    num_auxv = int(descsz / ctypes.sizeof(elf.Elf64_auxv_t))
+                    num_auxv = int(descsz / ctypes.sizeof(data_t))
 
                     class elf_auxv(ctypes.Structure):
                         _fields_ = [("auxv", elf.Elf64_auxv_t * num_auxv)]
 
                     data_t = elf_auxv
+                elif nhdr.n_type == elf.NT_FILE:
+                    data_t = elf_note_get_ntfile_type(
+                        buf[offset : offset + descsz]
+                    )
 
                 note.data = data_t.from_buffer_copy(
                     buf[offset : offset + descsz]
                 )
-
-                print("{} {} {}".format(nhdr_sz, namesz, descsz))
 
                 return note
 
@@ -187,9 +213,7 @@ class coredump:
 
 
 class coredump_generator:
-    """
-    Generate core dump from criu images.
-    """
+    """ Generate core dump.  """
 
     input_core = None
     output_core = None
@@ -212,9 +236,7 @@ class coredump_generator:
             self.output_core.write(f)
 
     def _gen_coredump(self):
-        """
-        Generate core dump.
-        """
+        """ Generate core dump.  """
         cd = coredump()
         pid = 0  # TODO remove
 
@@ -227,9 +249,7 @@ class coredump_generator:
         return cd
 
     def _gen_ehdr(self, phdrs):
-        """
-        Generate elf header for process pid with program headers phdrs.
-        """
+        """ Generate elf header with program headers phdrs. """
         ehdr = elf.Elf64_Ehdr()
 
         ctypes.memset(ctypes.addressof(ehdr), 0, ctypes.sizeof(ehdr))
@@ -258,9 +278,7 @@ class coredump_generator:
         return ehdr
 
     def _gen_phdrs(self, pid, notes, vmas):
-        """
-        Generate program headers for process pid.
-        """
+        """ Generate program headers for core dump. """
         phdrs = []
 
         offset = ctypes.sizeof(elf.Elf64_Ehdr())
@@ -578,89 +596,22 @@ class coredump_generator:
         return note
 
     def _gen_files(self):
-        """
-        Generate NT_FILE note for process pid.
-        """
-        # mm = self.mms[pid]
+        """ Generate NT_FILE note for core dump.  """
 
-        class mmaped_file_info:
-            start = None
-            end = None
-            file_ofs = None
-            name = None
-
-        infos = []
-        # for vma in mm["vmas"]:
-        for vma in []:
-            if vma["shmid"] == 0:
-                # shmid == 0 means that it is not a file
-                continue
-
-            shmid = vma["shmid"]
-            off = vma["pgoff"] // PAGESIZE
-
-            files = self.reg_files
-            fname = next(filter(lambda x: x["id"] == shmid, files))["name"]
-
-            info = mmaped_file_info()
-            info.start = vma["start"]
-            info.end = vma["end"]
-            info.file_ofs = off
-            info.name = fname
-
-            infos.append(info)
-
-        # /*
-        #  * Format of NT_FILE note:
-        #  *
-        #  * long count     -- how many files are mapped
-        #  * long page_size -- units for file_ofs
-        #  * array of [COUNT] elements of
-        #  *   long start
-        #  *   long end
-        #  *   long file_ofs
-        #  * followed by COUNT filenames in ASCII: "FILE1" NUL "FILE2" NUL...
-        #  */
-        fields = []
-        fields.append(("count", ctypes.c_long))
-        fields.append(("page_size", ctypes.c_long))
-        for i in range(len(infos)):
-            fields.append(("start" + str(i), ctypes.c_long))
-            fields.append(("end" + str(i), ctypes.c_long))
-            fields.append(("file_ofs" + str(i), ctypes.c_long))
-        for i in range(len(infos)):
-            fields.append(
-                ("name" + str(i), ctypes.c_char * (len(infos[i].name) + 1))
-            )
-
-        class elf_files(ctypes.Structure):
-            _fields_ = fields
-
-        data = elf_files()
-        data.count = len(infos)
-        data.page_size = PAGESIZE
-        for i in range(len(infos)):
-            info = infos[i]
-            setattr(data, "start" + str(i), info.start)
-            setattr(data, "end" + str(i), info.end)
-            setattr(data, "file_ofs" + str(i), info.file_ofs)
-            if sys.version_info > (3, 0):
-                setattr(data, "name" + str(i), info.name.encode())
-            else:
-                setattr(data, "name" + str(i), info.name)
+        in_note = elf_note_get_detail(self.input_core, elf.NT_FILE)
 
         nhdr = elf.Elf64_Nhdr()
 
         name = b"CORE"
 
         nhdr.n_namesz = len(name) + 1
-        nhdr.n_descsz = ctypes.sizeof(elf_files())
+        nhdr.n_descsz = ctypes.sizeof(in_note.data)
         nhdr.n_type = elf.NT_FILE
 
         note = elf_note()
         note.nhdr = nhdr
         note.owner = name
-        note.data = data
+        note.data = in_note.data
 
         return note
 
@@ -678,14 +629,16 @@ class coredump_generator:
         """ Generate notes for core dump. """
         notes = []
 
-        # TODO not required? TBD
+        # TODO TBD if required
         # notes.append(self._gen_prpsinfo(pid))
 
         # Main thread first
         notes += self._gen_thread_notes()
 
+        # TODO TBD if required
         # notes.append(self._gen_auxv())
-        # notes.append(self._gen_files())
+
+        notes.append(self._gen_files())
 
         return notes
 
