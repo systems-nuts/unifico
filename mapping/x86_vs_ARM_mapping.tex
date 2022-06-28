@@ -21,7 +21,7 @@
 \begin{document}
 
 \begin{table}[ht]
-\caption{Mapping per Functionality}
+\caption{Mapping per Functionality - General Purpose Registers}
 \begin{adjustwidth}{-4.3cm}{-4.3cm}
 \begin{tabular}{|l|l|l|l|}
     \hline
@@ -59,8 +59,24 @@
 \end{adjustwidth}\label{tab:mappings_per_func}
 \end{table}
 
+\begin{center}
+\begin{table}[ht]
+\caption{Mapping per Functionality - Floating Point Registers}
+\begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{x86-64} & \textbf{Aarch64} & \textbf{Usage} \\
+    \hline
+    \%xmm0-\%xmm7 & v0-v7 & Function Arguments \\
+    \hline
+    \%xmm8-\%xmm15 & v7-v15 & Temporary \\
+    \hline
+\end{tabular}
+\label{tab:mappings_per_func2}
+\end{table}
+\end{center}
+
     \begin{itemize}
-        \item We removed registers x9-x15 and x21-x28 from AArch64.
+        \item We removed registers x9-x15, x21-x28 and v16-v31 from AArch64.
         \item For now, we do not map X86's registers: cs, flags, ss, fs\_base, gs\_base, ds, es, fs, gs.
         \item For now, we do not map AArch64's registers: pstate.
         \item Maybe leave kernel arguments for later.
