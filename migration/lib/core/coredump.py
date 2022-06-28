@@ -63,6 +63,20 @@ status = {
 prot = {"PROT_READ": 0x1, "PROT_WRITE": 0x2, "PROT_EXEC": 0x4}
 
 
+def is_seg_of(seg, elf, name=None):
+    if len(seg.sections) == 1:
+        if name:
+            ns = [elf.get_section(name)]
+        else:
+            ns = [s for s in elf.sections]
+
+        for s in ns:
+            if seg.sections[0].virtual_address == s.virtual_address:
+                return True
+
+    return False
+
+
 class elf_note:
     nhdr = None  # Elf_Nhdr;
     owner = None  # i.e. CORE or LINUX;
@@ -217,6 +231,9 @@ class coredump_generator:
 
     input_core = None
     output_core = None
+
+    input_executable = None
+    output_executable = None
 
     cores = {}  # cores by pid;
     mms = {}  # mm by pid;
