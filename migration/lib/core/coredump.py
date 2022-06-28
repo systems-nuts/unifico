@@ -187,9 +187,7 @@ class coredump:
     # FIXME keeping all vmas in memory is a bad idea;
 
     def write(self, f):
-        """
-        Write core dump to file f.
-        """
+        """ Write core dump to file f.  """
         buf = io.BytesIO()
         buf.write(self.ehdr)
 
@@ -342,9 +340,7 @@ class coredump_generator:
         return phdrs
 
     def _gen_prpsinfo(self, pid):
-        """
-        Generate NT_PRPSINFO note for process pid.
-        """
+        """ Generate NT_PRPSINFO note for process pid.  """
         # core = self.cores[pid]
 
         prpsinfo = elf.elf_prpsinfo()
@@ -658,29 +654,6 @@ class coredump_generator:
         notes.append(self._gen_files())
 
         return notes
-
-    def _get_page(self, pid, page_no):
-        """
-        Try to find memory page page_no in pages.img image for process pid.
-        """
-        pagemap = self.pagemaps[pid]
-
-        # First entry is pagemap_head, we will need it later to open
-        # proper pages.img.
-        pages_id = pagemap[0]["pages_id"]
-        off = 0  # in pages
-        for m in pagemap[1:]:
-            found = False
-            for i in range(m["nr_pages"]):
-                if m["vaddr"] + i * PAGESIZE == page_no * PAGESIZE:
-                    found = True
-                    break
-                off += 1
-
-            if not found:
-                continue
-
-        return None
 
     def _gen_cmdline(self, pid):
         """
