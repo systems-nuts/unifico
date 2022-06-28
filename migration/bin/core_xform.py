@@ -24,6 +24,8 @@ def xform_x86_to_arm(input_core, x86bin, armbin, output):
 def xform_arm_to_x86(input_core, x86bin, armbin, output):
     gen = coredump.coredump_generator()
     gen.input_core = input_core
+    gen.input_executable = armbin
+    gen.output_executable = x86bin
 
     gen()
 
