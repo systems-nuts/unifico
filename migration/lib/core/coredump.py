@@ -257,8 +257,8 @@ class coredump_generator:
         cd = coredump()
         pid = 0  # TODO remove
 
-        # Generate everything backwards so it is easier to calculate offset.
-        # cd.vmas = self._gen_vmas(pid)
+        # generate everything backwards so it is easier to calculate offset.
+        cd.vmas = self._gen_vmas()
         cd.notes = self._gen_notes()
         cd.phdrs = self._gen_phdrs(pid, cd.notes, cd.vmas)
         cd.ehdr = self._gen_ehdr(cd.phdrs)
@@ -747,11 +747,27 @@ class coredump_generator:
 
         return flags
 
-    def _gen_vmas(self, pid):
-        """
-        Generate vma contents for core dump for process pid.
-        """
-        mm = self.mms[pid]
+    def _gen_vmas(self):
+        """ Generate vma contents for core dump. """
+        loads = [
+            s
+            for s in self.input_core.segments
+            if s.type == lief.ELF.SEGMENT_TYPES.LOAD
+        ]
+
+        for ls in loads:
+            if ls.flags & lief.ELF.SEGMENT_FLAGS.X:
+                if is_seg_of(ls, self.input_executable, ".text"):
+                    print("text " + hex(ls.virtual_address))
+                else:
+                    print("skipping X segment at " + hex(ls.virtual_address))
+            elif ls.flags & lief.ELF.SEGMENT_FLAGS.W:
+                if is_seg_of(ls, self.input_executable, ".bss"):
+                    print("bss " + hex(ls.virtual_address))
+                else:
+                    print("heap/stack segment at " + hex(ls.virtual_address))
+            else:
+                print("skipping segment at " + hex(ls.virtual_address))
 
         class vma_class:
             data = None
@@ -761,14 +777,14 @@ class coredump_generator:
             start = None
 
         vmas = []
-        for vma in mm["vmas"]:
-            v = vma_class()
-            v.filesz = self._get_vma_dump_size(vma)
-            v.data = self._gen_mem_chunk(pid, vma, v.filesz)
-            v.memsz = vma["end"] - vma["start"]
-            v.start = vma["start"]
-            v.flags = self._get_vma_flags(vma)
+        # for vma in mm["vmas"]:
+        # v = vma_class()
+        # v.filesz = self._get_vma_dump_size(vma)
+        # v.data = self._gen_mem_chunk(pid, vma, v.filesz)
+        # v.memsz = vma["end"] - vma["start"]
+        # v.start = vma["start"]
+        # v.flags = self._get_vma_flags(vma)
 
-            vmas.append(v)
+        # vmas.append(v)
 
         return vmas
