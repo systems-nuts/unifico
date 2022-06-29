@@ -62,6 +62,16 @@ status = {
 
 prot = {"PROT_READ": 0x1, "PROT_WRITE": 0x2, "PROT_EXEC": 0x4}
 
+PRESERVED_SECTIONS = [
+    ".text",
+    ".bss",
+    ".data",
+    ".rodata",
+    ".tbss",
+    ".tdata",
+    "stack/heap",
+]
+
 
 def is_seg_of(seg, elf, name=None):
     if len(seg.sections) == 1:
@@ -739,36 +749,49 @@ class coredump_generator:
 
         return flags
 
-    def _gen_vmas(self):
-        """ Generate vma contents for core dump. """
+    def identify_segments(self):
+        """ Identify load segments in input core dump. """
         loads = [
             s
             for s in self.input_core.segments
             if s.type == lief.ELF.SEGMENT_TYPES.LOAD
         ]
 
-        out_loads = []
+        out_loads = {}
 
         for ls in loads:
             if ls.flags & lief.ELF.SEGMENT_FLAGS.X:
                 if is_seg_of(ls, self.input_executable, ".text"):
-                    print("text " + hex(ls.virtual_address))
-                    out_loads.append(ls)
+                    print("seg at " + hex(ls.virtual_address) + " .text")
+                    out_loads[".text"] = ls
                 else:
-                    print("skipping X seg at " + hex(ls.virtual_address))
+                    print(
+                        "seg at " + hex(ls.virtual_address) + " skipped (exec)"
+                    )
             elif ls.flags & lief.ELF.SEGMENT_FLAGS.W:
                 if is_seg_of(ls, self.input_executable, ".bss"):
-                    print("bss " + hex(ls.virtual_address))
-                    out_loads.append(ls)
+                    print("seg at " + hex(ls.virtual_address) + " .bss")
+                    out_loads[".bss"] = ls
                 else:
-                    print("heap/stack seg at " + hex(ls.virtual_address))
-                    out_loads.append(ls)
+                    print("seg at " + hex(ls.virtual_address) + " heap/stack")
+                    out_loads["stack"] = ls
             elif ls.flags & lief.ELF.SEGMENT_FLAGS.R:
                 vma = get_seg_vma_from_notes(ls, self.input_notes)
                 if vma and vma.file_ofs == 0:
-                    print("skipping align seg at " + hex(ls.virtual_address))
+                    print(
+                        "seg at "
+                        + hex(ls.virtual_address)
+                        + " skipped (align)"
+                    )
             else:
-                print("skipping seg at " + hex(ls.virtual_address))
+                print("seg at " + hex(ls.virtual_address) + " skipped")
+
+        return out_loads
+
+    def _gen_vmas(self):
+        """ Generate vma contents for core dump. """
+
+        out_loads = self.identify_segments()
 
         class vma_class:
             data = None
@@ -778,7 +801,7 @@ class coredump_generator:
             start = None
 
         vmas = []
-        for ols in out_loads:
+        for (_, ols) in out_loads.items():
             v = vma_class()
             v.filesz = ols.physical_size
             v.data = bytes(ols.content)
