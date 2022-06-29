@@ -788,4 +788,6 @@ class coredump_generator:
 
             vmas.append(v)
 
+        vmas.sort(key=lambda x: x.start)
+
         return vmas
