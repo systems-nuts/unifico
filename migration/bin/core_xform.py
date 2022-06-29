@@ -15,17 +15,11 @@ logger = logging.getLogger("ELF coredump transform")
 logger.setLevel(logging.DEBUG)
 
 
-def xform_x86_to_arm(input_core, x86bin, armbin, output):
-    logger.warning(
-        "ELF Core conversion from x86_64 to AArch64 is not implemented yet."
-    )
-
-
-def xform_arm_to_x86(input_core, x86bin, armbin, output):
+def xform_core(input_core, input_exec, output_exec, output_core_name):
     gen = coredump.coredump_generator()
     gen.input_core = input_core
-    gen.input_executable = armbin
-    gen.output_executable = x86bin
+    gen.input_executable = input_exec
+    gen.output_executable = output_exec
 
     gen()
 
@@ -90,6 +84,13 @@ if __name__ == "__main__":
     # input_core_json = lief.to_json(core)
 
     if core.header.machine_type == lief.ELF.ARCH.AARCH64:
-        xform_arm_to_x86(core, armbin, x86bin, args.output)
+        xform_core(
+            input_core=core,
+            input_exec=armbin,
+            output_exec=x86bin,
+            output_core_name=args.output,
+        )
     else:
-        xform_x86_to_arm(core, x86bin, armbin, args.output)
+        logger.warning(
+            "ELF Core conversion from x86_64 to AArch64 is not implemented."
+        )
