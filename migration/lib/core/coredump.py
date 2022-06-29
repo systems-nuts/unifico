@@ -747,17 +747,22 @@ class coredump_generator:
             if s.type == lief.ELF.SEGMENT_TYPES.LOAD
         ]
 
+        out_loads = []
+
         for ls in loads:
             if ls.flags & lief.ELF.SEGMENT_FLAGS.X:
                 if is_seg_of(ls, self.input_executable, ".text"):
                     print("text " + hex(ls.virtual_address))
+                    out_loads.append(ls)
                 else:
                     print("skipping X seg at " + hex(ls.virtual_address))
             elif ls.flags & lief.ELF.SEGMENT_FLAGS.W:
                 if is_seg_of(ls, self.input_executable, ".bss"):
                     print("bss " + hex(ls.virtual_address))
+                    out_loads.append(ls)
                 else:
                     print("heap/stack seg at " + hex(ls.virtual_address))
+                    out_loads.append(ls)
             elif ls.flags & lief.ELF.SEGMENT_FLAGS.R:
                 vma = get_seg_vma_from_notes(ls, self.input_notes)
                 if vma and vma.file_ofs == 0:
@@ -773,14 +778,14 @@ class coredump_generator:
             start = None
 
         vmas = []
-        # for vma in mm["vmas"]:
-        # v = vma_class()
-        # v.filesz = self._get_vma_dump_size(vma)
-        # v.data = self._gen_mem_chunk(pid, vma, v.filesz)
-        # v.memsz = vma["end"] - vma["start"]
-        # v.start = vma["start"]
-        # v.flags = self._get_vma_flags(vma)
+        for ols in out_loads:
+            v = vma_class()
+            v.filesz = ols.physical_size
+            v.data = bytes(ols.content)
+            v.memsz = ols.virtual_size
+            v.start = ols.virtual_address
+            v.flags = ols.flags
 
-        # vmas.append(v)
+            vmas.append(v)
 
         return vmas
