@@ -248,6 +248,8 @@ class coredump_generator:
     input_executable = None
     output_executable = None
 
+    input_notes = None
+
     cores = {}  # cores by pid;
     mms = {}  # mm by pid;
     reg_files = None  # reg-files;
@@ -271,8 +273,10 @@ class coredump_generator:
         pid = 0  # TODO remove
 
         # generate everything backwards so it is easier to calculate offset.
+        self.input_notes = self._gen_notes()
+        cd.notes = self.input_notes
         cd.vmas = self._gen_vmas()
-        cd.notes = self._gen_notes()
+        # cd.notes = self._gen_notes()
         cd.phdrs = self._gen_phdrs(pid, cd.notes, cd.vmas)
         cd.ehdr = self._gen_ehdr(cd.phdrs)
 
@@ -748,14 +752,18 @@ class coredump_generator:
                 if is_seg_of(ls, self.input_executable, ".text"):
                     print("text " + hex(ls.virtual_address))
                 else:
-                    print("skipping X segment at " + hex(ls.virtual_address))
+                    print("skipping X seg at " + hex(ls.virtual_address))
             elif ls.flags & lief.ELF.SEGMENT_FLAGS.W:
                 if is_seg_of(ls, self.input_executable, ".bss"):
                     print("bss " + hex(ls.virtual_address))
                 else:
-                    print("heap/stack segment at " + hex(ls.virtual_address))
+                    print("heap/stack seg at " + hex(ls.virtual_address))
+            elif ls.flags & lief.ELF.SEGMENT_FLAGS.R:
+                vma = get_seg_vma_from_notes(ls, self.input_notes)
+                if vma and vma.file_ofs == 0:
+                    print("skipping align seg at " + hex(ls.virtual_address))
             else:
-                print("skipping segment at " + hex(ls.virtual_address))
+                print("skipping seg at " + hex(ls.virtual_address))
 
         class vma_class:
             data = None
