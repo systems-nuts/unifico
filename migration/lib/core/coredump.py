@@ -77,6 +77,21 @@ def is_seg_of(seg, elf, name=None):
     return False
 
 
+def get_seg_vma_from_notes(seg, notes):
+    nt_file = None
+    for nt in notes:
+        if nt.nhdr.n_type == elf.NT_FILE:
+            nt_file = nt
+            break
+
+    if nt_file:
+        for vma in nt_file.data.vmas:
+            if vma.start == seg.virtual_address:
+                return vma
+
+    return None
+
+
 class elf_note:
     nhdr = None  # Elf_Nhdr;
     owner = None  # i.e. CORE or LINUX;
