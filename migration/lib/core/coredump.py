@@ -793,6 +793,10 @@ class coredump_generator:
 
         out_loads = self.identify_segments()
 
+        out_loads[".text"] = self.output_executable.get_section(
+            ".text"
+        ).segments[0]
+
         class vma_class:
             data = None
             filesz = None
