@@ -1,0 +1,14 @@
+[tool.black]
+line-length = 79
+target-version = ['py36', 'py37', 'py38', 'py39']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+# The following are specific to UnASL.
+    | llvm
+    | llvm-patches
+    | mapping
+    | popcorn-compiler
+    | var
+ )/
+'''
