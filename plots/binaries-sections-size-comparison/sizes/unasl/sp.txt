@@ -1,0 +1,34 @@
+sp/sp_x86_64_aligned.out  :
+section                                                 size       addr
+.text                                                 109144    5242880
+.rodata                                                11344    6291456
+.rodata.cst8                                             456    6302800
+.rodata.cst16                                            176    6303264
+.rodata.___src_math_pow_c_bp                              16    6303440
+.rodata.___src_math_pow_c_dp_l                            16    6303456
+.rodata.___src_math_pow_c_dp_h                            16    6303472
+.rodata.cst4                                              44    6303488
+.rodata.___src_stdio_vfprintf_c_xdigits                   16    6303536
+.rodata.___src_errno_strerror_c_errid                     88    6303552
+.rodata.___src_internal_floatscan_c_decfloat_p10s         32    6303648
+.data                                                   4344    7340032
+.bss                                                48251976    8388608
+.ldata                                                     0   56648776
+.eh_frame                                               1096   56648776
+.tdata                                                  4096   57671680
+.tbss                                                   4096   58720256
+.init_array                                               16   58724352
+.debug_str                                              8435          0
+.debug_abbrev                                          19545          0
+.debug_info                                            75837          0
+.debug_macinfo                                            93          0
+.comment                                                 225          0
+.debug_line                                            65533          0
+.debug_ranges                                           6640          0
+.debug_loc                                             80476          0
+.debug_frame                                            7192          0
+.debug_aranges                                           288          0
+.note.gnu.gold-version                                    28          0
+Total                                               48651264
+
+

@@ -1,0 +1,27 @@
+/SNU_NPB_2019/NPB3.3-SER-C/bin/cg.A.x  :
+section                              size      addr
+.text                               39224   4194656
+.rodata                              5392   4233888
+.llvm_pcn_stackmaps                    80   4239280
+.eh_frame                             596   4239360
+.eh_frame_hdr                         140   4239956
+.fini_array                             8   4247520
+.init_array                            24   4247528
+.data                                 256   4247552
+.tm_clone_table                         0   4247808
+.bss                             27078784   4251648
+.debug_str                           6676         0
+.debug_abbrev                       14689         0
+.debug_info                         58726         0
+.debug_ranges                        5648         0
+.debug_macinfo                         62         0
+.comment                              146         0
+.debug_line                         32936         0
+.debug_loc                          63356         0
+.debug_frame                         6168         0
+.stack_transform.unwind                24         0
+.stack_transform.unwind_arange         16         0
+.note.gnu.gold-version                 28         0
+Total                            27312979
+
+
