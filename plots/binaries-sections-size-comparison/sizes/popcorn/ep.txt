@@ -1,0 +1,41 @@
+/npb-c/ep/ep_x86-64  :
+section                                             size       addr
+.text                                             130060    5242880
+.rodata                                            19758    6291456
+.rodata.cst8                                         488    6311216
+.rodata.cst16                                        208    6311712
+.rodata.src_math_pow_c_bp                             16    6311920
+.rodata.src_math_pow_c_dp_l                           16    6311936
+.rodata.src_math_pow_c_dp_h                           16    6311952
+.rodata.cst4                                          44    6311968
+.rodata.src_stdio_vfprintf_c_xdigits                  16    6312016
+.rodata.src_errno_strerror_c_errid                    88    6312032
+.rodata.src_internal_floatscan_c_decfloat_p10s        32    6312128
+.data                                               4592    7340032
+.bss                                             1193524    8388608
+.ldata                                                 0    9590328
+.eh_frame                                          12952    9590328
+.tdata                                              4096   10485760
+.tbss                                             913584   11534336
+.init_array                                           40   11538432
+.fini_array                                            8   11538472
+.llvm_pcn_stackmaps                                22272   11542528
+.debug_str                                         15108          0
+.debug_abbrev                                      30150          0
+.debug_info                                       117198          0
+.debug_macinfo                                       126          0
+.comment                                             105          0
+.stack_transform.unwind                              304          0
+.stack_transform.unwind_arange                       384          0
+.debug_line                                        63051          0
+.debug_ranges                                      12000          0
+.debug_loc                                        122201          0
+.debug_frame                                       10928          0
+.note.gnu.gold-version                                28          0
+.stack_transform.id                                 8528          0
+.stack_transform.addr                               8528          0
+.stack_transform.live                              16272          0
+.stack_transform.arch_const                           40          0
+Total                                            2706761
+
+

@@ -1,0 +1,27 @@
+/SNU_NPB_2019/NPB3.3-SER-C/bin/ft.A.x  :
+section                               size      addr
+.text                                52456   4194656
+.rodata                               8868   4247120
+.llvm_pcn_stackmaps                     80   4255992
+.eh_frame                              772   4256072
+.eh_frame_hdr                          188   4256844
+.fini_array                              8   4263904
+.init_array                             24   4263912
+.data                                  256   4263936
+.tm_clone_table                          0   4264192
+.bss                             337268868   4268032
+.debug_str                            7293         0
+.debug_abbrev                        17021         0
+.debug_info                          63488         0
+.debug_macinfo                          75         0
+.comment                               146         0
+.debug_line                          38226         0
+.debug_ranges                         5824         0
+.debug_loc                           70044         0
+.debug_frame                          6744         0
+.stack_transform.unwind                 24         0
+.stack_transform.unwind_arange          16         0
+.note.gnu.gold-version                  28         0
+Total                            337540449
+
+
