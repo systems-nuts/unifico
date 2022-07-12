@@ -9,6 +9,8 @@ $(if $(shell test -s $(DEFS_MKFILE)), $(error "file $(DEFS_MKFILE) does not exis
 
 include $(DEFS_MKFILE)
 
+SSHPASS_IGNORE ?= @- # silent and ignored by default - override with DEFS_MAKEFILE
+
 ###############################################################################
 # LLVM Tools and Flags
 ###############################################################################
@@ -227,7 +229,7 @@ src_changed: *.c
 	@echo " [SOURCE FILES CHANGED]"
 	echo $?
 	touch $@
-	@-sshpass -f "/home/nikos/docs/pass.txt" scp $^ nikos@sole:`pwd`
+	$(SSHPASS_IGNORE)sshpass -f "/home/nikos/docs/pass.txt" scp $^ nikos@sole:`pwd`
 
 ###########
 # AArch64 #
@@ -256,7 +258,7 @@ src_changed: *.c
 $(ARM64_INIT): $(ARM64_OBJ_INIT)
 	@echo " [LD] $@"
 	$(LD) -o $@ $^ $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
-	@-sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`
+	$(SSHPASS_IGNORE)sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`
 
 $(ARM64_UNALIGNED): $(ARM64_OBJ)
 	@echo " [LD] $@"
@@ -268,7 +270,7 @@ $(ARM64_LD_SCRIPT): $(X86_64_LD_SCRIPT)
 $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	@echo " [LD] $@"
 	$(LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_ALIGNED_MAP) -T $<
-	@-sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`
+	$(SSHPASS_IGNORE)sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`
 	$(OBJDUMP) -d -S --print-imm-hex $@ >aarch64_objdump.txt
 
 ##########
