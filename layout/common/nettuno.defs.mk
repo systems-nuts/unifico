@@ -18,3 +18,5 @@ MCA	?= ~/llvm_13/toolchain/bin/llvm-mca
 ARM64_CPU	?= thunderx2t99
 X86_64_CPU	?= btver2
 MCA_RESULT_DIR	?= ../mca-results/reg-pressure-O0
+
+SSHPASS_IGNORE =
