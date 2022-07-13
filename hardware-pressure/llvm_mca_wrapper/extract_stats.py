@@ -7,11 +7,20 @@ import pandas as pd
 
 from jsonstream import load
 
-EXAMPLE_JSON = 'json/fact_aarch64.json'
-REGISTER_FILE_RE = r'Max number of mappings used:\s*(\d+)'
+EXAMPLE_JSON = "json/fact_aarch64.json"
+REGISTER_FILE_RE = r"Max number of mappings used:\s*(\d+)"
 
 
-def bar_plot(labels, y1, y2, y1_label='y1_label', y2_label='y2_label', ylabel='', title='', save_fig=''):
+def bar_plot(
+    labels,
+    y1,
+    y2,
+    y1_label="y1_label",
+    y2_label="y2_label",
+    ylabel="",
+    title="",
+    save_fig="",
+):
     """
     A simple wrapper for matplotlib's barplot.
 
@@ -48,10 +57,10 @@ def parse_mca_json(file_path):
     """Decode the json file produced by llvm-mca tool
 
     llvm-mca with the `--json` option returns a file with a list of JSON objects one after the other.
-    So, we parse them with the `jsonstream` library: 
+    So, we parse them with the `jsonstream` library:
     https://pypi.org/project/jsonstream/
     and we return a dictionary with keys:
-    
+
     * InstructionInfo
     * Summary
     * Timeline
@@ -63,14 +72,14 @@ def parse_mca_json(file_path):
     @param file_path
     @return: list of json objects
     """
-    with open(file_path, 'r') as fp:
+    with open(file_path, "r") as fp:
         stats_list = list(load(fp))
 
     mca_dict = {
-        'InstructionInfo': stats_list[0],
-        'Summary': stats_list[1],
-        'Timeline': stats_list[2],
-        'ResourcePressure': stats_list[3]
+        "InstructionInfo": stats_list[0],
+        "Summary": stats_list[1],
+        "Timeline": stats_list[2],
+        "ResourcePressure": stats_list[3],
     }
     return mca_dict
 
@@ -85,7 +94,7 @@ def parse_mca_text(file_path):
     @param file_path
     @return: list of json objects
     """
-    with open(file_path, 'r') as fp:
+    with open(file_path, "r") as fp:
         lines = fp.readlines()
         for line in lines:
             matchResult = re.match(REGISTER_FILE_RE, line)
@@ -104,13 +113,15 @@ def resource_pressure(mca_dict):
     @param mca_dict: a dictionary as returned by the function `parse_mca_json`
     @return: dictionary with total pressures
     """
-    n = len(mca_dict['Timeline'])
-    resources = mca_dict['InstructionInfo']['Resources']['Resources']  # Resources names
+    n = len(mca_dict["Timeline"])
+    resources = mca_dict["InstructionInfo"]["Resources"][
+        "Resources"
+    ]  # Resources names
 
     return {
-        resources[instr_dict['ResourceIndex']]: instr_dict['ResourceUsage']
-        for instr_dict in mca_dict['ResourcePressure']['ResourcePressureInfo']
-        if instr_dict['InstructionIndex'] == n
+        resources[instr_dict["ResourceIndex"]]: instr_dict["ResourceUsage"]
+        for instr_dict in mca_dict["ResourcePressure"]["ResourcePressureInfo"]
+        if instr_dict["InstructionIndex"] == n
     }
 
 
@@ -131,12 +142,18 @@ def sort_by_pressure(folder_path, target_resources):
             continue
         mca_dict = parse_mca_json(file_path)
         pressure_dict = resource_pressure(mca_dict)
-        total_pressure = sum([pressure_dict[resource]
-                              for resource in pressure_dict.keys()
-                              if resource in target_resources])
+        total_pressure = sum(
+            [
+                pressure_dict[resource]
+                for resource in pressure_dict.keys()
+                if resource in target_resources
+            ]
+        )
         result.append([file, total_pressure])
 
-    result = sorted(result, key=lambda x: x[1])  # Sort list of tuples based on the 2nd argument, i.e. total_pressure
+    result = sorted(
+        result, key=lambda x: x[1]
+    )  # Sort list of tuples based on the 2nd argument, i.e. total_pressure
 
     return list(zip(*result))
 
@@ -151,8 +168,10 @@ def folder_pressure(folder_path, target_resources):
     @param target_resources: list of processor resources
     @return: tuple with the folder name and the sum of pressures for all files
     """
-    pressures = sort_by_pressure(folder_path, target_resources)[1]  # Get only the numbers, not the file names.
-    folder_name = folder_path.split('/')[-1]
+    pressures = sort_by_pressure(folder_path, target_resources)[
+        1
+    ]  # Get only the numbers, not the file names.
+    folder_name = folder_path.split("/")[-1]
     return folder_name, sum(pressures)
 
 
@@ -174,7 +193,7 @@ def folder_register_pressure(folder_path):
         register_pressure = parse_mca_text(file_path)
         register_pressures.append(register_pressure)
 
-    folder_name = folder_path.split('/')[-1]
+    folder_name = folder_path.split("/")[-1]
     return folder_name, sum(register_pressures)
 
 
@@ -197,7 +216,7 @@ def multi_folder_pressure(folder_path, target_resources):
 
     names = list(zip(*result))[0]
     pressures = list(zip(*result))[1]
-    return pd.DataFrame(index=names, data=pressures, columns=['HW Pressure'])
+    return pd.DataFrame(index=names, data=pressures, columns=["HW Pressure"])
 
 
 def multi_folder_register_pressure(folder_path):
@@ -217,7 +236,9 @@ def multi_folder_register_pressure(folder_path):
 
     names = list(zip(*result))[0]
     pressures = list(zip(*result))[1]
-    return pd.DataFrame(index=names, data=pressures, columns=['Register Pressure'])
+    return pd.DataFrame(
+        index=names, data=pressures, columns=["Register Pressure"]
+    )
 
 
 def plot_by_pressure(folder_path, target_resources):
@@ -236,38 +257,59 @@ def plot_by_pressure(folder_path, target_resources):
     plt.show()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description='Utility script for extracting hardware pressure, '
-                                                 'as JSON, from assembly files.')
-    parser.add_argument('--asm-folder', action="store", required=True,
-                        help='folder containing the assembly files')
+    parser = argparse.ArgumentParser(
+        description="Utility script for extracting hardware pressure, "
+        "as JSON, from assembly files."
+    )
+    parser.add_argument(
+        "--asm-folder",
+        action="store",
+        required=True,
+        help="folder containing the assembly files",
+    )
 
     args, others = parser.parse_known_args()
 
-    df_overhead = pd.read_csv('json/sole/overheads.csv', index_col='Benchmark')
+    df_overhead = pd.read_csv("json/sole/overheads.csv", index_col="Benchmark")
 
-    FLAGS = 'O0 O1 O2 O3'
-    for flag in FLAGS.split(' '):
+    FLAGS = "O0 O1 O2 O3"
+    for flag in FLAGS.split(" "):
 
-        print('Flag: ', flag)
+        print("Flag: ", flag)
 
-        directory = os.path.join('json/sole/mca-results/hw-pressure-' + flag, 'aarch64')
-        df_hw_pressure = multi_folder_pressure(directory, ['THX2T99P0', 'THX2T99P1', 'THX2T99P2',
-                                                           'THX2T99P3', 'THX2T99P4', 'THX2T99P5'])
+        directory = os.path.join(
+            "json/sole/mca-results/hw-pressure-" + flag, "aarch64"
+        )
+        df_hw_pressure = multi_folder_pressure(
+            directory,
+            [
+                "THX2T99P0",
+                "THX2T99P1",
+                "THX2T99P2",
+                "THX2T99P3",
+                "THX2T99P4",
+                "THX2T99P5",
+            ],
+        )
 
-        directory = os.path.join('json/sole/mca-results/reg-pressure-' + flag, 'aarch64')
+        directory = os.path.join(
+            "json/sole/mca-results/reg-pressure-" + flag, "aarch64"
+        )
         df_reg_pressure = multi_folder_register_pressure(directory)
 
         df = df_hw_pressure.join(df_reg_pressure)
         df = df.join(df_overhead)
         df.dropna(inplace=True)
-        df.sort_values(by=['Overhead -' + flag], inplace=True)
+        df.sort_values(by=["Overhead -" + flag], inplace=True)
         # df.sort_values(by=['Register Pressure'], inplace=True)
         # df.plot.bar(['HW Pressure', 'Register Pressure', 'Overhead -' + flag])
-        ax = df[['Overhead -' + flag, 'HW Pressure', 'Register Pressure']].plot.bar(subplots=True)
+        ax = df[
+            ["Overhead -" + flag, "HW Pressure", "Register Pressure"]
+        ].plot.bar(subplots=True)
         ax[1].legend(loc=2)
-        plt.savefig('json/sole/pressure-' + flag + '.png')
+        plt.savefig("json/sole/pressure-" + flag + ".png")
         plt.show()
         # bar_plot(benchmarks_sorted, hw_pressures_sorted, reg_pressures_sorted,
         #          y1_label='hardware-pressure', y2_label='register_file_pressure')
