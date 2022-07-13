@@ -7,7 +7,7 @@ def cmp(a, b):
 
 
 # Small struct to keep data about each logical processor
-class Processor():
+class Processor:
     def __init__(self, processor, core, node, socket):
         self.processor = processor
         self.core = core
@@ -93,10 +93,12 @@ def printTopology(info):
                     processors += 1
                     print("\t\t\tProcessor: " + str(processor.processor))
 
-    print("\nIn total, there are {0} physical packages (sockets), {1} NUMA nodes, "
-          "{2} physical cores and {3} hardware threads\n".format(
+    print(
+        "\nIn total, there are {0} physical packages (sockets), {1} NUMA nodes, "
+        "{2} physical cores and {3} hardware threads\n".format(
             str(sockets), str(nodes), str(cores), str(processors)
-    ))
+        )
+    )
 
 
 # Avoid using processor 0, only put at the very last,
@@ -161,8 +163,10 @@ def main():
         elif affinity == "compact":
             print(",".join(str(x) for x in compact(info)))
         else:
-            print("Error: Unrecognized affinity mapping '{0}'".format(affinity))
+            print(
+                "Error: Unrecognized affinity mapping '{0}'".format(affinity)
+            )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

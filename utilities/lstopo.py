@@ -26,41 +26,42 @@ def digest_lstopo(file_path):
     cur_core = -1
 
     # Scanning file
-    result = {'packages': []}
+    result = {"packages": []}
     for line in file_desc:
 
         package_match = package_pattern.search(line)
         if package_match:
             cur_package = package_match.group(1)
-            package_dict = {
-                'id': cur_package,
-                'cores': []
-            }
-            result['packages'].append(package_dict)
+            package_dict = {"id": cur_package, "cores": []}
+            result["packages"].append(package_dict)
             continue
 
         core_match = core_pattern.search(line)
         if core_match:
             cur_core = core_match.group(1)
-            core_dict = {
-                'id': cur_core,
-                'cpus': []
-            }
-            package_dict['cores'].append(core_dict)
+            core_dict = {"id": cur_core, "cpus": []}
+            package_dict["cores"].append(core_dict)
             continue
 
         pu_match = pu_pattern.search(line)
         if pu_match:
             cur_pu = pu_match.group(1)
             if cur_package == -1 or cur_core == -1:
-                print("Error cur_package " + str(cur_package) + " cur_core " + str(cur_core) + " on line " + str(line))
+                print(
+                    "Error cur_package "
+                    + str(cur_package)
+                    + " cur_core "
+                    + str(cur_core)
+                    + " on line "
+                    + str(line)
+                )
                 continue
-            core_dict['cpus'].append(cur_pu)
+            core_dict["cpus"].append(cur_pu)
 
     return result
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     # Check command line arguments
     if len(sys.argv) != 2:

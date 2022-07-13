@@ -9,11 +9,11 @@ def switch_hyperthreading(option):
     :param option: 'on', 'off' or 'forceoff'
     :return:
     """
-    if option in ['on', 'off', 'forceoff']:
-        with open('/sys/devices/system/cpu/smt/control', 'w') as fp:
+    if option in ["on", "off", "forceoff"]:
+        with open("/sys/devices/system/cpu/smt/control", "w") as fp:
             fp.write(option)
     else:
-        print('Unknown option.')
+        print("Unknown option.")
 
 
 def switch_cpu(cpu_id_list, option):
@@ -28,17 +28,21 @@ def switch_cpu(cpu_id_list, option):
     if not cpu_id_list:  # Empty list
         return
 
-    if option in ['0', '1']:
+    if option in ["0", "1"]:
         for cpu_id in cpu_id_list:
-            with open('/sys/devices/system/cpu/cpu{}/online'.format(str(cpu_id)), 'w') as fp:
+            with open(
+                "/sys/devices/system/cpu/cpu{}/online".format(str(cpu_id)), "w"
+            ) as fp:
                 fp.write(option)
             time.sleep(0.1)
-            with open('/sys/devices/system/cpu/cpu{}/online'.format(str(cpu_id)), 'r') as fp:
+            with open(
+                "/sys/devices/system/cpu/cpu{}/online".format(str(cpu_id)), "r"
+            ) as fp:
                 if fp.read(1) != option:
                     exit(1)
     else:
-        print('Unknown option.')
+        print("Unknown option.")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     switch_cpu()

@@ -22,6 +22,7 @@
 import gdb
 from collections import defaultdict
 
+
 class FramePrinter:
     """Make ASCII art from a stack frame"""
 
@@ -38,10 +39,14 @@ class FramePrinter:
             result = result + "in " + self._frame.function().name
             if self._frame.type() is gdb.INLINE_FRAME:
                 # recursively show inlining until we find a "real" parent frame
-                result = result + "\ninlined with" + str(FramePrinter(self._frame.older()))
+                result = (
+                    result
+                    + "\ninlined with"
+                    + str(FramePrinter(self._frame.older()))
+                )
         else:
             result = result + "<unknown function>"
-        if (self._frame.type() != gdb.NORMAL_FRAME):
+        if self._frame.type() != gdb.NORMAL_FRAME:
             # IDK what else to do
             return result
 
@@ -59,63 +64,105 @@ class FramePrinter:
         # find the address range of our args
         # from there to *(rbp+0x8), exclusive, is the range of possible args
         if args.keys():
-            first_arg_addr = max(args.keys())    # the one with the highest address
-            result = result + self.__subframe_display(first_arg_addr,
-                                                      self._frame.read_register('rbp')+0x8,
-                                                      args,
-                                                      yellow)
+            first_arg_addr = max(
+                args.keys()
+            )  # the one with the highest address
+            result = result + self.__subframe_display(
+                first_arg_addr,
+                self._frame.read_register("rbp") + 0x8,
+                args,
+                yellow,
+            )
 
         # *(rbp+0x8) is the stored old IP
         cyan = "\u001b[36m"
-        result = result + "\n" + str(self._frame.read_register('rbp')+0x8) + " return address"
+        result = (
+            result
+            + "\n"
+            + str(self._frame.read_register("rbp") + 0x8)
+            + " return address"
+        )
         voidstarstar = gdb.lookup_type("void").pointer().pointer()
-        old_ip = (self._frame.read_register('rbp')+0x8).cast(voidstarstar).dereference()
+        old_ip = (
+            (self._frame.read_register("rbp") + 0x8)
+            .cast(voidstarstar)
+            .dereference()
+        )
         result = result + cyan + " (" + str(old_ip) + ")" + reset_color
 
         # *(rbp) is the old RBP
-        result = result + "\n" + str(self._frame.read_register('rbp')+0x0) + " saved rbp"
+        result = (
+            result
+            + "\n"
+            + str(self._frame.read_register("rbp") + 0x0)
+            + " saved rbp"
+        )
 
         # print rest of stack, displaying locals
         green = "\u001b[32m"
-        result = result + self.__subframe_display(self._frame.read_register('rbp')-0x8,
-                                                  self._frame.read_register('sp')-0x8,
-                                                  locls,
-                                                  green)
+        result = result + self.__subframe_display(
+            self._frame.read_register("rbp") - 0x8,
+            self._frame.read_register("sp") - 0x8,
+            locls,
+            green,
+        )
 
         result = result + cyan + " <<< top of stack" + reset_color
 
         return result
 
     # display a range of stack addresses with colors, and compression of unknown contents as "stuff"
-    def __subframe_display(self,
-                           start, end,   # range of addresses to display
-                           frame_items,  # map from addresses to lists of symbols
-                           col):         # color to use for the symbols
+    def __subframe_display(
+        self,
+        start,
+        end,  # range of addresses to display
+        frame_items,  # map from addresses to lists of symbols
+        col,
+    ):  # color to use for the symbols
         magenta = "\u001b[35m"
         reset_color = "\u001b[0m"
         empty_start = None
         result = ""
         for addr in range(start, end, -0x8):
-            addr_hex = '0x{:02x}'.format(addr)
+            addr_hex = "0x{:02x}".format(addr)
             if addr in frame_items:
                 if empty_start:
                     # we just completed an empty range
-                    if empty_start != (addr+0x8):
-                        result = result + magenta + ' (through 0x{:02x})'.format(addr+0x8) + reset_color
+                    if empty_start != (addr + 0x8):
+                        result = (
+                            result
+                            + magenta
+                            + " (through 0x{:02x})".format(addr + 0x8)
+                            + reset_color
+                        )
                     empty_start = None
                 result = result + "\n" + addr_hex
-                result = result + " " + col + ",".join([sym.name for sym in frame_items[addr]]) + reset_color
+                result = (
+                    result
+                    + " "
+                    + col
+                    + ",".join([sym.name for sym in frame_items[addr]])
+                    + reset_color
+                )
             elif empty_start is None:
                 # we are starting an empty range
                 empty_start = addr
-                result = result + "\n" + addr_hex + magenta + " stuff" + reset_color
+                result = (
+                    result + "\n" + addr_hex + magenta + " stuff" + reset_color
+                )
 
-        if empty_start and (empty_start != end+0x8):
+        if empty_start and (empty_start != end + 0x8):
             # the empty range has more than one dword and extended through the end of the subframe
-            result = result + magenta + ' (through ' + str(end+0x8) + ')' + reset_color
+            result = (
+                result
+                + magenta
+                + " (through "
+                + str(end + 0x8)
+                + ")"
+                + reset_color
+            )
 
         return result
-
 
     # produce a dict mapping addresses to symbol lists
     # for a given list of items (args or locals)
@@ -132,23 +179,27 @@ class FramePrinter:
                 # so here we use addr converted to int
                 sz = i.symbol().type.sizeof
                 # mark all dwords in the stack with this symbol
-                addr = addr.cast(gdb.lookup_type("void").pointer()) # cast to void*
+                addr = addr.cast(
+                    gdb.lookup_type("void").pointer()
+                )  # cast to void*
                 # handle sub-dword quantities by just listing everything that overlaps
-                for saddr in range(addr, addr+sz, 0x8):
+                for saddr in range(addr, addr + sz, 0x8):
                     symbolmap[int(saddr)].append(i.symbol())
         return symbolmap
 
+
 # Now create a gdb command that prints the current stack:
-class PrintFrame (gdb.Command):
+class PrintFrame(gdb.Command):
     """Display the stack memory layout for the current frame"""
 
-    def __init__ (self):
-        super (PrintFrame, self).__init__ ("pframe", gdb.COMMAND_STACK)
+    def __init__(self):
+        super(PrintFrame, self).__init__("pframe", gdb.COMMAND_STACK)
 
-    def invoke (self, arg, from_tty):
+    def invoke(self, arg, from_tty):
         try:
             print(FramePrinter(gdb.newest_frame()))
         except gdb.error:
             print("gdb got an error. Maybe we are not currently running?")
 
-PrintFrame ()
+
+PrintFrame()
