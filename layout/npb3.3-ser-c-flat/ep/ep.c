@@ -50,6 +50,7 @@
 
 #include "type.h"
 #include "npbparams.h"
+#include "migration.h"
 #include "randdp.h"
 #include "timers.h"
 #include "print_results.h"
@@ -135,6 +136,7 @@ int main()
   timer_start(0);
 
   //migrate(1, NULL, NULL);
+  migrate();
 
   t1 = A;
   vranlc(0, &t1, A, x);
@@ -219,6 +221,7 @@ int main()
   }
 
   //migrate(0, NULL, NULL);
+  migrate();
 
   timer_stop(0);
   tm = timer_read(0);

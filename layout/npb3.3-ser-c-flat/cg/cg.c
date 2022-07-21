@@ -40,6 +40,7 @@
 #include <math.h>
 
 #include "globals.h"
+#include "migration.h"
 #include "randdp.h"
 #include "timers.h"
 #include "print_results.h"
@@ -293,6 +294,7 @@ int main(int argc, char *argv[])
   // Main Iteration for inverse power method
   //---->
   //---------------------------------------------------------------------
+  migrate();
   for (it = 1; it <= NITER; it++) {
     //---------------------------------------------------------------------
     // The call to the conjugate gradient routine:
@@ -331,6 +333,7 @@ int main(int argc, char *argv[])
     }
   } // end of main iter inv pow meth
 
+  migrate();
   timer_stop(T_bench);
 
   //---------------------------------------------------------------------
