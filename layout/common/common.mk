@@ -197,7 +197,7 @@ stackmaps-check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 
 %.ll: %.c src_changed
 	@echo " [IR] $@"
-	$(CC) $(HET_CFLAGS) -ggdb3 -S -emit-llvm $(ARM64_INC) -o $@ $<
+	$(CC) $(HET_CFLAGS) -I $(INC_DIR) -ggdb3 -S -emit-llvm $(ARM64_INC) -o $@ $<
 	# Remove the x86-64-related information
 	sed -e "s/\"target-cpu\"\=\"x86-64\"\ \"target-features\"\=\"+cx8,+fxsr,+mmx,+sse,+sse2,+x87\"//g" -i $@
 	# Make directories
@@ -209,7 +209,7 @@ stackmaps-check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 
 %_nodbg.ll: %.c
 	@echo " [IR NO DEBUG] $@"
-	$(CC) $(HET_CFLAGS) -S -emit-llvm $(ARM64_INC) -o $@ $<
+	$(CC) $(HET_CFLAGS) -I $(INC_DIR) -S -emit-llvm $(ARM64_INC) -o $@ $<
 	# Remove the x86-64-related information
 	sed -e "s/\"target-cpu\"\=\"x86-64\"\ \"target-features\"\=\"+cx8,+fxsr,+mmx,+sse,+sse2,+x87\"//g" -i $@
 	# Make directories
