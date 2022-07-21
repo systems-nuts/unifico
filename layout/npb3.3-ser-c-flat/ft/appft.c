@@ -36,6 +36,7 @@
 #include <math.h>
 
 #include "global.h"
+#include "migration.h"
 #include "timers.h"
 
 
@@ -72,6 +73,7 @@ void appft(int niter, double *total_time, logical *verified)
 
   timer_start(1);
   //migrate(1, NULL, NULL);
+  migrate();
   if (timers_enabled) timer_start(13);
 
   n12 = NX / 2;
@@ -111,6 +113,7 @@ void appft(int niter, double *total_time, logical *verified)
     if (timers_enabled) timer_stop(10);
   }
   //migrate(0, NULL, NULL);
+  migrate();
 
   // Verification test.
   if (timers_enabled) timer_start(14);

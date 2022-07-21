@@ -41,6 +41,7 @@
  *************************************************************************/
 
 #include "npbparams.h"
+#include "migration.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -729,6 +730,7 @@ int main( int argc, char **argv )
 
 
 /*  This is the main iteration */
+		migrate();
     for( iteration=1; iteration<=MAX_ITERATIONS; iteration++ )
     {
         if( CLASS != 'S' ) printf( "        %d\n", iteration );
@@ -736,6 +738,7 @@ int main( int argc, char **argv )
         rank( iteration );
 		//migrate(0, NULL, NULL);
     }
+		migrate();
 
 
 /*  End of timing, obtain maximum time of all processors */
