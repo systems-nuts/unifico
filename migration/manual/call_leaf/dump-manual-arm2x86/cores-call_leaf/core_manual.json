@@ -1,0 +1,1058 @@
+{
+    "magic": "CORE",
+    "entries": [
+        {
+            "mtype": "X86_64",
+            "thread_info": {
+                "clear_tid_addr": "0x800080",
+                "gpregs": {
+                    "r15": "0x1",
+                    "r14": "0x8000000011f8",
+                    "r13": "0x0",
+                    "r12": "0x656b5f5f",
+                    "bp": "0x7fffffffcfb8",
+                    "bx": "0x13",
+                    "r11": "0x0",
+                    "r10": "0x90",
+                    "r9": "0x0",
+                    "r8": "0x5018a0",
+                    "ax": "0x82",
+                    "cx": "0x8",
+                    "dx": "0x7fffffffcf00",
+                    "si": "0x13",
+                    "di": "0x0",
+                    "orig_ax": "0xc8",
+                    "ip": "0x501910",
+                    "cs": "0x33",
+                    "flags": "0x246",
+                    "sp": "0x7fffffffcf00",
+                    "ss": "0x2b",
+                    "fs_base": "0x801468",
+                    "gs_base": "0x0",
+                    "ds": "0x0",
+                    "es": "0x0",
+                    "fs": "0x0",
+                    "gs": "0x0",
+                    "mode": "NATIVE"
+                },
+                "fpregs": {
+                    "cwd": 0,
+                    "swd": 0,
+                    "twd": 0,
+                    "fop": 0,
+                    "rip": 0,
+                    "rdp": 0,
+                    "mxcsr": 0,
+                    "mxcsr_mask": 0,
+                    "st_space": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "xmm_space": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "xsave": {
+                        "xstate_bv": 512,
+                        "ymmh_space": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "bndcsr_state": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "opmask_reg": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "zmm_upper": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "hi16_zmm": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "pkru": [
+                            1431655764,
+                            0
+                        ]
+                    }
+                },
+                "tls": [
+                    {
+                        "entry_number": 12,
+                        "base_addr": 0,
+                        "limit": 0,
+                        "seg_32bit": false,
+                        "contents_h": false,
+                        "contents_l": false,
+                        "read_exec_only": true,
+                        "limit_in_pages": false,
+                        "seg_not_present": true,
+                        "useable": false
+                    },
+                    {
+                        "entry_number": 13,
+                        "base_addr": 0,
+                        "limit": 0,
+                        "seg_32bit": false,
+                        "contents_h": false,
+                        "contents_l": false,
+                        "read_exec_only": true,
+                        "limit_in_pages": false,
+                        "seg_not_present": true,
+                        "useable": false
+                    },
+                    {
+                        "entry_number": 14,
+                        "base_addr": 0,
+                        "limit": 0,
+                        "seg_32bit": false,
+                        "contents_h": false,
+                        "contents_l": false,
+                        "read_exec_only": true,
+                        "limit_in_pages": false,
+                        "seg_not_present": true,
+                        "useable": false
+                    }
+                ]
+            },
+            "tc": {
+                "task_state": "Zombie",
+                "exit_code": 0,
+                "personality": 0,
+                "flags": 1073741824,
+                "blk_sigset": "0xfffffffc7ffbfeff",
+                "comm": "call_leaf_align",
+                "timers": {
+                    "real": {
+                        "isec": 0,
+                        "iusec": 0,
+                        "vsec": 0,
+                        "vusec": 0
+                    },
+                    "virt": {
+                        "isec": 0,
+                        "iusec": 0,
+                        "vsec": 0,
+                        "vusec": 0
+                    },
+                    "prof": {
+                        "isec": 0,
+                        "iusec": 0,
+                        "vsec": 0,
+                        "vusec": 0
+                    }
+                },
+                "rlimits": {
+                    "rlimits": [
+                        {
+                            "cur": 18446744073709551615,
+                            "max": 18446744073709551615
+                        },
+                        {
+                            "cur": 18446744073709551615,
+                            "max": 18446744073709551615
+                        },
+                        {
+                            "cur": 18446744073709551615,
+                            "max": 18446744073709551615
+                        },
+                        {
+                            "cur": 8388608,
+                            "max": 18446744073709551615
+                        },
+                        {
+                            "cur": 0,
+                            "max": 18446744073709551615
+                        },
+                        {
+                            "cur": 18446744073709551615,
+                            "max": 18446744073709551615
+                        },
+                        {
+                            "cur": 256102,
+                            "max": 256102
+                        },
+                        {
+                            "cur": 1024,
+                            "max": 1048576
+                        },
+                        {
+                            "cur": 67108864,
+                            "max": 67108864
+                        },
+                        {
+                            "cur": 18446744073709551615,
+                            "max": 18446744073709551615
+                        },
+                        {
+                            "cur": 18446744073709551615,
+                            "max": 18446744073709551615
+                        },
+                        {
+                            "cur": 256102,
+                            "max": 256102
+                        },
+                        {
+                            "cur": 819200,
+                            "max": 819200
+                        },
+                        {
+                            "cur": 0,
+                            "max": 0
+                        },
+                        {
+                            "cur": 0,
+                            "max": 0
+                        },
+                        {
+                            "cur": 18446744073709551615,
+                            "max": 18446744073709551615
+                        }
+                    ]
+                },
+                "cg_set": 1,
+                "signals_s": {},
+                "loginuid": 1002,
+                "oom_score_adj": 0,
+                "sigactions": [
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    }
+                ]
+            },
+            "thread_core": {
+                "futex_rla": 0,
+                "futex_rla_len": 24,
+                "sched_nice": 0,
+                "sched_policy": 0,
+                "sas": {
+                    "ss_sp": 0,
+                    "ss_size": 0,
+                    "ss_flags": 2
+                },
+                "signals_p": {},
+                "creds": {
+                    "uid": 1002,
+                    "gid": 1002,
+                    "euid": 1002,
+                    "egid": 1002,
+                    "suid": 1002,
+                    "sgid": 1002,
+                    "fsuid": 1002,
+                    "fsgid": 1002,
+                    "cap_inh": [
+                        0,
+                        0
+                    ],
+                    "cap_prm": [
+                        0,
+                        0
+                    ],
+                    "cap_eff": [
+                        0,
+                        0
+                    ],
+                    "cap_bnd": [
+                        4294967295,
+                        63
+                    ],
+                    "secbits": 0,
+                    "groups": [
+                        27,
+                        1002
+                    ]
+                },
+                "comm": "call_leaf_align"
+            }
+        }
+    ]
+}
