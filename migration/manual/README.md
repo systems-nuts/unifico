@@ -1,0 +1,101 @@
+Steps to perform the manual recoding of `criu` image dumps between ISAs:
+
+-  Same execution location and executable name
+  - `tmp/migration/bin/` is the most convenient location.
+  - exec name: `[original_name_prefix]_aligned.out`
+-  Same commandline invocation and arguments
+  - invocation: `setsid ./exec < /dev/null &> tmp.log`
+-  Same environment variables
+  - sanitize environment with `env -i bash` (see [`env`][1]).
+  - adjust the environment between servers with a custom `env.sh` script in the new shell.
+-  Correct `/proc/[pid]/stat` information
+   - execute in a `sudo bash` shell and adjust environment as described above. This is so that `prctl` calls work
+     properly.
+-  Same address space
+  - Compile with UnASL compiler
+  - Link against UnASL musl libc
+  - Disable ASLR.
+-  Same auxiliary vector
+  - TBD
+-  Same program break
+  - TBD
+
+
+criu image files that need to be converted with the current version (3.11):
+
+-  core
+  -  minor mod: file suffix is `pid`
+  -  mtype: change ARCH
+  -  tc (task core entry)
+    -  `flags` field: minor adjustment (TBD what do they represent)
+    -  `rlimits` fields (TBD what do they represent)
+    -  `loginuid`: minor adjustment to current user's or `root`
+  -  thread_core (thread core entry)
+    -  `creds` ids: minor adjustment to current user's or `root`
+    -  `cap_bnd` field value: minor adjustment (TBD what do they represent)
+    -  `groupids` field value: minor adjustment (TBD what do they represent)
+  -  ti (thread info)
+    -  `tls` field on AArch64 is a whole struct on x86_64 (TBD what do they represent)
+    -  `regs` to `gpregs`
+      -  `sp` from Arm to x86 needs to be decreased by `0x10` since we do not enforce same layout within musl (i.e., in the `raise()` call).
+    -  fp regs
+    -  skip x86_64 xsave
+    -  x86_64 xmm_space TBD
+-  fdinfo
+  -  determine what the numeric file suffix is
+  - no other mod is needed
+-  files
+  -  align `umask` settings is environment sanitization script
+  - minor mod: executable pathname
+  - minor mod: executable size in bytes (first entry)
+-  fs
+  -  minor mod: adjust `umask`
+  -  minor mod: file suffix is `pid`
+  - no other mod is needed
+-  ids
+  -  minor mod: file suffix is `pid`
+  -  unclear what the contents are exactly
+  - contents are exactly repeated in the inventory.
+  - no other mod is needed
+-  inventory
+  -  unclear what the contents are exactly
+  - no other mod is needed
+-  mm, use the info from the x86 dump for now and revise later.
+  -  minor mod: file suffix is `pid`
+  - entries
+    -  start code: on x86 it is the start of the "filler" ELF section, not the `.text`
+    -  end code: end of `.text` ELF section
+    -  start/end data: seems to be nonsense on both AArch64 and x86, either skip or maybe adjust with `prctl` if possible.
+    -  start stack: seems to be nonsense on AArch64, unsure if it is used in x86
+    -  start brk: differ, maybe check if the value is the same on each arch and hardcode if needed
+    -  brk: same as start brk on both archs
+    -  arg start/end: seems to be nonsense on AArch64, unsure if it is used in x86
+    -  env start/end: seems to be nonsense on AArch64, unsure if it is used in x86
+    -  saved auxv: either transfer or reused from hardcoded values?
+  - vmas
+    -  section 0 "filler" differ between archs
+    -  section 1 `.text` ends might differ dependent on size (page aligned)
+    -  section 2 `.rodata`
+    -  section 3 `.data`, RW attrs, not in `pagemap`, is it due to CoW? TBD
+    -  section 4 `.bss`, RW attrs, in `pagemap`
+    -  AArch64 sections: `.tdata`, `.tbss`, `.got`, `.got.plt`, `.llvm_pcn_stackmaps`: TBD what if we omit them?
+    -  x86_64 sections: `.tdata`, `.tbss`, `.ldata` `.llvm_pcn_stackmaps`: TBD what if we omit them?
+    -  stack, vdso and vvar per arch
+-  memory contents
+  -  pagemap
+    -  minor mod: file suffix is `pid`
+    -  major mod: its assembly is a combination of several pieces of info (see next bullet point)
+  -  pages
+    - `split -d -b 4096 pages-1.img` gives each page in a separate file
+    - the X86_64 pages image was assembled from the following pages:
+      - page 0 at vaddr `0x500000` is the mapped `.text` ELF section, taken from the x86 criu dump, but in the final version this should come from the target executable.
+      - pages [1-2] at vaddr `0x800000` are the mapped `.bss` ELF section for uninitialized data, copied over from the Arm dump.
+      - pages [3-4] at vaddr `0x7ffff7ffd000` are the mapped VDSO section, taken from the x86 criu dump, but the final version should use the `het.py` template.
+      - pages [5-6] at vadrr `0x7fffffffc000` are the mapped VVAR section, taken from the x86 criu dump, but the final version should let it to the kernel. Moreover, this mapping seems to be a subset of the mapping in the `mm` file (to investigate further).
+      - pages [7-8] at vaddr `0x7fffffffd000` are the program stack, copied over from the Arm dump.
+-  pstree
+  - minor mod: update `pid`
+-  seccomp
+  - no other mod is needed
+
+    [1]: https://linux.die.net/man/1/env
