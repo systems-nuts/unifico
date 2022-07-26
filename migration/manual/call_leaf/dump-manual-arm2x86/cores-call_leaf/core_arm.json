@@ -1,0 +1,700 @@
+{
+    "magic": "CORE",
+    "entries": [
+        {
+            "mtype": "AARCH64",
+            "ti_aarch64": {
+                "clear_tid_addr": "0x800080",
+                "tls": 8394032,
+                "gpregs": {
+                    "regs": [
+                        "0x0",
+                        "0x13",
+                        "0x7fffffffcf00",
+                        "0x8",
+                        "0x5018a0",
+                        "0x0",
+                        "0x90",
+                        "0x0",
+                        "0x82",
+                        "0x3f1",
+                        "0x0",
+                        "0xffffffffff7fead0",
+                        "0x801548",
+                        "0xffffffffffffffff",
+                        "0x701000",
+                        "0x800000",
+                        "0x0",
+                        "0x8000000011f8",
+                        "0x656b5f5f",
+                        "0x13",
+                        "0x1",
+                        "0x501070",
+                        "0x7fffffffe578",
+                        "0xfffff019b4d0",
+                        "0xfffff019b578",
+                        "0xfffff019c000",
+                        "0xa",
+                        "0x3000",
+                        "0xb30",
+                        "0x7fffffffcfb8",
+                        "0x5018fc"
+                    ],
+                    "sp": "0x7fffffffcf00",
+                    "pc": "0x501910",
+                    "pstate": "0x60001000"
+                },
+                "fpsimd": {
+                    "vregs": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "fpsr": 0,
+                    "fpcr": 0
+                }
+            },
+            "tc": {
+                "task_state": "Zombie",
+                "exit_code": 0,
+                "personality": 0,
+                "flags": 1077936128,
+                "blk_sigset": "0xfffffffc7ffbfeff",
+                "comm": "call_leaf_align",
+                "timers": {
+                    "real": {
+                        "isec": 0,
+                        "iusec": 0,
+                        "vsec": 0,
+                        "vusec": 0
+                    },
+                    "virt": {
+                        "isec": 0,
+                        "iusec": 0,
+                        "vsec": 0,
+                        "vusec": 0
+                    },
+                    "prof": {
+                        "isec": 0,
+                        "iusec": 0,
+                        "vsec": 0,
+                        "vusec": 0
+                    }
+                },
+                "rlimits": {
+                    "rlimits": [
+                        {
+                            "cur": 18446744073709551615,
+                            "max": 18446744073709551615
+                        },
+                        {
+                            "cur": 18446744073709551615,
+                            "max": 18446744073709551615
+                        },
+                        {
+                            "cur": 18446744073709551615,
+                            "max": 18446744073709551615
+                        },
+                        {
+                            "cur": 8388608,
+                            "max": 18446744073709551615
+                        },
+                        {
+                            "cur": 0,
+                            "max": 18446744073709551615
+                        },
+                        {
+                            "cur": 18446744073709551615,
+                            "max": 18446744073709551615
+                        },
+                        {
+                            "cur": 900016,
+                            "max": 900016
+                        },
+                        {
+                            "cur": 1073741824,
+                            "max": 1073741824
+                        },
+                        {
+                            "cur": 18446744073709551615,
+                            "max": 18446744073709551615
+                        },
+                        {
+                            "cur": 18446744073709551615,
+                            "max": 18446744073709551615
+                        },
+                        {
+                            "cur": 18446744073709551615,
+                            "max": 18446744073709551615
+                        },
+                        {
+                            "cur": 900016,
+                            "max": 900016
+                        },
+                        {
+                            "cur": 819200,
+                            "max": 819200
+                        },
+                        {
+                            "cur": 0,
+                            "max": 0
+                        },
+                        {
+                            "cur": 0,
+                            "max": 0
+                        },
+                        {
+                            "cur": 18446744073709551615,
+                            "max": 18446744073709551615
+                        }
+                    ]
+                },
+                "cg_set": 1,
+                "signals_s": {},
+                "loginuid": 1009,
+                "oom_score_adj": 0,
+                "sigactions": [
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    },
+                    {
+                        "sigaction": "0x0",
+                        "flags": "0x0",
+                        "restorer": "0x0",
+                        "mask": "0x0",
+                        "compat_sigaction": false
+                    }
+                ]
+            },
+            "thread_core": {
+                "futex_rla": 0,
+                "futex_rla_len": 24,
+                "sched_nice": 0,
+                "sched_policy": 0,
+                "sas": {
+                    "ss_sp": 0,
+                    "ss_size": 0,
+                    "ss_flags": 2
+                },
+                "signals_p": {},
+                "creds": {
+                    "uid": 1009,
+                    "gid": 1009,
+                    "euid": 1009,
+                    "egid": 1009,
+                    "suid": 1009,
+                    "sgid": 1009,
+                    "fsuid": 1009,
+                    "fsgid": 1009,
+                    "cap_inh": [
+                        0,
+                        0
+                    ],
+                    "cap_prm": [
+                        0,
+                        0
+                    ],
+                    "cap_eff": [
+                        0,
+                        0
+                    ],
+                    "cap_bnd": [
+                        4294967295,
+                        511
+                    ],
+                    "secbits": 0,
+                    "groups": [
+                        27,
+                        1009
+                    ]
+                },
+                "comm": "call_leaf_align"
+            }
+        }
+    ]
+}
