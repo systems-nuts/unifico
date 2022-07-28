@@ -5,9 +5,9 @@ LLVM_TOOLCHAIN ?= /bulk/wb/unasl-project/toolchain-vanilla/bin
 PROJECT_DIR ?= ../..
 
 # Lib musl directories per architecture
-MUSL_TOOLCHAIN ?= /bulk/wb/unasl-project/musl-toolchains/llvm-9
+MUSL_TOOLCHAIN ?= /bulk/wb/unasl-project/musl-toolchains/unmodified
 ARM64_MUSL	?= $(MUSL_TOOLCHAIN)/aarch64
-X86_64_MUSL	?= $(MUSL_TOOLCHAIN)/x86-64
+X86_64_MUSL	?= $(MUSL_TOOLCHAIN)/x86_64
 
 # Directory of libgcc & libgcc_eh for aarch64 compiler
 ARM64_LIBGCC   ?= $(shell dirname \
