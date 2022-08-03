@@ -25,7 +25,7 @@ import re
 
 REG_CLASS_REGEX = re.compile(
     r"""
-    (Max\sPressure:\s)? # First appearing class starts with this
+ (Max\sPressure:\s)? # First appearing class starts with this
  ([\w+]+)=     # Presure set name
  (\d+)        # Set pressure
  .*         # Ignore rest
@@ -61,7 +61,7 @@ def get_pressure_sets(input_file, function_block, machine_instruction):
             if line.startswith(function_block):
                 skip_function = False
 
-            if machine_instruction in line:
+            if not skip_function and machine_instruction in line:
                 skip_instruction = False
 
             if line.startswith("Max Pressure:"):
@@ -74,7 +74,11 @@ def get_pressure_sets(input_file, function_block, machine_instruction):
                 and not skip_instruction
                 and start_counting
             ):
-                pressure_sets[match_result.group(2)] = match_result.group(3)
+                class_name = match_result.group(2)
+                class_name = class_name.replace(
+                    "GPR", "GR"
+                )  # To align the naming between X86 and AArch64.
+                pressure_sets[class_name] = int(match_result.group(3))
                 continue
 
             if line.startswith("Live In:"):
@@ -83,6 +87,50 @@ def get_pressure_sets(input_file, function_block, machine_instruction):
                 skip_instruction = True
 
     return pressure_sets
+
+
+def calculate_pressure(pressure_sets):
+    """
+    Given a dictionary with pressure sets, calculate the total register pressure.
+
+    @param pressure_sets: dict
+    @return: register pressure as a number
+    """
+    pressure = 0
+
+    if pressure_sets.get("GR8"):
+        pressure += pressure_sets["GR8"]
+
+    if pressure_sets.get("GR16"):
+        pressure += pressure_sets["GR16"]
+
+    if pressure_sets.get("GR32"):
+        pressure += pressure_sets["GR32"]
+    elif pressure_sets.get("GR32common"):
+        pressure += pressure_sets["GR32common"]
+    elif pressure_sets.get("GR32temp"):
+        pressure += pressure_sets["GR32temp"]
+    elif pressure_sets.get("GR32_TC"):
+        pressure += pressure_sets["GR32_TC"]
+
+    if pressure_sets.get("GR64"):
+        pressure += pressure_sets["GR64"]
+    elif pressure_sets.get("GR64common"):
+        pressure += pressure_sets["GR64common"]
+    elif pressure_sets.get("GR64temp"):
+        pressure += pressure_sets["GR64temp"]
+    elif pressure_sets.get("GR64_TC"):
+        pressure += pressure_sets["GR64_TC"]
+    elif pressure_sets.get("GR64_TCW64"):
+        pressure += pressure_sets["GR64_TCW64"]
+
+    if pressure_sets.get("FR32X"):
+        pressure += pressure_sets["FR32X"]
+
+    if pressure_sets.get("FR64X"):
+        pressure += pressure_sets["FR64X"]
+
+    return pressure
 
 
 arg_parser = argparse.ArgumentParser(
@@ -97,14 +145,24 @@ arg_parser.add_argument(
     "-o", "--output_file", type=str, nargs="?", help="Path to output file"
 )
 
+arg_parser.add_argument(
+    "-b", "--basic_block", type=str, nargs="?", help="Basic block name"
+)
+
+arg_parser.add_argument(
+    "-m",
+    "--machine_instruction",
+    type=str,
+    nargs="?",
+    help="Machine instruction name",
+)
+
 
 def __main__(args: argparse.Namespace):
     pressure_sets = get_pressure_sets(
-        args.input_file,
-        "main:%bb.2 for.body",
-        "%18:gr64_nosp = MOV64rm %stack.3.i, 1, $noreg, 0, $noreg",
+        args.input_file, args.basic_block, args.machine_instruction
     )
-    print(pressure_sets)
+    print(calculate_pressure(pressure_sets))
 
 
 if __name__ == "__main__":
