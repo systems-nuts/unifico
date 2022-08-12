@@ -1,0 +1,26 @@
+{
+  "info": {},
+  "tags": [ "overall_abs_time_unmodified_x86_c" ],
+  "executables": [
+    "cg_x86_64_init.out",
+    "ep_x86_64_init.out",
+    "is_x86_64_init.out",
+    "ft_x86_64_init.out"
+  ],
+
+  "*": {
+    "bindir": "npb_bins_20220728/unmodified/c/",
+    "env": {},
+    "iterations": 2,
+    "output": "run_c_${executable}_${iteration}.log",
+    "prepend": [ "/usr/bin/time -f %e" ],
+    "append": [],
+    "commands": [
+      {
+        "before": false,
+        "args": [ "tail", "-n1", "-q", "run_c_${executable}*.log" ],
+        "output": "time_init_c_${executable}.log"
+      }
+    ]
+  }
+}
