@@ -644,6 +644,9 @@ void rank( int iteration )
 /*************             M  A  I  N             ****************/
 /*****************************************************************/
 
+UNASL_TIMERS_DECLARE;
+UNASL_TIMERS_INIT;
+
 int main( int argc, char **argv )
 {
 
@@ -653,6 +656,7 @@ int main( int argc, char **argv )
 
     FILE            *fp;
 
+    unasl_timers_snapshot();
 
 /*  Initialize timers  */
     timer_on = 0;            
@@ -730,6 +734,7 @@ int main( int argc, char **argv )
 
 
 /*  This is the main iteration */
+    unasl_timers_snapshot();
 		migrate();
     for( iteration=1; iteration<=MAX_ITERATIONS; iteration++ )
     {
@@ -739,6 +744,7 @@ int main( int argc, char **argv )
 		//migrate(0, NULL, NULL);
     }
 		migrate();
+    unasl_timers_snapshot();
 
 
 /*  End of timing, obtain maximum time of all processors */
@@ -798,6 +804,8 @@ int main( int argc, char **argv )
        printf(" Sorting        : %8.3f (%5.2f%%)\n", timecounter, t_percent);
     }
 
+    unasl_timers_snapshot();
+    unasl_timers_print();
 
     return 0;
          /**************************/

@@ -122,6 +122,8 @@ static int icnvrt(double x, int ipwr2);
 static void vecset(int n, double v[], int iv[], int *nzv, int i, double val);
 //---------------------------------------------------------------------
 
+UNASL_TIMERS_DECLARE;
+UNASL_TIMERS_INIT;
 
 int main(int argc, char *argv[])
 {
@@ -137,6 +139,7 @@ int main(int argc, char *argv[])
   double zeta_verify_value, epsilon, err;
 
   char *t_names[T_last];
+  unasl_timers_snapshot();
 
   for (i = 0; i < T_last; i++) {
     timer_clear(i);
@@ -294,6 +297,7 @@ int main(int argc, char *argv[])
   // Main Iteration for inverse power method
   //---->
   //---------------------------------------------------------------------
+  unasl_timers_snapshot();
   migrate();
   for (it = 1; it <= NITER; it++) {
     //---------------------------------------------------------------------
@@ -334,6 +338,7 @@ int main(int argc, char *argv[])
   } // end of main iter inv pow meth
 
   migrate();
+  unasl_timers_snapshot();
   timer_stop(T_bench);
 
   //---------------------------------------------------------------------
@@ -399,6 +404,8 @@ int main(int argc, char *argv[])
       }
     }
   }
+  unasl_timers_snapshot();
+  unasl_timers_print();
 
   return 0;
 }
