@@ -40,12 +40,15 @@
 
 #include "global.h"
 #include "print_results.h"
+#include "migration.h"
 
 
 static char getclass();
 
 logical timers_enabled;
 
+UNASL_TIMERS_DECLARE;
+UNASL_TIMERS_INIT;
 
 int main(int argc, char *argv[])
 {
@@ -55,6 +58,8 @@ int main(int argc, char *argv[])
   logical verified;
 
   FILE *fp;
+  unasl_timers_snapshot();
+
   if ((fp = fopen("timer.flag", "r")) != NULL) {
     timers_enabled = true;
     fclose(fp);
@@ -86,6 +91,9 @@ int main(int argc, char *argv[])
                 total_time, mflops, "          floating point", verified, 
                 NPBVERSION, COMPILETIME, CS1, CS2, CS3, CS4, 
                 CS5, CS6, CS7);
+
+  unasl_timers_snapshot();
+  unasl_timers_print();
 
   return 0;
 }

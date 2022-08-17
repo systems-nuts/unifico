@@ -50,6 +50,7 @@ static dcomplex xnt[NZ][NY][NX+1];
 static dcomplex y[NZ][NY][NX+1];
 //static dcomplex pad1[128], pad2[128];
 
+UNASL_TIMERS_DECLARE;
 
 void appft(int niter, double *total_time, logical *verified)
 {
@@ -73,6 +74,7 @@ void appft(int niter, double *total_time, logical *verified)
 
   timer_start(1);
   //migrate(1, NULL, NULL);
+  unasl_timers_snapshot();
   migrate();
   if (timers_enabled) timer_start(13);
 
@@ -114,6 +116,7 @@ void appft(int niter, double *total_time, logical *verified)
   }
   //migrate(0, NULL, NULL);
   migrate();
+  unasl_timers_snapshot();
 
   // Verification test.
   if (timers_enabled) timer_start(14);
