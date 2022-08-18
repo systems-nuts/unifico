@@ -8,9 +8,17 @@ The IS benchmark was built with input class S (small) by issuing:
 BENCHMARKS=is make CFLAGS="-DUNASL_MIGRATION"
 ```
 
-## Environment
+## System and Environment
 
-TODO
+Both executables are renamed to use the same name which in this case is `is_aligned_s.out`.
+Moreover, execution uses `/tmp/migration/` as the common working directory and binaries are placed in a subdirectory
+named `bin2`.
+
+Execution occurs using a clean environment with `sudo env -i bash` and then executing the corresponding
+`env_[hostname].sh` script that makes the corresponding environments match (e.g., by undefining environment variables
+present in only one system, umask value, etc.)
+
+Lastly, both systems have Address Space Layout Randomization disabled.
 
 ## Manual editing of memory pages
 
