@@ -1,0 +1,9 @@
+PWD=/tmp/migration
+LS_COLORS=
+COMP_WORDBREAKS= 	
+"'><=;|&(
+LESSCLOSE=/usr/bin/lesspipe %s %s
+LESSOPEN=| /usr/bin/lesspipe %s
+SHLVL=1
+PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:/home/vasil/.bash/fzf/bin
+_=/usr/bin/env
