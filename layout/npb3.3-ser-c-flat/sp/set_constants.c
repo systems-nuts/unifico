@@ -112,7 +112,8 @@ void set_constants()
   c4 = 1.0;
   c5 = 1.4;
 
-  bt = sqrt(0.5);
+  double temp_d = 0.5;
+  bt = sqrt(temp_d); /* TODO temporary handling for Unifico */
 
   dnxm1 = 1.0 / (double)(grid_points[0]-1);
   dnym1 = 1.0 / (double)(grid_points[1]-1);

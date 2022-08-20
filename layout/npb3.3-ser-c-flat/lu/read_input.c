@@ -106,14 +106,14 @@ void read_input()
   if ( ( nx0 < 4 ) || ( ny0 < 4 ) || ( nz0 < 4 ) ) {
     printf("     PROBLEM SIZE IS TOO SMALL - \n"
            "     SET EACH OF NX, NY AND NZ AT LEAST EQUAL TO 5\n");
-    exit(EXIT_FAILURE);
+    /*exit(EXIT_FAILURE);*/ /* TODO temporary handling for Unifico */
   }
 
   if ( ( nx0 > ISIZ1 ) || ( ny0 > ISIZ2 ) || ( nz0 > ISIZ3 ) ) {
     printf("     PROBLEM SIZE IS TOO LARGE - \n"
            "     NX, NY AND NZ SHOULD BE EQUAL TO \n"
            "     ISIZ1, ISIZ2 AND ISIZ3 RESPECTIVELY\n");
-    exit(EXIT_FAILURE);
+    /*exit(EXIT_FAILURE);*/ /* TODO temporary handling for Unifico */
   }
 
   printf(" Size: %4dx%4dx%4d\n", nx0, ny0, nz0);
