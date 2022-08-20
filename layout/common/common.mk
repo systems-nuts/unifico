@@ -262,6 +262,7 @@ $(ARM64_INIT): $(ARM64_OBJ_INIT)
 	@echo " [LD] $@"
 	$(LD) -o $@ $^ $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
 	$(SSHPASS_IGNORE)sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`
+	$(OBJDUMP) -d -S --print-imm-hex $@ >aarch64_objdump.txt
 
 $(ARM64_UNALIGNED): $(ARM64_OBJ)
 	@echo " [LD] $@"
@@ -307,6 +308,7 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 $(X86_64_INIT): $(X86_64_OBJ_INIT)
 	@echo " [LD] $@"
 	$(LD) -o $@ $^ $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_MAP)
+	$(X86_64_OBJDUMP) -d -S -M intel $@ >x86_objdump.txt
 
 $(X86_64_UNALIGNED): $(X86_64_OBJ)
 	@echo " [LD] $@"
