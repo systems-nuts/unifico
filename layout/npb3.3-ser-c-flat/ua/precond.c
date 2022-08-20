@@ -731,7 +731,8 @@ static void com_dpc(int iside, int iel, int enumber, int n, int isize)
     anc0 = 0.0;
   } else {
     // MUST NOT reachable!!
-    assert(0);
+    // assert(0);
+    printf("Unreachable\n"); /* TODO temporary handling for Unifico */
     anc1 = 0.0;
     ac = 0.0;
     anc2 = 0.0;
