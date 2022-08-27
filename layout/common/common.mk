@@ -39,7 +39,7 @@ override LLC_FLAGS_ARM64 += -mattr=+disable-hoist-in-lowering,+disable-fp-imm-ma
 override LLC_FLAGS_X86 += -mattr=+aarch64-sized-imm,-multiply-with-imm,-non-zero-imm-to-mem,+force-vector-mem-op,+aarch64-constant-cost-model,+simple-reg-offset-addr,+avoid-opt-mul-1 -no-x86-call-frame-opt
 endif
 
-LLC_PASSES_TO_DEBUG	:= isel regalloc stackmaps stacktransform
+LLC_PASSES_TO_DEBUG	?= isel regalloc stackmaps stacktransform
 
 HET_CFLAGS	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec
 

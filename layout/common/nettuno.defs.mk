@@ -19,4 +19,6 @@ ARM64_CPU	?= thunderx2t99
 X86_64_CPU	?= btver2
 MCA_RESULT_DIR	?= ../mca-results/reg-pressure-O0
 
+# Various configurations
 SSHPASS_IGNORE =
+LLC_PASSES_TO_DEBUG =
