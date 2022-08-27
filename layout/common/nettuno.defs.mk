@@ -5,9 +5,9 @@ LLVM_TOOLCHAIN ?= ~/llvm-9/toolchain/bin
 PROJECT_DIR ?= ../..
 
 # Lib musl directories per architecture
-MUSL_TOOLCHAIN ?= ~/musl-toolchains/llvm-9/
+MUSL_TOOLCHAIN ?= ~/musl-toolchains/criu
 ARM64_MUSL	?= $(MUSL_TOOLCHAIN)/aarch64
-X86_64_MUSL	?= $(MUSL_TOOLCHAIN)/x86-64
+X86_64_MUSL	?= $(MUSL_TOOLCHAIN)/x86_64
 
 # Directory of libgcc & libgcc_eh for aarch64 compiler
 ARM64_LIBGCC   ?= $(shell dirname \
@@ -21,4 +21,5 @@ MCA_RESULT_DIR	?= ../mca-results/reg-pressure-O0
 
 # Various configurations
 SSHPASS_IGNORE =
+UNMODIFIED ?=
 LLC_PASSES_TO_DEBUG =
