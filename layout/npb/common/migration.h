@@ -1,5 +1,7 @@
 #pragma once
 
+#define UNASL_MIGRATION_TIMERS 1
+
 #ifdef UNASL_MIGRATION
 
 #include <signal.h>

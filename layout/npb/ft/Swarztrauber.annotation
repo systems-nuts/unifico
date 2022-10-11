@@ -1,0 +1,473 @@
+Swarztrauber() /home/nikos/phd/unified_abi/layout/npb3.3-ser-c-flat/ft/ft_x86_64_aligned.out
+Event: cycles
+
+Percent        
+               
+               
+             Disassembly of section .text:
+               
+             0000000000502610 <Swarztrauber>:
+             Swarztrauber():
+             // Swarztrauber to
+             // perform FFTs
+             //---------------------------------------------------------------------
+             static void Swarztrauber(int is, int m, int vlen, int n, int xd1,
+             void *ox, dcomplex exponent[n])
+             {          
+               push   %rbp    
+               mov    %rsp,%rbp
+               push   %rbx    
+               sub    $0x178,%rsp
+               mov    %edi,-0x14(%rbp)
+               mov    %esi,-0x18(%rbp)
+               mov    %edx,-0x1c(%rbp)
+               mov    %ecx,-0x20(%rbp)
+               mov    %r8d,-0x24(%rbp)
+               mov    %r9,-0x30(%rbp)
+             dcomplex (*x)[xd1] = (dcomplex (*)[xd1])ox;
+               mov    %r8d,%ebx
+               mov    %r9,-0x38(%rbp)
+               
+             int i, j, l;
+             dcomplex u1, x11, x21;
+             int k, n1, li, lj, lk, ku, i11, i12, i21, i22;
+               
+             if (timers_enabled) timer_start(4);
+               cmpl   $0x0,timers_enabled
+             ↓ je     40      
+               mov    $0x4,%edi
+               xchg   %ax,%ax 
+             → call   timer_start
+             //---------------------------------------------------------------------
+             // Perform one variant of the Stockham FFT.
+             //---------------------------------------------------------------------
+             n1 = n / 2;
+         40:   mov    -0x20(%rbp),%eax
+               mov    %eax,%ecx
+               shr    $0x1f,%ecx
+               add    %eax,%ecx
+               sar    %ecx    
+               mov    %ecx,-0x80(%rbp)
+               mov    $0x1,%eax
+             lj = 1;    
+               mov    %eax,-0x88(%rbp)
+             li = 1 << m;
+               mov    -0x18(%rbp),%cl
+               mov    $0x1,%edx
+               shl    %cl,%edx
+               mov    %edx,-0x84(%rbp)
+             for (l = 1; l <= m; l += 2) {
+               mov    %eax,-0x44(%rbp)
+               mov    $0x210,%r8d
+               lea    scr,%r9 
+               movapd ___src_time_clock_gettime__str_1___vdso_clo+0x26f,%xmm0
+             ↓ jmp    8b      
+  0.02   87:   addl   $0x2,-0x44(%rbp)
+         8b:   mov    -0x44(%rbp),%edx
+  0.00         cmp    -0x18(%rbp),%edx
+             ↓ jg     6cd     
+             lk = lj;   
+               mov    -0x88(%rbp),%edx
+               mov    %edx,-0x8c(%rbp)
+             lj = 2 * lk;
+               add    %edx,%edx
+               mov    %edx,-0x88(%rbp)
+             li = li / 2;
+               mov    -0x84(%rbp),%edx
+               mov    %edx,%esi
+               shr    $0x1f,%esi
+               add    %edx,%esi
+               sar    %esi    
+               mov    %esi,-0x84(%rbp)
+             ku = li;   
+               mov    %esi,-0x90(%rbp)
+               
+             for (i = 0; i <= li - 1; i++) {
+               movl   $0x0,-0x3c(%rbp)
+             ↓ jmp    d5      
+  0.08   d2:   incl   -0x3c(%rbp)
+  0.00   d5:   mov    -0x84(%rbp),%edx
+               dec    %edx    
+  0.02         cmp    %edx,-0x3c(%rbp)
+             ↓ jg     378     
+             i11 = i * lk;
+               mov    -0x3c(%rbp),%edx
+               mov    -0x8c(%rbp),%esi
+               mov    %edx,%edi
+  0.03         imul   %esi,%edi
+  0.01         mov    %edi,-0x94(%rbp)
+             i12 = i11 + n1;
+               add    -0x80(%rbp),%edi
+  0.01         mov    %edi,-0x98(%rbp)
+             i21 = i * lj;
+  0.00         imul   -0x88(%rbp),%edx
+  0.00         mov    %edx,-0x9c(%rbp)
+             i22 = i21 + lk;
+               add    %esi,%edx
+  0.00         mov    %edx,-0xa0(%rbp)
+               
+             if (is >= 1) {
+  0.01         cmpl   $0x0,-0x14(%rbp)
+             ↓ jle    14a     
+             u1 = exponent[ku+i];
+               mov    0x10(%rbp),%rdx
+               movslq -0x90(%rbp),%rsi
+  0.00         movslq -0x3c(%rbp),%rdi
+               add    %rsi,%rdi
+               shl    $0x4,%rdi
+  0.01         mov    (%rdx,%rdi,1),%rsi
+  0.00         mov    0x8(%rdx,%rdi,1),%rdx
+  0.01         mov    %rsi,-0x58(%rbp)
+             ↓ jmp    191     
+             } else {   
+             u1 = dconjg(exponent[ku+i]);
+        14a:   mov    0x10(%rbp),%rdx
+               movslq -0x90(%rbp),%rsi
+  0.02         movslq -0x3c(%rbp),%rdi
+  0.00         add    %rsi,%rdi
+               shl    $0x4,%rdi
+  0.04         movsd  (%rdx,%rdi,1),%xmm1
+  0.02         movsd  %xmm1,-0xb0(%rbp)
+  0.00         movsd  0x8(%rdx,%rdi,1),%xmm1
+  0.02         xorpd  %xmm0,%xmm1
+  0.00         movlpd %xmm1,-0xa8(%rbp)
+  0.02         mov    -0xb0(%rbp),%rdx
+  0.02         mov    %rdx,-0x58(%rbp)
+  0.00         mov    -0xa8(%rbp),%rdx
+  0.02  191:   mov    %rdx,-0x50(%rbp)
+             }          
+             for (k = 0; k <= lk - 1; k++) {
+               movl   $0x0,-0x7c(%rbp)
+  0.00       ↓ jmp    1a4     
+        1a1:   incl   -0x7c(%rbp)
+  0.04  1a4:   mov    -0x8c(%rbp),%edx
+  0.01         dec    %edx    
+               cmp    %edx,-0x7c(%rbp)
+             ↑ jg     d2      
+             for (j = 0; j < vlen; j++) {
+  0.00         movl   $0x0,-0x40(%rbp)
+  0.08  1bc:   mov    -0x40(%rbp),%edx
+  0.02         cmp    -0x1c(%rbp),%edx
+  0.05       ↑ jge    1a1     
+             x11 = x[i11+k][j];
+  0.08         mov    -0x38(%rbp),%rsi
+  1.17         movslq -0x94(%rbp),%rdi
+  0.05         movslq -0x7c(%rbp),%rax
+  0.01         add    %rax,%rdi
+  0.09         imul   %rbx,%rdi
+  1.25         shl    $0x4,%rdi
+  0.06         add    %rsi,%rdi
+  0.03         movslq -0x40(%rbp),%rdx
+             x21 = x[i12+k][j];
+  0.11         shl    $0x4,%rdx
+             x11 = x[i11+k][j];
+  3.93         mov    (%rdx,%rdi,1),%rcx
+  0.38         mov    0x8(%rdx,%rdi,1),%rdi
+  0.91         mov    %rdi,-0x60(%rbp)
+  1.18         mov    %rcx,-0x68(%rbp)
+             x21 = x[i12+k][j];
+  0.34         movslq -0x98(%rbp),%rcx
+  0.02         add    %rax,%rcx
+  0.17         imul   %rbx,%rcx
+  0.71         shl    $0x4,%rcx
+  0.42         add    %rsi,%rcx
+  0.42         mov    (%rdx,%rcx,1),%rsi
+  0.32         mov    0x8(%rdx,%rcx,1),%rcx
+  0.83         mov    %rsi,-0x78(%rbp)
+  0.59         mov    %rcx,-0x70(%rbp)
+             scr[i21+k][j] = dcmplx_add(x11, x21);
+  0.02         movslq -0x9c(%rbp),%rcx
+  0.15         add    %rax,%rcx
+  0.71         imul   %r8,%rcx
+  0.52         add    %r9,%rcx
+  0.03         movsd  -0x68(%rbp),%xmm1
+  6.31         addsd  -0x78(%rbp),%xmm1
+  1.27         movsd  %xmm1,-0xc0(%rbp)
+  0.01         movsd  -0x60(%rbp),%xmm1
+  0.46         addsd  -0x70(%rbp),%xmm1
+  0.89         movsd  %xmm1,-0xb8(%rbp)
+  2.80         mov    -0xc0(%rbp),%rax
+  2.58         mov    %rax,(%rdx,%rcx,1)
+  0.20         mov    -0xb8(%rbp),%rax
+  1.17         mov    %rax,0x8(%rdx,%rcx,1)
+             scr[i22+k][j] = dcmplx_mul(u1, dcmplx_sub(x11, x21));
+  0.01         movslq -0xa0(%rbp),%rax
+  0.49         movslq -0x7c(%rbp),%rdx
+  0.00         add    %rax,%rdx
+  0.95         imul   %r8,%rdx
+  0.01         add    %r9,%rdx
+  0.50         movslq -0x40(%rbp),%rsi
+               shl    $0x4,%rsi
+  0.91         movsd  -0x68(%rbp),%xmm1
+  0.01         subsd  -0x78(%rbp),%xmm1
+  0.49         movsd  -0x58(%rbp),%xmm2
+  0.04         mulsd  %xmm1,%xmm2
+  0.98         movsd  %xmm1,-0xe0(%rbp)
+  0.00         movsd  -0x60(%rbp),%xmm1
+  0.51         subsd  -0x70(%rbp),%xmm1
+  0.03         movsd  %xmm1,-0xd8(%rbp)
+  0.98         movsd  -0x50(%rbp),%xmm1
+               movsd  -0x68(%rbp),%xmm3
+  0.42         subsd  -0x78(%rbp),%xmm3
+  0.02         movsd  %xmm3,-0xf0(%rbp)
+  0.95         movsd  -0x60(%rbp),%xmm3
+  0.00         subsd  -0x70(%rbp),%xmm3
+  0.39         movsd  %xmm3,-0xe8(%rbp)
+  0.03         mulsd  %xmm1,%xmm3
+  0.94         subsd  %xmm3,%xmm2
+  0.10         movsd  %xmm2,-0xd0(%rbp)
+  0.45         movsd  -0x58(%rbp),%xmm1
+               movsd  -0x68(%rbp),%xmm2
+  0.95         subsd  -0x78(%rbp),%xmm2
+  0.09         movsd  %xmm2,-0x100(%rbp)
+  0.44         movsd  -0x60(%rbp),%xmm2
+               subsd  -0x70(%rbp),%xmm2
+  0.86         movsd  %xmm2,-0xf8(%rbp)
+  0.09         mulsd  %xmm1,%xmm2
+  0.44         movsd  -0x68(%rbp),%xmm1
+               subsd  -0x78(%rbp),%xmm1
+  0.82         movsd  -0x50(%rbp),%xmm3
+  0.09         mulsd  %xmm1,%xmm3
+  0.44         addsd  %xmm2,%xmm3
+               movsd  %xmm1,-0x110(%rbp)
+  0.96         movsd  -0x60(%rbp),%xmm1
+  0.08         subsd  -0x70(%rbp),%xmm1
+  0.49         movsd  %xmm1,-0x108(%rbp)
+  0.01         movsd  %xmm3,-0xc8(%rbp)
+  0.85         mov    -0xd0(%rbp),%rax
+  0.12         mov    %rax,(%rsi,%rdx,1)
+  0.95         mov    -0xc8(%rbp),%rax
+  2.19         mov    %rax,0x8(%rsi,%rdx,1)
+             for (j = 0; j < vlen; j++) {
+  0.16         incl   -0x40(%rbp)
+  1.21       ↑ jmp    1bc     
+             }          
+             }          
+             }          
+               
+             if (l == m) {
+  0.01  378:   mov    -0x44(%rbp),%eax
+               cmp    -0x18(%rbp),%eax
+             ↓ jne    3ee     
+             for (k = 0; k < n; k++) {
+  0.00         movl   $0x0,-0x7c(%rbp)
+             ↓ jmp    393     
+  0.00  390:   incl   -0x7c(%rbp)
+  0.01  393:   mov    -0x7c(%rbp),%eax
+               cmp    -0x20(%rbp),%eax
+             ↑ jge    87      
+             for (j = 0; j < vlen; j++) {
+  0.00         movl   $0x0,-0x40(%rbp)
+  0.04  3a6:   mov    -0x40(%rbp),%eax
+  0.03         cmp    -0x1c(%rbp),%eax
+  0.01       ↑ jge    390     
+             x[k][j] = scr[k][j];
+  0.04         movslq -0x7c(%rbp),%rax
+  0.17         mov    %rax,%rcx
+  0.04         imul   %rbx,%rcx
+  0.03         shl    $0x4,%rcx
+  0.04         add    -0x38(%rbp),%rcx
+  0.15         movslq -0x40(%rbp),%rdx
+  0.04         shl    $0x4,%rdx
+  0.03         imul   %r8,%rax
+  0.04         add    %r9,%rax
+  0.22         mov    (%rdx,%rax,1),%rsi
+  0.18         mov    0x8(%rdx,%rax,1),%rax
+  0.14         mov    %rsi,(%rdx,%rcx,1)
+  0.22         mov    %rax,0x8(%rdx,%rcx,1)
+             for (j = 0; j < vlen; j++) {
+  0.10         incl   -0x40(%rbp)
+  0.13       ↑ jmp    3a6     
+             }          
+             }          
+             } else {   
+             lk = lj;   
+        3ee:   mov    -0x88(%rbp),%eax
+  0.00         mov    %eax,-0x8c(%rbp)
+             lj = 2 * lk;
+               add    %eax,%eax
+               mov    %eax,-0x88(%rbp)
+             li = li / 2;
+               mov    -0x84(%rbp),%eax
+               mov    %eax,%ecx
+               shr    $0x1f,%ecx
+  0.00         add    %eax,%ecx
+               sar    %ecx    
+               mov    %ecx,-0x84(%rbp)
+             ku = li;   
+               mov    %ecx,-0x90(%rbp)
+               
+             for (i = 0; i <= li - 1; i++) {
+               movl   $0x0,-0x3c(%rbp)
+             ↓ jmp    42c     
+  0.04  429:   incl   -0x3c(%rbp)
+  0.00  42c:   mov    -0x84(%rbp),%eax
+               dec    %eax    
+  0.01         cmp    %eax,-0x3c(%rbp)
+             ↑ jg     87      
+             i11 = i * lk;
+  0.00         mov    -0x3c(%rbp),%eax
+               mov    -0x8c(%rbp),%ecx
+               mov    %eax,%edx
+  0.01         imul   %ecx,%edx
+  0.01         mov    %edx,-0x94(%rbp)
+             i12 = i11 + n1;
+               add    -0x80(%rbp),%edx
+               mov    %edx,-0x98(%rbp)
+             i21 = i * lj;
+               imul   -0x88(%rbp),%eax
+  0.00         mov    %eax,-0x9c(%rbp)
+             i22 = i21 + lk;
+               add    %ecx,%eax
+  0.01         mov    %eax,-0xa0(%rbp)
+               
+             if (is >= 1) {
+               cmpl   $0x0,-0x14(%rbp)
+             ↓ jle    4a1     
+             u1 = exponent[ku+i];
+               mov    0x10(%rbp),%rax
+               movslq -0x90(%rbp),%rcx
+  0.00         movslq -0x3c(%rbp),%rdx
+               add    %rcx,%rdx
+               shl    $0x4,%rdx
+  0.01         mov    (%rax,%rdx,1),%rcx
+  0.00         mov    0x8(%rax,%rdx,1),%rax
+  0.00         mov    %rcx,-0x58(%rbp)
+             ↓ jmp    4e8     
+             } else {   
+             u1 = dconjg(exponent[ku+i]);
+        4a1:   mov    0x10(%rbp),%rax
+               movslq -0x90(%rbp),%rcx
+  0.01         movslq -0x3c(%rbp),%rdx
+               add    %rcx,%rdx
+               shl    $0x4,%rdx
+  0.02         movsd  (%rax,%rdx,1),%xmm1
+  0.01         movsd  %xmm1,-0x120(%rbp)
+  0.01         movsd  0x8(%rax,%rdx,1),%xmm1
+  0.01         xorpd  %xmm0,%xmm1
+  0.00         movlpd %xmm1,-0x118(%rbp)
+  0.01         mov    -0x120(%rbp),%rax
+  0.01         mov    %rax,-0x58(%rbp)
+  0.00         mov    -0x118(%rbp),%rax
+  0.00  4e8:   mov    %rax,-0x50(%rbp)
+             }          
+             for (k = 0; k <= lk - 1; k++) {
+               movl   $0x0,-0x7c(%rbp)
+             ↓ jmp    4fb     
+        4f8:   incl   -0x7c(%rbp)
+  0.05  4fb:   mov    -0x8c(%rbp),%eax
+  0.00         dec    %eax    
+               cmp    %eax,-0x7c(%rbp)
+             ↑ jg     429     
+             for (j = 0; j < vlen; j++) {
+  0.02         movl   $0x0,-0x40(%rbp)
+  0.07  513:   mov    -0x40(%rbp),%eax
+  0.23         cmp    -0x1c(%rbp),%eax
+  0.03       ↑ jge    4f8     
+             x11 = scr[i11+k][j];
+               movslq -0x94(%rbp),%rax
+  0.91         movslq -0x7c(%rbp),%rcx
+  0.03         add    %rcx,%rax
+  0.23         imul   %r8,%rax
+  0.00         add    %r9,%rax
+  1.01         movslq -0x40(%rbp),%rdx
+             x21 = scr[i12+k][j];
+             x[i21+k][j] = dcmplx_add(x11, x21);
+  0.02         shl    $0x4,%rdx
+             x11 = scr[i11+k][j];
+  2.50         mov    (%rdx,%rax,1),%rsi
+  1.03         mov    0x8(%rdx,%rax,1),%rax
+  1.95         mov    %rax,-0x60(%rbp)
+  0.64         mov    %rsi,-0x68(%rbp)
+             x21 = scr[i12+k][j];
+  0.04         movslq -0x98(%rbp),%rax
+               add    %rcx,%rax
+  0.69         imul   %r8,%rax
+  0.53         add    %r9,%rax
+  0.26         mov    (%rdx,%rax,1),%rsi
+  0.07         mov    0x8(%rdx,%rax,1),%rax
+  1.05         mov    %rsi,-0x78(%rbp)
+  0.45         mov    %rax,-0x70(%rbp)
+             x[i21+k][j] = dcmplx_add(x11, x21);
+  0.04         movslq -0x9c(%rbp),%rax
+               add    %rcx,%rax
+  0.82         imul   %rbx,%rax
+  0.47         shl    $0x4,%rax
+  0.03         add    -0x38(%rbp),%rax
+  0.01         movsd  -0x68(%rbp),%xmm1
+  6.53         addsd  -0x78(%rbp),%xmm1
+  1.29         movsd  %xmm1,-0x130(%rbp)
+               movsd  -0x60(%rbp),%xmm1
+  0.41         addsd  -0x70(%rbp),%xmm1
+  0.71         movsd  %xmm1,-0x128(%rbp)
+  2.77         mov    -0x130(%rbp),%rcx
+  2.70         mov    %rcx,(%rdx,%rax,1)
+  0.10         mov    -0x128(%rbp),%rcx
+  1.01         mov    %rcx,0x8(%rdx,%rax,1)
+             x[i22+k][j] = dcmplx_mul(u1, dcmplx_sub(x11, x21));
+  0.00         movslq -0xa0(%rbp),%rax
+  0.53         movslq -0x7c(%rbp),%rdx
+  0.00         add    %rax,%rdx
+  0.70         imul   %rbx,%rdx
+               shl    $0x4,%rdx
+  0.58         add    -0x38(%rbp),%rdx
+               movslq -0x40(%rbp),%rsi
+  0.76         shl    $0x4,%rsi
+               movsd  -0x68(%rbp),%xmm1
+  0.59         subsd  -0x78(%rbp),%xmm1
+               movsd  -0x58(%rbp),%xmm2
+  0.84         mulsd  %xmm1,%xmm2
+               movsd  %xmm1,-0x150(%rbp)
+  0.55         movsd  -0x60(%rbp),%xmm1
+  0.00         subsd  -0x70(%rbp),%xmm1
+  0.71         movsd  %xmm1,-0x148(%rbp)
+  0.01         movsd  -0x50(%rbp),%xmm1
+  0.57         movsd  -0x68(%rbp),%xmm3
+  0.01         subsd  -0x78(%rbp),%xmm3
+  0.72         movsd  %xmm3,-0x160(%rbp)
+               movsd  -0x60(%rbp),%xmm3
+  0.53         subsd  -0x70(%rbp),%xmm3
+               movsd  %xmm3,-0x158(%rbp)
+  0.71         mulsd  %xmm1,%xmm3
+  0.05         subsd  %xmm3,%xmm2
+  0.61         movsd  %xmm2,-0x140(%rbp)
+               movsd  -0x58(%rbp),%xmm1
+  0.62         movsd  -0x68(%rbp),%xmm2
+               subsd  -0x78(%rbp),%xmm2
+  0.63         movsd  %xmm2,-0x170(%rbp)
+               movsd  -0x60(%rbp),%xmm2
+  0.67         subsd  -0x70(%rbp),%xmm2
+               movsd  %xmm2,-0x168(%rbp)
+  0.62         mulsd  %xmm1,%xmm2
+               movsd  -0x68(%rbp),%xmm1
+  0.68         subsd  -0x78(%rbp),%xmm1
+               movsd  -0x50(%rbp),%xmm3
+  0.65         mulsd  %xmm1,%xmm3
+  0.03         addsd  %xmm2,%xmm3
+  0.61         movsd  %xmm1,-0x180(%rbp)
+               movsd  -0x60(%rbp),%xmm1
+  0.59         subsd  -0x70(%rbp),%xmm1
+  0.03         movsd  %xmm1,-0x178(%rbp)
+  0.67         movsd  %xmm3,-0x138(%rbp)
+  0.00         mov    -0x140(%rbp),%rax
+  0.67         mov    %rax,(%rsi,%rdx,1)
+  0.38         mov    -0x138(%rbp),%rax
+  1.70         mov    %rax,0x8(%rsi,%rdx,1)
+             for (j = 0; j < vlen; j++) {
+  0.22         incl   -0x40(%rbp)
+  0.95       ↑ jmp    513     
+             }          
+             }          
+             }          
+             }          
+             }          
+             if (timers_enabled) timer_stop(4);
+  0.00  6cd:   cmpl   $0x0,timers_enabled
+             ↓ je     6e4     
+               mov    $0x4,%edi
+             → call   timer_stop
+             }          
+        6e4:   add    $0x178,%rsp
+               pop    %rbx    
+               pop    %rbp    
+             ← ret            
