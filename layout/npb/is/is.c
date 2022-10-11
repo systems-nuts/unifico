@@ -805,7 +805,6 @@ int main( int argc, char **argv )
     }
 
     unasl_timers_snapshot();
-    printf("yo\n");
     unasl_timers_print();
 
     return 0;
