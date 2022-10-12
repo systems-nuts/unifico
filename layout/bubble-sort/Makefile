@@ -1,4 +1,4 @@
-BIN := bubble_sort
+BIN := main
 SRC := $(BIN).c
 
 include ../common/common.mk
