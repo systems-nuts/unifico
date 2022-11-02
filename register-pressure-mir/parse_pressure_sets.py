@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 import re
 
@@ -36,17 +38,18 @@ REG_CLASS_REGEX = re.compile(
 
 def get_pressure_sets(input_file, function_block, machine_instruction):
     """
-    Get the pressure sets at a specific LLVM Machine Instruction,
+    Get the pressure sets at a specific LLVM Machine Instruction (if given),
     from the particular function block, e.g.,
 
     `%18:gr64_nosp = MOV64rm %stack.3.i, 1, $noreg, 0, $noreg` of `main:%bb.2 for.body`
 
+    If a Machine Instruction is not given, return the pressure sets for all possible MIs of the block.
     The input file is the output of the `machine-scheduler` pass.
 
     @param input_file: Path to debug output file
     @param function_block: E.g., loop:%bb.0
     @param machine_instruction: LLVM MI, e.g., `MOV32mi %stack.0.retval, 1, $noreg, 0`
-    @return: Dictionary with pressure sets
+    @return: List of Dictionaries with pressure sets
     """
     with open(input_file, "r") as objdump_file:
         lines = objdump_file.readlines()
@@ -55,13 +58,20 @@ def get_pressure_sets(input_file, function_block, machine_instruction):
         skip_function = True
         skip_instruction = True
         pressure_sets = {}
+        pressure_sets_list = []
 
         for index, line in enumerate(lines):
 
             if line.startswith(function_block):
                 skip_function = False
 
-            if not skip_function and machine_instruction in line:
+            if (
+                not skip_function
+                and machine_instruction
+                and machine_instruction in line
+            ):
+                skip_instruction = False
+            elif not skip_function and not machine_instruction:
                 skip_instruction = False
 
             if line.startswith("Max Pressure:"):
@@ -82,27 +92,30 @@ def get_pressure_sets(input_file, function_block, machine_instruction):
                 continue
 
             if line.startswith("Live In:"):
+                pressure_sets_list.append(pressure_sets)
+                pressure_sets = {}
                 start_counting = False
                 skip_function = True
                 skip_instruction = True
 
-    return pressure_sets
+    return pressure_sets_list
 
 
 def calculate_pressure(pressure_sets):
     """
     Given a dictionary with pressure sets, calculate the total register pressure.
+    Currently, focusing on 32- and 64-bit registers.
 
     @param pressure_sets: dict
     @return: register pressure as a number
     """
     pressure = 0
 
-    if pressure_sets.get("GR8"):
-        pressure += pressure_sets["GR8"]
+    # if pressure_sets.get("GR8"): TODO: ignore for now
+    #     pressure += pressure_sets["GR8"]
 
-    if pressure_sets.get("GR16"):
-        pressure += pressure_sets["GR16"]
+    # if pressure_sets.get("GR16"):
+    #     pressure += pressure_sets["GR16"]
 
     if pressure_sets.get("GR32"):
         pressure += pressure_sets["GR32"]
@@ -159,10 +172,17 @@ arg_parser.add_argument(
 
 
 def __main__(args: argparse.Namespace):
-    pressure_sets = get_pressure_sets(
+    pressure_sets_list = get_pressure_sets(
         args.input_file, args.basic_block, args.machine_instruction
     )
-    print(calculate_pressure(pressure_sets))
+    print(
+        max(
+            [
+                calculate_pressure(pressure_sets)
+                for pressure_sets in pressure_sets_list
+            ]
+        )
+    )
 
 
 if __name__ == "__main__":
