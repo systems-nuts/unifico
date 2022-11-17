@@ -1,6 +1,6 @@
 # vim: ft=config
 
-font.size: 12
+font.size: 16
 #font.family: serif
 font.family: sans-serif
 #font.sans-serif: ["Helvetica"]
@@ -21,7 +21,7 @@ ytick.left: True
 ytick.right: True
 ytick.direction: in
 
-legend.loc: upper center
+legend.loc: center left
 legend.fancybox: True
 legend.framealpha: 1.0
 legend.shadow: False
@@ -30,6 +30,7 @@ legend.edgecolor: gray
 legend.handleheight: 1.0
 legend.labelspacing: 0.8
 legend.columnspacing: 0.8
+legend.fontsize: 12
 
 # not sure why this is not working
 #axes.grid.axis: y
