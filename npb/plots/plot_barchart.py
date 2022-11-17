@@ -67,7 +67,7 @@ def plot(datafile, stylefile, configfile, interactive=False):
     axis.set_yscale(cfg_axis["yscale"])
 
     axis.set_ylim(cfg_axis["ylim"])
-    plt.yticks(cfg_axis["yticks"]["values"])
+    plt.yticks(ticks=cfg_axis["yticks"]["values"])
 
     axis.yaxis.set_major_formatter(ScalarFormatter())
     axis.yaxis.set_minor_locator(NullLocator())
@@ -78,7 +78,9 @@ def plot(datafile, stylefile, configfile, interactive=False):
     cfg_legend = cfg["legend"]
 
     axis.legend(
-        bbox_to_anchor=cfg_legend["anchor"], ncol=cfg_legend["columns"]
+        title=cfg_legend["title"],
+        bbox_to_anchor=cfg_legend["anchor"],
+        ncol=cfg_legend["columns"],
     )
     axis.get_legend().get_frame().set_linewidth(cfg_legend["frame_linewidth"])
 
