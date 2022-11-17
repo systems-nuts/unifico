@@ -1,0 +1,29 @@
+{
+  "plot": {
+    "kind": "bar",
+    "logy": true,
+    "width": 8,
+    "height": 4,
+    "bar_width": 0.85
+  },
+
+  "axis": {
+    "grid": "y",
+    "xlabel": "",
+    "ylabel": "Execution time (secs)",
+    "yscale": "linear",
+    "ylim": [0, 30],
+    "xticks": {
+      "rotation": 0
+    },
+    "yticks": {
+      "values": [0, 3, 5, 10, 15, 20, 25, 30]
+    }
+  },
+  "legend": {
+    "columns": 3,
+    "frame_linewidth": 0.4,
+    "anchor": [0, 1.04, 1, 0.2]
+  },
+  "colors": [ "#fee6ce", "#fdae6b", "#e6550d" ]
+}

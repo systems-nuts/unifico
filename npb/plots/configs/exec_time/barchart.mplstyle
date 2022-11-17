@@ -1,0 +1,43 @@
+# vim: ft=config
+
+font.size: 12
+#font.family: serif
+font.family: sans-serif
+#font.sans-serif: ["Helvetica"]
+
+
+#legend.fontsize: 14
+
+text.usetex: True
+
+patch.edgecolor: black
+patch.force_edgecolor: True
+patch.linewidth: 0.4
+
+xtick.top: False
+xtick.bottom: False
+
+ytick.left: True
+ytick.right: True
+ytick.direction: in
+
+legend.loc: upper center
+legend.fancybox: True
+legend.framealpha: 1.0
+legend.shadow: False
+legend.borderaxespad: 0
+legend.edgecolor: gray
+legend.handleheight: 1.0
+legend.labelspacing: 0.8
+legend.columnspacing: 0.8
+
+# not sure why this is not working
+#axes.grid.axis: y
+#axes.grid: True
+
+grid.color: black
+grid.alpha: 0.2
+grid.linewidth: 0.5
+grid.linestyle: dashed
+
+figure.autolayout: True
