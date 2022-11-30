@@ -17,4 +17,15 @@ Once you clone the repo locally, run `pre-commit install` to install the configu
 
 
 
+### LLVM CMake flags for Unifico
+
+```
+-DLLVM_UNIFICO_TABLEGEN_FEATURES="-DUNIFICO_GPR_CALLING_CONV; \
+-DUNIFICO_FPR_CALLING_CONV; \
+-DUNIFICO_REMAT_RULES; \
+-DUNIFICO_REGALLOC_RULES"
+```
+
+* Use `llvm-config --unifico-flags` to check which of these are enabled in the current build.
+
 [1]: https://pre-commit.com/#usage
