@@ -1,0 +1,92 @@
+# RUN: parse_pressure_sets.py -i %s | filecheck %s
+# CHECK: 6
+
+********** MI Scheduling **********
+recurse:%bb.0 entry
+  From: %48:gr32 = COPY killed $eax
+    To: ADJCALLSTACKDOWN32 0, 0, 0, implicit-def dead $rsp, implicit-def dead $eflags, implicit-def dead $ssp, implicit $rsp, implicit $ssp
+Max Pressure: GR8_ABCD_H+GR32_BSI=1
+GR8_ABCD_L+GR32_BSI=1
+GR8_NOREX=2
+GR32_TC=3
+GR32_BPSP+GR32_TC=2
+GR64_NOREX=2
+GR64_TCW64=2
+GR32_BPSP+GR64_TCW64=1
+GR8=2
+GR8+GR32_DIBP=1
+GR8+GR32_BSI=2
+GR64_TC+GR64_TCW64=2
+GR8+LOW32_ADDR_ACCESS_with_sub_32bit=2
+GR8+GR64_NOREX=2
+GR32temp=3
+GR32temp+GR32_DIBP=2
+GR64_TC=2
+GR8+GR64_TCW64=2
+GR8+GR64_TC=2
+GR32temp+GR64_TC=2
+GR8+GR32temp=2
+GR16=4
+Live In: AH AL HAX 
+
+********** MI Scheduling **********
+recurse:%bb.0 entry
+  From: %6:gr32 = COPY killed $eax
+    To: ADJCALLSTACKDOWN64 0, 0, 0, implicit-def dead $rsp, implicit-def dead $eflags, implicit-def dead $ssp, implicit $rsp, implicit $ssp
+ RegionInstrs: 8
+ScheduleDAGMILive::schedule starting
+GenericScheduler RegionPolicy:  ShouldTrackPressure=1 OnlyTopDown=0 OnlyBottomUp=1
+Max Pressure: GR8_ABCD_H+GR32_BSI=1
+GR8_ABCD_L+GR32_BSI=1
+GR8_NOREX=2
+GR32_TC=1
+GR32_BPSP+GR32_TC=2
+GR64_NOREX=2
+GR64_TCW64=2
+GR32_BPSP+GR64_TCW64=2
+GR8=2
+GR8+GR32_DIBP=2
+GR8+GR32_BSI=2
+GR64_TC+GR64_TCW64=2
+GR8+LOW32_ADDR_ACCESS_with_sub_32bit=2
+GR8+GR64_NOREX=2
+GR32temp=1
+GR32temp+GR32_DIBP=2
+GR64_TC=2
+GR8+GR64_TCW64=2
+GR8+GR64_TC=2
+GR32temp+GR64_TC=2
+GR8+GR32temp=2
+GR16=4
+Live In: AH AL HAX 
+
+********** MI Scheduling **********
+recurse:%bb.1 outro
+  From: %6:gr32 = COPY killed $eax
+    To: ADJCALLSTACKDOWN64 0, 0, 0, implicit-def dead $rsp, implicit-def dead $eflags, implicit-def dead $ssp, implicit $rsp, implicit $ssp
+ RegionInstrs: 8
+ScheduleDAGMILive::schedule starting
+GenericScheduler RegionPolicy:  ShouldTrackPressure=1 OnlyTopDown=0 OnlyBottomUp=1
+Max Pressure: GR8_ABCD_H+GR32_BSI=1
+GR8_ABCD_L+GR32_BSI=1
+GR8_NOREX=2
+GR32_TC=2
+GR32_BPSP+GR32_TC=2
+GR64_NOREX=2
+GR64_TCW64=3
+GR32_BPSP+GR64_TCW64=2
+GR8=2
+GR8+GR32_DIBP=2
+GR8+GR32_BSI=2
+GR64_TC+GR64_TCW64=2
+GR8+LOW32_ADDR_ACCESS_with_sub_32bit=2
+GR8+GR64_NOREX=2
+GR32temp=2
+GR32temp+GR32_DIBP=2
+GR64_TC=4
+GR8+GR64_TCW64=3
+GR8+GR64_TC=3
+GR32temp+GR64_TC=2
+GR8+GR32temp=2
+GR16=4
+Live In: AH AL HAX

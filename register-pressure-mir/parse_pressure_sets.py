@@ -62,7 +62,7 @@ def get_pressure_sets(input_file, function_block, machine_instruction):
 
         for index, line in enumerate(lines):
 
-            if line.startswith(function_block):
+            if not function_block or line.startswith(function_block):
                 skip_function = False
 
             if (
@@ -70,6 +70,8 @@ def get_pressure_sets(input_file, function_block, machine_instruction):
                 and machine_instruction
                 and machine_instruction in line
             ):
+                skip_instruction = False
+            elif not skip_function and not function_block:
                 skip_instruction = False
             elif not skip_function and not machine_instruction:
                 skip_instruction = False
