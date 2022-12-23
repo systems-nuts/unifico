@@ -150,27 +150,27 @@ class ProgramState:
         target_word = offset % 16
 
         if target_word == 0:
-            target_ascii_line = target_ascii_line.replace(
-                len(reg) * "-", reg, 1
+            target_ascii_line = re.sub(
+                len(reg) * r"[\w-]", reg, target_ascii_line, count=1
             )
         elif target_word == 4:
             target_ascii_line = (
                 target_ascii_line[:6] + "|" + target_ascii_line[7:]
             )
-            target_ascii_line = target_ascii_line[0:7] + target_ascii_line[
-                7:
-            ].replace(len(reg) * "-", reg, 1)
+            target_ascii_line = target_ascii_line[0:7] + re.sub(
+                len(reg) * r"[\w-]", reg, target_ascii_line[7:], count=1
+            )
         elif target_word == 8:
-            target_ascii_line = target_ascii_line[0:11] + target_ascii_line[
-                11:
-            ].replace(len(reg) * "-", reg, 1)
+            target_ascii_line = target_ascii_line[0:11] + re.sub(
+                len(reg) * r"[\w-]", reg, target_ascii_line[11:], count=1
+            )
         elif target_word == 12:
             target_ascii_line = (
                 target_ascii_line[:15] + "|" + target_ascii_line[16:]
             )
-            target_ascii_line = target_ascii_line[0:16] + target_ascii_line[
-                16:
-            ].replace(len(reg) * "-", reg, 1)
+            target_ascii_line = target_ascii_line[0:16] + re.sub(
+                len(reg) * r"[\w-]", reg, target_ascii_line[16:], count=1
+            )
 
         self.stack[target_frame_index] = target_ascii_line
 
