@@ -200,7 +200,7 @@ static inline bool dump_stackmaps(bin* b, stack_map_section *sm, size_t num_sm)
 {
 	size_t i;
 	uint32_t j;
-	int64_t func_idx = -1;  // If func_name is given, then this will be its index in the function records.
+	int64_t func_idx;  // If func_name is given, then this will be its index in the function records.
 	uint64_t func;
 	GElf_Sym sym;
 	const char *sym_name;
@@ -211,6 +211,7 @@ static inline bool dump_stackmaps(bin* b, stack_map_section *sm, size_t num_sm)
 		printf("Stackmap v%u: %u functions, %u constants, %u call sites\n",
 			   sm[i].version, sm[i].num_functions, sm[i].num_constants,
 			   sm[i].num_records);
+		func_idx = -1;
 
 		for(j = 0; j < sm[i].num_functions; j++)
 		{
