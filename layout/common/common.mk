@@ -165,20 +165,24 @@ json-aarch64: $(ARM64_JSON)
 stackmaps-dump-aarch64: $(ARM64_ALIGNED)
 	@echo " [STACKMAP DUMP] $^"
 	@{ \
-		if [ -z ${TARGET_FUNC} ]; then \
+		if [ -z ${TARGET_FUNC} ] && [ -z ${TARGET_CALLSITE} ]; then \
 		$(STACKMAP_DUMP) -f $(ARM64_ALIGNED); \
-		else \
+		elif [ -z ${TARGET_CALLSITE} ]; then \
 		$(STACKMAP_DUMP) -f $(ARM64_ALIGNED) -n $(TARGET_FUNC); \
+		else \
+		$(STACKMAP_DUMP) -f $(ARM64_ALIGNED) -n $(TARGET_FUNC) -c $(TARGET_CALLSITE); \
 		fi \
 		}
 
 stackmaps-dump-x86-64: $(X86_64_ALIGNED)
 	@echo " [STACKMAP DUMP] $^"
 	@{ \
-		if [ -z ${TARGET_FUNC} ]; then \
+		if [ -z ${TARGET_FUNC} ] && [ -z ${TARGET_CALLSITE} ]; then \
 		$(STACKMAP_DUMP) -f $(X86_64_ALIGNED); \
-		else \
+		elif [ -z ${TARGET_CALLSITE} ]; then \
 		$(STACKMAP_DUMP) -f $(X86_64_ALIGNED) -n $(TARGET_FUNC); \
+		else \
+		$(STACKMAP_DUMP) -f $(X86_64_ALIGNED) -n $(TARGET_FUNC) -c $(TARGET_CALLSITE); \
 		fi \
 		}
 
