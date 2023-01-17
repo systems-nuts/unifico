@@ -46,7 +46,7 @@ ARM_STR = re.compile(
  \s+                # A whitespace
  [0-9a-fA-F]+:      # Instruction address
  [0-9a-fA-F\s]+     # Instruction encoding in hex form including whitespaces
- str \s (\w+),\s \[(\w+)    # `str` instruction
+ stu?r \s (\w+),\s \[(\w+)    # `str` instruction
  (, \s \#(-)?(0x[0-9a-fA-F]+))?]   # Offset from stack pointer or frame pointer
  .*                 # Ignore rest
 """,
