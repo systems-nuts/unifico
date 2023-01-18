@@ -65,12 +65,70 @@ ARM_STP = re.compile(
     re.VERBOSE,
 )
 
-CALLSITE = re.compile(
+ARM_CALLSITE = re.compile(
     r"""
  \s+                # Whitespaces
  [0-9a-fA-F]+:      # Instruction address
  [0-9a-fA-F\s]+     # Instruction encoding in hex form including whitespaces
  bl \s+ \# -? 0x[0-9a-fA-F]+ \s+ <(\w+)> # Frame setup instruction
+ .*                 # Ignore rest
+""",
+    re.VERBOSE,
+)
+
+X86_PUSH = re.compile(
+    r"""
+ \s+                # Whitespaces
+ [0-9a-fA-F]+:      # Instruction address
+ [0-9a-fA-F\s]+     # Instruction encoding in hex form including whitespaces
+ push \s+ (\w+)      # Frame setup instruction
+ .*                 # Ignore rest
+""",
+    re.VERBOSE,
+)
+
+X86_FRAME_SETUP = re.compile(
+    r"""
+ \s+                # Whitespaces
+ [0-9a-fA-F]+:      # Instruction address
+ [0-9a-fA-F\s]+     # Instruction encoding in hex form including whitespaces
+ sub \s+ rsp,       # Frame setup instruction
+ (0x[0-9a-fA-F]+)   # Frame size
+ .*                 # Ignore rest
+""",
+    re.VERBOSE,
+)
+
+X86_CREATE_PTR = re.compile(
+    r"""
+ \s+                # A whitespace
+ [0-9a-fA-F]+:      # Instruction address
+ [0-9a-fA-F\s]+     # Instruction encoding in hex form including whitespaces
+ mov \s+ rbp,rsp    # Pointer creation instruction
+ .*                 # Ignore rest
+""",
+    re.VERBOSE,
+)
+
+X86_MOV_XWORD = re.compile(
+    r"""
+ \s+                # A whitespace
+ [0-9a-fA-F]+:      # Instruction address
+ [0-9a-fA-F\s]+     # Instruction encoding in hex form including whitespaces
+ mov\w* \s+ ([DQ]|XMM)WORD \s PTR \s \[(rsp|rbp)    # `mov` instruction
+ (([+-])(0x[0-9a-fA-F]+))?]   # Offset from stack pointer or frame pointer
+ ,([\d\w]+)           # Value to store
+ .*                 # Ignore rest
+""",
+    re.VERBOSE,
+)
+
+X86_CALLSITE = re.compile(
+    r"""
+ \s+                # Whitespaces
+ [0-9a-fA-F]+:      # Instruction address
+ [0-9a-fA-F\s]+     # Instruction encoding in hex form including whitespaces
+ call \s+ [0-9a-fA-F]+ \s+ <(\w+)> # Frame setup instruction
  .*                 # Ignore rest
 """,
     re.VERBOSE,
@@ -100,7 +158,7 @@ class ProgramState:
         """
         Create a new program state.
         """
-        self.stack = []
+        self.stack = [FRAME_LINE] if arch == "x86" else []
         self.registers = {}
         self.frame_lines = 0
         self.callsites = 0
@@ -261,6 +319,83 @@ def parse_arm_asm(input_file, func_name="main", callsite=1):
                 program_state.callsites += 1
                 if program_state.callsites == callsite:
                     break
+                continue
+
+        program_state.print_state()
+
+
+def parse_x86_asm(input_file, func_name="main", callsite=1):
+
+    program_state = ProgramState("x86")
+
+    with open(input_file, "r") as objdump_file:
+        lines = objdump_file.readlines()
+
+        current_func = ""
+        found_function = False
+
+        for line in lines:
+
+            # Parse function
+            match_result = FUNCTION_REGEX.match(line)
+            if match_result:
+                current_func = match_result.group(1)
+                if current_func == func_name:
+                    found_function = True
+            if found_function and current_func != func_name:
+                break
+            if current_func != func_name:
+                continue
+
+            # Parse `push` instruction
+            match_result = X86_PUSH.match(line)
+            if match_result:
+                register = match_result.group(1)
+                if len(program_state.stack) == 1:
+                    program_state.registers["rsp"] = 0
+                if "rbp" in program_state.registers.keys():
+                    program_state.registers["rbp"] += 8
+                program_state.stack.extend([FRAME_LINE])
+                program_state.frame_lines += 1
+                program_state.push(register, 0)
+                # Check if we set up the frame for the first time
+                continue
+
+            # Parse `mov rbp,rsp`
+            match_result = X86_CREATE_PTR.match(line)
+            if match_result:
+                program_state.registers["rbp"] = program_state.registers["rsp"]
+                continue
+
+            # Parse frame setup instruction
+            match_result = X86_FRAME_SETUP.match(line)
+            if match_result:
+                frame_size = int(match_result.group(1), 16)
+                quad_words = frame_size // 8
+                program_state.stack.extend(quad_words * [FRAME_LINE])
+                program_state.frame_lines += quad_words
+                program_state.registers["rsp"] = 0
+                for reg in program_state.registers.keys():
+                    if reg != "rsp":
+                        program_state.registers[reg] += quad_words * 8
+                continue
+
+            # Parse `mov DWORD PTR` instructions
+            match_result = X86_MOV_XWORD.match(line)
+            if match_result:
+                pointer_register = match_result.group(2)
+                offset = match_result.group(3)
+                if offset:
+                    sign = match_result.group(4)
+                    offset = int(match_result.group(5), 16)
+                    offset = -offset if sign == "-" else offset
+                else:
+                    offset = 0
+                value = match_result.group(6)
+                if pointer_register not in program_state.registers.keys():
+                    sys.exit("Storing using an untracked pointer!")
+                offset = program_state.registers[pointer_register] + offset
+                program_state.push(value, offset)
                 continue
 
         program_state.print_state()
