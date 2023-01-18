@@ -4,7 +4,7 @@ import re
 import sys
 import argparse
 
-FRAME_LINE = "||--------|--------||"
+FRAME_LINE = "||--------||"
 
 
 FUNCTION_REGEX = re.compile(
@@ -96,7 +96,7 @@ class ProgramState:
         The number of callsites seen so far.
     """
 
-    def __init__(self):
+    def __init__(self, arch):
         """
         Create a new program state.
         """
@@ -104,17 +104,19 @@ class ProgramState:
         self.registers = {}
         self.frame_lines = 0
         self.callsites = 0
+        self.stack_pointer = "rsp" if arch == "x86" else "sp"
+        self.frame_pointer = "rbp" if arch == "x86" else "x29"
 
     def print_stack(self):
-        sp_offset = self.registers.get("sp", 0)
-        fp_offset = (self.frame_lines - 1) * 16 - self.registers.get("fp", 0)
+        sp_offset = self.registers.get(self.stack_pointer, 0)
+        fp_offset = sp_offset - self.registers.get(self.frame_pointer, 0)
         frame_slots = self.stack
         while frame_slots:
             print(f"{hex(sp_offset):5s}: ", end="")
             print(frame_slots.pop(), end="")
-            print(f" : {hex(-fp_offset):6s}")
-            sp_offset += 16
-            fp_offset -= 16
+            print(f" : {hex(fp_offset):6s}")
+            sp_offset += 8
+            fp_offset += 8
 
     def print_registers(self):
         for k, v in self.registers.items():
@@ -139,7 +141,7 @@ class ProgramState:
         if self.frame_lines <= 0:
             sys.exit("Cannot place register in an empty stack!")
 
-        target_frame_index = len(self.stack) - abs(offset) // 16 - 1
+        target_frame_index = len(self.stack) - abs(offset) // 8 - 1
         slack = -target_frame_index
         while slack > 0:
             self.stack.insert(0, FRAME_LINE)
@@ -147,7 +149,7 @@ class ProgramState:
             target_frame_index += 1
 
         target_ascii_line = self.stack[target_frame_index]
-        target_word = offset % 16
+        target_word = offset % 8
 
         if target_word == 0:
             target_ascii_line = re.sub(
@@ -160,24 +162,13 @@ class ProgramState:
             target_ascii_line = target_ascii_line[0:7] + re.sub(
                 len(reg) * r"[\w-]", reg, target_ascii_line[7:], count=1
             )
-        elif target_word == 8:
-            target_ascii_line = target_ascii_line[0:11] + re.sub(
-                len(reg) * r"[\w-]", reg, target_ascii_line[11:], count=1
-            )
-        elif target_word == 12:
-            target_ascii_line = (
-                target_ascii_line[:15] + "|" + target_ascii_line[16:]
-            )
-            target_ascii_line = target_ascii_line[0:16] + re.sub(
-                len(reg) * r"[\w-]", reg, target_ascii_line[16:], count=1
-            )
 
         self.stack[target_frame_index] = target_ascii_line
 
 
-def read_asm_file(input_file, func_name="main", callsite=1):
+def parse_arm_asm(input_file, func_name="main", callsite=1):
 
-    program_state = ProgramState()
+    program_state = ProgramState("arm")
 
     with open(input_file, "r") as objdump_file:
         lines = objdump_file.readlines()
@@ -204,7 +195,7 @@ def read_asm_file(input_file, func_name="main", callsite=1):
                 frame_size = int(match_result.group(1), 16)
                 if frame_size % 16 != 0:
                     sys.exit("Frame size not quad-word aligned!")
-                quad_words = frame_size // 16
+                quad_words = frame_size // 8
                 program_state.stack.extend(quad_words * [FRAME_LINE])
                 program_state.frame_lines += quad_words
                 program_state.registers["sp"] = 0
@@ -265,7 +256,7 @@ def read_asm_file(input_file, func_name="main", callsite=1):
                 continue
 
             # Parse callsite
-            match_result = CALLSITE.match(line)
+            match_result = ARM_CALLSITE.match(line)
             if match_result:
                 program_state.callsites += 1
                 if program_state.callsites == callsite:
@@ -299,9 +290,23 @@ arg_parser.add_argument(
     help="Up to which callsite to print (inclusive)",
 )
 
+arg_parser.add_argument(
+    "-a",
+    "--architecture",
+    type=str,
+    action="store",
+    nargs="?",
+    choices=["arm", "x86"],
+    default="x86",
+    help="Architecture to examine (default x86)",
+)
+
 
 def __main__(args: argparse.Namespace):
-    read_asm_file(args.input_file, args.function, args.callsite)
+    if args.architecture == "arm":
+        parse_arm_asm(args.input_file, args.function, args.callsite)
+    elif args.architecture == "x86":
+        parse_x86_asm(args.input_file, args.function, args.callsite)
 
 
 if __name__ == "__main__":
