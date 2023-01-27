@@ -7,6 +7,7 @@
 //
 
 #include "pin.H"
+#include <cmath>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -25,21 +26,18 @@ ADDRINT init_addr = 0;
 
 // This function is called before every instruction is executed
 VOID docount(UINT64 *counter) { (*counter)++; }
+UINT64 counter = 0;
 
 /*
- * Check if the memory accessed is further from initial memory access by a fixed
- * offset. For now, the fixed offset is hardcoded.
+ * Check the memory location accessed.
  *
  *  addr[in]         Memory location accessed.
- *  init_addr[in]    Initial address of the memory accessed.
  */
-static ADDRINT IsFarAccess(ADDRINT addr, ADDRINT *init_addr)
+static ADDRINT IsFarAccess(ADDRINT addr)
 {
-    if ((long int)addr - (long int)(*init_addr) > 0x500) {
-        *init_addr = addr;
-        outFile << "Migration"
-                << "\n";
-    }
+    outFile << std::hex << (addr & 0xffffff) << std::dec << "," << counter
+            << "\n";
+    counter++;
     return 0;
 }
 
@@ -64,8 +62,7 @@ VOID Routine(RTN rtn, VOID *v)
         for (UINT32 memOp = 0; memOp < memOperands; memOp++) {
             if (INS_MemoryOperandIsRead(ins, memOp)) {
                 INS_InsertCall(ins, IPOINT_BEFORE, (AFUNPTR)IsFarAccess,
-                               IARG_MEMORYOP_EA, memOp, IARG_PTR, &init_addr,
-                               IARG_END);
+                               IARG_MEMORYOP_EA, memOp, IARG_END);
             }
         }
     }
