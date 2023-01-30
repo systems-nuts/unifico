@@ -26,28 +26,38 @@ ADDRINT init_addr = 0;
 
 // This function is called before every instruction is executed
 VOID docount(UINT64 *counter) { (*counter)++; }
-UINT64 counter = 0;
+UINT64 counter = 999;
+
+typedef struct counters {
+    UINT64 step = 0;
+} COUNTERS;
 
 /*
  * Check the memory location accessed.
  *
  *  addr[in]         Memory location accessed.
  */
-static ADDRINT IsFarAccess(ADDRINT addr)
+static ADDRINT dumpAccess(ADDRINT addr)
 {
-    outFile << std::hex << (addr & 0xffffff) << std::dec << "," << counter
-            << "\n";
     counter++;
+    //	if (counter % 1000 != 0)
+    //		return 0;
+    outFile << "0x" << std::hex << addr << std::dec << "," << counter << "\n";
     return 0;
 }
 
 // Pin calls this function every time a new rtn is executed
 VOID Routine(RTN rtn, VOID *v)
 {
-    if (RTN_Name(rtn) != "spmv_csr")
+    if (RTN_Name(rtn) != "sort") {
         return;
+    }
+
+    auto *cnt = (COUNTERS *)v;
 
     RTN_Open(rtn);
+
+    outFile << "address,step\n";
 
     // For each instruction of the routine
     for (INS ins = RTN_InsHead(rtn); INS_Valid(ins); ins = INS_Next(ins)) {
@@ -58,10 +68,13 @@ VOID Routine(RTN rtn, VOID *v)
         if (INS_IsStackRead(ins))
             continue;
 
+        counter++;
+        cnt->step++;
+
         UINT32 memOperands = INS_MemoryOperandCount(ins);
         for (UINT32 memOp = 0; memOp < memOperands; memOp++) {
             if (INS_MemoryOperandIsRead(ins, memOp)) {
-                INS_InsertCall(ins, IPOINT_BEFORE, (AFUNPTR)IsFarAccess,
+                INS_InsertCall(ins, IPOINT_BEFORE, (AFUNPTR)dumpAccess,
                                IARG_MEMORYOP_EA, memOp, IARG_END);
             }
         }
@@ -80,8 +93,9 @@ VOID Fini(INT32 code, VOID *v) { return; }
 
 INT32 Usage()
 {
-    cerr << "This Pintool counts the number of times we access data in" << endl;
-    cerr << "the heap from a far memory location." << endl;
+    cerr << "This Pintool dumps the memory accesses with an optional step to "
+            "skip some of them"
+         << endl;
     cerr << endl << KNOB_BASE::StringKnobSummary() << endl;
     return -1;
 }
@@ -92,17 +106,28 @@ INT32 Usage()
 
 int main(int argc, char *argv[])
 {
+    UINT32 step = 0;
+    if (argc > 1) {
+        char **endptr = nullptr;
+        step = strtol(argv[1], endptr, 10);
+    }
+
     // Initialize symbol table code, needed for rtn instrumentation
     PIN_InitSymbols();
 
-    outFile.open("heap_accesses.out");
+    outFile.open("heap_accesses.csv");
 
     // Initialize pin
-    if (PIN_Init(argc, argv))
+    if (PIN_Init(argc, argv)) {
         return Usage();
+    }
+
+    // Allocate a counter for this routine
+    auto *cnt = new COUNTERS;
+    cnt->step = step;
 
     // Register Routine to be called to instrument rtn
-    RTN_AddInstrumentFunction(Routine, 0);
+    RTN_AddInstrumentFunction(Routine, cnt);
 
     // Register Fini to be called when the application exits
     PIN_AddFiniFunction(Fini, 0);
