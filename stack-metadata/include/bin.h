@@ -9,17 +9,17 @@
 #define _BIN_H
 
 #include <elf.h>
-#include <libelf/libelf.h>
 #include <libelf/gelf.h>
+#include <libelf/libelf.h>
 
 #include "definitions.h"
 
 /* File descriptor information for a binary */
 typedef struct bin {
-  const char *name;
-  uint16_t arch;
-  int fd;
-  Elf *e;
+    const char *name;
+    uint16_t arch;
+    int fd;
+    Elf *e;
 } bin;
 
 /**
@@ -38,4 +38,3 @@ ret_t init_elf_bin(const char *bin_fn, bin **b_ptr);
 ret_t free_elf_bin(bin *b);
 
 #endif /* _BIN_H */
-

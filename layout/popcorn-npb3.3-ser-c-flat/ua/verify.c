@@ -31,74 +31,86 @@
 //          and Jaejin Lee                                                 //
 //-------------------------------------------------------------------------//
 
-#include <stdio.h>
-#include <math.h>
 #include "header.h"
+#include <math.h>
+#include <stdio.h>
 
 void verify(char *Class, logical *verified)
 {
-  double norm, epsilon, norm_dif, norm_ref;
+    double norm, epsilon, norm_dif, norm_ref;
 
-  // tolerance level
-  epsilon = 1.0e-08;
+    // tolerance level
+    epsilon = 1.0e-08;
 
-  // compute the temperature integral over the whole domain
-  norm = calc_norm();
+    // compute the temperature integral over the whole domain
+    norm = calc_norm();
 
-  *verified = true;
-  if ( *Class == 'S' ) {
-    norm_ref = 0.1890013110962E-02;
-  } else if ( *Class == 'W' ) {
-    norm_ref = 0.2569794837076E-04;
-  } else if ( *Class == 'A' ) {
-    norm_ref = 0.8939996281443E-04;
-  } else if ( *Class == 'B' ) {
-    norm_ref = 0.4507561922901E-04;
-  } else if ( *Class == 'C' ) {
-    norm_ref = 0.1544736587100E-04;
-  } else if ( *Class == 'D' ) {
-    norm_ref = 0.1577586272355E-05;
-  } else {
-    *Class = 'U';
-    norm_ref = 1.0;
-    *verified = false;
-  }         
+    *verified = true;
+    if (*Class == 'S') {
+        norm_ref = 0.1890013110962E-02;
+    }
+    else if (*Class == 'W') {
+        norm_ref = 0.2569794837076E-04;
+    }
+    else if (*Class == 'A') {
+        norm_ref = 0.8939996281443E-04;
+    }
+    else if (*Class == 'B') {
+        norm_ref = 0.4507561922901E-04;
+    }
+    else if (*Class == 'C') {
+        norm_ref = 0.1544736587100E-04;
+    }
+    else if (*Class == 'D') {
+        norm_ref = 0.1577586272355E-05;
+    }
+    else {
+        *Class = 'U';
+        norm_ref = 1.0;
+        *verified = false;
+    }
 
-  norm_dif = fabs((norm - norm_ref)/norm_ref);
+    norm_dif = fabs((norm - norm_ref) / norm_ref);
 
-  //---------------------------------------------------------------------
-  // Output the comparison of computed results to known cases.
-  //---------------------------------------------------------------------
-  printf("\n");
+    //---------------------------------------------------------------------
+    // Output the comparison of computed results to known cases.
+    //---------------------------------------------------------------------
+    printf("\n");
 
-  if (*Class != 'U') {
-    printf(" Verification being performed for class %c\n", *Class);
-    printf(" accuracy setting for epsilon = %20.13E\n", epsilon);
-  } else { 
-    printf(" Unknown class\n");
-  }
+    if (*Class != 'U') {
+        printf(" Verification being performed for class %c\n", *Class);
+        printf(" accuracy setting for epsilon = %20.13E\n", epsilon);
+    }
+    else {
+        printf(" Unknown class\n");
+    }
 
-  if (*Class != 'U') {
-    printf(" Comparison of temperature integrals\n");
-  } else {
-    printf(" Temperature integral\n");
-  }
+    if (*Class != 'U') {
+        printf(" Comparison of temperature integrals\n");
+    }
+    else {
+        printf(" Temperature integral\n");
+    }
 
-  if (*Class == 'U') {
-    printf("          %20.13E\n", norm);
-  } else if (norm_dif <= epsilon) {
-    printf("          %20.13E%20.13E%20.13E\n", norm, norm_ref, norm_dif);
-  } else { 
-    *verified = false;
-    printf(" FAILURE: %20.13E%20.13E%20.13E\n", norm, norm_ref, norm_dif);
-  }
+    if (*Class == 'U') {
+        printf("          %20.13E\n", norm);
+    }
+    else if (norm_dif <= epsilon) {
+        printf("          %20.13E%20.13E%20.13E\n", norm, norm_ref, norm_dif);
+    }
+    else {
+        *verified = false;
+        printf(" FAILURE: %20.13E%20.13E%20.13E\n", norm, norm_ref, norm_dif);
+    }
 
-  if (*Class == 'U') {
-    printf(" No reference values provided\n");
-    printf(" No verification performed\n");
-  } else if (*verified) {
-    printf(" Verification Successful\n");
-  } else {
-    printf(" Verification failed\n");
-  }
+    if (*Class == 'U') {
+        printf(" No reference values provided\n");
+        printf(" No verification performed\n");
+    }
+    else if (*verified) {
+        printf(" Verification Successful\n");
+    }
+    else {
+        printf(" Verification failed\n");
+    }
 }

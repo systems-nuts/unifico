@@ -1,26 +1,20 @@
 #include <stdio.h>
 
+void rank(int n) { printf("%d\n", n); }
 
-void rank(int n)
-{
-    printf("%d\n", n);
-}
+int add_one(int n) { return n + 1; }
 
-int add_one(int n)
-{
-    return n + 1;
-}
-
-int main( int argc, char **argv )
+int main(int argc, char **argv)
 {
 
     int i = 1, iteration, x;
 
     rank(4);
 
-    for( iteration=4; iteration <= 10; iteration++ )
-    {
-        if( iteration == 0 ) { printf( "\n"); }
+    for (iteration = 4; iteration <= 10; iteration++) {
+        if (iteration == 0) {
+            printf("\n");
+        }
     }
 
     rank(0);

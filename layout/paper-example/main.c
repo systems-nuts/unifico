@@ -1,10 +1,10 @@
 #include <stdio.h>
 
-double fmul(double* x) {
+double fmul(double *x)
+{
     static double r = 0.5;
     return (*x) * r;
 }
-
 
 int main()
 {

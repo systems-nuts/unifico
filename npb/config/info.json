@@ -1,10 +1,10 @@
 {
-	"benchmarks": "SNU OMP C",
-	"compiler": "clang",
-	"experiment": "total",
-	"flag": "-O0",
-	"target": "aarch64",
-	"machine": "dhcp-90-155",
-	"class": "C",
-	"benchmarks": "is"
+    "benchmarks": "SNU OMP C",
+    "compiler": "clang",
+    "experiment": "total",
+    "flag": "-O0",
+    "target": "aarch64",
+    "machine": "dhcp-90-155",
+    "class": "C",
+    "benchmarks": "is"
 }

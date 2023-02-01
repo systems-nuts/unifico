@@ -1,0 +1,449 @@
+conj_grad() /home/nikos/phd/unified_abi/layout/npb/cg/perf-experiments/no-misched/no_misched.out
+Event: cycles
+
+Percent        
+               
+               
+             Disassembly of section .text:
+               
+             0000000000501f90 <conj_grad>:
+             conj_grad():
+             double a[],
+             double p[],
+             double q[],
+             double r[],
+             double *rnorm)
+             {          
+               sub   sp, sp, #0xa0
+               str   d8, [sp, #136]
+               stp   x29, x30, [sp, #144]
+               add   x29, sp, #0x90
+               mov   w8, #0x19                       // #25
+             int j, k;  
+             int cgit, cgitmax = 25;
+               str   w8, [sp, #48]
+               adrp  x8, unasl_timers
+               stp   x1, x0, [x29, #-32]
+               stp   x3, x2, [x29, #-48]
+               stp   x5, x4, [x29, #-64]
+               stp   x7, x6, [sp, #64]
+             double d, sum, rho, rho0, alpha, beta;
+               
+             rho = 0.0; 
+               str   xzr, [sp, #24]
+               
+             //---------------------------------------------------------------------
+             // Initialize the CG algorithm:
+             //---------------------------------------------------------------------
+             for (j = 0; j < naa+1; j++) {
+               str   wzr, [sp, #60]
+         34:   ldr   w10, [x8, #52]
+               ldr   w9, [sp, #60]
+               add   w10, w10, #0x1
+               cmp   w9, w10  
+             ↓ b.ge  a0       
+             q[j] = 0.0;
+               ldr   x9, [sp, #72]
+               ldrsw x10, [sp, #60]
+               str   xzr, [x9, x10, lsl #3]
+             z[j] = 0.0;
+               ldur  x9, [x29, #-48]
+  0.00         ldrsw x10, [sp, #60]
+  0.01         str   xzr, [x9, x10, lsl #3]
+             r[j] = x[j];
+               ldrsw x10, [sp, #60]
+               ldur  x9, [x29, #-40]
+               lsl   x10, x10, #3
+               ldr   d0, [x9, x10]
+               ldr   x9, [sp, #64]
+               str   d0, [x9, x10]
+             p[j] = r[j];
+               ldrsw x10, [sp, #60]
+               ldr   x9, [sp, #64]
+               lsl   x10, x10, #3
+  0.01         ldr   d0, [x9, x10]
+               ldur  x9, [x29, #-64]
+               str   d0, [x9, x10]
+             for (j = 0; j < naa+1; j++) {
+               ldr   w9, [sp, #60]
+               add   w9, w9, #0x1
+               str   w9, [sp, #60]
+  0.01       ↑ b     34       
+         a0:   adrp  x8, unasl_timers
+               adrp  x9, unasl_timers
+               
+             //---------------------------------------------------------------------
+             // rho = r.r
+             // Now, obtain the norm of r: First, sum squares of r elements locally...
+             //---------------------------------------------------------------------
+             for (j = 0; j < lastcol - firstcol + 1; j++) {
+               str   wzr, [sp, #60]
+         ac:   ldr   w11, [x8, #48]
+               ldr   w12, [x9, #44]
+  0.01         ldr   w10, [sp, #60]
+               sub   w11, w11, w12
+               add   w11, w11, #0x1
+               cmp   w10, w11 
+             ↓ b.ge  f0       
+             rho = rho + r[j]*r[j];
+  0.01         ldr   x10, [sp, #64]
+               ldrsw x11, [sp, #60]
+               ldr   d0, [sp, #24]
+               ldr   d1, [x10, x11, lsl #3]
+             for (j = 0; j < lastcol - firstcol + 1; j++) {
+               add   w10, w11, #0x1
+               str   w10, [sp, #60]
+             rho = rho + r[j]*r[j];
+               fmul  d1, d1, d1
+  0.01         fadd  d0, d0, d1
+               str   d0, [sp, #24]
+             ↑ b     ac       
+         f0:   mov   w8, #0x1                        // #1
+             //---------------------------------------------------------------------
+             //---->    
+             // The conj grad iteration loop
+             //---->    
+             //---------------------------------------------------------------------
+             for (cgit = 1; cgit <= cgitmax; cgit++) {
+               str   w8, [sp, #52]
+               adrp  x8, unasl_timers
+               adrp  x9, unasl_timers
+               adrp  x10, unasl_timers
+               adrp  x11, unasl_timers
+             ↓ b     118      
+        10c:   ldr   w12, [sp, #52]
+               add   w12, w12, #0x1
+               str   w12, [sp, #52]
+        118:   ldp   w13, w12, [sp, #48]
+               cmp   w12, w13 
+             ↓ b.gt  35c      
+             //       below.   On the Cray t3d, the reverse is true, i.e., the
+             //       unrolled-by-two version is some 10% faster.
+             //       The unrolled-by-8 version below is significantly faster
+             //       on the Cray t3d - overall speed of code is 1.5 times faster.
+               
+             for (j = 0; j < lastrow - firstrow + 1; j++) {
+               str   wzr, [sp, #60]
+             ↓ b     148      
+             sum = 0.0; 
+             for (k = rowstr[j]; k < rowstr[j+1]; k++) {
+             sum = sum + a[k]*p[colidx[k]];
+             }          
+             q[j] = sum;
+  0.47  12c:   ldr   d0, [sp, #32]
+  0.02         ldr   x12, [sp, #72]
+               ldrsw x13, [sp, #60]
+  0.00         str   d0, [x12, x13, lsl #3]
+             for (j = 0; j < lastrow - firstrow + 1; j++) {
+  0.04         ldr   w12, [sp, #60]
+               add   w12, w12, #0x1
+  0.02         str   w12, [sp, #60]
+  0.03  148:   ldr   w13, [x8, #40]
+  0.00         ldr   w14, [x9, #36]
+  0.01         ldr   w12, [sp, #60]
+  0.02         sub   w13, w13, w14
+  0.05         add   w13, w13, #0x1
+  0.01         cmp   w12, w13 
+  0.00       ↓ b.ge  1c8      
+             for (k = rowstr[j]; k < rowstr[j+1]; k++) {
+  0.01         ldur  x12, [x29, #-32]
+  0.04         ldrsw x13, [sp, #60]
+             sum = 0.0; 
+  0.01         str   xzr, [sp, #32]
+             for (k = rowstr[j]; k < rowstr[j+1]; k++) {
+  0.01         ldr   w12, [x12, x13, lsl #2]
+  0.04  174:   ldur  x13, [x29, #-32]
+  0.01         ldrsw x14, [sp, #60]
+ 27.92         str   w12, [sp, #56]
+  0.04         mov   w12, w12 
+  0.03         add   x13, x13, x14, lsl #2
+  5.58         ldr   w13, [x13, #4]
+  0.08         cmp   w12, w13 
+  0.01       ↑ b.ge  12c      
+             sum = sum + a[k]*p[colidx[k]];
+  0.02         ldur  x12, [x29, #-56]
+  0.05         ldrsw x13, [sp, #56]
+  5.59         ldur  x14, [x29, #-24]
+  0.31         ldr   d0, [sp, #32]
+  0.01         ldr   d1, [x12, x13, lsl #3]
+ 21.67         ldur  x12, [x29, #-64]
+  0.01         ldrsw x14, [x14, x13, lsl #2]
+  7.42         ldr   d2, [x12, x14, lsl #3]
+             for (k = rowstr[j]; k < rowstr[j+1]; k++) {
+  1.05         add   w12, w13, #0x1
+             sum = sum + a[k]*p[colidx[k]];
+  6.92         fmul  d1, d1, d2
+ 16.04         fadd  d0, d0, d1
+               str   d0, [sp, #32]
+  0.01       ↑ b     174      
+             */         
+               
+             //---------------------------------------------------------------------
+             // Obtain p.q
+             //---------------------------------------------------------------------
+             d = 0.0;   
+        1c8:   str   xzr, [sp, #40]
+             for (j = 0; j < lastcol - firstcol + 1; j++) {
+               str   wzr, [sp, #60]
+        1d0:   ldr   w13, [x10, #48]
+               ldr   w14, [x11, #44]
+  0.19         ldr   w12, [sp, #60]
+               sub   w13, w13, w14
+               add   w13, w13, #0x1
+               cmp   w12, w13 
+             ↓ b.ge  220      
+             d = d + p[j]*q[j];
+  0.04         ldrsw x13, [sp, #60]
+               ldur  x12, [x29, #-64]
+  0.00         ldr   d0, [sp, #40]
+               lsl   x14, x13, #3
+  0.01         ldr   d1, [x12, x14]
+  0.15         ldr   x12, [sp, #72]
+               ldr   d2, [x12, x14]
+             for (j = 0; j < lastcol - firstcol + 1; j++) {
+  0.02         add   w12, w13, #0x1
+  0.02         str   w12, [sp, #60]
+             d = d + p[j]*q[j];
+  0.01         fmul  d1, d1, d2
+  0.15         fadd  d0, d0, d1
+               str   d0, [sp, #40]
+             ↑ b     1d0      
+             }          
+               
+             //---------------------------------------------------------------------
+             // Obtain alpha = rho / (p.q)
+             //---------------------------------------------------------------------
+             alpha = rho / d;
+        220:   ldr   d0, [sp, #24]
+               ldr   d1, [sp, #40]
+               
+             //---------------------------------------------------------------------
+             // Obtain z = z + alpha*p
+             // and    r = r - alpha*q
+             //---------------------------------------------------------------------
+             rho = 0.0; 
+               str   xzr, [sp, #24]
+             for (j = 0; j < lastcol - firstcol + 1; j++) {
+               str   wzr, [sp, #60]
+             alpha = rho / d;
+               fdiv  d1, d0, d1
+               stp   d1, d0, [sp, #8]
+             for (j = 0; j < lastcol - firstcol + 1; j++) {
+        238:   ldr   w13, [x10, #48]
+               ldr   w14, [x11, #44]
+  0.02         ldr   w12, [sp, #60]
+  0.03         sub   w13, w13, w14
+               add   w13, w13, #0x1
+               cmp   w12, w13 
+             ↓ b.ge  2b0      
+             z[j] = z[j] + alpha*p[j];
+  0.02         ldrsw x13, [sp, #60]
+  0.01         ldur  x14, [x29, #-64]
+               ldur  x12, [x29, #-48]
+               ldr   d1, [sp, #8]
+  0.01         lsl   x13, x13, #3
+  0.02         ldr   d2, [x14, x13]
+               ldr   d0, [x12, x13]
+  0.08         fmul  d1, d1, d2
+  0.11         fadd  d0, d0, d1
+               str   d0, [x12, x13]
+             r[j] = r[j] - alpha*q[j];
+  0.01         ldrsw x13, [sp, #60]
+               ldp   x12, x14, [sp, #64]
+  0.15         ldr   d1, [sp, #8]
+               lsl   x13, x13, #3
+               ldr   d2, [x14, x13]
+  0.03         ldr   d0, [x12, x13]
+  0.05         fmul  d1, d1, d2
+  0.09         fsub  d0, d0, d1
+  0.02         str   d0, [x12, x13]
+             for (j = 0; j < lastcol - firstcol + 1; j++) {
+  0.00         ldr   w12, [sp, #60]
+               add   w12, w12, #0x1
+  0.03         str   w12, [sp, #60]
+  0.12       ↑ b     238      
+               
+             //---------------------------------------------------------------------
+             // rho = r.r
+             // Now, obtain the norm of r: First, sum squares of r elements locally...
+             //---------------------------------------------------------------------
+             for (j = 0; j < lastcol - firstcol + 1; j++) {
+        2b0:   str   wzr, [sp, #60]
+        2b4:   ldr   w13, [x10, #48]
+               ldr   w14, [x11, #44]
+  0.22         ldr   w12, [sp, #60]
+               sub   w13, w13, w14
+               add   w13, w13, #0x1
+               cmp   w12, w13 
+             ↓ b.ge  2f8      
+             rho = rho + r[j]*r[j];
+  0.05         ldr   x12, [sp, #64]
+               ldrsw x13, [sp, #60]
+  0.00         ldr   d0, [sp, #24]
+               ldr   d1, [x12, x13, lsl #3]
+             for (j = 0; j < lastcol - firstcol + 1; j++) {
+  0.13         add   w12, w13, #0x1
+               str   w12, [sp, #60]
+             rho = rho + r[j]*r[j];
+  0.02         fmul  d1, d1, d1
+  0.18         fadd  d0, d0, d1
+               str   d0, [sp, #24]
+             ↑ b     2b4      
+             }          
+               
+             //---------------------------------------------------------------------
+             // Obtain beta:
+             //---------------------------------------------------------------------
+             beta = rho / rho0;
+        2f8:   ldp   d1, d0, [sp, #16]
+               
+             //---------------------------------------------------------------------
+             // p = r + beta*p
+             //---------------------------------------------------------------------
+             for (j = 0; j < lastcol - firstcol + 1; j++) {
+               str   wzr, [sp, #60]
+             beta = rho / rho0;
+               fdiv  d0, d0, d1
+               str   d0, [sp] 
+             for (j = 0; j < lastcol - firstcol + 1; j++) {
+  0.01  308:   ldr   w13, [x10, #48]
+               ldr   w14, [x11, #44]
+               ldr   w12, [sp, #60]
+  0.03         sub   w13, w13, w14
+  0.01         add   w13, w13, #0x1
+               cmp   w12, w13 
+             ↑ b.ge  10c      
+             p[j] = r[j] + beta*p[j];
+  0.00         ldrsw x13, [sp, #60]
+  0.03         ldr   x12, [sp, #64]
+  0.01         ldr   d1, [sp] 
+  0.00         lsl   x13, x13, #3
+               ldr   d0, [x12, x13]
+  0.03         ldur  x12, [x29, #-64]
+               ldr   d2, [x12, x13]
+  0.14         fmul  d1, d1, d2
+  0.14         fadd  d0, d0, d1
+               str   d0, [x12, x13]
+             for (j = 0; j < lastcol - firstcol + 1; j++) {
+  0.00         ldr   w12, [sp, #60]
+               add   w12, w12, #0x1
+               str   w12, [sp, #60]
+  0.16       ↑ b     308      
+        35c:   adrp  x8, unasl_timers
+               adrp  x9, unasl_timers
+             //---------------------------------------------------------------------
+             // Compute residual norm explicitly:  ||r|| = ||x - A.z||
+             // First, form A.z
+             // The partition submatrix-vector multiply
+             //---------------------------------------------------------------------
+             sum = 0.0; 
+               str   xzr, [sp, #32]
+             for (j = 0; j < lastrow - firstrow + 1; j++) {
+               str   wzr, [sp, #60]
+             ↓ b     38c      
+             d = 0.0;   
+             for (k = rowstr[j]; k < rowstr[j+1]; k++) {
+             d = d + a[k]*z[colidx[k]];
+             }          
+             r[j] = d;  
+  0.01  370:   ldr   d0, [sp, #40]
+               ldr   x10, [sp, #64]
+               ldrsw x11, [sp, #60]
+               str   d0, [x10, x11, lsl #3]
+             for (j = 0; j < lastrow - firstrow + 1; j++) {
+               ldr   w10, [sp, #60]
+               add   w10, w10, #0x1
+               str   w10, [sp, #60]
+        38c:   ldr   w11, [x8, #40]
+               ldr   w12, [x9, #36]
+               ldr   w10, [sp, #60]
+               sub   w11, w11, w12
+               add   w11, w11, #0x1
+               cmp   w10, w11 
+             ↓ b.ge  40c      
+             for (k = rowstr[j]; k < rowstr[j+1]; k++) {
+               ldur  x10, [x29, #-32]
+               ldrsw x11, [sp, #60]
+             d = 0.0;   
+               str   xzr, [sp, #40]
+             for (k = rowstr[j]; k < rowstr[j+1]; k++) {
+               ldr   w10, [x10, x11, lsl #2]
+        3b8:   ldur  x11, [x29, #-32]
+  0.00         ldrsw x12, [sp, #60]
+  1.17         str   w10, [sp, #56]
+               mov   w10, w10 
+  0.01         add   x11, x11, x12, lsl #2
+  0.29         ldr   w11, [x11, #4]
+  0.00         cmp   w10, w11 
+             ↑ b.ge  370      
+             d = d + a[k]*z[colidx[k]];
+               ldur  x10, [x29, #-56]
+  0.00         ldrsw x11, [sp, #56]
+  0.23         ldur  x12, [x29, #-24]
+  0.01         ldr   d0, [sp, #40]
+               ldr   d1, [x10, x11, lsl #3]
+  0.77         ldur  x10, [x29, #-48]
+               ldrsw x12, [x12, x11, lsl #2]
+  0.32         ldr   d2, [x10, x12, lsl #3]
+             for (k = rowstr[j]; k < rowstr[j+1]; k++) {
+  0.02         add   w10, w11, #0x1
+             d = d + a[k]*z[colidx[k]];
+  0.31         fmul  d1, d1, d2
+  0.64         fadd  d0, d0, d1
+  0.00         str   d0, [sp, #40]
+             ↑ b     3b8      
+        40c:   adrp  x8, unasl_timers
+               adrp  x9, unasl_timers
+             }          
+               
+             //---------------------------------------------------------------------
+             // At this point, r contains A.z
+             //---------------------------------------------------------------------
+             for (j = 0; j < lastcol-firstcol+1; j++) {
+               str   wzr, [sp, #60]
+        418:   ldr   w11, [x8, #48]
+               ldr   w12, [x9, #44]
+  0.00         ldr   w10, [sp, #60]
+               sub   w11, w11, w12
+               add   w11, w11, #0x1
+               cmp   w10, w11 
+  0.01       ↓ b.ge  470      
+             d   = x[j] - r[j];
+               ldrsw x11, [sp, #60]
+               ldur  x10, [x29, #-40]
+               lsl   x12, x11, #3
+               ldr   d0, [x10, x12]
+               ldr   x10, [sp, #64]
+               ldr   d1, [x10, x12]
+             for (j = 0; j < lastcol-firstcol+1; j++) {
+  0.01         add   w10, w11, #0x1
+               str   w10, [sp, #60]
+             d   = x[j] - r[j];
+               fsub  d0, d0, d1
+             sum = sum + d*d;
+               ldr   d1, [sp, #32]
+             d   = x[j] - r[j];
+               str   d0, [sp, #40]
+             sum = sum + d*d;
+               fmul  d0, d0, d0
+  0.01         fadd  d0, d1, d0
+               str   d0, [sp, #32]
+             ↑ b     418      
+             }          
+               
+             *rnorm = sqrt(sum);
+        470:   ldr   d8, [sp, #32]
+               fsqrt d0, d8   
+               fcmp  d0, d0   
+               b.vc  502418 <conj_grad+0x488>
+               mov   v0.16b, v8.16b
+             → bl    sqrt     
+               ldr   x8, [x29, #16]
+             }          
+               ldr   d8, [sp, #136]
+             *rnorm = sqrt(sum);
+               str   d0, [x8] 
+             }          
+               ldp   x29, x30, [sp, #144]
+               add   sp, sp, #0xa0
+             ← ret            

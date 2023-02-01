@@ -21,11 +21,12 @@
  */
 static inline uint64_t cfa_correction(uint16_t arch, uint64_t size)
 {
-  switch(arch) {
-  case EM_X86_64: return size + 8; // Include return address pushed by call
-  default: return size;
-  }
+    switch (arch) {
+    case EM_X86_64:
+        return size + 8; // Include return address pushed by call
+    default:
+        return size;
+    }
 }
 
 #endif /* _ARCH_H */
-

@@ -15,18 +15,18 @@
  * Round down & up to the nearest pages, respectively.  Arguments must be of
  * unsigned long/uint64_t type.
  */
-#define PAGE_ROUND_DOWN( x ) ((x) & ~(PAGESZ - 1))
-#define PAGE_ROUND_UP( x ) PAGE_ROUND_DOWN((x) + PAGESZ - 1)
+#define PAGE_ROUND_DOWN(x) ((x) & ~(PAGESZ - 1))
+#define PAGE_ROUND_UP(x) PAGE_ROUND_DOWN((x) + PAGESZ - 1)
 
 /* The maximum number of nodes supported by the system. */
 #define MAX_POPCORN_NODES 32
 
 /* Status of thread within Popcorn's single system image */
 struct popcorn_thread_status {
-  int current_nid;  /* The thread's current node */
-  int proposed_nid; /* Destination node if somebody proposed migration */
-  int peer_nid;     /* Node ID of peer thread in SSI */
-  int peer_pid;     /* PID of peer thread in SSI */
+    int current_nid;  /* The thread's current node */
+    int proposed_nid; /* Destination node if somebody proposed migration */
+    int peer_nid;     /* Node ID of peer thread in SSI */
+    int peer_pid;     /* PID of peer thread in SSI */
 };
 
 /*
@@ -46,9 +46,9 @@ int popcorn_getthreadinfo(struct popcorn_thread_status *status);
 
 /* Status of nodes in Popcorn's single system image */
 struct popcorn_node_status {
-  unsigned int status; /* 1 if online, 0 if not */
-  int arch;            /* Architecture of node -- see arch.h */
-  int distance;        /* Hop distance between current and other node */
+    unsigned int status; /* 1 if online, 0 if not */
+    int arch;            /* Architecture of node -- see arch.h */
+    int distance;        /* Hop distance between current and other node */
 };
 
 /*
@@ -65,4 +65,3 @@ int popcorn_getnodeinfo(int *origin,
                         struct popcorn_node_status status[MAX_POPCORN_NODES]);
 
 #endif /* _PLATFORM_H */
-

@@ -31,4 +31,3 @@
 #define SECTION_ARCH "arch_const"
 
 #endif /* _HET_BIN_H */
-

@@ -2,13 +2,13 @@
 /*
    This file is generated automatically by the setparams utility.
    It sets the number of processors and the class of the NPB
-   in this directory. Do not modify it by hand.   
+   in this directory. Do not modify it by hand.
 */
-#define PROBLEM_SIZE   64
-#define NITER_DEFAULT  200
-#define DT_DEFAULT     0.0008
+#define PROBLEM_SIZE 64
+#define NITER_DEFAULT 200
+#define DT_DEFAULT 0.0008
 
-#define CONVERTDOUBLE  false
+#define CONVERTDOUBLE false
 #define COMPILETIME "03 Nov 2017"
 #define NPBVERSION "3.3.1"
 #define CS1 "gcc"

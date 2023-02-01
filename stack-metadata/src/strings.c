@@ -9,7 +9,6 @@
 
 const char *ret_t_str[] = {
 #define X(a, b) b,
-	RETURN_TYPES
+    RETURN_TYPES
 #undef X
 };
-

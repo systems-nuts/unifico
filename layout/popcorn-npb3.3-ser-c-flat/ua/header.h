@@ -34,11 +34,11 @@
 #include "npbparams.h"
 #include "type.h"
 
-// Array dimensions     
-#define LX1       5
-#define LNJE      2
-#define NSIDES    6
-#define NXYZ      (LX1*LX1*LX1)
+// Array dimensions
+#define LX1 5
+#define LNJE 2
+#define NSIDES 6
+#define NXYZ (LX1 * LX1 * LX1)
 
 /* common /usrdati/ */
 extern int fre, niter, nmxh;
@@ -52,52 +52,52 @@ extern int nelt, ntot, nmor, nvertex;
 /* common /bench1/ */
 extern double x0, _y0, z0, time;
 
-#define VELX    3.0
-#define VELY    3.0
-#define VELZ    3.0
-#define VISC    0.005
-#define X00     (3.0/7.0)
-#define Y00     (2.0/7.0)
-#define Z00     (2.0/7.0)
+#define VELX 3.0
+#define VELY 3.0
+#define VELZ 3.0
+#define VISC 0.005
+#define X00 (3.0 / 7.0)
+#define Y00 (2.0 / 7.0)
+#define Z00 (2.0 / 7.0)
 
 // double arrays associated with collocation points
 /* common /colldp/ */
-extern double ta1   [LELT][LX1][LX1][LX1];
-extern double ta2   [LELT][LX1][LX1][LX1];
-extern double trhs  [LELT][LX1][LX1][LX1];
-extern double t     [LELT][LX1][LX1][LX1];
-extern double tmult [LELT][LX1][LX1][LX1];
+extern double ta1[LELT][LX1][LX1][LX1];
+extern double ta2[LELT][LX1][LX1][LX1];
+extern double trhs[LELT][LX1][LX1][LX1];
+extern double t[LELT][LX1][LX1][LX1];
+extern double tmult[LELT][LX1][LX1][LX1];
 extern double dpcelm[LELT][LX1][LX1][LX1];
-extern double pdiff [LELT][LX1][LX1][LX1];
+extern double pdiff[LELT][LX1][LX1][LX1];
 extern double pdiffp[LELT][LX1][LX1][LX1];
 
 // double arrays associated with mortar points
 /* common /mortdp/ */
-extern double umor   [LMOR];
+extern double umor[LMOR];
 extern double mormult[LMOR];
-extern double tmort  [LMOR];
-extern double tmmor  [LMOR];
-extern double rmor   [LMOR];
-extern double dpcmor [LMOR];
-extern double pmorx  [LMOR];
-extern double ppmor  [LMOR];
+extern double tmort[LMOR];
+extern double tmmor[LMOR];
+extern double rmor[LMOR];
+extern double dpcmor[LMOR];
+extern double pmorx[LMOR];
+extern double ppmor[LMOR];
 
 // integer arrays associated with element faces
 /* common/facein/ */
-extern int idmo    [LELT][NSIDES][LNJE][LNJE][LX1][LX1]; 
-extern int idel    [LELT][NSIDES][LX1][LX1]; 
-extern int sje     [LELT][NSIDES][2][2]; 
-extern int sje_new [LELT][NSIDES][2][2];
-extern int ijel    [LELT][NSIDES][2]; 
+extern int idmo[LELT][NSIDES][LNJE][LNJE][LX1][LX1];
+extern int idel[LELT][NSIDES][LX1][LX1];
+extern int sje[LELT][NSIDES][2][2];
+extern int sje_new[LELT][NSIDES][2][2];
+extern int ijel[LELT][NSIDES][2];
 extern int ijel_new[LELT][NSIDES][2];
-extern int cbc     [LELT][NSIDES]; /**/
-extern int cbc_new [LELT][NSIDES]; /**/
+extern int cbc[LELT][NSIDES];     /**/
+extern int cbc_new[LELT][NSIDES]; /**/
 
 // integer array associated with vertices
 /* common /vin/ */
 extern int vassign[LELT][8];
-extern int emo    [8*LELT][8][2];
-extern int nemo   [8*LELT];
+extern int emo[8 * LELT][8][2];
+extern int nemo[8 * LELT];
 
 // integer array associated with element edges
 /* common /edgein/ */
@@ -105,34 +105,34 @@ extern int diagn[LELT][12][2];
 
 // integer arrays associated with elements
 /* common /eltin/ */
-extern int tree        [LELT];
-extern int treenew     [LELT];
-extern int mt_to_id    [LELT];
+extern int tree[LELT];
+extern int treenew[LELT];
+extern int mt_to_id[LELT];
 extern int mt_to_id_old[LELT];
-extern int id_to_mt    [LELT];
-extern int newc        [LELT]; /**/
-extern int newi        [LELT]; /**/
-extern int newe        [LELT]; /**/
+extern int id_to_mt[LELT];
+extern int newc[LELT];         /**/
+extern int newi[LELT];         /**/
+extern int newe[LELT];         /**/
 extern int ref_front_id[LELT]; /**/
-extern int ich         [LELT]; /**/
-extern int size_e      [LELT];
-extern int front       [LELT];
-extern int action      [LELT];
+extern int ich[LELT];          /**/
+extern int size_e[LELT];
+extern int front[LELT];
+extern int action[LELT];
 
 // logical arrays associated with vertices
 /* common /vlg/ */
-extern logical ifpcmor[8*LELT];
+extern logical ifpcmor[8 * LELT];
 
 // logical arrays associated with edge
 /* common /edgelg/ */
-extern logical eassign  [LELT][12];
+extern logical eassign[LELT][12];
 extern logical ncon_edge[LELT][12];
-extern logical if_1_edge[LELT][12]; 
+extern logical if_1_edge[LELT][12];
 
 // logical arrays associated with elements
 /* common /facelg/ */
-extern logical skip    [LELT];
-extern logical ifcoa   [LELT];
+extern logical skip[LELT];
+extern logical ifcoa[LELT];
 extern logical ifcoa_id[LELT];
 
 // logical arrays associated with element faces
@@ -142,15 +142,15 @@ extern logical edgevis[LELT][NSIDES][4];
 
 // small arrays
 /* common /transr/ */
-extern double qbnew[2][LX1][LX1-2];
-extern double bqnew[2][LX1-2][LX1-2];
+extern double qbnew[2][LX1][LX1 - 2];
+extern double bqnew[2][LX1 - 2][LX1 - 2];
 
 /* common /pcr/ */
 extern double pcmor_nc1[REFINE_MAX][2][2][LX1][LX1];
 extern double pcmor_nc2[REFINE_MAX][2][2][LX1][LX1];
 extern double pcmor_nc0[REFINE_MAX][2][2][LX1][LX1];
-extern double pcmor_c  [REFINE_MAX][LX1][LX1];
-extern double tcpre    [LX1][LX1];
+extern double pcmor_c[REFINE_MAX][LX1][LX1];
+extern double tcpre[LX1][LX1];
 extern double pcmor_cor[REFINE_MAX][8];
 
 // gauss-labotto and gauss points
@@ -189,14 +189,14 @@ extern double wdtdr[LX1][LX1];
 
 // interpolation operators
 /* common /ixyz/ */
-extern double ixm31 [LX1*2-1][LX1];
-extern double ixtm31[LX1][LX1*2-1];
-extern double ixmc1 [LX1][LX1];
+extern double ixm31[LX1 * 2 - 1][LX1];
+extern double ixtm31[LX1][LX1 * 2 - 1];
+extern double ixmc1[LX1][LX1];
 extern double ixtmc1[LX1][LX1];
-extern double ixmc2 [LX1][LX1];
+extern double ixmc2[LX1][LX1];
 extern double ixtmc2[LX1][LX1];
-extern double map2  [LX1];
-extern double map4  [LX1];
+extern double map2[LX1];
+extern double map4[LX1];
 
 // collocation location within an element
 /* common /xfracs/ */
@@ -204,11 +204,11 @@ extern double xfrac[LX1];
 
 // used in laplacian operator
 /* common /gmfact/ */
-extern double g1m1_s[REFINE_MAX][LX1][LX1][LX1]; 
+extern double g1m1_s[REFINE_MAX][LX1][LX1][LX1];
 extern double g4m1_s[REFINE_MAX][LX1][LX1][LX1];
 extern double g5m1_s[REFINE_MAX][LX1][LX1][LX1];
 extern double g6m1_s[REFINE_MAX][LX1][LX1][LX1];
-      
+
 // We store some tables of useful topological constants
 // These constants are intialized in a block data 'top_constants'
 /* common /top_consts/ */
@@ -241,21 +241,19 @@ extern int face_ld[3];
 // Timer parameters
 /* common /timing/ */
 extern logical timeron;
-#define t_total       1
-#define t_init        2
-#define t_convect     3
-#define t_transfb_c   4
-#define t_diffusion   5
-#define t_transf      6
-#define t_transfb     7
-#define t_adaptation  8
-#define t_transf2     9
-#define t_add2        10
-#define t_last        10
+#define t_total 1
+#define t_init 2
+#define t_convect 3
+#define t_transfb_c 4
+#define t_diffusion 5
+#define t_transf 6
+#define t_transfb 7
+#define t_adaptation 8
+#define t_transf2 9
+#define t_add2 10
+#define t_last 10
 
-
-#define btest(i,p)  (i & (1 << p))
-
+#define btest(i, p) (i & (1 << p))
 
 void convect(logical ifmortar);
 void diffusion(logical ifmortar);
@@ -299,4 +297,3 @@ void geom1();
 void setdef();
 void prepwork();
 void top_constants();
-

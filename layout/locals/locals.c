@@ -4,17 +4,17 @@
 
 int main()
 {
-	srand(time(NULL));
+    srand(time(NULL));
 
-	int a[25];
-	
-	for (int i = 0; i < 25; ++i)
-		a[i] = rand() % 100;
+    int a[25];
 
-	for (int i = 0; i < 25; ++i)
-		printf("%d ", a[i]);
+    for (int i = 0; i < 25; ++i)
+        a[i] = rand() % 100;
 
-	printf("\n");
+    for (int i = 0; i < 25; ++i)
+        printf("%d ", a[i]);
 
-	return 0;
+    printf("\n");
+
+    return 0;
 }

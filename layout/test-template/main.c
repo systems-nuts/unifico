@@ -1,11 +1,5 @@
 #include <stdio.h>
 
-void simple()
-{
-    return;
-}
+void simple() { return; }
 
-int main()
-{
-    return 0;
-}
+int main() { return 0; }

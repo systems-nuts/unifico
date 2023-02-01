@@ -1,9 +1,6 @@
 #include <stdio.h>
 
-void simple(int n)
-{
-    return;
-}
+void simple(int n) { return; }
 
 int main()
 {

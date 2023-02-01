@@ -35,15 +35,15 @@
 
 void adi()
 {
-  compute_rhs();
+    compute_rhs();
 
-  txinvr();
+    txinvr();
 
-  x_solve();
+    x_solve();
 
-  y_solve();
+    y_solve();
 
-  z_solve();
+    z_solve();
 
-  add();
+    add();
 }

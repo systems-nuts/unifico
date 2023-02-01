@@ -6,8 +6,4 @@ void c_print_results(char class)
     printf("%c\n", class);
 }
 
-
-int main()
-{
-    return 0;
-}
+int main() { return 0; }

@@ -1,20 +1,17 @@
 double amult;
 
-void randlc(double a)
-{
-    a++;
-}
+void randlc(double a) { a++; }
 
 static void sprnvc()
 {
-  while (1) {
-    randlc(amult);
-    randlc(amult);
-  }
+    while (1) {
+        randlc(amult);
+        randlc(amult);
+    }
 }
 
 int main()
 {
-   sprnvc();
-   return 0;
+    sprnvc();
+    return 0;
 }

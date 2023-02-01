@@ -23,71 +23,72 @@
 #ifndef _STACKMAP_H
 #define _STACKMAP_H
 
-#include "definitions.h"
-#include "bin.h"
 #include "../common/include/call_site.h"
+#include "bin.h"
+#include "definitions.h"
 
 /* A stack size record for a function. */
 typedef struct __attribute__((__packed__)) function_record {
-  uint64_t func_addr;
-  uint64_t stack_size;
-  uint64_t record_count;
-  uint32_t num_unwind;
-  uint32_t unwind_offset;
+    uint64_t func_addr;
+    uint64_t stack_size;
+    uint64_t record_count;
+    uint32_t num_unwind;
+    uint32_t unwind_offset;
 } function_record;
 
 /* A live register across the stack map call. */
 typedef struct __attribute__((__packed__)) live_out_record {
-  uint16_t regnum;
-  uint8_t reserved;
-  uint8_t size; /* in bytes */
+    uint16_t regnum;
+    uint8_t reserved;
+    uint8_t size; /* in bytes */
 } live_out_record;
 
 /* A stack map record for a call site. */
 // Note: this doesn't directly mirror on-disk layout, as the on-disk records
 // are variably sized.
 typedef struct __attribute__((__packed__)) call_site_record {
-  /* Call site header */
-  uint64_t id; /* per-call site ID */
-  uint32_t func_idx; /* index into function_records for function information */
-  uint32_t offset; /* offset from beginning of function */
-  uint16_t reserved;
+    /* Call site header */
+    uint64_t id; /* per-call site ID */
+    uint32_t
+        func_idx;    /* index into function_records for function information */
+    uint32_t offset; /* offset from beginning of function */
+    uint16_t reserved;
 
-  /* Live value locations */
-  uint16_t num_locations;
-  live_value *locations;
-  uint16_t padding;
+    /* Live value locations */
+    uint16_t num_locations;
+    live_value *locations;
+    uint16_t padding;
 
-  /* Register live-outs */
-  uint16_t num_live_outs;
-  live_out_record *live_outs;
-  uint16_t padding2;
+    /* Register live-outs */
+    uint16_t num_live_outs;
+    live_out_record *live_outs;
+    uint16_t padding2;
 
-  /* Architecture-specific live values */
-  uint16_t num_arch_live;
-  arch_live_value *arch_live;
+    /* Architecture-specific live values */
+    uint16_t num_arch_live;
+    arch_live_value *arch_live;
 } call_site_record;
 
 /* Per-module stack map information. */
 typedef struct stack_map_section {
-  /* Header */
-  uint8_t version;
-  uint8_t reserved;
-  uint16_t reserved2;
+    /* Header */
+    uint8_t version;
+    uint8_t reserved;
+    uint16_t reserved2;
 
-  /* Counts of encoded functions, constants and call site records. */
-  uint32_t num_functions;
-  uint32_t num_constants;
-  uint32_t num_records;
+    /* Counts of encoded functions, constants and call site records. */
+    uint32_t num_functions;
+    uint32_t num_constants;
+    uint32_t num_records;
 
-  /* Function records */
-  function_record *function_records;
+    /* Function records */
+    function_record *function_records;
 
-  /* Constant pool entries */
-  uint64_t *constants;
+    /* Constant pool entries */
+    uint64_t *constants;
 
-  /* Stack map call site records */
-  call_site_record *call_sites;
+    /* Stack map call site records */
+    call_site_record *call_sites;
 } stack_map_section;
 
 /**
@@ -118,4 +119,3 @@ ret_t free_stackmaps(stack_map_section *sm, size_t num_sm);
 int cmp_callsites(const void *a, const void *b);
 
 #endif
-

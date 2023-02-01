@@ -1,11 +1,10 @@
-int foo(int a,int b){
-    return a+b;
-}
+int foo(int a, int b) { return a + b; }
 
-int main(){
-    foo(1,2);
+int main()
+{
+    foo(1, 2);
     int x = 4;
-    int* y = &x;
+    int *y = &x;
     int z = *y;
 
     struct {

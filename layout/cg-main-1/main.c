@@ -2,10 +2,7 @@
 
 #define NA 65538
 
-void simple(int n)
-{
-    return;
-}
+void simple(int n) { return; }
 
 int main()
 {

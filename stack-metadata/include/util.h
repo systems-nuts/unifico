@@ -8,9 +8,9 @@
 #ifndef _UTIL_H
 #define _UTIL_H
 
-#include "definitions.h"
-#include "bin.h"
 #include "../common/include/call_site.h"
+#include "bin.h"
+#include "definitions.h"
 
 /**
  * Print warning message.
@@ -18,7 +18,7 @@
  */
 static inline void warn(const char *msg)
 {
-  fprintf(stderr, "WARNING: %s\n", msg);
+    fprintf(stderr, "WARNING: %s\n", msg);
 }
 
 /**
@@ -28,8 +28,8 @@ static inline void warn(const char *msg)
  */
 static inline void die(const char *msg, ret_t retcode)
 {
-  fprintf(stderr, "ERROR: %s - %s!\n", msg, ret_t_str[retcode]);
-  exit(1);
+    fprintf(stderr, "ERROR: %s - %s!\n", msg, ret_t_str[retcode]);
+    exit(1);
 }
 
 /**
@@ -46,13 +46,18 @@ bool check_elf_ehdr(Elf *e);
  */
 static inline const char *elf_kind_name(Elf *e)
 {
-  switch(elf_kind(e)) {
-  case ELF_K_NONE: return "none";
-  case ELF_K_AR: return "archive";
-  case ELF_K_COFF: return "COFF object";
-  case ELF_K_ELF: return "ELF object";
-  default: return "n/a";
-  };
+    switch (elf_kind(e)) {
+    case ELF_K_NONE:
+        return "none";
+    case ELF_K_AR:
+        return "archive";
+    case ELF_K_COFF:
+        return "COFF object";
+    case ELF_K_ELF:
+        return "ELF object";
+    default:
+        return "n/a";
+    };
 }
 
 /**
@@ -62,12 +67,16 @@ static inline const char *elf_kind_name(Elf *e)
  */
 static inline const char *elf_class_name(Elf *e)
 {
-  switch(gelf_getclass(e)) {
-  case ELFCLASSNONE: return "none";
-  case ELFCLASS32: return "32-bit";
-  case ELFCLASS64: return "64-bit";
-  default: return "n/a";
-  }
+    switch (gelf_getclass(e)) {
+    case ELFCLASSNONE:
+        return "none";
+    case ELFCLASS32:
+        return "32-bit";
+    case ELFCLASS64:
+        return "64-bit";
+    default:
+        return "n/a";
+    }
 }
 
 /**
@@ -77,15 +86,20 @@ static inline const char *elf_class_name(Elf *e)
  */
 static inline const char *elf_data_name(Elf *e)
 {
-  const char *id = elf_getident(e, NULL);
-  if(!id) return "n/a";
+    const char *id = elf_getident(e, NULL);
+    if (!id)
+        return "n/a";
 
-  switch(id[EI_DATA]) {
-  case ELFDATANONE: return "none";
-  case ELFDATA2LSB: return "2's complement little-endian";
-  case ELFDATA2MSB: return "2's complement big-endian";
-  default: return "n/a";
-  }
+    switch (id[EI_DATA]) {
+    case ELFDATANONE:
+        return "none";
+    case ELFDATA2LSB:
+        return "2's complement little-endian";
+    case ELFDATA2MSB:
+        return "2's complement big-endian";
+    default:
+        return "n/a";
+    }
 }
 
 /**
@@ -95,25 +109,39 @@ static inline const char *elf_data_name(Elf *e)
  */
 static inline const char *elf_abi_name(Elf *e)
 {
-  const char *id = elf_getident(e, NULL);
-  if(!id) return "n/a";
+    const char *id = elf_getident(e, NULL);
+    if (!id)
+        return "n/a";
 
-  switch(id[EI_OSABI]) {
-  case ELFOSABI_SYSV: return "SysV"; // same as ELFOSABI_NONE
-  case ELFOSABI_HPUX: return "HP UX";
-  case ELFOSABI_NETBSD: return "NetBSD";
-  case ELFOSABI_LINUX: return "GNU/Linux"; // same as ELFOSABI_GNU
-  case ELFOSABI_SOLARIS: return "Solaris";
-  case ELFOSABI_AIX: return "AIX";
-  case ELFOSABI_IRIX: return "IRIX";
-  case ELFOSABI_FREEBSD: return "FreeBSD";
-  case ELFOSABI_TRU64: return "Tru64";
-  case ELFOSABI_MODESTO: return "Modesto";
-  case ELFOSABI_OPENBSD: return "OpenBSD";
-  case ELFOSABI_ARM: return "ARM";
-  //case ELFOSABI_STANDALONE: return "standalone"; TODO compiler complains
-  default: return "n/a";
-  }
+    switch (id[EI_OSABI]) {
+    case ELFOSABI_SYSV:
+        return "SysV"; // same as ELFOSABI_NONE
+    case ELFOSABI_HPUX:
+        return "HP UX";
+    case ELFOSABI_NETBSD:
+        return "NetBSD";
+    case ELFOSABI_LINUX:
+        return "GNU/Linux"; // same as ELFOSABI_GNU
+    case ELFOSABI_SOLARIS:
+        return "Solaris";
+    case ELFOSABI_AIX:
+        return "AIX";
+    case ELFOSABI_IRIX:
+        return "IRIX";
+    case ELFOSABI_FREEBSD:
+        return "FreeBSD";
+    case ELFOSABI_TRU64:
+        return "Tru64";
+    case ELFOSABI_MODESTO:
+        return "Modesto";
+    case ELFOSABI_OPENBSD:
+        return "OpenBSD";
+    case ELFOSABI_ARM:
+        return "ARM";
+    // case ELFOSABI_STANDALONE: return "standalone"; TODO compiler complains
+    default:
+        return "n/a";
+    }
 }
 
 /**
@@ -123,14 +151,18 @@ static inline const char *elf_abi_name(Elf *e)
  */
 static inline const char *elf_arch_name(Elf *e)
 {
-  uint16_t arch = elf64_getehdr(e)->e_machine;
+    uint16_t arch = elf64_getehdr(e)->e_machine;
 
-  switch(arch) {
-  case EM_AARCH64: return "aarch64";
-  case EM_PPC64: return "powerpc64";
-  case EM_X86_64: return "x86_64";
-  default: return "unsupported";
-  }
+    switch (arch) {
+    case EM_AARCH64:
+        return "aarch64";
+    case EM_PPC64:
+        return "powerpc64";
+    case EM_X86_64:
+        return "x86_64";
+    default:
+        return "unsupported";
+    }
 }
 
 /**
@@ -198,8 +230,7 @@ const char *get_sym_name(Elf *e, GElf_Sym sym);
  * @return a pointer to the corresponding function's metadata, or NULL if not
  *         found
  */
-const unwind_addr *get_func_unwind_data(uint64_t addr,
-                                        size_t num,
+const unwind_addr *get_func_unwind_data(uint64_t addr, size_t num,
                                         const unwind_addr *addrs);
 
 /**
@@ -219,11 +250,8 @@ uint64_t add_section_name(Elf *e, const char *name);
  * @param buf data comprising the section
  * @return 0 if it was added, an error code otherwise
  */
-ret_t add_section(Elf *e,
-                  const char *name,
-                  size_t num_entries,
-                  size_t entry_size,
-                  void *buf);
+ret_t add_section(Elf *e, const char *name, size_t num_entries,
+                  size_t entry_size, void *buf);
 
 /**
  * Update a section in the ELF.
@@ -234,11 +262,8 @@ ret_t add_section(Elf *e,
  * @param buf data comprising the section
  * @return 0 if it was updated, an error code otherwise
  */
-ret_t update_section(Elf *e,
-                     Elf_Scn *scn,
-                     size_t num_entries,
-                     size_t entry_size,
-                     void *buf);
+ret_t update_section(Elf *e, Elf_Scn *scn, size_t num_entries,
+                     size_t entry_size, void *buf);
 
 /**
  * Get an ELF section's data.
@@ -249,4 +274,3 @@ ret_t update_section(Elf *e,
 void *get_section_data(Elf_Scn *scn);
 
 #endif /* _UTIL_H */
-

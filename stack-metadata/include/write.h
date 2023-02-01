@@ -8,8 +8,8 @@
 #ifndef _WRITE_H
 #define _WRITE_H
 
-#include "definitions.h"
 #include "bin.h"
+#include "definitions.h"
 #include "stackmap.h"
 
 /**
@@ -31,12 +31,7 @@ ret_t update_function_addr(bin *b, const char *sec);
  * @param unwind_sec name of function unwinding metadata section
  * @return 0 if the sections were added, an error code otherwise
  */
-ret_t add_sections(bin *b,
-                   stack_map_section *sm,
-                   size_t num_sm,
-                   const char *sec,
-                   uint64_t start_id,
-                   const char *unwind_sec);
+ret_t add_sections(bin *b, stack_map_section *sm, size_t num_sm,
+                   const char *sec, uint64_t start_id, const char *unwind_sec);
 
 #endif /* _WRITE_H */
-

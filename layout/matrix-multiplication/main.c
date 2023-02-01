@@ -8,12 +8,8 @@ static double a[N];
 static double p[N];
 static double q[N];
 
-
-void matrix_multiplication(int colidx[N],
-                      int rowstr[N],
-                      double a[N],
-                      double p[N],
-                      double q[N])
+void matrix_multiplication(int colidx[N], int rowstr[N], double a[N],
+                           double p[N], double q[N])
 {
     int i, j, k;
     double sum;
@@ -23,14 +19,13 @@ void matrix_multiplication(int colidx[N],
         a[j] = p[j] = q[j] = j;
     }
 
-
-    for (i = 0; i < 10000; i ++) {
+    for (i = 0; i < 10000; i++) {
         for (j = 0; j < N - 1; j++) {
-          sum = 0.0;
-          for (k = rowstr[j]; k < rowstr[j+1]; k++) {
-            sum = sum + a[k]*p[colidx[k]];
-          }
-          q[j] = sum;
+            sum = 0.0;
+            for (k = rowstr[j]; k < rowstr[j + 1]; k++) {
+                sum = sum + a[k] * p[colidx[k]];
+            }
+            q[j] = sum;
         }
     }
     printf("%lf\n", q[2]);

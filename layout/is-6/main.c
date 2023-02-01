@@ -1,13 +1,8 @@
 #include <stdio.h>
 
+double timer_read(int n) { return 0.0; }
 
-double timer_read(int n)
-{
-    return 0.0;
-}
-
-
-int main( int argc, char **argv )
+int main(int argc, char **argv)
 {
     int timer_on;
     double timecounter = 3.0;

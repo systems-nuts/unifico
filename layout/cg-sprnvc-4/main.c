@@ -1,20 +1,16 @@
-void simple()
-{
-    return;
-}
+void simple() { return; }
 
 static void sprnvc()
 {
-  while (1) {
-    simple();
-    int x = 0;
-    x = x + 2;
-  }
+    while (1) {
+        simple();
+        int x = 0;
+        x = x + 2;
+    }
 }
-
 
 int main()
 {
-   sprnvc();
-   return 0;
+    sprnvc();
+    return 0;
 }

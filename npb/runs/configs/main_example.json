@@ -1,7 +1,11 @@
 {
     "info": {},
-    "tags": [ "exec_time" ],
-    "executables": [ "is_x86_64_aligned.out" ],
+    "tags": [
+        "exec_time"
+    ],
+    "executables": [
+        "is_x86_64_aligned.out"
+    ],
 
     "*": {
         "bindir": "bins",
@@ -13,7 +17,12 @@
         "commands": [
             {
                 "before": false,
-                "args": [ "grep", "-h", "\"Time in\"", "run_${executable}*.log" ],
+                "args": [
+                    "grep",
+                    "-h",
+                    "\"Time in\"",
+                    "run_${executable}*.log"
+                ],
                 "output": "time_${executable}.log"
             },
             {
@@ -27,7 +36,11 @@
             },
             {
                 "before": false,
-                "args": [ "rm", "-rf", "run_${executable}*.log" ],
+                "args": [
+                    "rm",
+                    "-rf",
+                    "run_${executable}*.log"
+                ],
                 "output": ""
             }
         ]

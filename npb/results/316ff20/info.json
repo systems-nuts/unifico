@@ -1,5 +1,5 @@
 {
-	"benchmarks": "SNU OMP C",
-	"compiler": "clang",
-	"experiment": "r14_to_temp"
+    "benchmarks": "SNU OMP C",
+    "compiler": "clang",
+    "experiment": "r14_to_temp"
 }

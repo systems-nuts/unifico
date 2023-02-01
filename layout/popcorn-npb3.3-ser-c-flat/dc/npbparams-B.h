@@ -5,8 +5,8 @@
    in this directory. Do not modify it by hand.
    This file provided for backward compatibility.
    It is not used in DC benchmark.   */
-   
-long long int input_tuples=10000000, attrnum=20;
+
+long long int input_tuples = 10000000, attrnum = 20;
 #define COMPILETIME "03 Nov 2017"
 #define NPBVERSION "3.3.1"
 #define CC "gcc"

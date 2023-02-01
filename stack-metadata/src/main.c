@@ -9,10 +9,10 @@
 #include <unistd.h>
 
 #include "bin.h"
-#include "stackmap.h"
-#include "write.h"
-#include "util.h"
 #include "het_bin.h"
+#include "stackmap.h"
+#include "util.h"
+#include "write.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // Configuration
@@ -20,7 +20,7 @@
 
 static const char *args = "hf:s:i:v";
 static const char *help =
-"gen-stackinfo -- post-process object files (and their LLVM-generated stack \
+    "gen-stackinfo -- post-process object files (and their LLVM-generated stack \
 maps) to tag call-sites with globally-unique identifiers & generate stack \
 transformation meta-data\n\n\
 \
@@ -28,7 +28,8 @@ Usage: ./gen-stackinfo [ OPTIONS ]\n\
 Options:\n\
 \t-h      : print help & exit\n\
 \t-f name : object file or executable to post-process\n\
-\t-s name : section name prefix added to object file (default is '" SECTION_PREFIX "')\n\
+\t-s name : section name prefix added to object file (default is '" SECTION_PREFIX
+    "')\n\
 \t-i num  : number at which to begin generating call site IDs\n\
 \t-v      : be verbose\n\n\
 \
@@ -46,44 +47,44 @@ bool verbose = false;
 
 static void print_help()
 {
-  printf("%s\n", help);
-  exit(0);
+    printf("%s\n", help);
+    exit(0);
 }
 
 static void parse_args(int argc, char **argv)
 {
-  int arg;
+    int arg;
 
-  while((arg = getopt(argc, argv, args)) != -1)
-  {
-    switch(arg)
-    {
-    case 'h':
-      print_help();
-      break;
-    case 'f':
-      file = optarg;
-      break;
-    case 's':
-      section_name = optarg;
-      break;
-    case 'i':
-      start_id = atol(optarg);
-      break;
-    case 'v':
-      verbose = true;
-      break;
-    default:
-      fprintf(stderr, "Unknown argument '%c'\n", arg);
-      break;
+    while ((arg = getopt(argc, argv, args)) != -1) {
+        switch (arg) {
+        case 'h':
+            print_help();
+            break;
+        case 'f':
+            file = optarg;
+            break;
+        case 's':
+            section_name = optarg;
+            break;
+        case 'i':
+            start_id = atol(optarg);
+            break;
+        case 'v':
+            verbose = true;
+            break;
+        default:
+            fprintf(stderr, "Unknown argument '%c'\n", arg);
+            break;
+        }
     }
-  }
 
-  if(!file) die("please specify a file to post-process", INVALID_ARGUMENT);
+    if (!file)
+        die("please specify a file to post-process", INVALID_ARGUMENT);
 
-  if(verbose)
-    printf("Processing file '%s', adding section '%s.*', beginning IDs at %lu\n",
-           file, section_name, start_id);
+    if (verbose)
+        printf("Processing file '%s', adding section '%s.*', beginning IDs at "
+               "%lu\n",
+               file, section_name, start_id);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -92,36 +93,35 @@ static void parse_args(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
-  ret_t ret;
-  size_t num_sm;
-  bin *b;
-  stack_map_section *sm;
+    ret_t ret;
+    size_t num_sm;
+    bin *b;
+    stack_map_section *sm;
 
-  parse_args(argc, argv);
-  snprintf(unwind_addr_name, 512, "%s.%s", section_name, SECTION_UNWIND_ADDR);
+    parse_args(argc, argv);
+    snprintf(unwind_addr_name, 512, "%s.%s", section_name, SECTION_UNWIND_ADDR);
 
-  /* Initialize libELF & open ELF descriptors */
-  if(elf_version(EV_CURRENT) == EV_NONE)
-    die("could not initialize libELF", INVALID_ELF_VERSION);
-  if((ret = init_elf_bin(file, &b)))
-    die("could not initialize ELF information", ret);
+    /* Initialize libELF & open ELF descriptors */
+    if (elf_version(EV_CURRENT) == EV_NONE)
+        die("could not initialize libELF", INVALID_ELF_VERSION);
+    if ((ret = init_elf_bin(file, &b)))
+        die("could not initialize ELF information", ret);
 
-  /* Read stack map information */
-  if((ret = init_stackmap(b, &sm, &num_sm)))
-    die("could not read stack map section", ret);
+    /* Read stack map information */
+    if ((ret = init_stackmap(b, &sm, &num_sm)))
+        die("could not read stack map section", ret);
 
-  /* Sort the unwind address range section */
-  if((ret = update_function_addr(b, unwind_addr_name)))
-    die("could not sort unwind address range section", ret);
+    /* Sort the unwind address range section */
+    if ((ret = update_function_addr(b, unwind_addr_name)))
+        die("could not sort unwind address range section", ret);
 
-  /* Add stack transformation sections. */
-  if((ret = add_sections(b, sm, num_sm, section_name, start_id,
-                         unwind_addr_name)))
-    die("could not add stack transformation sections", ret);
+    /* Add stack transformation sections. */
+    if ((ret = add_sections(b, sm, num_sm, section_name, start_id,
+                            unwind_addr_name)))
+        die("could not add stack transformation sections", ret);
 
-  free_stackmaps(sm, num_sm);
-  free_elf_bin(b);
+    free_stackmaps(sm, num_sm);
+    free_elf_bin(b);
 
-  return 0;
+    return 0;
 }
-
