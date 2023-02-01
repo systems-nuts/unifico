@@ -544,4 +544,7 @@ npb/test/results
 layout/npb3.3-ser-c-flat/unasl-sizes
 temp_files/
 scripts
+var/Static_Binary_Translation
+plots/stack-depth-and-size
+layout/experimentation
 
