@@ -40,8 +40,8 @@ typedef struct counters {
 static ADDRINT dumpAccess(ADDRINT addr)
 {
     counter++;
-    //	if (counter % 1000 != 0)
-    //		return 0;
+    //    	if (counter % 1000 != 0)
+    //    		return 0;
     outFile << "0x" << std::hex << addr << std::dec << "," << counter << "\n";
     return 0;
 }
@@ -49,7 +49,7 @@ static ADDRINT dumpAccess(ADDRINT addr)
 // Pin calls this function every time a new rtn is executed
 VOID Routine(RTN rtn, VOID *v)
 {
-    if (RTN_Name(rtn) != "sort") {
+    if (RTN_Name(rtn) != "spmv_csr") {
         return;
     }
 
