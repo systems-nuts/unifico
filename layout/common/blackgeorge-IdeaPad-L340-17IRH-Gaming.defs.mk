@@ -2,7 +2,7 @@ POPCORN ?= /usr/local/popcorn
 
 LLVM_TOOLCHAIN ?= ~/llvm-9/toolchain/bin
 
-PROJECT_DIR ?= ../..
+PROJECT_DIR ?= ../../..
 
 # Lib musl directories per architecture
 MUSL_TOOLCHAIN ?= ~/musl-toolchains/llvm-9/

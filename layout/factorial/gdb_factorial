@@ -1,5 +1,0 @@
-break fact
-run
-source ../common/frame.py
-frame_info
-quit
