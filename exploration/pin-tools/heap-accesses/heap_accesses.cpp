@@ -23,15 +23,11 @@ KNOB<string> KnobOutputFile(KNOB_MODE_WRITEONCE, "pintool", "o",
                             "heap_accesses.csv", "Specify output file name");
 
 KNOB<string> FunctionName(KNOB_MODE_WRITEONCE, "pintool", "f", "main",
-                          "Funtion to examine");
+                          "Function to examine");
 
 ofstream outFile;
 
-UINT64 counter = 999;
-
-typedef struct counters {
-    UINT64 step = 0;
-} COUNTERS;
+UINT64 counter = 0;
 
 /*
  * Check the memory location accessed.
@@ -54,11 +50,7 @@ VOID Routine(RTN rtn, VOID *v)
         return;
     }
 
-    auto *cnt = (COUNTERS *)v;
-
     RTN_Open(rtn);
-
-    outFile << "address,step\n";
 
     // For each instruction of the routine
     for (INS ins = RTN_InsHead(rtn); INS_Valid(ins); ins = INS_Next(ins)) {
@@ -70,7 +62,6 @@ VOID Routine(RTN rtn, VOID *v)
             continue;
 
         counter++;
-        cnt->step++;
 
         UINT32 memOperands = INS_MemoryOperandCount(ins);
         for (UINT32 memOp = 0; memOp < memOperands; memOp++) {
@@ -86,7 +77,7 @@ VOID Routine(RTN rtn, VOID *v)
 
 // This function is called when the application exits
 // It prints the name and count for each procedure
-VOID Fini(INT32 code, VOID *v) { return; }
+VOID Fini(INT32 code, VOID *v) {}
 
 /* ===================================================================== */
 /* Print Help Message                                                    */
@@ -107,8 +98,6 @@ INT32 Usage()
 
 int main(int argc, char *argv[])
 {
-    UINT32 step = 0;
-
     // Initialize symbol table code, needed for rtn instrumentation
     PIN_InitSymbols();
 
@@ -121,15 +110,11 @@ int main(int argc, char *argv[])
 
     outFile << "address,step\n";
 
-    // Allocate a counter for this routine
-    auto *cnt = new COUNTERS;
-    cnt->step = step;
-
     // Register Routine to be called to instrument rtn
-    RTN_AddInstrumentFunction(Routine, cnt);
+    RTN_AddInstrumentFunction(Routine, nullptr);
 
     // Register Fini to be called when the application exits
-    PIN_AddFiniFunction(Fini, 0);
+    PIN_AddFiniFunction(Fini, nullptr);
 
     // Start the program, never returns
     PIN_StartProgram();
