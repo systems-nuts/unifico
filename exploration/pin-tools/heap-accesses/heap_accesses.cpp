@@ -7,11 +7,10 @@
 //
 
 #include "pin.H"
-#include <cmath>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
-#include <string.h>
+
 using std::cerr;
 using std::dec;
 using std::endl;
