@@ -19,12 +19,14 @@ using std::ofstream;
 using std::setw;
 using std::string;
 
+KNOB<string> KnobOutputFile(KNOB_MODE_WRITEONCE, "pintool", "o",
+                            "heap_accesses.csv", "Specify output file name");
+
+KNOB<string> FunctionName(KNOB_MODE_WRITEONCE, "pintool", "f", "main",
+                          "Funtion to examine");
+
 ofstream outFile;
 
-ADDRINT init_addr = 0;
-
-// This function is called before every instruction is executed
-VOID docount(UINT64 *counter) { (*counter)++; }
 UINT64 counter = 999;
 
 typedef struct counters {
@@ -48,7 +50,7 @@ static ADDRINT dumpAccess(ADDRINT addr)
 // Pin calls this function every time a new rtn is executed
 VOID Routine(RTN rtn, VOID *v)
 {
-    if (RTN_Name(rtn) != "spmv_csr") {
+    if (RTN_Name(rtn) != FunctionName.Value()) {
         return;
     }
 
@@ -106,20 +108,18 @@ INT32 Usage()
 int main(int argc, char *argv[])
 {
     UINT32 step = 0;
-    if (argc > 1) {
-        char **endptr = nullptr;
-        step = strtol(argv[1], endptr, 10);
-    }
 
     // Initialize symbol table code, needed for rtn instrumentation
     PIN_InitSymbols();
-
-    outFile.open("heap_accesses.csv");
 
     // Initialize pin
     if (PIN_Init(argc, argv)) {
         return Usage();
     }
+
+    outFile.open(KnobOutputFile.Value().c_str());
+
+    outFile << "address,step\n";
 
     // Allocate a counter for this routine
     auto *cnt = new COUNTERS;
