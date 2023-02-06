@@ -22,7 +22,7 @@ class PinToolRunner:
         if not self.pin_path:
             sys.exit("Error: Please set Pin location path (PIN_PATH)")
         self.cmd_line_arguments(arg_parser)
-        self.args = arg_parser.parse_args(args=args)
+        self.args, self.unknown_args = arg_parser.parse_known_args(args=args)
 
     def run(self):
         os.chdir(self.args.tool_dir)
@@ -38,7 +38,7 @@ class PinToolRunner:
             cmd = (
                 f"{self.pin_path} -t {OBJ_DIR}/{self.args.tool} -o {csv_file} -f {func_name} "
                 f"{'-s' if self.args.stack_profile else ''} -g {self.args.granularity} "
-                f"-- {self.args.app_path} "
+                f"-- {self.args.app_path} {' '.join(self.unknown_args)}"
             )
             if self.args.dry_run:
                 print(cmd)
