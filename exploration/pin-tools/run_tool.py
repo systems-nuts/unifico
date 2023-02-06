@@ -1,9 +1,9 @@
 import subprocess
 import argparse
 import os
+import sys
 from pin_postprocess.plot_accesses import plot_scatter_df
 
-PIN_LOC = "/opt/pin-3.20-98437-gf02b61307-gcc-linux/pin"
 OBJ_DIR = "obj-intel64"
 
 
@@ -18,12 +18,15 @@ class PinToolRunner:
         arg_parser = argparse.ArgumentParser(
             description="A runner class for Intel's Pin Tools"
         )
+        self.pin_path = os.environ.get("PIN_PATH")
+        if not self.pin_path:
+            sys.exit("Error: Please set Pin location path (PIN_PATH)")
         self.cmd_line_arguments(arg_parser)
         self.args = arg_parser.parse_args(args=args)
 
     def run(self):
         os.chdir(self.args.tool_dir)
-        cmd = f"{PIN_LOC} -t {OBJ_DIR}/{self.args.tool} -o {self.args.csv_name} -f {self.args.function} {'-s' if self.args.stack_profile else ''} -g {self.args.granularity} -- {self.args.app} "
+        cmd = f"{self.pin_path} -t {OBJ_DIR}/{self.args.tool} -o {self.args.csv_name} -f {self.args.function} {'-s' if self.args.stack_profile else ''} -g {self.args.granularity} -- {self.args.app} "
         self.execute_bash_command(cmd)
         plot_scatter_df(self.args.csv_name, self.args.plot_name)
 
