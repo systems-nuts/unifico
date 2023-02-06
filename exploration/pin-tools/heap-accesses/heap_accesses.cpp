@@ -25,22 +25,37 @@ KNOB<string> KnobOutputFile(KNOB_MODE_WRITEONCE, "pintool", "o",
 KNOB<string> FunctionName(KNOB_MODE_WRITEONCE, "pintool", "f", "main",
                           "Function to examine");
 
-ofstream outFile;
+KNOB<bool> ProfileStackAccesses(KNOB_MODE_WRITEONCE, "pintool", "s", "0",
+                                "Profile stack instead of heap accesses");
 
+KNOB<long int> Granularity(KNOB_MODE_WRITEONCE, "pintool", "g", "0",
+                           "Minimum distance between accesses to examine");
+
+ofstream outFile;
 UINT64 counter = 0;
+ADDRINT init_addr = 0;
 
 /*
  * Check the memory location accessed.
  *
  *  addr[in]         Memory location accessed.
  */
-static ADDRINT dumpAccess(ADDRINT addr)
+static VOID dumpAccess(ADDRINT addr, ADDRINT *init_addr)
 {
     counter++;
+    if (Granularity) {
+        if (abs((long int)addr - (long int)(*init_addr)) > Granularity) {
+            *init_addr = addr;
+            outFile << "0x" << std::hex << addr << std::dec << "," << counter
+                    << "\n";
+        }
+        else {
+            return;
+        }
+    }
     //    	if (counter % 1000 != 0)
     //    		return 0;
     outFile << "0x" << std::hex << addr << std::dec << "," << counter << "\n";
-    return 0;
 }
 
 // Pin calls this function every time a new rtn is executed
@@ -58,7 +73,10 @@ VOID Routine(RTN rtn, VOID *v)
         if (!INS_IsMemoryRead(ins))
             continue;
 
-        if (INS_IsStackRead(ins))
+        if (INS_IsStackRead(ins) && !ProfileStackAccesses)
+            continue;
+
+        if (!INS_IsStackRead(ins) && ProfileStackAccesses)
             continue;
 
         counter++;
@@ -67,7 +85,8 @@ VOID Routine(RTN rtn, VOID *v)
         for (UINT32 memOp = 0; memOp < memOperands; memOp++) {
             if (INS_MemoryOperandIsRead(ins, memOp)) {
                 INS_InsertCall(ins, IPOINT_BEFORE, (AFUNPTR)dumpAccess,
-                               IARG_MEMORYOP_EA, memOp, IARG_END);
+                               IARG_MEMORYOP_EA, memOp, IARG_PTR, &init_addr,
+                               IARG_END);
             }
         }
     }
