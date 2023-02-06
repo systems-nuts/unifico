@@ -27,6 +27,9 @@ class PinToolRunner:
     def run(self):
         os.chdir(self.args.tool_dir)
         cmd = f"{self.pin_path} -t {OBJ_DIR}/{self.args.tool} -o {self.args.csv_name} -f {self.args.function} {'-s' if self.args.stack_profile else ''} -g {self.args.granularity} -- {self.args.app} "
+        if self.args.dry_run:
+            print(cmd)
+            return
         self.execute_bash_command(cmd)
         plot_scatter_df(self.args.csv_name, self.args.plot_name)
 
@@ -42,6 +45,9 @@ class PinToolRunner:
         arg_parser.add_argument("-f", "--function", required=True, type=str)
         arg_parser.add_argument(
             "-s", "--stack-profile", required=False, action="store_true"
+        )
+        arg_parser.add_argument(
+            "--dry-run", required=False, action="store_true"
         )
         arg_parser.add_argument(
             "-g", "--granularity", required=False, default=0, type=int
