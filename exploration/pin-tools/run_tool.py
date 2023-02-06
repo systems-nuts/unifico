@@ -31,15 +31,20 @@ class PinToolRunner:
             if not self.args.stack_profile
             else "stack_accesses"
         )
-        out_file_stem = f"{self.args.app_name}_{self.args.function}_{self.args.granularity}_{access_type}"
-        csv_file = out_file_stem + ".csv"
-        png_file = out_file_stem + ".png"
-        cmd = f"{self.pin_path} -t {OBJ_DIR}/{self.args.tool} -o {csv_file} -f {self.args.function} {'-s' if self.args.stack_profile else ''} -g {self.args.granularity} -- {self.args.app_path} "
-        if self.args.dry_run:
-            print(cmd)
-            return
-        self.execute_bash_command(cmd)
-        plot_scatter_df(csv_file, png_file)
+        for func_name in self.args.functions.split(","):
+            out_file_stem = f"{self.args.app_name}_{func_name}_{self.args.granularity}_{access_type}"
+            csv_file = out_file_stem + ".csv"
+            png_file = out_file_stem + ".png"
+            cmd = (
+                f"{self.pin_path} -t {OBJ_DIR}/{self.args.tool} -o {csv_file} -f {func_name} "
+                f"{'-s' if self.args.stack_profile else ''} -g {self.args.granularity} "
+                f"-- {self.args.app_path} "
+            )
+            if self.args.dry_run:
+                print(cmd)
+                return
+            self.execute_bash_command(cmd)
+            plot_scatter_df(csv_file, png_file)
 
     def cmd_line_arguments(self, arg_parser: argparse.ArgumentParser):
         """
@@ -51,7 +56,7 @@ class PinToolRunner:
         arg_parser.add_argument("--app-name", required=True, type=str)
         arg_parser.add_argument("-t", "--tool", required=True, type=str)
         arg_parser.add_argument("-d", "--tool-dir", required=True, type=str)
-        arg_parser.add_argument("-f", "--function", required=True, type=str)
+        arg_parser.add_argument("-f", "--functions", required=True, type=str)
         arg_parser.add_argument(
             "-s", "--stack-profile", required=False, action="store_true"
         )
