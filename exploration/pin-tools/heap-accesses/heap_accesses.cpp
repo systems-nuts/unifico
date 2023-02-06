@@ -49,9 +49,7 @@ static VOID dumpAccess(ADDRINT addr, ADDRINT *init_addr)
             outFile << "0x" << std::hex << addr << std::dec << "," << counter
                     << "\n";
         }
-        else {
-            return;
-        }
+        return;
     }
     //    	if (counter % 1000 != 0)
     //    		return 0;
