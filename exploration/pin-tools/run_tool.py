@@ -3,8 +3,11 @@ import argparse
 import os
 import sys
 from pin_postprocess.plot_accesses import plot_scatter_df
+from pathlib import Path
 
 OBJ_DIR = "obj-intel64"
+PLOT_DIR = "plots/"
+CSV_DIR = "csv/"
 
 
 class PinToolRunner:
@@ -32,9 +35,22 @@ class PinToolRunner:
             else "stack_accesses"
         )
         for func_name in self.args.functions.split(","):
+
             out_file_stem = f"{self.args.app_name}_{func_name}_{self.args.granularity}_{access_type}"
-            csv_file = out_file_stem + ".csv"
-            png_file = out_file_stem + ".png"
+            Path(os.path.join(CSV_DIR, self.args.app_name)).mkdir(
+                parents=True, exist_ok=True
+            )
+            Path(os.path.join(PLOT_DIR, self.args.app_name)).mkdir(
+                parents=True, exist_ok=True
+            )
+
+            csv_file = os.path.join(
+                CSV_DIR, self.args.app_name, out_file_stem + ".csv"
+            )
+            png_file = os.path.join(
+                PLOT_DIR, self.args.app_name, out_file_stem + ".png"
+            )
+
             cmd = (
                 f"{self.pin_path} -t {OBJ_DIR}/{self.args.tool} -o {csv_file} -f {func_name} "
                 f"{'-s' if self.args.stack_profile else ''} -g {self.args.granularity} "
