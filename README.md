@@ -29,3 +29,13 @@ Once you clone the repo locally, run `pre-commit install` to install the configu
 * Use `llvm-config --unifico-flags` to check which of these are enabled in the current build.
 
 [1]: https://pre-commit.com/#usage
+
+
+## Python tools
+
+* `stack-ascii`: Print an ascii representation of an arm/x86 assembly file.
+* To install run:
+
+```bash
+pin install -e .
+```
