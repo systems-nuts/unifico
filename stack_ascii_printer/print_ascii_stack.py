@@ -437,7 +437,9 @@ arg_parser.add_argument(
 )
 
 
-def __main__(args: argparse.Namespace):
+def __main__():
+    args = arg_parser.parse_args()
+
     if args.architecture == "arm":
         parse_arm_asm(args.input_file, args.function, args.callsite)
     elif args.architecture == "x86":
@@ -445,5 +447,4 @@ def __main__(args: argparse.Namespace):
 
 
 if __name__ == "__main__":
-    args = arg_parser.parse_args()
-    __main__(args)
+    __main__()
