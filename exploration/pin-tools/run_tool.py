@@ -8,6 +8,8 @@ from pathlib import Path
 OBJ_DIR = "obj-intel64"
 PLOT_DIR = "plots/"
 CSV_DIR = "csv/"
+AWK_CMD = 'awk \'$2 == "T" && $1 !~ /^_/ {print "b " $1}\' '
+SED_CMD = "sed 's/\ /,/g'"
 
 
 class PinToolRunner:
@@ -26,6 +28,14 @@ class PinToolRunner:
             sys.exit("Error: Please set Pin location path (PIN_PATH)")
         self.cmd_line_arguments(arg_parser)
         self.args, self.unknown_args = arg_parser.parse_known_args(args=args)
+        if self.args.all_functions:
+            cmd = f"nm -P {self.args.app_path} | {AWK_CMD} | cut -c2- | xargs | {SED_CMD}"
+            if self.args.dry_run:
+                print(cmd)
+                print(self.execute_bash_command(cmd))
+                return
+            self.args.functions = self.execute_bash_command(cmd)
+            self.args.functions = self.args.functions.rstrip()
 
     def run(self):
         os.chdir(self.args.tool_dir)
@@ -72,7 +82,10 @@ class PinToolRunner:
         arg_parser.add_argument("--app-name", required=True, type=str)
         arg_parser.add_argument("-t", "--tool", required=True, type=str)
         arg_parser.add_argument("-d", "--tool-dir", required=True, type=str)
-        arg_parser.add_argument("-f", "--functions", required=True, type=str)
+        arg_parser.add_argument("-f", "--functions", required=False, type=str)
+        arg_parser.add_argument(
+            "--all-functions", required=False, action="store_true"
+        )
         arg_parser.add_argument(
             "-s", "--stack-profile", required=False, action="store_true"
         )
@@ -90,10 +103,13 @@ class PinToolRunner:
 
         :return:
         """
-        process = subprocess.Popen(bash_cmd.split(), stdout=subprocess.PIPE)
-        _, error = process.communicate()
+        process = subprocess.Popen(
+            bash_cmd, shell=True, stdout=subprocess.PIPE
+        )
+        output, error = process.communicate()
         if error:
             print("Error: ", error)
+        return output.decode(encoding="utf-8")
 
 
 if __name__ == "__main__":
