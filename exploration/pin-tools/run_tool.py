@@ -72,7 +72,8 @@ class PinToolRunner:
             self.execute_bash_command(cmd)
             plot_scatter_df(csv_file, png_file)
 
-    def cmd_line_arguments(self, arg_parser: argparse.ArgumentParser):
+    @staticmethod
+    def cmd_line_arguments(arg_parser: argparse.ArgumentParser):
         """
         Registers all the command line arguments that are used by this tool.
 
