@@ -9,7 +9,7 @@ OBJ_DIR = "obj-intel64"
 PLOT_DIR = "plots/"
 CSV_DIR = "csv/"
 AWK_CMD = 'awk \'$2 == "T" && $1 !~ /^_/ {print "b " $1}\' '
-SED_CMD = "sed 's/\ /,/g'"
+SED_CMD = "sed 's/\\ /,/g'"
 
 
 class PinToolRunner:
