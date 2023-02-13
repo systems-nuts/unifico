@@ -70,6 +70,20 @@ class PinToolRunner:
                 print(cmd)
                 return
             self.execute_bash_command(cmd)
+
+            num_lines = sum(1 for _ in open(csv_file))
+            # If a csv file has less than 5 points, the plot will look empty.
+            if num_lines < 5:
+                Path(
+                    os.path.join(PLOT_DIR, self.args.app_name, "empty")
+                ).mkdir(parents=True, exist_ok=True)
+                png_file = os.path.join(
+                    PLOT_DIR,
+                    self.args.app_name,
+                    "empty",
+                    out_file_stem + ".png",
+                )
+
             plot_scatter_df(csv_file, png_file)
 
     @staticmethod
