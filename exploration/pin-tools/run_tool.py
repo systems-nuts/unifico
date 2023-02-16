@@ -2,14 +2,15 @@ import subprocess
 import argparse
 import os
 import sys
+from datetime import datetime
 from pin_postprocess.plot_accesses import plot_scatter_df
 from pathlib import Path
 
 OBJ_DIR = "obj-intel64"
-PLOT_DIR = "plots/"
-CSV_DIR = "csv/"
+OUT_DIR = "out"
 AWK_CMD = 'awk \'$2 == "T" && $1 !~ /^_/ {print "b " $1}\' '
 SED_CMD = "sed 's/\\ /,/g'"
+EMPTY_THRESHOLD = 5
 
 
 class PinToolRunner:
@@ -43,22 +44,17 @@ class PinToolRunner:
             if not self.args.stack_profile
             else "stack_accesses"
         )
+        now = datetime.now()
+        time_stamp = now.strftime("%Y%m%d") + "_" + now.strftime("%H%M%S")
+        out_dir = os.path.join(OUT_DIR, self.args.app_name, time_stamp)
+        out_dir_empty_files = os.path.join(
+            OUT_DIR, self.args.app_name, time_stamp, "empty"
+        )
+        Path(out_dir).mkdir(parents=True, exist_ok=False)
         for func_name in self.args.functions.split(","):
-
             out_file_stem = f"{self.args.app_name}_{func_name}_{self.args.granularity}_{access_type}"
-            Path(os.path.join(CSV_DIR, self.args.app_name)).mkdir(
-                parents=True, exist_ok=True
-            )
-            Path(os.path.join(PLOT_DIR, self.args.app_name)).mkdir(
-                parents=True, exist_ok=True
-            )
-
-            csv_file = os.path.join(
-                CSV_DIR, self.args.app_name, out_file_stem + ".csv"
-            )
-            png_file = os.path.join(
-                PLOT_DIR, self.args.app_name, out_file_stem + ".png"
-            )
+            csv_file = os.path.join(out_dir, out_file_stem + ".csv")
+            png_file = os.path.join(out_dir, out_file_stem + ".png")
 
             cmd = (
                 f"{self.pin_path} -t {OBJ_DIR}/{self.args.tool} -o {csv_file} -f {func_name} "
@@ -71,16 +67,11 @@ class PinToolRunner:
             self.execute_bash_command(cmd)
 
             num_lines = sum(1 for _ in open(csv_file))
-            # If a csv file has less than 5 points, the plot will look empty.
-            if num_lines < 5:
-                Path(
-                    os.path.join(PLOT_DIR, self.args.app_name, "empty")
-                ).mkdir(parents=True, exist_ok=True)
+            # If a csv file has less than certain points, the plot will look empty.
+            if num_lines < EMPTY_THRESHOLD:
+                Path(out_dir_empty_files).mkdir(parents=True, exist_ok=True)
                 png_file = os.path.join(
-                    PLOT_DIR,
-                    self.args.app_name,
-                    "empty",
-                    out_file_stem + ".png",
+                    out_dir_empty_files, out_file_stem + ".png"
                 )
 
             plot_scatter_df(csv_file, png_file)
