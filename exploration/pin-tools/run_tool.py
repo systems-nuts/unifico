@@ -33,7 +33,6 @@ class PinToolRunner:
             if self.args.dry_run:
                 print(cmd)
                 print(self.execute_bash_command(cmd))
-                return
             self.args.functions = self.execute_bash_command(cmd)
             self.args.functions = self.args.functions.rstrip()
 
