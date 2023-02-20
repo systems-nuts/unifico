@@ -2,12 +2,14 @@ import subprocess
 import argparse
 import os
 import sys
+import json
 from datetime import datetime
 from pin_postprocess.plot_accesses import plot_scatter_df
 from pathlib import Path
 
 OBJ_DIR = "obj-intel64"
 OUT_DIR = "out"
+JSON_LOG = "out.log"
 AWK_CMD = 'awk \'$2 == "T" && $1 !~ /^_/ {print "b " $1}\' '
 SED_CMD = "sed 's/\\ /,/g'"
 EMPTY_THRESHOLD = 5
@@ -29,6 +31,7 @@ class PinToolRunner:
             sys.exit("Error: Please set Pin location path (PIN_PATH)")
         self.cmd_line_arguments(arg_parser)
         self.args, self.unknown_args = arg_parser.parse_known_args(args=args)
+        self.unknown_args.remove("--")
         if self.args.all_functions:
             cmd = f"nm -P {self.args.app_path} | {AWK_CMD} | cut -c2- | xargs | {SED_CMD}"
             if self.args.dry_run:
@@ -51,7 +54,17 @@ class PinToolRunner:
             OUT_DIR, self.args.app_name, time_stamp, "empty"
         )
         Path(out_dir).mkdir(parents=True, exist_ok=False)
+
+        log_dict = vars(self.args)
+        if self.unknown_args:
+            unknown_args = "_".join(self.unknown_args)
+            log_dict["unknown_args"] = unknown_args
+        json_file = os.path.join(out_dir, JSON_LOG)
+        with open(json_file, "w", encoding="utf-8") as f:
+            json.dump(log_dict, f, ensure_ascii=False, indent=4)
+
         for func_name in self.args.functions.split(","):
+            log_dict["function"] = func_name
             out_file_stem = f"{self.args.app_name}_{func_name}_{self.args.granularity}_{access_type}"
             csv_file = os.path.join(out_dir, out_file_stem + ".csv")
             png_file = os.path.join(out_dir, out_file_stem + ".png")
