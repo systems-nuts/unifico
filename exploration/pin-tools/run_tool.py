@@ -40,6 +40,15 @@ class PinToolRunner:
             self.args.functions = self.execute_bash_command(cmd)
             self.args.functions = self.args.functions.rstrip()
 
+    def log(self, out_dir):
+        log_dict = vars(self.args)
+        if self.unknown_args:
+            unknown_args = "_".join(self.unknown_args)
+            log_dict["unknown_args"] = unknown_args
+        json_file = os.path.join(out_dir, JSON_LOG)
+        with open(json_file, "w", encoding="utf-8") as f:
+            json.dump(log_dict, f, ensure_ascii=False, indent=4)
+
     def run(self):
         os.chdir(self.args.tool_dir)
         access_type = (
@@ -55,13 +64,7 @@ class PinToolRunner:
         )
         Path(out_dir).mkdir(parents=True, exist_ok=False)
 
-        log_dict = vars(self.args)
-        if self.unknown_args:
-            unknown_args = "_".join(self.unknown_args)
-            log_dict["unknown_args"] = unknown_args
-        json_file = os.path.join(out_dir, JSON_LOG)
-        with open(json_file, "w", encoding="utf-8") as f:
-            json.dump(log_dict, f, ensure_ascii=False, indent=4)
+        self.log(out_dir)
 
         for func_name in self.args.functions.split(","):
             out_file_stem = f"{self.args.app_name}_{func_name}_{self.args.granularity}_{access_type}"
