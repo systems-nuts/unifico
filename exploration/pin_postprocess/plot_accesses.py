@@ -11,9 +11,22 @@ import pandas as pd
 def plot_scatter_df(file_name, output_name="temp.png"):
 
     df = pd.read_csv(file_name, sep=",")
+    if "address" not in list(df):
+        print("WARNING: csv empty.")
+        return
+
     df["address"] = df["address"].apply(lambda x: int(x, 16))
 
     figure(figsize=(10, 8), dpi=80)
+
+    print(f'    Lines before: {len(df["address"])}')
+    Q1 = df["address"].quantile(0.25)
+    Q3 = df["address"].quantile(0.75)
+    q1 = Q1 - 1.5 * (Q3 - Q1)
+    q3 = Q3 + 1.5 * (Q3 - Q1)
+
+    df = df[df["address"].between(q1, q3)]
+    print(f'    Lines after: {len(df["address"])}')
 
     fig = plt.plot(df["step"], df["address"], "r,")
     plt.grid(True)
