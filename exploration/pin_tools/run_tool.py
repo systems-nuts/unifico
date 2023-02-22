@@ -67,6 +67,7 @@ class PinToolRunner:
         self.log(out_dir)
 
         for func_name in self.args.functions.split(","):
+            print(func_name)
             out_file_stem = f"{self.args.app_name}_{func_name}_{self.args.granularity}_{access_type}"
             csv_file = os.path.join(out_dir, out_file_stem + ".csv")
             png_file = os.path.join(out_dir, out_file_stem + ".png")
