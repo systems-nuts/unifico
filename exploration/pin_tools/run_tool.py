@@ -10,7 +10,7 @@ from pathlib import Path
 OBJ_DIR = "obj-intel64"
 OUT_DIR = "out"
 JSON_LOG = "out.log"
-AWK_CMD = 'awk \'$2 == "T" && $1 !~ /^_/ {print "b " $1}\' '
+AWK_CMD = 'awk \'($2 == "T" || $2 == "t") && $1 !~ /^_/ {print "b " $1}\' '
 SED_CMD = "sed 's/\\ /,/g'"
 EMPTY_THRESHOLD = 5
 
