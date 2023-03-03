@@ -10,6 +10,7 @@ $(if $(shell test -s $(DEFS_MKFILE)), $(error "file $(DEFS_MKFILE) does not exis
 include $(DEFS_MKFILE)
 
 SSHPASS_IGNORE ?= @- # silent and ignored by default - override with DEFS_MAKEFILE
+QUIET = @
 
 ###############################################################################
 # LLVM Tools and Flags
@@ -164,7 +165,7 @@ json-aarch64: $(ARM64_JSON)
 
 stackmaps-dump-aarch64: $(ARM64_ALIGNED)
 	@echo " [STACKMAP DUMP] $^"
-	@{ \
+	$(QUIET) { \
 		if [ -z ${TARGET_FUNC} ] && [ -z ${TARGET_CALLSITE} ]; then \
 		$(STACKMAP_DUMP) -f $(ARM64_ALIGNED); \
 		elif [ -z ${TARGET_CALLSITE} ]; then \
@@ -176,7 +177,7 @@ stackmaps-dump-aarch64: $(ARM64_ALIGNED)
 
 stackmaps-dump-x86-64: $(X86_64_ALIGNED)
 	@echo " [STACKMAP DUMP] $^"
-	@{ \
+	$(QUIET) { \
 		if [ -z ${TARGET_FUNC} ] && [ -z ${TARGET_CALLSITE} ]; then \
 		$(STACKMAP_DUMP) -f $(X86_64_ALIGNED); \
 		elif [ -z ${TARGET_CALLSITE} ]; then \
@@ -188,8 +189,8 @@ stackmaps-dump-x86-64: $(X86_64_ALIGNED)
 
 stackmaps-check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	@echo " [STACKMAPS CHECK] Checking stackmaps for $^"
-	make -C $(STACKMAP_SRC_DIR)
-	@{ \
+	$(QUIET) make -C $(STACKMAP_SRC_DIR)
+	$(QUIET) { \
 		if [ -z ${TARGET_FUNC} ]; then \
 		$(STACKMAP_CHECK) -a $(ARM64_ALIGNED) -x $(X86_64_ALIGNED); \
 		else \
@@ -204,39 +205,43 @@ stackmaps-check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 
 %.ll: %.c src_changed
 	@echo " [IR] $@"
-	$(CC) $(HET_CFLAGS) -I $(INC_DIR) -ggdb3 -S -emit-llvm $(ARM64_INC) -o $@ $<
-	# Remove the x86-64-related information
-	sed -e "s/\"target-cpu\"\=\"x86-64\"\ \"target-features\"\=\"+cx8,+fxsr,+mmx,+sse,+sse2,+x87\"//g" -i $@
-	# Make directories
-	mkdir -p $(X86_64_BUILD) $(ARM64_BUILD)
+	$(QUIET) $(CC) $(HET_CFLAGS) -I $(INC_DIR) -ggdb3 -S -emit-llvm $(ARM64_INC) -o $@ $<
+	$(QUIET) # Remove the x86-64-related information
+	$(QUIET) sed -e "s/\"target-cpu\"\=\"x86-64\"\ \"target-features\"\=\"+cx8,+fxsr,+mmx,+sse,+sse2,+x87\"//g" -i $@
+	$(QUIET) # Make directories
+	$(QUIET) mkdir -p $(X86_64_BUILD) $(ARM64_BUILD)
 
 %_opt.ll: %.ll
 	@echo " [OPT] $@"
-	$(OPT) $(OPT_FLAGS) -S -o $@ $<
+	$(QUIET) $(OPT) $(OPT_FLAGS) -S -o $@ $<
 
 %_nodbg.ll: %.c
 	@echo " [IR NO DEBUG] $@"
-	$(CC) $(HET_CFLAGS) -I $(INC_DIR) -S -emit-llvm $(ARM64_INC) -o $@ $<
-	# Remove the x86-64-related information
-	sed -e "s/\"target-cpu\"\=\"x86-64\"\ \"target-features\"\=\"+cx8,+fxsr,+mmx,+sse,+sse2,+x87\"//g" -i $@
-	# Make directories
-	mkdir -p $(X86_64_BUILD) $(ARM64_BUILD) $(X86_64_JSON_DIR) $(ARM64_JSON_DIR)
+	$(QUIET) $(CC) $(HET_CFLAGS) -I $(INC_DIR) -S -emit-llvm $(ARM64_INC) -o $@ $<
+	$(QUIET) # Remove the x86-64-related information
+	$(QUIET) sed -e "s/\"target-cpu\"\=\"x86-64\"\ \"target-features\"\=\"+cx8,+fxsr,+mmx,+sse,+sse2,+x87\"//g" -i $@
+	$(QUIET) # Make directories
+	$(QUIET) mkdir -p $(X86_64_BUILD) $(ARM64_BUILD) $(X86_64_JSON_DIR) $(ARM64_JSON_DIR)
 
 %_opt_nodbg.ll: %_nodbg.ll
 	@echo " [OPT NO DEBUG] $@"
-	$(OPT) $(OPT_FLAGS) -S -o $@ $<
+	$(QUIET) $(OPT) $(OPT_FLAGS) -S -o $@ $<
 
 %_cs_align.json: %_x86_64_init.o %_aarch64_init.o # TODO improve objdump output names
 	@echo " [CALLSITE ALIGN] $@"
-	$(X86_64_OBJDUMP) -d -M intel $< >$(X86_64_BUILD)/$*_x86_64_init.objdump
-	$(OBJDUMP) -d --print-imm-hex $(word 2,$^) >$(ARM64_BUILD)/$*_aarch64_init.objdump
-	$(CALLSITE_ALIGN) $(ARM64_BUILD)/$*_aarch64_init.objdump $(X86_64_BUILD)/$*_x86_64_init.objdump >$@
+	$(QUIET) $(X86_64_OBJDUMP) -d -M intel $< >$(X86_64_BUILD)/$*_x86_64_init.objdump
+	$(QUIET) $(OBJDUMP) -d --print-imm-hex $(word 2,$^) >$(ARM64_BUILD)/$*_aarch64_init.objdump
+	$(QUIET) $(CALLSITE_ALIGN) $(ARM64_BUILD)/$*_aarch64_init.objdump $(X86_64_BUILD)/$*_x86_64_init.objdump >$@
 
 src_changed: *.c
 	@echo " [SOURCE FILES CHANGED]"
 	echo $?
 	touch $@
-	$(SSHPASS_IGNORE)sshpass -f "/home/nikos/docs/pass.txt" scp $^ nikos@sole:`pwd`
+	$(QUIET) { \
+		if [ -z ${SSHPASS_IGNORE} ]; then \
+			$(SSHPASS_IGNORE)sshpass -f "/home/nikos/docs/pass.txt" scp $^ nikos@sole:`pwd`; \
+		fi \
+		}
 
 ###########
 # AArch64 #
@@ -244,42 +249,52 @@ src_changed: *.c
 
 %_aarch64.s: %_opt_nodbg.ll
 	@echo " [LLC ASSEMBLY] $@"
-	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -o $(ARM64_BUILD)/$(<:_opt_nodbg.ll=_aarch64.s) $<
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -o $(ARM64_BUILD)/$(<:_opt_nodbg.ll=_aarch64.s) $<
 
 %_aarch64.json: %_aarch64.s
 	@echo " [LLVM-MCA] $@"
-	#$(MCA) -march=aarch64 -mcpu=$(ARM64_CPU) -json -o $(ARM64_JSON_DIR)/$(<:.s=.json) $(ARM64_BUILD)/$<
-	$(MCA) -march=aarch64 -mcpu=$(ARM64_CPU) -register-file-stats -o $(ARM64_JSON_DIR)/$(<:.s=.json) $(ARM64_BUILD)/$<
+	$(QUIET) #$(MCA) -march=aarch64 -mcpu=$(ARM64_CPU) -json -o $(ARM64_JSON_DIR)/$(<:.s=.json) $(ARM64_BUILD)/$<
+	$(QUIET) $(MCA) -march=aarch64 -mcpu=$(ARM64_CPU) -register-file-stats -o $(ARM64_JSON_DIR)/$(<:.s=.json) $(ARM64_BUILD)/$<
 
 %_aarch64_init.o: %_opt.ll
 	@echo " [LLC] $@"
-	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -o $(<:_opt.ll=_aarch64_init.o) $<
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -o $(<:_opt.ll=_aarch64_init.o) $<
 
 %_aarch64.o: %_cs_align.json %_opt.ll
 	@echo " [LLC WITH CALLSITE ALIGNMENT] $@"
-	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
+	$(QUIET){ \
 	for PASS in $(LLC_PASSES_TO_DEBUG); do \
 		$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -debug-only=$$PASS 2>$(ARM64_BUILD)/$*_$$PASS.txt; \
-		done
+		done \
+		}
 
 $(ARM64_INIT): $(ARM64_OBJ_INIT)
 	@echo " [LD] $@"
-	$(LD) -o $@ $^ $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
-	$(SSHPASS_IGNORE)sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`
-	$(OBJDUMP) -d -S --print-imm-hex $@ >aarch64_objdump.txt
+	$(QUIET) $(LD) -o $@ $^ $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
+	$(QUIET) { \
+		if [ -z ${SSHPASS_IGNORE} ]; then \
+			$(SSHPASS_IGNORE)sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`; \
+		fi \
+		}
+	$(QUIET) $(OBJDUMP) -d -S --print-imm-hex $@ >aarch64_objdump.txt
 
 $(ARM64_UNALIGNED): $(ARM64_OBJ)
 	@echo " [LD] $@"
-	$(LD) -o $@ $^ $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
+	$(QUIET) $(LD) -o $@ $^ $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
 
 $(ARM64_LD_SCRIPT): $(X86_64_LD_SCRIPT)
 	@echo " [ALIGN] $@"
 
 $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	@echo " [LD] $@"
-	$(LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_ALIGNED_MAP) -T $<
-	$(SSHPASS_IGNORE)sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`
-	$(OBJDUMP) -d -S --print-imm-hex $@ >aarch64_objdump.txt
+	$(QUIET) $(LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_ALIGNED_MAP) -T $<
+	$(QUIET) { \
+		if [ -z ${SSHPASS_IGNORE} ]; then \
+			$(SSHPASS_IGNORE)sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`; \
+		fi \
+		}
+	$(QUIET) $(OBJDUMP) -d -S --print-imm-hex $@ >aarch64_objdump.txt
 
 ##########
 # x86-64 #
@@ -287,70 +302,72 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 
 %_x86_64.s: %_opt_nodbg.ll
 	@echo " [LLC ASSEMBLY] $@"
-	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 --x86-asm-syntax=intel -o $(X86_64_BUILD)/$(<:_opt_nodbg.ll=_x86_64.s) $<
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 --x86-asm-syntax=intel -o $(X86_64_BUILD)/$(<:_opt_nodbg.ll=_x86_64.s) $<
 
 %_x86_64.json: %_x86_64.s
 	@echo " [LLVM-MCA] $@"
-	#$(MCA) -march=x86-64 -mcpu=$(X86_64_CPU) -json -o $(X86_64_JSON_DIR)/$(<:.s=.json) $(X86_64_BUILD)/$<
-	$(MCA) -march=x86-64 -mcpu=$(X86_64_CPU) -register-file-stats -o $(X86_64_JSON_DIR)/$(<:.s=.json) $(X86_64_BUILD)/$<
+	$(QUIET) #$(MCA) -march=x86-64 -mcpu=$(X86_64_CPU) -json -o $(X86_64_JSON_DIR)/$(<:.s=.json) $(X86_64_BUILD)/$<
+	$(QUIET) $(MCA) -march=x86-64 -mcpu=$(X86_64_CPU) -register-file-stats -o $(X86_64_JSON_DIR)/$(<:.s=.json) $(X86_64_BUILD)/$<
 
 %_x86_64_init.o: %_opt.ll
 	@echo " [LLC] $@"
-	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -o $(<:_opt.ll=_x86_64_init.o) $<
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -o $(<:_opt.ll=_x86_64_init.o) $<
 
 %_x86_64.o: %_cs_align.json %_opt.ll %_aarch64.o
 	@echo " [LLC WITH CALLSITE ALIGNMENT] $@"
-	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
 	@echo " [CHECK CALLSITE ALIGNMENT] $@ $(word 3,$^)"
-	$(X86_64_OBJDUMP) -d -M intel $@ >$(X86_64_BUILD)/$*_x86_64.objdump
-	$(OBJDUMP) -d --print-imm-hex $(word 3,$^) >$(ARM64_BUILD)/$*_aarch64.objdump
+	$(QUIET) $(X86_64_OBJDUMP) -d -M intel $@ >$(X86_64_BUILD)/$*_x86_64.objdump
+	$(QUIET) $(OBJDUMP) -d --print-imm-hex $(word 3,$^) >$(ARM64_BUILD)/$*_aarch64.objdump
+	$(QUIET){ \
 	for PASS in $(LLC_PASSES_TO_DEBUG); do \
 		$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -debug-only=$$PASS 2>$(X86_64_BUILD)/$*_$$PASS.txt; \
-		done
-	$(CALLSITE_ALIGN_CHECK) $(ARM64_BUILD)/$*_aarch64.objdump $(X86_64_BUILD)/$*_x86_64.objdump
+		done \
+		}
+	$(QUIET) $(CALLSITE_ALIGN_CHECK) $(ARM64_BUILD)/$*_aarch64.objdump $(X86_64_BUILD)/$*_x86_64.objdump
 
 $(X86_64_INIT): $(X86_64_OBJ_INIT)
 	@echo " [LD] $@"
-	$(LD) -o $@ $^ $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_MAP)
-	$(X86_64_OBJDUMP) -d -S -M intel $@ >x86_objdump.txt
+	$(QUIET) $(LD) -o $@ $^ $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_MAP)
+	$(QUIET) $(X86_64_OBJDUMP) -d -S -M intel $@ >x86_objdump.txt
 
 $(X86_64_UNALIGNED): $(X86_64_OBJ)
 	@echo " [LD] $@"
-	$(LD) -o $@ $^ $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_MAP)
+	$(QUIET) $(LD) -o $@ $^ $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_MAP)
 
 $(X86_64_LD_SCRIPT): $(ARM64_UNALIGNED) $(X86_64_UNALIGNED)
 	@echo " [ALIGN] $@"
-	$(ALIGN) --compiler-inst $(POPCORN) \
+	$(QUIET) $(ALIGN) --compiler-inst $(POPCORN) \
 		--x86-bin $(X86_64_UNALIGNED) --arm-bin $(ARM64_UNALIGNED) \
 		--x86-map $(X86_64_MAP) --arm-map $(ARM64_MAP) \
 		--output-x86-ls $(X86_64_LD_SCRIPT) --output-arm-ls $(ARM64_LD_SCRIPT)
 
 $(X86_64_ALIGNED): $(X86_64_LD_SCRIPT)
 	@echo " [LD] $@"
-	$(LD) -o $@ $(X86_64_OBJ) $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_ALIGNED_MAP) -T $<
-	$(X86_64_OBJDUMP) -d -S -M intel $@ >x86_objdump.txt
+	$(QUIET) $(LD) -o $@ $(X86_64_OBJ) $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_ALIGNED_MAP) -T $<
+	$(QUIET) $(X86_64_OBJDUMP) -d -S -M intel $@ >x86_objdump.txt
 
 check_un: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	@echo " [CHECK] Checking unalignment for $^"
-	$(ALIGN_CHECK) $(ARM64_UNALIGNED) $(X86_64_UNALIGNED)
+	$(QUIET) $(ALIGN_CHECK) $(ARM64_UNALIGNED) $(X86_64_UNALIGNED)
 
 check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	@echo " [CHECK] Checking alignment for $^"
-	$(ALIGN_CHECK) $(ARM64_ALIGNED) $(X86_64_ALIGNED)
+	$(QUIET) $(ALIGN_CHECK) $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 
 debug_pass_%: %_cs_align.json %_opt.ll %_aarch64.o
-	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -debug-only=$(PASS) 2>$(X86_64_BUILD)/$*_$(PASS).txt
-	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -debug-only=$(PASS) 2>$(ARM64_BUILD)/$*_$(PASS).txt
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -debug-only=$(PASS) 2>$(X86_64_BUILD)/$*_$(PASS).txt
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -debug-only=$(PASS) 2>$(ARM64_BUILD)/$*_$(PASS).txt
 
 before_after_pass_%: %_cs_align.json %_opt.ll %_aarch64.o
-	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -print-before=$(PASS) 2>$(X86_64_BUILD)/$*_before_$(PASS).txt
-	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -print-after=$(PASS) 2>$(X86_64_BUILD)/$*_after_$(PASS).txt
-	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -print-before=$(PASS) 2>$(ARM64_BUILD)/$*_before_$(PASS).txt
-	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -print-after=$(PASS) 2>$(ARM64_BUILD)/$*_after_$(PASS).txt
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -print-before=$(PASS) 2>$(X86_64_BUILD)/$*_before_$(PASS).txt
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -print-after=$(PASS) 2>$(X86_64_BUILD)/$*_after_$(PASS).txt
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -print-before=$(PASS) 2>$(ARM64_BUILD)/$*_before_$(PASS).txt
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -print-after=$(PASS) 2>$(ARM64_BUILD)/$*_after_$(PASS).txt
 
 view_isel_dag_%: %_cs_align.json %_opt.ll %_aarch64.o
-	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -view-isel-dags -filter-view-dags=$(BASIC_BLOCK)
-	$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -view-isel-dags -filter-view-dags=$(BASIC_BLOCK)
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -view-isel-dags -filter-view-dags=$(BASIC_BLOCK)
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -view-isel-dags -filter-view-dags=$(BASIC_BLOCK)
 
 clean:
 	@echo " [CLEAN] $(ARM64_ALIGNED) $(ARM64_BUILD) $(ARM64_JSON_DIR) $(X86_64_ALIGNED) $(X86_64_BUILD) $(X86_64_JSON_DIR) \
