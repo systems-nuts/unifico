@@ -59,7 +59,7 @@ static VOID dumpAccess(ADDRINT addr, ADDRINT *init_addr)
 // Pin calls this function every time a new rtn is executed
 VOID Routine(RTN rtn, VOID *v)
 {
-    if (RTN_Name(rtn) != FunctionName.Value()) {
+    if (RTN_Name(rtn).find(FunctionName.Value()) == std::string::npos) {
         return;
     }
 
