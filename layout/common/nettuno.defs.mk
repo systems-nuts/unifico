@@ -13,12 +13,6 @@ X86_64_MUSL	?= $(MUSL_TOOLCHAIN)/x86_64
 ARM64_LIBGCC   ?= $(shell dirname \
 									$(shell aarch64-linux-gnu-gcc -print-libgcc-file-name))
 
-# For llvm-mca tool TODO
-MCA	?= ~/llvm_13/toolchain/bin/llvm-mca
-ARM64_CPU	?= thunderx2t99
-X86_64_CPU	?= btver2
-MCA_RESULT_DIR	?= ../mca-results/reg-pressure-O0
-
 # Various configurations
 SSHPASS_IGNORE =
 UNMODIFIED ?=
