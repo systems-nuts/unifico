@@ -7,6 +7,8 @@
 Git pre-commit hooks in this project are managed by [`pre-commit`][1].
 Once you clone the repo locally, run `pre-commit install` to install the configured pre-commit hooks.
 
+[1]: https://pre-commit.com/#usage
+
 
 ### How to compile musl properly.
 
@@ -28,7 +30,13 @@ Once you clone the repo locally, run `pre-commit install` to install the configu
 
 * Use `llvm-config --unifico-flags` to check which of these are enabled in the current build.
 
-[1]: https://pre-commit.com/#usage
+
+### How to build `init` and `aligned` binaries
+
+* Assumes you use a local config file like `common/nettuno.defs.mk`.
+* For init use the `UNMODIFIED=1` flag during `make` invocation.
+* This picks the right llvm and musl builds.
+* Otherwise, just leave the `UNMODIFIED` undefined.
 
 
 ## Python tools
@@ -39,3 +47,4 @@ Once you clone the repo locally, run `pre-commit install` to install the configu
 ```bash
 pin install -e .
 ```
+
