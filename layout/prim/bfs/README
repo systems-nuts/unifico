@@ -1,0 +1,5 @@
+# Breadth-First Search (BFS)
+
+Execution instructions
+
+    ./bfs -f ../../data/loc-gowalla_edges.txt 
