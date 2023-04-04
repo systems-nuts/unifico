@@ -37,3 +37,40 @@ make <benchmark> CLASS=<class> [VERSION=opt]
 * `exit`
 * `cd /dest/of/results`
 * `scp nikos@129.215.165.71:results/* .`
+
+
+---------------------------------------------
+
+## Steps to run NPB Benchmark for Asplos
+### prepare json of `run_bmks`
+```bash
+# copy the json template and modify it.
+cp runs/configs/main_example.json .
+vi main_example.json
+# replace `executables` to the one or ones you want to run
+# replace `bindir` to the directory with binary exes
+# replace `iterations` to the iterations you want. for the paper of asplos, we use 5.
+```
+
+### extract all bins to a standalone directory
+```bash
+# in the example, we extract them to ~/bins
+./re_directory.sh ../layout/npb/ ~/bins
+```
+
+### run benchmark
+```bash
+runs/run_bmks.py -c main_example.json
+# results dir is ./run_exec_time_xxx
+```
+
+### prepare data and plot figure
+```bash
+# calculate speed-up manually
+# copy the geomean result to the csv file
+vi data/cc2023_arm_speedup.csv
+
+# plot figure
+plots/plot_barchart.py -f data/cc2023_arm_speedup.csv -s default -c plots/configs/speedup/barchart_arm.json
+```
+
