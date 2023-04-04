@@ -55,7 +55,7 @@ vi main_example.json
 ### extract all bins to a standalone directory
 ```bash
 # in the example, we extract them to ~/bins
-./re_directory.sh ../layout/npb/ ~/bins
+./collect_bins.sh ../layout/npb/ ~/bins
 ```
 
 ### run benchmark
