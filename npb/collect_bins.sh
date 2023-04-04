@@ -20,6 +20,8 @@ if [ ! -d "$dest_dir" ]; then
     exit 1
 fi
 
+rm "$dest_dir"/*
+
 # Find and copy .out files to the destination directory
 find "$src_dir" -type f -name "*.out" -exec cp {} "$dest_dir" \;
 
