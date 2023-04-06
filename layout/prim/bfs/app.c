@@ -24,7 +24,7 @@ int main(int argc, char **argv)
     struct COOGraph cooGraph = readCOOGraph(p.fileName);
     PRINT_INFO(p.verbosity >= 1, "    Graph has %d nodes and %d edges",
                cooGraph.numNodes, cooGraph.numEdges);
-    struct CSRGraph csrGraph = coo2csr(cooGraph);
+    struct CSRGraph csrGraph = coo2csr(&cooGraph);
     uint32_t *nodeLevel =
         (uint32_t *)malloc(csrGraph.numNodes * sizeof(uint32_t));
     uint32_t *nodeLevelRef =
@@ -87,8 +87,8 @@ int main(int argc, char **argv)
                getElapsedTime(timer) * 1e3);
 
     // Deallocate data structures
-    freeCOOGraph(cooGraph);
-    freeCSRGraph(csrGraph);
+    freeCOOGraph(&cooGraph);
+    freeCSRGraph(&csrGraph);
     free(nodeLevel);
     free(buffer1);
     free(buffer2);

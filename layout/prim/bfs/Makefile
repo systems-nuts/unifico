@@ -6,4 +6,6 @@ vpath %.h support
 
 PROJECT_DIR := ../../..
 
+.SECONDARY: app_opt.ll
+
 include ../../common/common.mk

@@ -67,28 +67,28 @@ static struct COOGraph readCOOGraph(const char *fileName)
     return cooGraph;
 }
 
-static void freeCOOGraph(struct COOGraph cooGraph)
+static void freeCOOGraph(struct COOGraph *cooGraph)
 {
-    free(cooGraph.nodeIdxs);
-    free(cooGraph.neighborIdxs);
+    free(cooGraph->nodeIdxs);
+    free(cooGraph->neighborIdxs);
 }
 
-static struct CSRGraph coo2csr(struct COOGraph cooGraph)
+static struct CSRGraph coo2csr(struct COOGraph *cooGraph)
 {
 
     struct CSRGraph csrGraph;
 
     // Initialize fields
-    csrGraph.numNodes = cooGraph.numNodes;
-    csrGraph.numEdges = cooGraph.numEdges;
+    csrGraph.numNodes = cooGraph->numNodes;
+    csrGraph.numEdges = cooGraph->numEdges;
     csrGraph.nodePtrs = (uint32_t *)calloc(
         ROUND_UP_TO_MULTIPLE_OF_2(csrGraph.numNodes + 1), sizeof(uint32_t));
     csrGraph.neighborIdxs = (uint32_t *)malloc(
         ROUND_UP_TO_MULTIPLE_OF_8(csrGraph.numEdges * sizeof(uint32_t)));
 
     // Histogram nodeIdxs
-    for (uint32_t i = 0; i < cooGraph.numEdges; ++i) {
-        uint32_t nodeIdx = cooGraph.nodeIdxs[i];
+    for (uint32_t i = 0; i < cooGraph->numEdges; ++i) {
+        uint32_t nodeIdx = cooGraph->nodeIdxs[i];
         csrGraph.nodePtrs[nodeIdx]++;
     }
 
@@ -102,10 +102,10 @@ static struct CSRGraph coo2csr(struct COOGraph cooGraph)
     csrGraph.nodePtrs[csrGraph.numNodes] = sumBeforeNextNode;
 
     // Bin the neighborIdxs
-    for (uint32_t i = 0; i < cooGraph.numEdges; ++i) {
-        uint32_t nodeIdx = cooGraph.nodeIdxs[i];
+    for (uint32_t i = 0; i < cooGraph->numEdges; ++i) {
+        uint32_t nodeIdx = cooGraph->nodeIdxs[i];
         uint32_t neighborListIdx = csrGraph.nodePtrs[nodeIdx]++;
-        csrGraph.neighborIdxs[neighborListIdx] = cooGraph.neighborIdxs[i];
+        csrGraph.neighborIdxs[neighborListIdx] = cooGraph->neighborIdxs[i];
     }
 
     // Restore nodePtrs
@@ -117,10 +117,10 @@ static struct CSRGraph coo2csr(struct COOGraph cooGraph)
     return csrGraph;
 }
 
-static void freeCSRGraph(struct CSRGraph csrGraph)
+static void freeCSRGraph(struct CSRGraph *csrGraph)
 {
-    free(csrGraph.nodePtrs);
-    free(csrGraph.neighborIdxs);
+    free(csrGraph->nodePtrs);
+    free(csrGraph->neighborIdxs);
 }
 
 #endif
