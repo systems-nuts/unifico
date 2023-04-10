@@ -39,6 +39,7 @@ class PinToolRunner:
                 print(self.execute_bash_command(cmd))
             self.args.functions = self.execute_bash_command(cmd)
             self.args.functions = self.args.functions.rstrip()
+        self.granularity = eval(self.args.granularity)
 
     def log(self, out_dir):
         log_dict = vars(self.args)
@@ -68,13 +69,13 @@ class PinToolRunner:
 
         for func_name in self.args.functions.split(","):
             print(func_name)
-            out_file_stem = f"{self.args.app_name}_{func_name}_{self.args.granularity}_{access_type}"
+            out_file_stem = f"{self.args.app_name}_{func_name}_{self.granularity}_{access_type}"
             csv_file = os.path.join(out_dir, out_file_stem + ".csv")
             png_file = os.path.join(out_dir, out_file_stem + ".png")
 
             cmd = (
                 f"{self.pin_path} -t {OBJ_DIR}/{self.args.tool} -o {csv_file} -f {func_name} "
-                f"{'-s' if self.args.stack_profile else ''} -g {self.args.granularity} "
+                f"{'-s' if self.args.stack_profile else ''} -g {self.granularity} "
                 f"-- {self.args.app_path} {' '.join(self.unknown_args)}"
             )
             if self.args.dry_run:
@@ -114,7 +115,7 @@ class PinToolRunner:
             "--dry-run", required=False, action="store_true"
         )
         arg_parser.add_argument(
-            "-g", "--granularity", required=False, default=0, type=int
+            "-g", "--granularity", required=False, default="0", type=str
         )
 
     @staticmethod
