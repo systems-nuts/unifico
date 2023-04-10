@@ -1,15 +1,15 @@
-import matplotlib
 import argparse
 import os
 
-matplotlib.use("Agg")
-from matplotlib.pyplot import figure
+import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
+from matplotlib.pyplot import figure
+
+matplotlib.use("Agg")
 
 
 def plot_scatter_df(file_name, output_name="temp.png", preserve_csv=False):
-
     df = pd.read_csv(file_name, sep=",")
     if "address" not in list(df):
         print("WARNING: csv empty.")
