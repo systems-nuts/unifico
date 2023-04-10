@@ -1,5 +1,6 @@
 import matplotlib
 import argparse
+import os
 
 matplotlib.use("Agg")
 from matplotlib.pyplot import figure
@@ -7,7 +8,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def plot_scatter_df(file_name, output_name="temp.png"):
+def plot_scatter_df(file_name, output_name="temp.png", preserve_csv=False):
 
     df = pd.read_csv(file_name, sep=",")
     if "address" not in list(df):
@@ -33,6 +34,9 @@ def plot_scatter_df(file_name, output_name="temp.png"):
     plt.xlabel("Time Step")
     plt.ylabel("Memory Address")
     plt.savefig(output_name)
+
+    if not preserve_csv:
+        os.system(f"rm {file_name}")
 
 
 if __name__ == "__main__":
