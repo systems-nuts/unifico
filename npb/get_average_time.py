@@ -1,6 +1,7 @@
 # Get the average time from npb raw data
 # run with --help to get help information
 # run with -d/--directory to set the raw data directory
+# e.g. python get_average_time.py -d arm_init_A/
 
 import os
 import re
