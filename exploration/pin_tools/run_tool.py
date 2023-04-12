@@ -91,7 +91,7 @@ class PinToolRunner:
                     out_dir_empty_files, out_file_stem + ".png"
                 )
 
-            plot_scatter_df(csv_file, png_file)
+            plot_scatter_df(csv_file, png_file, self.args.keep_csv)
 
     @staticmethod
     def cmd_line_arguments(arg_parser: argparse.ArgumentParser):
@@ -113,6 +113,9 @@ class PinToolRunner:
         )
         arg_parser.add_argument(
             "--dry-run", required=False, action="store_true"
+        )
+        arg_parser.add_argument(
+            "--keep-csv", required=False, action="store_true"
         )
         arg_parser.add_argument(
             "-g", "--granularity", required=False, default="0", type=str
