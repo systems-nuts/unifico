@@ -69,6 +69,9 @@
 static double x[2 * NK];
 static double q[NQ];
 
+UNASL_TIMERS_DECLARE;
+UNASL_TIMERS_INIT;
+
 int main()
 {
     double Mops, t1, t2, t3, t4, x1, x2;
@@ -83,6 +86,8 @@ int main()
     char size[16];
 
     FILE *fp;
+
+    unasl_timers_snapshot();
 
     if ((fp = fopen("timer.flag", "r")) == NULL) {
         timers_enabled = false;
@@ -136,6 +141,7 @@ int main()
     timer_clear(2);
     timer_start(0);
 
+    unasl_timers_snapshot();
     migrate();
 
     t1 = A;
@@ -227,6 +233,7 @@ int main()
     }
 
     migrate();
+    unasl_timers_snapshot();
 
     timer_stop(0);
     tm = timer_read(0);
@@ -297,6 +304,9 @@ int main()
         tt = timer_read(2);
         printf("Random numbers: %9.3lf (%6.2lf)\n", tt, tt * 100.0 / tm);
     }
+
+    unasl_timers_snapshot();
+    unasl_timers_print();
 
     return 0;
 }
