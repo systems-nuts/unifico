@@ -1,0 +1,5 @@
+{
+    "c_flags": "-Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -O0 -Wall",
+    "opt_flags": "",
+    "llc_flags": "-enable-misched=false"
+}
