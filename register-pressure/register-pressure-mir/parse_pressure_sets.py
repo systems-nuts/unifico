@@ -36,7 +36,9 @@ REG_CLASS_REGEX = re.compile(
 )
 
 
-def get_pressure_sets(input_file, function_block, machine_instruction):
+def get_pressure_sets(
+    input_file, function_block, machine_instruction, skip_if
+):
     """
     Get the pressure sets at a specific LLVM Machine Instruction (if given),
     from the particular function block, e.g.,
@@ -49,6 +51,7 @@ def get_pressure_sets(input_file, function_block, machine_instruction):
     @param input_file: Path to debug output file
     @param function_block: E.g., loop:%bb.0
     @param machine_instruction: LLVM MI, e.g., `MOV32mi %stack.0.retval, 1, $noreg, 0`
+    @param skip_if: Whether we skip the `if` block
     @return: List of Dictionaries with pressure sets
     """
     with open(input_file, "r") as objdump_file:
@@ -64,7 +67,7 @@ def get_pressure_sets(input_file, function_block, machine_instruction):
 
             if not function_block or line.startswith(function_block):
                 # skip the `if`
-                if line.find(" if.") == -1:
+                if not skip_if or (skip_if and line.find(" if.") == -1):
                     skip_function = False
 
             if (
@@ -174,10 +177,17 @@ arg_parser.add_argument(
     help="Machine instruction name",
 )
 
+arg_parser.add_argument(
+    "-s", "--skip_if", type=bool, default=False, help="Skip the if-block"
+)
+
 
 def __main__(args: argparse.Namespace):
     pressure_sets_list = get_pressure_sets(
-        args.input_file, args.basic_block, args.machine_instruction
+        args.input_file,
+        args.basic_block,
+        args.machine_instruction,
+        args.skip_if,
     )
     print(
         max(
