@@ -11,12 +11,12 @@ TEST_SUITE += mg-interp-umaddl
 
 all:
 	for W in $(TEST_SUITE); do \
-		make -C $$W; \
+		make -C $$W PROJECT_DIR=../../..; \
 	done
 
 test:
 	for W in $(TEST_SUITE); do \
-		(make -C $$W stackmaps-check) || exit 1; \
+		(make -C $$W stackmaps-check PROJECT_DIR=../../..) || exit 1; \
 	done
 
 clean:
