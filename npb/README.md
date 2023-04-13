@@ -68,9 +68,9 @@ runs/run_bmks.py -c main_example.json
 ```bash
 # calculate speed-up manually
 # copy the geomean result to the csv file
-vi data/cc2023_arm_speedup.csv
+vi data/asplos2023/asplos2023_arm_speedup.csv
 
 # plot figure
-plots/plot_barchart.py -f data/cc2023_arm_speedup.csv -s default -c plots/configs/speedup/barchart_arm.json
+plots/plot_barchart.py -f data/asplos2023/asplos2023_arm_speedup.csv -s default -c plots/configs/speedup/barchart_arm.json
 ```
 
