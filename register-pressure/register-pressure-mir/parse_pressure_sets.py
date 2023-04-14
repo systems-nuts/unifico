@@ -61,9 +61,20 @@ def get_pressure_sets(
         skip_function = True
         skip_instruction = True
         pressure_sets = {}
-        pressure_sets_list = []
+        pressure_sets_list = {}
 
         for index, line in enumerate(lines):
+
+            if line.find(":%bb.") != -1:
+                block_name = line
+                if function_block and not line.startswith(function_block):
+                    skip_function = True
+
+            if line.find("From:") != -1:
+                block_name += line
+
+            if line.find("To:") != -1:
+                block_name += line
 
             if not function_block or line.startswith(function_block):
                 # skip the `if`
@@ -99,7 +110,8 @@ def get_pressure_sets(
                 continue
 
             if line.startswith("Live In:"):
-                pressure_sets_list.append(pressure_sets)
+                if len(pressure_sets) != 0:
+                    pressure_sets_list.update({block_name: pressure_sets})
                 pressure_sets = {}
                 start_counting = False
                 skip_function = True
@@ -189,14 +201,15 @@ def __main__(args: argparse.Namespace):
         args.machine_instruction,
         args.skip_if,
     )
-    print(
-        max(
-            [
-                calculate_pressure(pressure_sets)
-                for pressure_sets in pressure_sets_list
-            ]
-        )
+    if len(pressure_sets_list) == 0:
+        return
+    max_block = max(
+        pressure_sets_list.items(),
+        key=lambda item: calculate_pressure(item[1]),
     )
+    block_name, pressure_sets = max_block
+    max_pressure = calculate_pressure(pressure_sets)
+    print(block_name, "with: ", max_pressure)
 
 
 if __name__ == "__main__":
