@@ -259,6 +259,12 @@ src_changed: *.c
 %_aarch64_init.o: %_opt.ll
 	@echo " [LLC] $@"
 	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -o $(<:_opt.ll=_aarch64_init.o) $<
+	$(QUIET){ \
+		for PASS in $(LLC_PASSES_TO_DEBUG); do \
+		$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -o  $(<:_opt.ll=_aarch64_init.o) $< -debug-only=$$PASS 2>$(ARM64_BUILD)/$*_$${PASS}_init.txt; \
+		done \
+		}
+
 
 %_aarch64.o: %_cs_align.json %_opt.ll
 	@echo " [LLC WITH CALLSITE ALIGNMENT] $@"
@@ -312,6 +318,12 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 %_x86_64_init.o: %_opt.ll
 	@echo " [LLC] $@"
 	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -o $(<:_opt.ll=_x86_64_init.o) $<
+	$(QUIET){ \
+		for PASS in $(LLC_PASSES_TO_DEBUG); do \
+		$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -o $(<:_opt.ll=_x86_64_init.o) $< -debug-only=$$PASS 2>$(X86_64_BUILD)/$*_$${PASS}_init.txt; \
+		done \
+		}
+
 
 %_x86_64.o: %_cs_align.json %_opt.ll %_aarch64.o
 	@echo " [LLC WITH CALLSITE ALIGNMENT] $@"
