@@ -71,6 +71,7 @@ runs/run_bmks.py -c main_example.json
 vi data/asplos2023/asplos2023_arm_speedup.csv
 
 # plot figure
-plots/plot_barchart.py -f data/asplos2023/asplos2023_arm_speedup.csv -s default -c plots/configs/speedup/barchart_arm.json
+plots/plot_barchart.py -f data/asplos2023/asplos2023_arm_speedup.csv -s plots/configs/speedup/barchart_arm.mplstyle -c plots/configs/speedup/barchart_arm.json
+plots/plot_barchart.py -f data/asplos2023/asplos2023_x86_speedup.csv -s plots/configs/speedup/barchart_x86.mplstyle -c plots/configs/speedup/barchart_x86.json
 ```
 
