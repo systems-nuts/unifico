@@ -38,19 +38,14 @@ def plot(datafile, stylefile, configfile, interactive=False):
 
     cfg_plot = cfg["plot"]
 
-    index_col = 0
-    if "index_column" in cfg_plot:
-        index_col = cfg_plot["index_column"]
+    index_col = cfg_plot.get("index_column", 0)
 
     filename, _ = os.path.splitext(datafile)
     df = pd.read_csv(datafile, index_col=index_col)
 
     _, axis = plt.subplots()
 
-    colors = []
-    if "colors" in cfg:
-        colors = cfg["colors"]
-
+    colors = cfg.get("colors", [])
     fill_colors(colors, len(df.columns))
 
     df.plot(
@@ -78,19 +73,16 @@ def plot(datafile, stylefile, configfile, interactive=False):
 
     axis.grid(axis=cfg["axis"]["grid"])
 
-    if "legend" not in cfg:
+    cfg_legend = cfg.get("legend", None)
+    if cfg_legend is None:
         axis.get_legend().remove()
     else:
-        cfg_legend = cfg["legend"]
-
-        frame_linewidth = cfg_legend["frame_linewidth"]
+        frame_linewidth = cfg_legend.get("frame_linewidth", 0.5)
         del cfg_legend["frame_linewidth"]
 
         _, _ = axis.get_legend_handles_labels()
         legend1 = axis.legend(**cfg_legend)
         legend1.get_frame().set_linewidth(frame_linewidth)
-
-    axis.get_legend().get_frame().set_linewidth(frame_linewidth)
 
     if interactive:
         plt.show()
