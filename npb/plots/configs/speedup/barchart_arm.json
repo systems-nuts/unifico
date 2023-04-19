@@ -6,7 +6,6 @@
         "height": 4,
         "bar_width": 0.85
     },
-
     "axis": {
         "grid": "y",
         "xlabel": "",
@@ -29,9 +28,9 @@
         }
     },
     "legend": {
-        "columns": 4,
-        "frame_linewidth": 0.4,
+        "ncol": 4,
         "title": "Input Class",
+        "frame_linewidth": 0.4,
         "anchor": [
             0,
             1,

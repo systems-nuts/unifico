@@ -6,11 +6,10 @@
         "height": 4,
         "bar_width": 0.85
     },
-
     "axis": {
         "grid": "y",
         "xlabel": "",
-        "ylabel": "Execution time (secs)",
+        "ylabel": "Execution Time (secs)",
         "yscale": "linear",
         "ylim": [
             0,
@@ -33,9 +32,9 @@
         }
     },
     "legend": {
-        "columns": 3,
+        "ncol": 3,
         "frame_linewidth": 0.4,
-        "anchor": [
+        "bbox_to_anchor": [
             0,
             1.04,
             1,

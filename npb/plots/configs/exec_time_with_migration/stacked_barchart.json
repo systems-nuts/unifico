@@ -31,15 +31,15 @@
         "xticks_expand_by": 0.5
     },
     "legend": {
-        "title": "Location of Execution with Migration",
         "ncol": 2,
+        "title": "Location of Execution with Migration",
+        "frame_linewidth": 0.4,
         "bbox_to_anchor": [
             0,
             1.04,
             1,
             0
-        ],
-        "frame_linewidth": 0.4
+        ]
     },
     "colors": [
         "#998ec3",
