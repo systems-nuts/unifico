@@ -49,19 +49,21 @@ def plot(datafile, stylefile, configfile, interactive=False):
     fill_colors(colors, len(df.columns))
 
     df.plot(
+        ax=axis,
         kind=cfg_plot["kind"],
         logy=cfg_plot["logy"],
-        ax=axis,
         figsize=(cfg_plot["width"], cfg_plot["height"]),
         width=cfg_plot["bar_width"],
         color=colors,
+        legend=False,
     )
 
     cfg_axis = cfg["axis"]
 
-    plt.xticks(rotation=cfg_axis["xticks"]["rotation"]),
-    axis.set_yscale(cfg_axis["yscale"])
+    xticks_cfg = cfg_axis.get("xticks", {})
+    plt.xticks(**xticks_cfg)
 
+    axis.set_yscale(cfg_axis["yscale"])
     axis.set_ylim(cfg_axis["ylim"])
     plt.yticks(ticks=cfg_axis["yticks"]["values"])
 
@@ -73,16 +75,15 @@ def plot(datafile, stylefile, configfile, interactive=False):
 
     axis.grid(axis=cfg["axis"]["grid"])
 
-    cfg_legend = cfg.get("legend", None)
-    if cfg_legend is None:
-        axis.get_legend().remove()
-    else:
+    if cfg_legend := cfg.get("legend", None):
         frame_linewidth = cfg_legend.get("frame_linewidth", 0.5)
         del cfg_legend["frame_linewidth"]
 
         _, _ = axis.get_legend_handles_labels()
         legend1 = axis.legend(**cfg_legend)
         legend1.get_frame().set_linewidth(frame_linewidth)
+    else:
+        axis.get_legend().remove()
 
     if interactive:
         plt.show()

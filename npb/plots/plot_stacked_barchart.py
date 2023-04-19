@@ -38,37 +38,30 @@ def plot(datafile, stylefile, configfile, interactive=False):
 
     cfg_plot = cfg["plot"]
 
-    index_col = 0
-    if "index_column" in cfg_plot:
-        index_col = cfg_plot["index_column"]
+    index_col = cfg_plot.get("index_column", 0)
 
     filename, _ = os.path.splitext(datafile)
     df = pd.read_csv(datafile, index_col=index_col)
 
     _, axis = plt.subplots()
 
-    colors = []
-    if "colors" in cfg:
-        colors = cfg["colors"]
-
+    colors = cfg.get("colors", [])
     fill_colors(colors, len(df.columns))
-
-    groupby = None
-    if "group" in cfg:
-        groupby = cfg["group"]["by"]
 
     df_all = []
     group_labels = []
 
-    if not groupby:
-        df_all.append(df)
-    else:
+    group_cfg = cfg.get("group", None)
+
+    if group_cfg and (groupby := group_cfg.get("by", None)):
         df_grouped = df.groupby(groupby)
         for dfg in df_grouped:
             for w in dfg[0]:
                 group_labels.append(w)
             g = dfg[1].drop(groupby, axis=1)
             df_all.append(g)
+    else:
+        df_all.append(df)
 
     for i, dfpart in enumerate(df_all):
         dfpart.plot(
@@ -86,12 +79,8 @@ def plot(datafile, stylefile, configfile, interactive=False):
 
     cfg_axis = cfg["axis"]
 
-    xticks_cfg = {}
-    if "xticks" in cfg_axis:
-        xticks_cfg = cfg_axis["xticks"]
+    xticks_cfg = cfg_axis.get("xticks", {})
     plt.xticks(**xticks_cfg)
-
-    xticks = axis.xaxis.get_major_locator().locs
 
     axis.set_yscale(cfg_axis["yscale"])
     axis.set_ylim(cfg_axis["ylim"])
@@ -108,22 +97,17 @@ def plot(datafile, stylefile, configfile, interactive=False):
     nstacks = len(df_all[0].columns)
     ncolumns = len(df_all)
 
-    if "legend" not in cfg:
-        axis.get_legend().remove()
-    else:
-        cfg_legend = cfg["legend"]
+    xticks = axis.xaxis.get_major_locator().locs
 
-        frame_linewidth = cfg_legend["frame_linewidth"]
+    if cfg_legend := cfg.get("legend", None):
+        frame_linewidth = cfg_legend.get("frame_linewidth", 0.5)
         del cfg_legend["frame_linewidth"]
 
         h, labels1 = axis.get_legend_handles_labels()
         legend1 = axis.legend(h[:nstacks], labels1[:nstacks], **cfg_legend)
         legend1.get_frame().set_linewidth(frame_linewidth)
 
-        group_cfg = None
-        if "group" in cfg:
-            group_cfg = cfg["group"]
-
+        if group_cfg:
             hatches = group_cfg["hatches"]
             alphas = group_cfg["alphas"]
             width = cfg_plot["bar_width"]
@@ -148,37 +132,32 @@ def plot(datafile, stylefile, configfile, interactive=False):
                 }
                 n.append(axis.bar(0, 0, **bar_params))
 
-            groups_legend_params = {}
-            if "legend" in group_cfg:
-                groups_legend_params = group_cfg["legend"]
+            groups_legend_params = group_cfg.get("legend", {})
 
             groups_legend = plt.legend(n, group_labels, **groups_legend_params)
 
             axis.add_artist(groups_legend)
 
         axis.add_artist(legend1)
+    else:
+        axis.get_legend().remove()
 
-    if "xticks_expand_by" in cfg_axis:
-        v = abs(cfg_axis["xticks_expand_by"])
+    if v := cfg_axis.get("xticks_expand_by", 0):
         xticks_cfg["ticks"] = [xticks[0] - v, *xticks, xticks[-1] + v]
         plt.xticks(**xticks_cfg)
 
     nstack = len(df_all[0].columns)
+
     to_label = []
-    patches_to_label = group_cfg["patches_to_label"]
-    for i in patches_to_label:
+    for i in group_cfg.get("patches_to_label", []):
         to_label.extend(
             j for j in range(i, i + len(axis.containers) - ncolumns, nstack)
         )
 
-    patch_label_cfg = {}
-    if to_label and "patch_label" in group_cfg:
-        patch_label_cfg = group_cfg["patch_label"]
-
-    patch_label_cfg = group_cfg["patch_label"]
-    for j, p in enumerate(axis.containers):
-        if j in to_label:
-            axis.bar_label(p, **patch_label_cfg)
+    if to_label and (patch_label_cfg := group_cfg.get("patch_label", None)):
+        for j, p in enumerate(axis.containers):
+            if j in to_label:
+                axis.bar_label(p, **patch_label_cfg)
 
     if interactive:
         plt.show()
