@@ -132,8 +132,7 @@ def plot(datafile, stylefile, configfile, interactive=False):
             groups_legend = plt.legend(n, group_labels, **groups_legend_params)
 
             axis.add_artist(groups_legend)
-
-        axis.add_artist(legend1)
+            axis.add_artist(legend1)
     else:
         axis.get_legend().remove()
 
