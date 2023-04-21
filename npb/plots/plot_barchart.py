@@ -15,17 +15,15 @@ def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
 
-def fill_colors(colors, expected_colors):
-    if len(colors) < expected_colors:
-        eprint("warning: using default values for colors")
+def fill_color(color, expected_color):
+    if len(color) < expected_color:
+        eprint("warning: using default values for color")
 
         cmap = mpl.colormaps["Greys"]
-        step = 1.0 / expected_colors
-        for i in range(0, expected_colors):
-            if i not in colors:
-                colors.append(cmap((i + 1) * step))
-
-    return colors
+        step = 1.0 / expected_color
+        for i in range(0, expected_color):
+            if i not in color:
+                color.append(cmap((i + 1) * step))
 
 
 def plot(datafile, stylefile, configfile, interactive=False):
@@ -36,27 +34,27 @@ def plot(datafile, stylefile, configfile, interactive=False):
     with open(configfile) as jsonfile:
         cfg = json.load(jsonfile)
 
-    cfg_plot = cfg["plot"]
+    cfg_df = cfg.setdefault("df", {})
 
-    index_col = cfg_plot.get("index_column", 0)
+    cfg_df.setdefault("index_col", 0)
 
     filename, _ = os.path.splitext(datafile)
-    df = pd.read_csv(datafile, index_col=index_col)
+    df = pd.read_csv(datafile, **cfg_df)
 
     _, axis = plt.subplots()
 
-    colors = cfg.get("colors", [])
-    fill_colors(colors, len(df.columns))
+    cfg_plot = cfg.setdefault("plot", {})
 
-    df.plot(
-        ax=axis,
-        kind=cfg_plot["kind"],
-        logy=cfg_plot["logy"],
-        figsize=(cfg_plot["width"], cfg_plot["height"]),
-        width=cfg_plot["bar_width"],
-        color=colors,
-        legend=False,
-    )
+    color = cfg_plot.get("color", [])
+    fill_color(color, len(df.columns))
+    cfg_plot["color"] = color
+
+    cfg_plot["figsize"] = tuple(cfg_plot.setdefault("figsize", (8, 5)))
+
+    plot_kind = cfg_plot.setdefault("kind", "bar")
+    cfg_plot_kind = cfg.setdefault(plot_kind, {})
+
+    df.plot(ax=axis, legend=False, **cfg_plot, **cfg_plot_kind)
 
     cfg_axis = cfg["axis"]
 
