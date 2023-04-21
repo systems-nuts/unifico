@@ -1,10 +1,18 @@
 {
     "plot": {
-        "kind": "bar",
         "logy": true,
-        "width": 8,
-        "height": 4,
-        "bar_width": 0.85
+        "figsize": [
+            8,
+            4
+        ],
+        "color": [
+            "#7fcdbb",
+            "#75a7cd",
+            "#e0edf2"
+        ]
+    },
+    "bar": {
+        "width": 0.85
     },
     "axis": {
         "grid": "y",
@@ -37,10 +45,5 @@
             1,
             0.1
         ]
-    },
-    "colors": [
-        "#7fcdbb",
-        "#75a7cd",
-        "#e0edf2"
-    ]
+    }
 }

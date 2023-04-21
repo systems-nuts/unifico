@@ -1,11 +1,23 @@
 {
     "plot": {
-        "kind": "bar",
         "stacked": true,
+        "sharey": true,
+        "sharex": true,
         "logy": false,
-        "width": 8,
-        "height": 5,
-        "bar_width": 0.25
+        "figsize": [
+            8,
+            5
+        ],
+        "color": [
+            "#998ec3",
+            "#f5f5f5",
+            "#f1a340",
+            "#f5f5f5",
+            "#998ec3"
+        ]
+    },
+    "bar": {
+        "width": 0.25
     },
     "axis": {
         "grid": "y",
@@ -41,13 +53,6 @@
             0
         ]
     },
-    "colors": [
-        "#998ec3",
-        "#f5f5f5",
-        "#f1a340",
-        "#f5f5f5",
-        "#998ec3"
-    ],
     "group": {
         "by": [
             "class"
