@@ -54,7 +54,23 @@ def plot(datafile, stylefile, configfile, interactive=False):
     plot_kind = cfg_plot.setdefault("kind", "bar")
     cfg_plot_kind = cfg.setdefault(plot_kind, {})
 
-    df.plot(ax=axis, legend=False, **cfg_plot, **cfg_plot_kind)
+    df_all = []
+    group_labels = []
+
+    group_cfg = cfg.get("group", None)
+
+    if group_cfg and (groupby := group_cfg.get("by", None)):
+        df_grouped = df.groupby(groupby)
+        for dfg in df_grouped:
+            for w in dfg[0]:
+                group_labels.append(w)
+            g = dfg[1].drop(groupby, axis=1)
+            df_all.append(g)
+    else:
+        df_all.append(df)
+
+    for i, dfpart in enumerate(df_all):
+        dfpart.plot(ax=axis, legend=False, **cfg_plot, **cfg_plot_kind)
 
     cfg_axis = cfg["axis"]
 
@@ -73,15 +89,71 @@ def plot(datafile, stylefile, configfile, interactive=False):
 
     axis.grid(axis=cfg["axis"]["grid"])
 
+    nstacks = len(df_all[0].columns)
+    ncolumns = len(df_all)
+
+    xticks = axis.xaxis.get_major_locator().locs
+
     if cfg_legend := cfg.get("legend", None):
         frame_linewidth = cfg_legend.get("frame_linewidth", 0.5)
         del cfg_legend["frame_linewidth"]
 
-        _, _ = axis.get_legend_handles_labels()
-        legend1 = axis.legend(**cfg_legend)
+        h, labels1 = axis.get_legend_handles_labels()
+        legend1 = axis.legend(h[:nstacks], labels1[:nstacks], **cfg_legend)
         legend1.get_frame().set_linewidth(frame_linewidth)
+
+        if group_cfg:
+            hatches = group_cfg["hatches"]
+            alphas = group_cfg["alphas"]
+            width = axis.patches[0].get_width()
+            mid_point = ncolumns * width / 2.0
+
+            for i in range(0, ncolumns * nstacks, nstacks):
+                ncol = int(i / nstacks)
+                for j, pa in enumerate(h[i : (i + nstacks)]):
+                    for k, rect in enumerate(pa.patches):
+                        rect.set_x(xticks[k] - mid_point + ncol * width)
+                        rect.set_hatch(hatches[ncol])
+                        rect.set_alpha(alphas[ncol])
+
+            # add invisible data to add another legend
+            n = []
+            for i in range(ncolumns):
+                bar_params = {
+                    "color": "gray",
+                    "alpha": alphas[i],
+                    "hatch": hatches[i],
+                    "width": 0,
+                }
+                n.append(axis.bar(0, 0, **bar_params))
+
+            groups_legend_params = group_cfg.get("legend", {})
+
+            groups_legend = plt.legend(n, group_labels, **groups_legend_params)
+
+            axis.add_artist(groups_legend)
+            axis.add_artist(legend1)
     else:
         axis.get_legend().remove()
+
+    if v := cfg_axis.get("xticks_expand_by", 0):
+        xticks_cfg["ticks"] = [xticks[0] - v, *xticks, xticks[-1] + v]
+        plt.xticks(**xticks_cfg)
+
+    nstack = len(df_all[0].columns)
+
+    to_label = None
+    if group_cfg:
+        for i in group_cfg.get("patches_to_label", []):
+            to_label = [
+                j
+                for j in range(i, i + len(axis.containers) - ncolumns, nstack)
+            ]
+
+    if to_label and (patch_label_cfg := group_cfg.get("patch_label", None)):
+        for j, p in enumerate(axis.containers):
+            if j in to_label:
+                axis.bar_label(p, **patch_label_cfg)
 
     if interactive:
         plt.show()
