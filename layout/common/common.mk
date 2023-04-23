@@ -36,8 +36,8 @@ override LLC_FLAGS  += -disable-block-align --mc-relax-all
 # Custom
 override LLC_FLAGS  += -disable-x86-frame-obj-order -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -enable-misched=false
 
-override LLC_FLAGS_ARM64 += -mattr=+disable-hoist-in-lowering,+disable-fp-imm-materialize,-avoid-f128,+avoid-wide-mul-add
-override LLC_FLAGS_X86 += -mattr=+aarch64-sized-imm,-multiply-with-imm,-non-zero-imm-to-mem,+force-vector-mem-op,+aarch64-constant-cost-model,+simple-reg-offset-addr,+avoid-opt-mul-1 -no-x86-call-frame-opt
+override LLC_FLAGS_ARM64 += -mattr=-disable-hoist-in-lowering,+disable-fp-imm-materialize,-avoid-f128,+avoid-wide-mul-add
+override LLC_FLAGS_X86 += -mattr=+aarch64-sized-imm,-multiply-with-imm,-non-zero-imm-to-mem,+force-vector-mem-op,+aarch64-constant-cost-model,+simple-reg-offset-addr,+avoid-opt-mul-1 -no-x86-call-frame-opt -x86-enable-simplify-cfg
 endif
 
 LLC_PASSES_TO_DEBUG	?= isel regalloc stackmaps stacktransform
