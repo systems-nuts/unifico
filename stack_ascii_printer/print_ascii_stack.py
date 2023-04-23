@@ -398,6 +398,14 @@ def parse_x86_asm(input_file, func_name="main", callsite=1):
                 program_state.push(value, offset)
                 continue
 
+            # Parse callsite
+            match_result = X86_CALLSITE.match(line)
+            if match_result:
+                program_state.callsites += 1
+                if program_state.callsites == callsite:
+                    break
+                continue
+
         program_state.print_state()
 
 
