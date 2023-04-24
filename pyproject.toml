@@ -23,12 +23,6 @@ extend-exclude = '''
 name = "Unifiqo"
 version = "0.0.1"
 
-[tool.setuptools.package-dir]
-"stack_ascii_printer" = "stack_ascii_printer"
-
-[project.scripts]
-stack-ascii = "stack_ascii_printer.print_ascii_stack:__main__"
-
 dependencies = [
   "contourpy==1.0.7",
   "cycler==0.11.0",
@@ -45,3 +39,10 @@ dependencies = [
   "six==1.16.0",
   "tzdata==2023.3"
 ]
+
+[tool.setuptools.package-dir]
+"stack_ascii_printer" = "stack_ascii_printer"
+
+[project.scripts]
+stack-ascii = "stack_ascii_printer.print_ascii_stack:__main__"
+
