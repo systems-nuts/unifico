@@ -1,0 +1,92 @@
+{
+    "plot": {
+        "stacked": true,
+        "sharey": true,
+        "sharex": true,
+        "logy": false,
+        "figsize": [
+            8,
+            5
+        ],
+        "color": [
+            "#998ec3",
+            "#f5f5f5",
+            "#f1a340",
+            "#f5f5f5",
+            "#998ec3"
+        ]
+    },
+    "bar": {
+        "width": 0.25
+    },
+    "axis": {
+        "grid": "y",
+        "xlabel": "",
+        "ylabel": "Execution Time (\\%)",
+        "yscale": "linear",
+        "ylim": [
+            0,
+            100
+        ],
+        "xticks": {
+            "rotation": 0
+        },
+        "yticks": {
+            "values": [
+                0,
+                25,
+                50,
+                75,
+                100
+            ]
+        },
+        "xticks_expand_by": 0.5
+    },
+    "legend": {
+        "ncol": 2,
+        "title": "Location of Execution with Migration",
+        "frame_linewidth": 0.4,
+        "bbox_to_anchor": [
+            0,
+            1.04,
+            1,
+            0
+        ]
+    },
+    "group": {
+        "by": [
+            "class"
+        ],
+        "hatches": [
+            "",
+            "",
+            ""
+        ],
+        "alphas": [
+            0.2,
+            0.5,
+            1
+        ],
+        "legend": {
+            "ncol": 3,
+            "title": "Input Class",
+            "loc": "lower center",
+            "bbox_to_anchor": [
+                -0.08,
+                1.04,
+                1.8,
+                0.2
+            ],
+            "alignment": "center"
+        },
+        "patches_to_label": [
+            2
+        ],
+        "patch_label": {
+            "fmt": "%d",
+            "color": "black",
+            "fontsize": 15,
+            "label_type": "center"
+        }
+    }
+}
