@@ -10,6 +10,15 @@
 | callsite-padding            | JSON file with padding values for callsites                                     | string |    Yes |
 
 
+# Testing
+
+Run:
+
+```bash
+cd <path-to-layout-folder>
+make test
+```
+
 ## Directory structure
 
 * *common/*: Contains some common functionality files
