@@ -547,5 +547,6 @@ scripts
 var/Static_Binary_Translation
 plots/stack-depth-and-size
 layout/experimentation
+*.zip
 
 !requirements.txt
