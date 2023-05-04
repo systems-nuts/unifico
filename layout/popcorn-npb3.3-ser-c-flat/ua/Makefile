@@ -39,13 +39,14 @@ LD      := $(POPCORN)/bin/ld.gold
 LDFLAGS := -z noexecstack -z relro --hash-style=gnu --build-id -static
 LIBS    := /lib/crt1.o \
            /lib/libc.a \
-           /lib/libopenpop.a \
            /lib/libmigrate.a \
            /lib/libstack-transform.a \
            /lib/libelf.a \
            /lib/libpthread.a \
            /lib/libc.a \
            /lib/libm.a
+           #/lib/libopenpop.a \
+
 LIBGCC  := --start-group -lgcc -lgcc_eh --end-group
 
 # Alignment
