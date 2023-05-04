@@ -1,7 +1,7 @@
 
 all:
 	for W in bt cg dc ep ft is lu mg sp ua; do \
-		make -C $$W; \
+		make -j10 -C $$W aligned; \
 	done
 
 .PHONY: clean
