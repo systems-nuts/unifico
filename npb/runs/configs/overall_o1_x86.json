@@ -1,0 +1,40 @@
+{
+    "info": {},
+    "tags": [
+        "overall_abs_time_o1_x86_c"
+    ],
+    "executables": [
+        "bt_x86_64_aligned.out",
+        "cg_x86_64_aligned.out",
+        "ep_x86_64_aligned.out",
+        "ft_x86_64_aligned.out",
+        "is_x86_64_aligned.out",
+        "mg_x86_64_aligned.out",
+        "lu_x86_64_aligned.out",
+        "sp_x86_64_aligned.out",
+        "ua_x86_64_aligned.out"
+    ],
+
+    "*": {
+        "bindir": "npb_bins_20230504/",
+        "env": {},
+        "iterations": 3,
+        "output": "run_c_${executable}_${iteration}.log",
+        "prepend": [
+            "/usr/bin/time -f %e"
+        ],
+        "append": [],
+        "commands": [
+            {
+                "before": false,
+                "args": [
+                    "tail",
+                    "-n1",
+                    "-q",
+                    "run_c_${executable}*.log"
+                ],
+                "output": "time_init_c_${executable}.log"
+            }
+        ]
+    }
+}
