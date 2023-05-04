@@ -1,0 +1,64 @@
+
+
+ NAS Parallel Benchmarks (NPB3.3-SER-C) - BT Benchmark
+
+ No input file inputbt.data. Using compiled defaults
+ Size:   64x  64x  64
+ Iterations:  200    dt:   0.000800
+
+ Time step    1
+ Time step   20
+ Time step   40
+ Time step   60
+ Time step   80
+ Time step  100
+ Time step  120
+ Time step  140
+ Time step  160
+ Time step  180
+ Time step  200
+ Verification being performed for class A
+ accuracy setting for epsilon =  1.0000000000000E-08
+ Comparison of RMS-norms of residual
+           1 1.0806346714637E+02 1.0806346714637E+02 7.4957683679475E-15
+           2 1.1319730901221E+01 1.1319730901221E+01 4.7077713814080E-15
+           3 2.5974354511582E+01 2.5974354511582E+01 5.7446653560951E-15
+           4 2.3665622544679E+01 2.3665622544679E+01 1.1409217698756E-14
+           5 2.5278963211749E+02 2.5278963211748E+02 1.1917819470629E-14
+ Comparison of RMS-norms of solution error
+           1 4.2348416040525E+00 4.2348416040525E+00 2.0973120195338E-16
+           2 4.4390282496996E-01 4.4390282496996E-01 0.0000000000000E+00
+           3 9.6692480136346E-01 9.6692480136346E-01 2.2963999331895E-16
+           4 8.8302063039765E-01 8.8302063039765E-01 0.0000000000000E+00
+           5 9.7379901770829E+00 9.7379901770829E+00 1.8241513978733E-16
+ Verification Successful
+
+
+ BT Benchmark Completed.
+ Class           =                        A
+ Size            =             64x  64x  64
+ Iterations      =                      200
+ Time in seconds =                    47.28
+ Mop/s total     =                  3559.40
+ Operation type  =           floating point
+ Verification    =               SUCCESSFUL
+ Version         =                    3.3.1
+ Compile date    =              03 Nov 2017
+
+ Compile options:
+    CC           = gcc
+    CLINK        = $(CC)
+    C_LIB        = -lm
+    C_INC        = -I../common
+    CFLAGS       = -g -Wall -O3 -mcmodel=medium
+    CLINKFLAGS   = -O3 -mcmodel=medium
+    RAND         = (none)
+
+--------------------------------------
+ Please send all errors/feedbacks to:
+ Center for Manycore Programming
+ cmp@aces.snu.ac.kr
+ http://aces.snu.ac.kr
+--------------------------------------
+
+47.69

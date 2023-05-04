@@ -1,0 +1,87 @@
+
+
+ NAS Parallel Benchmarks (NPB3.3-SER-C) - UA Benchmark
+
+ No input file inputua.data. Using compiled defaults
+ Levels of refinement:        6
+ Adaptation frequency:        5
+ Time steps:                200    dt:    6.250000E-04
+ CG iterations:              10
+ Heat source radius:     0.0759
+
+Step    0: elements refined, merged, total:   286      0   2003
+Step    5: elements refined, merged, total:    15    472   1695
+Step   10: elements refined, merged, total:    24     88   1786
+Step   15: elements refined, merged, total:    33    120   1912
+Step   20: elements refined, merged, total:    20    136   1933
+Step   25: elements refined, merged, total:    43    192   2066
+Step   30: elements refined, merged, total:    30    240   2066
+Step   35: elements refined, merged, total:    23    112   2129
+Step   40: elements refined, merged, total:    17    296   1989
+Step   45: elements refined, merged, total:    24    120   2052
+Step   50: elements refined, merged, total:    20    112   2094
+Step   55: elements refined, merged, total:    15    288   1947
+Step   60: elements refined, merged, total:    44    160   2115
+Step   65: elements refined, merged, total:    21    272   2024
+Step   70: elements refined, merged, total:    17    200   1968
+Step   75: elements refined, merged, total:    18    376   1765
+Step   80: elements refined, merged, total:    18    160   1751
+Step   85: elements refined, merged, total:    30     72   1898
+Step   90: elements refined, merged, total:    12    224   1786
+Step   95: elements refined, merged, total:    69    136   2150
+Step  100: elements refined, merged, total:    28    200   2171
+Step  105: elements refined, merged, total:    18    344   1996
+Step  110: elements refined, merged, total:    24     88   2087
+Step  115: elements refined, merged, total:    22    120   2136
+Step  120: elements refined, merged, total:    15    136   2122
+Step  125: elements refined, merged, total:    33    232   2150
+Step  130: elements refined, merged, total:    25    320   2045
+Step  135: elements refined, merged, total:    18    120   2066
+Step  140: elements refined, merged, total:    15    520   1716
+Step  145: elements refined, merged, total:    24    120   1779
+Step  150: elements refined, merged, total:    25    112   1856
+Step  155: elements refined, merged, total:    18    248   1765
+Step  160: elements refined, merged, total:    57    112   2066
+Step  165: elements refined, merged, total:    26    176   2094
+Step  170: elements refined, merged, total:    21    192   2073
+Step  175: elements refined, merged, total:    18    256   1975
+Step  180: elements refined, merged, total:    18    160   1961
+Step  185: elements refined, merged, total:    22     72   2052
+Step  190: elements refined, merged, total:    13    272   1905
+Step  195: elements refined, merged, total:    41    176   2038
+
+ Verification being performed for class A
+ accuracy setting for epsilon =  1.0000000000000E-08
+ Comparison of temperature integrals
+           8.9399962814432E-05 8.9399962814430E-05 3.0318865309150E-14
+ Verification Successful
+
+
+ UA Benchmark Completed.
+ Class           =                        A
+ Size            =                        6
+ Iterations      =                      200
+ Time in seconds =                    25.97
+ Mop/s total     =                    20.96
+ Operation type  =     coll. point advanced
+ Verification    =               SUCCESSFUL
+ Version         =                    3.3.1
+ Compile date    =              03 Nov 2017
+
+ Compile options:
+    CC           = gcc
+    CLINK        = $(CC)
+    C_LIB        = -lm
+    C_INC        = -I../common
+    CFLAGS       = -g -Wall -O3 -mcmodel=medium
+    CLINKFLAGS   = -O3 -mcmodel=medium
+    RAND         = (none)
+
+--------------------------------------
+ Please send all errors/feedbacks to:
+ Center for Manycore Programming
+ cmp@aces.snu.ac.kr
+ http://aces.snu.ac.kr
+--------------------------------------
+
+26.12
