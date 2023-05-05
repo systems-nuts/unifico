@@ -50,6 +50,12 @@ class NPBRunner:
         with open(self.args.config) as jsonfile:
             self.cfg = json.load(jsonfile)
 
+        self.env = self.cfg["env"]
+        for k in self.env:
+            print(f"Setting env: {k} = {self.env[k]}")
+            if not self.args.dryrun:
+                os.environ[k] = self.env[k]
+
         self.cwd = os.getcwd()
         self.bin_dir = self.get_abs_dir(self.cwd, self.cfg["bin_dir"])
 
@@ -106,12 +112,6 @@ class NPBRunner:
             )
 
     def build_benchmark(self, config, executable, dryrun=False):
-        env = config["env"]
-
-        for k in env:
-            print(f"Setting env: {k} = {env[k]}")
-            if not dryrun:
-                os.environ[k] = env[k]
 
         commands = config["build"]
 
@@ -167,12 +167,6 @@ class NPBRunner:
             self.build_benchmark(bench_cfg, benchmark, self.args.dryrun)
 
     def execute_benchmark(self, config, executable, dryrun=False):
-        env = config["env"]
-
-        for k in env:
-            print(f"Setting env: {k} = {env[k]}")
-            if not dryrun:
-                os.environ[k] = env[k]
 
         commands = config["commands"]
 

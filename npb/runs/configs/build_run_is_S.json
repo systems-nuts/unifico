@@ -6,10 +6,10 @@
     "executables": [
         "is_x86_64_aligned.out"
     ],
+    "env": {},
     "bin_dir": "bins",
 
     "*": {
-        "env": {},
         "iterations": 2,
         "output": "run_${executable}_${iteration}.log",
         "prepend": [],
