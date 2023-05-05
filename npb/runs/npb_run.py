@@ -44,6 +44,7 @@ class NPBRunner:
             self.cfg = json.load(jsonfile)
 
         self.cwd = os.getcwd()
+        self.bin_dir = self.get_abs_dir(self.cwd, self.cfg["bin_dir"])
 
     @staticmethod
     def cmd_line_arguments(arg_parser: argparse.ArgumentParser):
@@ -113,7 +114,7 @@ class NPBRunner:
                     output=c["output"],
                 )
 
-        cmd = os.path.join(f"{config['bindir']}", f"{executable}")
+        cmd = os.path.join(f"{self.bin_dir}", f"{executable}")
 
         for i in range(config["iterations"]):
             self.execute_cmd(
