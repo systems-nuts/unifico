@@ -1,3 +1,9 @@
+## NPB Runner Pipeline
+
+* Install the project in editable mode with `pip install -e .`.
+* Run the tool as `npb <options>`
+
+
 ## Structure
 
 * **config/**: Keeps the configuration files used for NPB runs (as *make.def* and *suite.def*)
