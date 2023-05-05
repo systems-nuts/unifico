@@ -29,6 +29,9 @@ class NPBRunner:
                 \"executables\" config parameter.
                 - ${iteration}: The current iteration being performed based on the
                 "iterations" config parameter.
+                - ${npb_class}: The NPB class.
+                - ${build_dir}: The name of the build directory of each NPB benchmark.
+                - ${dest_dir}: Where to place the generated binaries after building.
 
                 These are applied to the following config parameters:
                 - "args"
