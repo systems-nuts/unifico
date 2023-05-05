@@ -118,6 +118,7 @@ class NPBRunner:
     def build_benchmark(self, config, executable, dryrun=False):
 
         commands = config["build"]
+        npb_class = config["npb_class"]
 
         for c in commands:
             # Assumes build dir are named bt/, cg/, etc, so you can infer the build dir from the first two letters.
@@ -126,6 +127,7 @@ class NPBRunner:
                 self.execute_cmd(
                     c["args"],
                     dryrun,
+                    npb_class=npb_class,
                     build_dir=build_dir,
                     executable=executable,
                     output="",
