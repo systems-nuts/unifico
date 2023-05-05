@@ -51,6 +51,9 @@ class NPBRunner:
         Add other/additional arguments by overloading this function.
         """
         arg_parser.add_argument(
+            "-r", "--run", required=False, default=False, action="store_true"
+        )
+        arg_parser.add_argument(
             "-c",
             "--config",
             const=str,
@@ -164,13 +167,16 @@ class NPBRunner:
                     'warning: "no iterations specified for {benchmark}!'
                 )
 
-            bench_cfg["bindir"] = self.get_abs_dir(cwd, bench_cfg["bindir"])
             self.execute_benchmark(bench_cfg, benchmark, self.args.dryrun)
+
+    def dispatch(self):
+        if self.args.run:
+            self.run()
 
 
 def __main__():
     npb_runner = NPBRunner()
-    npb_runner.run()
+    npb_runner.dispatch()
 
 
 if __name__ == "__main__":
