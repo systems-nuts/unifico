@@ -50,6 +50,10 @@ class NPBRunner:
         with open(self.args.config) as jsonfile:
             self.cfg = json.load(jsonfile)
 
+        if not len(self.cfg["executables"]):
+            self.eprint("Error: No executables specified")
+            exit(1)
+
         self.env = self.cfg["env"]
         for k in self.env:
             print(f"Setting env: {k} = {self.env[k]}")
@@ -141,10 +145,6 @@ class NPBRunner:
                 )
 
     def build(self):
-        if not len(self.cfg["executables"]):
-            self.eprint("Error: No executables to run specified")
-            exit(1)
-
         print(f"Creating dir: {self.bin_dir}")
         if not self.args.dryrun and not os.path.exists(self.bin_dir):
             os.mkdir(self.bin_dir)
@@ -179,6 +179,7 @@ class NPBRunner:
                     output=c["output"],
                 )
 
+        # Main benchmark execution command
         cmd = os.path.join(f"{self.bin_dir}", f"{executable}")
 
         for i in range(config["iterations"]):
@@ -200,10 +201,6 @@ class NPBRunner:
                 )
 
     def run(self):
-        if not len(self.cfg["executables"]):
-            self.eprint("Error: No executables to run specified")
-            exit(1)
-
         now = datetime.now()
         date = now.strftime("%Y%m%d")
         time = now.strftime("%H%M%S")
