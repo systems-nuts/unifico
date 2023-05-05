@@ -43,6 +43,8 @@ class NPBRunner:
         with open(self.args.config) as jsonfile:
             self.cfg = json.load(jsonfile)
 
+        self.cwd = os.getcwd()
+
     @staticmethod
     def cmd_line_arguments(arg_parser: argparse.ArgumentParser):
         """
@@ -136,13 +138,12 @@ class NPBRunner:
             self.eprint("error: no executables to run specified")
             exit(1)
 
-        cwd = os.getcwd()
         now = datetime.now()
         date = now.strftime("%Y%m%d")
         time = now.strftime("%H%M%S")
         sep = "_"
         run_wd = os.path.join(
-            cwd, sep.join(["run", *self.cfg["tags"], date, time])
+            self.cwd, sep.join(["run", *self.cfg["tags"], date, time])
         )
 
         if os.path.exists(run_wd):
