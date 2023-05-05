@@ -99,7 +99,7 @@ class NPBRunner:
 
         sargs = [Template(arg).safe_substitute(**kwargs) for arg in args]
 
-        print(f'executing command: {" ".join(sargs)}')
+        print(f'Executing command: {" ".join(sargs)}')
         if not dryrun:
             subprocess.run(
                 " ".join(sargs), shell=True, stderr=STDOUT, stdout=output
@@ -109,7 +109,7 @@ class NPBRunner:
         env = config["env"]
 
         for k in env:
-            print(f"setting env: {k} = {env[k]}")
+            print(f"Setting env: {k} = {env[k]}")
             if not dryrun:
                 os.environ[k] = env[k]
 
@@ -142,20 +142,20 @@ class NPBRunner:
 
     def build(self):
         if not len(self.cfg["executables"]):
-            self.eprint("error: no executables to run specified")
+            self.eprint("Error: No executables to run specified")
             exit(1)
 
-        print(f"creating dir: {self.bin_dir}")
+        print(f"Creating dir: {self.bin_dir}")
         if not self.args.dryrun and not os.path.exists(self.bin_dir):
             os.mkdir(self.bin_dir)
 
         build_dir = os.getenv("NPB_PATH")
 
         if not os.path.exists(build_dir):
-            self.eprint(f'error: "{build_dir}" does not exist!')
+            self.eprint(f'Error: "{build_dir}" does not exist!')
             exit(2)
 
-        print(f"changing working dir: {build_dir}")
+        print(f"Changing working dir: {build_dir}")
         if not self.args.dryrun:
             os.chdir(build_dir)
 
@@ -170,7 +170,7 @@ class NPBRunner:
         env = config["env"]
 
         for k in env:
-            print(f"setting env: {k} = {env[k]}")
+            print(f"Setting env: {k} = {env[k]}")
             if not dryrun:
                 os.environ[k] = env[k]
 
@@ -207,7 +207,7 @@ class NPBRunner:
 
     def run(self):
         if not len(self.cfg["executables"]):
-            self.eprint("error: no executables to run specified")
+            self.eprint("Error: No executables to run specified")
             exit(1)
 
         now = datetime.now()
@@ -219,14 +219,14 @@ class NPBRunner:
         )
 
         if os.path.exists(run_wd):
-            self.eprint('error: "{run_wd}" already exists!')
+            self.eprint('Error: "{run_wd}" already exists!')
             exit(2)
 
-        print(f"creating dir: {run_wd}")
+        print(f"Creating dir: {run_wd}")
         if not self.args.dryrun:
             os.mkdir(run_wd)
 
-        print(f"changing working dir: {run_wd}")
+        print(f"Changing working dir: {run_wd}")
         if not self.args.dryrun:
             os.chdir(run_wd)
 
@@ -237,7 +237,7 @@ class NPBRunner:
 
             if not int(bench_cfg["iterations"]):
                 self.eprint(
-                    'warning: "no iterations specified for {benchmark}!'
+                    'Warning: "No iterations specified for {benchmark}!'
                 )
 
             self.execute_benchmark(bench_cfg, benchmark, self.args.dryrun)
