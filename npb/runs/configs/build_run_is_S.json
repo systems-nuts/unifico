@@ -10,11 +10,26 @@
     "bin_dir": "bins",
 
     "*": {
+        "npb_class": "S",
         "iterations": 2,
         "output": "run_${executable}_${iteration}.log",
         "prepend": [],
         "append": [],
         "build": [
+            {
+                "before": true,
+                "args": [
+                    "make",
+                    "clean"
+                ]
+            },
+            {
+                "before": true,
+                "args": [
+                    "make",
+                    "${npb_class}"
+                ]
+            },
             {
                 "before": true,
                 "args": [
