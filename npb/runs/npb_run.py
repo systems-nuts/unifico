@@ -39,6 +39,13 @@ class NPBRunner:
         self.cmd_line_arguments(arg_parser)
         self.args = arg_parser.parse_args(args=args)
 
+        # If a build was requested, the location of the NPB top-level folder should be provided
+        if self.args.build:
+            if not os.environ.get("NPB_PATH"):
+                sys.exit(
+                    "Error: Please set the location of top-level NPB folder path (NPB_PATH)"
+                )
+
         self.cfg = json.loads("{}")
         with open(self.args.config) as jsonfile:
             self.cfg = json.load(jsonfile)
@@ -53,6 +60,9 @@ class NPBRunner:
 
         Add other/additional arguments by overloading this function.
         """
+        arg_parser.add_argument(
+            "-b", "--build", required=False, default=False, action="store_true"
+        )
         arg_parser.add_argument(
             "-r", "--run", required=False, default=False, action="store_true"
         )
@@ -94,6 +104,67 @@ class NPBRunner:
             subprocess.run(
                 " ".join(sargs), shell=True, stderr=STDOUT, stdout=output
             )
+
+    def build_benchmark(self, config, executable, dryrun=False):
+        env = config["env"]
+
+        for k in env:
+            print(f"setting env: {k} = {env[k]}")
+            if not dryrun:
+                os.environ[k] = env[k]
+
+        commands = config["build"]
+
+        for c in commands:
+            # Assumes build dir are named bt/, cg/, etc, so you can infer the build dir from the first two letters.
+            build_dir = executable[:2]
+            if c["before"]:
+                self.execute_cmd(
+                    c["args"],
+                    dryrun,
+                    build_dir=build_dir,
+                    executable=executable,
+                    output="",
+                )
+
+        for c in commands:
+            # Assumes build dir are named bt/, cg/, etc, so you can infer the build dir from the first two letters.
+            build_dir = executable[:2]
+            if not c["before"]:
+                self.execute_cmd(
+                    c["args"],
+                    dryrun,
+                    build_dir=build_dir,
+                    executable=executable,
+                    dest_dir=self.bin_dir,
+                    output="",
+                )
+
+    def build(self):
+        if not len(self.cfg["executables"]):
+            self.eprint("error: no executables to run specified")
+            exit(1)
+
+        print(f"creating dir: {self.bin_dir}")
+        if not self.args.dryrun and not os.path.exists(self.bin_dir):
+            os.mkdir(self.bin_dir)
+
+        build_dir = os.getenv("NPB_PATH")
+
+        if not os.path.exists(build_dir):
+            self.eprint(f'error: "{build_dir}" does not exist!')
+            exit(2)
+
+        print(f"changing working dir: {build_dir}")
+        if not self.args.dryrun:
+            os.chdir(build_dir)
+
+        for benchmark in self.cfg["executables"]:
+            bench_cfg = self.cfg["*"].copy()
+            if benchmark in self.cfg:
+                bench_cfg.update(self.cfg[benchmark])
+
+            self.build_benchmark(bench_cfg, benchmark, self.args.dryrun)
 
     def execute_benchmark(self, config, executable, dryrun=False):
         env = config["env"]
@@ -172,6 +243,8 @@ class NPBRunner:
             self.execute_benchmark(bench_cfg, benchmark, self.args.dryrun)
 
     def dispatch(self):
+        if self.args.build:
+            self.build()
         if self.args.run:
             self.run()
 
