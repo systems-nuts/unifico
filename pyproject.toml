@@ -42,7 +42,9 @@ dependencies = [
 
 [tool.setuptools.package-dir]
 "stack_ascii_printer" = "stack_ascii_printer"
+"npb" = "npb/runs"
 
 [project.scripts]
 stack-ascii = "stack_ascii_printer.print_ascii_stack:__main__"
+npb = "npb.npb_run:__main__"
 
