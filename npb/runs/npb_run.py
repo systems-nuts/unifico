@@ -64,6 +64,27 @@ class NPBRunner:
                 os.environ[k] = self.env[k]
 
         self.cwd = os.getcwd()
+        now = datetime.now()
+        date = now.strftime("%Y%m%d")
+        time = now.strftime("%H%M%S")
+        sep = "_"
+        experiment_dir = os.path.join(
+            self.cwd, sep.join(["experiment", date, time])
+        )
+
+        if os.path.exists(experiment_dir):
+            self.eprint('Error: "{experiment_dir}" already exists!')
+            exit(2)
+
+        print(f"Creating dir: {experiment_dir}")
+        if not self.args.dryrun:
+            os.mkdir(experiment_dir)
+
+        print(f"Changing working dir: {experiment_dir}")
+        if not self.args.dryrun:
+            os.chdir(experiment_dir)
+
+        self.cwd = os.getcwd()
         self.bin_dir = self.get_abs_dir(self.cwd, self.cfg["bin_dir"])
 
     @staticmethod
@@ -206,14 +227,8 @@ class NPBRunner:
                 )
 
     def run(self):
-        now = datetime.now()
-        date = now.strftime("%Y%m%d")
-        time = now.strftime("%H%M%S")
-        sep = "_"
-        run_wd = os.path.join(
-            self.cwd, sep.join(["run", *self.cfg["tags"], date, time])
-        )
 
+        run_wd = os.path.join(self.cwd, "run")
         if os.path.exists(run_wd):
             self.eprint('Error: "{run_wd}" already exists!')
             exit(2)
