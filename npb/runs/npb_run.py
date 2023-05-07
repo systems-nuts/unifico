@@ -154,7 +154,7 @@ class NPBRunner:
                     npb_class=npb_class,
                     build_dir=build_dir,
                     executable=executable,
-                    output="",
+                    output=c.get("output", ""),
                 )
 
         for c in commands:
