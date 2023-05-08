@@ -64,13 +64,18 @@ class NPBRunner:
                 os.environ[k] = self.env[k]
 
         self.cwd = os.getcwd()
-        now = datetime.now()
-        date = now.strftime("%Y%m%d")
-        time = now.strftime("%H%M%S")
         sep = "_"
-        experiment_dir = os.path.join(
-            self.cwd, sep.join(["experiment", date, time])
-        )
+        if self.args.dest:
+            experiment_dir = os.path.join(
+                self.cwd, sep.join(["experiment", self.args.dest])
+            )
+        else:
+            now = datetime.now()
+            date = now.strftime("%Y%m%d")
+            time = now.strftime("%H%M%S")
+            experiment_dir = os.path.join(
+                self.cwd, sep.join(["experiment", date, time])
+            )
 
         if os.path.exists(experiment_dir):
             self.eprint('Error: "{experiment_dir}" already exists!')
@@ -112,6 +117,13 @@ class NPBRunner:
             "--dryrun",
             action="store_true",
             help="Perform only dry run",
+        )
+        arg_parser.add_argument(
+            "-d",
+            "--dest",
+            const=str,
+            nargs="?",
+            help="Optional destination directory name (default: timestamp)",
         )
 
     @staticmethod
