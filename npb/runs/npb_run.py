@@ -76,11 +76,10 @@ class NPBRunner:
             )
 
         if os.path.exists(experiment_dir):
-            self.eprint('Error: "{experiment_dir}" already exists!')
-            exit(2)
+            print(f'WARNING: "{experiment_dir}" already exists')
 
-        print(f"Creating dir: {experiment_dir}")
-        if not self.args.dryrun:
+        if not self.args.dryrun and not os.path.exists(experiment_dir):
+            print(f"Creating dir: {experiment_dir}")
             os.mkdir(experiment_dir)
 
         print(f"Changing working dir: {experiment_dir}")
