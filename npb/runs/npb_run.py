@@ -66,9 +66,7 @@ class NPBRunner:
         self.cwd = os.getcwd()
         sep = "_"
         if self.args.dest:
-            experiment_dir = os.path.join(
-                self.cwd, sep.join(["experiment", self.args.dest])
-            )
+            experiment_dir = self.args.dest
         else:
             now = datetime.now()
             date = now.strftime("%Y%m%d")
