@@ -1,0 +1,26 @@
+make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/ep'
+{"CFLAGS": "-O2 -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -Wall",
+"OPT_FLAGS": "",
+"LLC_FLAGS": ""}
+"LLC_PASSES_TO_DEBUG": 
+ [IR] ep.ll
+ [IR] c_timers.ll
+ [IR] print_results.ll
+ [IR] randdp.ll
+ [IR] c_print_results.ll
+ [IR] wtime.ll
+ [OPT] c_print_results_opt.ll
+ [OPT] c_timers_opt.ll
+ [OPT] print_results_opt.ll
+ [OPT] randdp_opt.ll
+ [OPT] wtime_opt.ll
+ [LLC] c_timers_aarch64_init.o
+ [LLC] print_results_aarch64_init.o
+ [LLC] randdp_aarch64_init.o
+ [LLC] c_print_results_aarch64_init.o
+ [LLC] wtime_aarch64_init.o
+ [OPT] ep_opt.ll
+ [LLC] ep_aarch64_init.o
+ [LD] ep_aarch64_init.out
+rm wtime_opt.ll print_results_opt.ll c_print_results_opt.ll c_timers_opt.ll randdp_opt.ll
+make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/ep'
