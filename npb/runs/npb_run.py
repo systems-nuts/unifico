@@ -173,7 +173,7 @@ class NPBRunner:
 
     def execute_benchmark(self, config, executable, dryrun=False):
 
-        commands = config["commands"]
+        commands = config["run"]
 
         for c in commands:
             if c["before"]:
