@@ -51,7 +51,6 @@ IR_NODBG := $(SRC:.c=_nodbg.ll)
 $(info {"CFLAGS": "${CFLAGS}",)
 $(info "OPT_FLAGS": "${OPT_FLAGS}",)
 $(info "LLC_FLAGS": "${LLC_FLAGS}"})
-$(info "LLC_PASSES_TO_DEBUG": ${LLC_PASSES_TO_DEBUG})
 
 ###############################################################################
 # Linker and Flags
