@@ -19,7 +19,7 @@
             "/usr/bin/time -f %e"
         ],
         "append": [],
-        "run": [
+        "commands": [
             {
                 "before": false,
                 "args": [

@@ -14,7 +14,7 @@
         "output": "run_${executable}_${iteration}.log",
         "prepend": [],
         "append": [],
-        "run": [
+        "commands": [
             {
                 "before": false,
                 "args": [
