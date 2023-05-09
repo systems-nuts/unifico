@@ -59,7 +59,7 @@
                 ]
             }
         ],
-        "commands": [
+        "run": [
             {
                 "before": false,
                 "args": [
