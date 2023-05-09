@@ -1,0 +1,62 @@
+make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/bt'
+{"CFLAGS": "-O1 -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -Wall",
+"OPT_FLAGS": "",
+"LLC_FLAGS": ""}
+"LLC_PASSES_TO_DEBUG": 
+ [IR] bt.ll
+ [IR] c_timers.ll
+ [IR] c_print_results.ll
+ [IR] wtime.ll
+ [IR] add.ll
+ [IR] adi.ll
+ [IR] error.ll
+ [IR] exact_rhs.ll
+ [IR] exact_solution.ll
+ [IR] initialize.ll
+ [IR] rhs.ll
+ [IR] set_constants.ll
+ [IR] solve_subs.ll
+ [IR] verify.ll
+ [IR] x_solve.ll
+ [IR] y_solve.ll
+ [IR] z_solve.ll
+ [IR] print_results.ll
+ [OPT] bt_opt.ll
+ [OPT] c_timers_opt.ll
+ [OPT] c_print_results_opt.ll
+ [OPT] wtime_opt.ll
+ [OPT] add_opt.ll
+ [OPT] adi_opt.ll
+ [OPT] error_opt.ll
+ [OPT] exact_solution_opt.ll
+ [OPT] initialize_opt.ll
+ [OPT] set_constants_opt.ll
+ [OPT] verify_opt.ll
+ [OPT] print_results_opt.ll
+ [LLC] bt_x86_64_init.o
+ [LLC] c_timers_x86_64_init.o
+ [LLC] c_print_results_x86_64_init.o
+ [LLC] wtime_x86_64_init.o
+ [LLC] add_x86_64_init.o
+ [LLC] adi_x86_64_init.o
+ [LLC] error_x86_64_init.o
+ [OPT] exact_rhs_opt.ll
+ [LLC] initialize_x86_64_init.o
+ [LLC] exact_solution_x86_64_init.o
+ [OPT] solve_subs_opt.ll
+ [LLC] set_constants_x86_64_init.o
+ [LLC] verify_x86_64_init.o
+ [LLC] print_results_x86_64_init.o
+ [LLC] exact_rhs_x86_64_init.o
+ [LLC] solve_subs_x86_64_init.o
+ [OPT] y_solve_opt.ll
+ [LLC] y_solve_x86_64_init.o
+ [OPT] x_solve_opt.ll
+ [OPT] z_solve_opt.ll
+ [OPT] rhs_opt.ll
+ [LLC] x_solve_x86_64_init.o
+ [LLC] z_solve_x86_64_init.o
+ [LLC] rhs_x86_64_init.o
+ [LD] bt_x86_64_init.out
+rm y_solve_opt.ll rhs_opt.ll exact_solution_opt.ll error_opt.ll set_constants_opt.ll x_solve_opt.ll wtime_opt.ll print_results_opt.ll c_print_results_opt.ll c_timers_opt.ll adi_opt.ll add_opt.ll exact_rhs_opt.ll initialize_opt.ll solve_subs_opt.ll z_solve_opt.ll verify_opt.ll
+make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/bt'
