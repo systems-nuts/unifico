@@ -47,6 +47,11 @@ HET_CFLAGS	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec
 IR := $(SRC:.c=.ll)
 IR_NODBG := $(SRC:.c=_nodbg.ll)
 
+# Dump flag info in JSON-like fields
+$(info {"CFLAGS": "${CFLAGS}",)
+$(info "OPT_FLAGS": "${OPT_FLAGS}",)
+$(info "LLC_FLAGS": "${LLC_FLAGS}"})
+
 ###############################################################################
 # Linker and Flags
 ###############################################################################
