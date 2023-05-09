@@ -16,6 +16,8 @@ from subprocess import STDOUT, DEVNULL
 from datetime import datetime
 from string import Template
 
+import pandas as pd
+
 
 class NPBRunner:
     def __init__(self, args=None):
@@ -66,9 +68,7 @@ class NPBRunner:
         self.cwd = os.getcwd()
         sep = "_"
         if self.args.dest:
-            experiment_dir = os.path.join(
-                self.cwd, sep.join(["experiment", self.args.dest])
-            )
+            experiment_dir = self.args.dest
         else:
             now = datetime.now()
             date = now.strftime("%Y%m%d")
@@ -78,11 +78,10 @@ class NPBRunner:
             )
 
         if os.path.exists(experiment_dir):
-            self.eprint('Error: "{experiment_dir}" already exists!')
-            exit(2)
+            print(f'WARNING: "{experiment_dir}" already exists')
 
-        print(f"Creating dir: {experiment_dir}")
-        if not self.args.dryrun:
+        if not self.args.dryrun and not os.path.exists(experiment_dir):
+            print(f"Creating dir: {experiment_dir}")
             os.mkdir(experiment_dir)
 
         print(f"Changing working dir: {experiment_dir}")
@@ -104,6 +103,13 @@ class NPBRunner:
         )
         arg_parser.add_argument(
             "-r", "--run", required=False, default=False, action="store_true"
+        )
+        arg_parser.add_argument(
+            "-p",
+            "--post-process",
+            required=False,
+            default=False,
+            action="store_true",
         )
         arg_parser.add_argument(
             "-c",
@@ -265,11 +271,57 @@ class NPBRunner:
 
             self.execute_benchmark(bench_cfg, benchmark, self.args.dryrun)
 
+    def post_process_benchmark(self, config, executable, dryrun=False):
+
+        commands = config["post_process"]
+
+        for c in commands:
+            # Assumes you can infer the benchmark name from the first two letters of the exe.
+            benchmark = executable[:2]
+            self.execute_cmd(
+                c["args"],
+                dryrun,
+                benchmark=benchmark,
+                executable=executable,
+                output=c.get("output", ""),
+            )
+
+    def post_process(self):
+        """
+        Post-process the results produced by an experiment.
+
+        The results are usually logs found in the `<experiment-name>/run` folder.
+        Produces a .csv with aggregated and post-processed results.
+        @return:
+        """
+        run_wd = os.path.join(self.cwd, "run")
+        if not os.path.exists(run_wd):
+            self.eprint('Error: "{run_wd}" does not exist!')
+            exit(2)
+
+        print(f"Changing working dir: {run_wd}")
+        if not self.args.dryrun:
+            os.chdir(run_wd)
+
+        df = pd.DataFrame(columns=["benchmark", "time_O0"])
+        df.to_csv("results.csv", index=False)
+
+        for benchmark in self.cfg["executables"]:
+            bench_cfg = self.cfg["*"].copy()
+            if benchmark in self.cfg:
+                bench_cfg.update(self.cfg[benchmark])
+
+            self.post_process_benchmark(bench_cfg, benchmark, self.args.dryrun)
+
+        df = pd.read_csv("results.csv")
+
     def dispatch(self):
         if self.args.build:
             self.build()
         if self.args.run:
             self.run()
+        if self.args.post_process:
+            self.post_process()
 
 
 def __main__():
