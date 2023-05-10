@@ -1,0 +1,66 @@
+{
+    "info": {},
+    "tags": [
+        "exec_time"
+    ],
+    "executables": [
+        "sp_aarch64_init.out"
+    ],
+    "env": {},
+    "bin_dir": "bins",
+
+    "*": {
+        "npb_class": "A",
+        "iterations": 3,
+        "output": "run_${executable}_${iteration}.log",
+        "prepend": [],
+        "append": [],
+        "build": [
+            {
+                "before": false,
+                "args": [
+                    "sshpass",
+                    "-f",
+                    "/home/nikos/phd/unified_abi/npb/runs/file.txt",
+                    "scp",
+                    "-r",
+                    "nikos@nettuno:/home/nikos/phd/unified_abi/npb/runs/experiment_O0/bins/${executable}",
+                    "${dest_dir}"
+                ]
+            },
+            {
+                "before": false,
+                "args": [
+                    "sshpass",
+                    "-f",
+                    "/home/nikos/phd/unified_abi/npb/runs/file.txt",
+                    "scp",
+                    "-r",
+                    "nikos@nettuno:/home/nikos/phd/unified_abi/npb/runs/experiment_O0/bins/${executable}_build.log",
+                    "${dest_dir}"
+                ]
+            }
+        ],
+        "run": [
+            {
+                "before": false,
+                "args": [
+                    "grep",
+                    "-h",
+                    "\"Time in\"",
+                    "run_${executable}*.log"
+                ],
+                "output": "time_${executable}.log"
+            },
+            {
+                "before": false,
+                "args": [
+                    "rm",
+                    "-rf",
+                    "run_${executable}*.log"
+                ],
+                "output": ""
+            }
+        ]
+    }
+}
