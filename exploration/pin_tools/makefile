@@ -5,7 +5,7 @@
 # All directories which contain tests should be placed here.
 # Please maintain alphabetical order.
 
-ALL_TEST_DIRS := heap-accesses
+ALL_TEST_DIRS := heap-accesses register-loads-stores
 
 # Some of these targets are referenced in the User Guide and/or are commonly used by Pin users.
 # Others are used by the nightly system.
