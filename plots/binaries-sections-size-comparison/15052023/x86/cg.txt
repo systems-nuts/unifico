@@ -1,0 +1,32 @@
+cg_x86_64_aligned.out  :
+section                                        size        addr
+.text                                         41648     5242880
+.rodata                                       16093     6291456
+.rodata.cst8                                    232     6307552
+.rodata.cst16                                    80     6307792
+.rodata.___src_stdio_vfprintf_c_xdigits          16     6307872
+.rodata.___src_errno_strerror_c_errid            89     6307888
+.rodata.cst4                                      4     6307980
+.data                                          4360     7340032
+.bss                                      192908352     8388608
+.ldata                                            0   201305152
+.eh_frame                                       616   201305152
+.tdata                                         4096   201326592
+.tbss                                          4096   202375168
+.llvm_pcn_stackmaps                           18264   202379264
+.debug_str                                     7423           0
+.debug_abbrev                                 14802           0
+.debug_info                                   55109           0
+.debug_ranges                                  4272           0
+.debug_macinfo                                   68           0
+.comment                                        225           0
+.stack_transform.unwind                          16           0
+.stack_transform.unwind_arange                  176           0
+.debug_line                                   30042           0
+.debug_loc                                    55617           0
+.debug_frame                                   4952           0
+.debug_aranges                                  240           0
+.note.gnu.gold-version                           28           0
+Total                                     193170916
+
+
