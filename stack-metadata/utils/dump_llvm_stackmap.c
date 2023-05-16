@@ -258,7 +258,7 @@ static inline bool dump_stackmaps(bin *b, stack_map_section *sm, size_t num_sm)
                 continue;
             }
 
-            if (callsite >= 0 && j != callsite) {
+            if (callsite >= 0 && callsite != sm[i].call_sites[j].id) {
                 continue;
             }
 
