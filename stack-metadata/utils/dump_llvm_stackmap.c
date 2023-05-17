@@ -178,14 +178,22 @@ static inline bool dump_arch_location(arch_live_value *record)
     return true;
 }
 
-static inline bool dump_call_site(call_site_record *cs)
+/*
+ * Dump the callsite record.
+ * The parent function's address is given also as parameter, so that
+ * the absolute address of the callsite can be computed and printed directly,
+ * instead of just the offset.
+ * This eases developing and debugging.
+ */
+static inline bool dump_call_site(call_site_record *cs, uint64_t func)
 {
     unsigned i;
 
-    printf("  Call site %lu: function %u, offset @ %u, %u locations, %u "
+    printf("  Call site %lu: function %u, offset @ %x, address %lx, %u "
+           "locations, %u "
            "live-outs, %u arch-specific locations\n",
-           cs->id, cs->func_idx, cs->offset, cs->num_locations,
-           cs->num_live_outs, cs->num_arch_live);
+           cs->id, cs->func_idx, cs->offset, func + cs->offset,
+           cs->num_locations, cs->num_live_outs, cs->num_arch_live);
 
     for (i = 0; i < cs->num_locations; i++)
         if (!dump_location(&cs->locations[i]))
@@ -262,7 +270,7 @@ static inline bool dump_stackmaps(bin *b, stack_map_section *sm, size_t num_sm)
                 continue;
             }
 
-            if (!dump_call_site(&sm[i].call_sites[j]))
+            if (!dump_call_site(&sm[i].call_sites[j], func))
                 return false;
         }
     }
