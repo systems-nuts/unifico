@@ -26,7 +26,7 @@ def fill_color(color, expected_color):
                 color.append(cmap((i + 1) * step))
 
 
-def plot(datafile, stylefile, configfile, interactive=False):
+def plot(datafile, stylefile, configfile, interactive=False, sort=False):
     plt.style.use(stylefile)
 
     cfg = json.loads("{}")
@@ -40,6 +40,9 @@ def plot(datafile, stylefile, configfile, interactive=False):
 
     filename, _ = os.path.splitext(datafile)
     df = pd.read_csv(datafile, **cfg_df)
+
+    if sort:
+        df.sort_index(inplace=True)
 
     _, axis = plt.subplots()
 
@@ -194,6 +197,11 @@ if __name__ == "__main__":
         action="store_true",
         help="Display interactive plot only",
     )
+    parser.add_argument(
+        "--sort",
+        action="store_true",
+        help="Display interactive plot only",
+    )
     args = parser.parse_args()
 
-    plot(args.file, args.style, args.config, args.interactive)
+    plot(args.file, args.style, args.config, args.interactive, args.sort)
