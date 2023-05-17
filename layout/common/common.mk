@@ -22,19 +22,19 @@ OBJDUMP	:= $(LLVM_TOOLCHAIN)/llvm-objdump
 X86_64_OBJDUMP := x86_64-linux-gnu-objdump
 
 override CFLAGS += -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer
-override CFLAGS += -Wall
+override CFLAGS += -O0 -Wall
 
 ifndef UNMODIFIED
 override CFLAGS += -mllvm -align-bytes-to-four
 
-override OPT_FLAGS	+= -name-string-literals -static-var-sections -live-values
+override OPT_FLAGS	+= -name-string-literals -static-var-sections -live-values -insert-stackmaps
 
 override LLC_FLAGS	+= -function-sections -data-sections
 override LLC_FLAGS	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
 # Callsite-related
 override LLC_FLAGS  += -disable-block-align --mc-relax-all
 # Custom
-override LLC_FLAGS  += -disable-x86-frame-obj-order -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -enable-misched=false -enable-tail-merge=false
+override LLC_FLAGS  += -disable-x86-frame-obj-order -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -enable-misched=false
 
 override LLC_FLAGS_ARM64 += -mattr=-disable-hoist-in-lowering,+disable-fp-imm-materialize,-avoid-f128,+avoid-wide-mul-add
 override LLC_FLAGS_X86 += -mattr=+aarch64-sized-imm,-multiply-with-imm,-non-zero-imm-to-mem,+force-vector-mem-op,+aarch64-constant-cost-model,+simple-reg-offset-addr,+avoid-opt-mul-1 -no-x86-call-frame-opt -x86-enable-simplify-cfg
