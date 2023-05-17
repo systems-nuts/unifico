@@ -42,7 +42,7 @@ def plot(datafile, stylefile, configfile, interactive=False, sort=False):
     df = pd.read_csv(datafile, **cfg_df)
 
     if sort:
-        df.sort_index(inplace=True)
+        df.sort_index(inplace=True, key=lambda col: col.str.swapcase())
 
     _, axis = plt.subplots()
 
