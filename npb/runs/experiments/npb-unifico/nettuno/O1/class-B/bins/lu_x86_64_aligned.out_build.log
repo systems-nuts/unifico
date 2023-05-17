@@ -1,0 +1,194 @@
+make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/lu'
+{"CFLAGS": "-O1 -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -Wall -mllvm -align-bytes-to-four",
+"OPT_FLAGS": "-name-string-literals -static-var-sections -live-values",
+"LLC_FLAGS": "-function-sections -data-sections -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse -disable-block-align --mc-relax-all -disable-x86-frame-obj-order -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -enable-misched=false -enable-tail-merge=false"}
+ [IR] blts.ll
+ [IR] buts.ll
+ [IR] domain.ll
+ [IR] erhs.ll
+ [IR] error.ll
+ [IR] exact.ll
+ [IR] c_timers.ll
+ [IR] jacld.ll
+ [IR] jacu.ll
+ [IR] l2norm.ll
+ [IR] lu.ll
+ [IR] pintgr.ll
+ [IR] read_input.ll
+ [IR] rhs.ll
+ [IR] setbv.ll
+ [IR] setcoeff.ll
+ [IR] setiv.ll
+ [IR] ssor.ll
+ [IR] verify.ll
+ [IR] print_results.ll
+ [IR] randdp.ll
+ [IR] c_print_results.ll
+ [IR] wtime.ll
+ [OPT] blts_opt.ll
+ [OPT] buts_opt.ll
+ [OPT] domain_opt.ll
+ [OPT] error_opt.ll
+ [OPT] exact_opt.ll
+ [OPT] c_timers_opt.ll
+ [OPT] jacld_opt.ll
+ [OPT] jacu_opt.ll
+ [OPT] l2norm_opt.ll
+ [OPT] pintgr_opt.ll
+ [OPT] read_input_opt.ll
+ [OPT] setbv_opt.ll
+ [OPT] setcoeff_opt.ll
+ [OPT] setiv_opt.ll
+ [OPT] verify_opt.ll
+ [OPT] print_results_opt.ll
+ [OPT] randdp_opt.ll
+ [OPT] c_print_results_opt.ll
+ [OPT] wtime_opt.ll
+ [LLC] blts_x86_64_init.o
+ [LLC] blts_aarch64_init.o
+ [LLC] buts_x86_64_init.o
+ [LLC] buts_aarch64_init.o
+ [LLC] domain_x86_64_init.o
+ [LLC] domain_aarch64_init.o
+ [OPT] erhs_opt.ll
+ [LLC] error_x86_64_init.o
+ [LLC] error_aarch64_init.o
+ [LLC] exact_x86_64_init.o
+ [LLC] exact_aarch64_init.o
+ [LLC] c_timers_x86_64_init.o
+ [LLC] c_timers_aarch64_init.o
+ [LLC] jacld_x86_64_init.o
+ [LLC] jacld_aarch64_init.o
+ [LLC] jacu_x86_64_init.o
+ [LLC] jacu_aarch64_init.o
+ [LLC] l2norm_x86_64_init.o
+ [LLC] l2norm_aarch64_init.o
+ [OPT] lu_opt.ll
+ [LLC] pintgr_x86_64_init.o
+ [LLC] pintgr_aarch64_init.o
+ [LLC] read_input_x86_64_init.o
+ [LLC] read_input_aarch64_init.o
+ [LLC] setbv_x86_64_init.o
+ [OPT] rhs_opt.ll
+ [LLC] setbv_aarch64_init.o
+ [LLC] setcoeff_x86_64_init.o
+ [LLC] setcoeff_aarch64_init.o
+ [LLC] setiv_x86_64_init.o
+ [LLC] setiv_aarch64_init.o
+ [OPT] ssor_opt.ll
+ [LLC] verify_x86_64_init.o
+ [LLC] verify_aarch64_init.o
+ [LLC] print_results_x86_64_init.o
+ [LLC] print_results_aarch64_init.o
+ [LLC] randdp_x86_64_init.o
+ [LLC] randdp_aarch64_init.o
+ [LLC] c_print_results_x86_64_init.o
+ [LLC] c_print_results_aarch64_init.o
+ [LLC] wtime_x86_64_init.o
+ [LLC] wtime_aarch64_init.o
+ [CALLSITE ALIGN] blts_cs_align.json
+ [CALLSITE ALIGN] buts_cs_align.json
+ [CALLSITE ALIGN] domain_cs_align.json
+ [CALLSITE ALIGN] error_cs_align.json
+ [CALLSITE ALIGN] exact_cs_align.json
+ [CALLSITE ALIGN] c_timers_cs_align.json
+ [CALLSITE ALIGN] l2norm_cs_align.json
+ [CALLSITE ALIGN] read_input_cs_align.json
+ [CALLSITE ALIGN] setbv_cs_align.json
+ [CALLSITE ALIGN] setcoeff_cs_align.json
+ [CALLSITE ALIGN] setiv_cs_align.json
+ [CALLSITE ALIGN] verify_cs_align.json
+ [CALLSITE ALIGN] print_results_cs_align.json
+ [CALLSITE ALIGN] randdp_cs_align.json
+ [CALLSITE ALIGN] c_print_results_cs_align.json
+ [CALLSITE ALIGN] wtime_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] blts_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] buts_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] domain_aarch64.o
+ [LLC] erhs_x86_64_init.o
+ [LLC] erhs_aarch64_init.o
+ [LLC WITH CALLSITE ALIGNMENT] error_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] exact_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_timers_aarch64.o
+ [CALLSITE ALIGN] jacld_cs_align.json
+ [CALLSITE ALIGN] jacu_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] l2norm_aarch64.o
+ [LLC] lu_x86_64_init.o
+ [LLC] lu_aarch64_init.o
+ [CALLSITE ALIGN] pintgr_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] read_input_aarch64.o
+ [LLC] rhs_x86_64_init.o
+ [LLC] rhs_aarch64_init.o
+ [LLC WITH CALLSITE ALIGNMENT] setbv_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] setcoeff_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] setiv_aarch64.o
+ [LLC] ssor_x86_64_init.o
+ [LLC] ssor_aarch64_init.o
+ [LLC WITH CALLSITE ALIGNMENT] verify_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] randdp_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] wtime_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] blts_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] buts_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] domain_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] error_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] exact_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_timers_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] domain_x86_64.o domain_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] exact_x86_64.o exact_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] error_x86_64.o error_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] c_timers_x86_64.o c_timers_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] blts_x86_64.o blts_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] buts_x86_64.o buts_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] l2norm_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] read_input_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] setbv_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] setcoeff_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] read_input_x86_64.o read_input_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] l2norm_x86_64.o l2norm_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] setiv_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] setbv_x86_64.o setbv_aarch64.o
+ [CALLSITE ALIGN] ssor_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] verify_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] setcoeff_x86_64.o setcoeff_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] setiv_x86_64.o setiv_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] print_results_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] randdp_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_print_results_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] wtime_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] print_results_x86_64.o print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] jacld_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] jacu_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] verify_x86_64.o verify_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] randdp_x86_64.o randdp_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] c_print_results_x86_64.o c_print_results_aarch64.o
+ [CALLSITE ALIGN] lu_cs_align.json
+ [CHECK CALLSITE ALIGNMENT] wtime_x86_64.o wtime_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] pintgr_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] ssor_aarch64.o
+ [CALLSITE ALIGN] erhs_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] lu_aarch64.o
+ [CALLSITE ALIGN] rhs_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] lu_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] ssor_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] lu_x86_64.o lu_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] erhs_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] ssor_x86_64.o ssor_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] rhs_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] pintgr_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] jacu_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] jacld_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] pintgr_x86_64.o pintgr_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] jacu_x86_64.o jacu_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] jacld_x86_64.o jacld_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] erhs_x86_64.o
+ [LD] lu_aarch64_unaligned.out
+ [LLC WITH CALLSITE ALIGNMENT] rhs_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] erhs_x86_64.o erhs_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] rhs_x86_64.o rhs_aarch64.o
+ [LD] lu_x86_64_unaligned.out
+ [ALIGN] build_x86-64/aligned_linker_script_x86.x
+ [LD] lu_x86_64_aligned.out
+rm wtime_cs_align.json jacld_opt.ll rhs_opt.ll error_opt.ll setcoeff_cs_align.json c_timers_cs_align.json wtime_opt.ll c_print_results_cs_align.json erhs_opt.ll print_results_opt.ll setiv_cs_align.json randdp_cs_align.json exact_cs_align.json pintgr_cs_align.json domain_opt.ll erhs_cs_align.json c_print_results_opt.ll pintgr_opt.ll read_input_cs_align.json domain_cs_align.json rhs_cs_align.json setbv_opt.ll setcoeff_opt.ll jacu_cs_align.json setbv_cs_align.json l2norm_opt.ll c_timers_opt.ll buts_cs_align.json verify_cs_align.json randdp_opt.ll ssor_cs_align.json jacld_cs_align.json error_cs_align.json setiv_opt.ll ssor_opt.ll jacu_opt.ll blts_cs_align.json exact_opt.ll buts_opt.ll read_input_opt.ll l2norm_cs_align.json print_results_cs_align.json verify_opt.ll blts_opt.ll
+make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/lu'

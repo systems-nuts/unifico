@@ -1,0 +1,143 @@
+make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/ua'
+{"CFLAGS": "-O1 -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -Wall -mllvm -align-bytes-to-four",
+"OPT_FLAGS": "-name-string-literals -static-var-sections -live-values",
+"LLC_FLAGS": "-function-sections -data-sections -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse -disable-block-align --mc-relax-all -disable-x86-frame-obj-order -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -enable-misched=false -enable-tail-merge=false"}
+ [IR] ua.ll
+ [IR] adapt.ll
+ [IR] diffuse.ll
+ [IR] move.ll
+ [IR] setup.ll
+ [IR] c_timers.ll
+ [IR] print_results.ll
+ [IR] randdp.ll
+ [IR] c_print_results.ll
+ [IR] wtime.ll
+ [IR] verify.ll
+ [IR] convect.ll
+ [IR] mason.ll
+ [IR] precond.ll
+ [IR] transfer.ll
+ [IR] utils.ll
+ [OPT] move_opt.ll
+ [OPT] c_timers_opt.ll
+ [OPT] print_results_opt.ll
+ [OPT] randdp_opt.ll
+precond.c:757:9: warning: implicitly declaring library function 'printf' with type 'int (const char *, ...)' [-Wimplicit-function-declaration]
+        printf("Unreachable\n"); /* TODO temporary handling for Unifico */
+        ^
+precond.c:757:9: note: include the header <stdio.h> or explicitly provide a declaration for 'printf'
+ [OPT] c_print_results_opt.ll
+ [OPT] wtime_opt.ll
+ [OPT] verify_opt.ll
+ [OPT] ua_opt.ll
+ [OPT] diffuse_opt.ll
+ [LLC] move_x86_64_init.o
+ [LLC] move_aarch64_init.o
+ [OPT] setup_opt.ll
+ [LLC] c_timers_x86_64_init.o
+ [LLC] c_timers_aarch64_init.o
+ [LLC] print_results_x86_64_init.o
+ [LLC] print_results_aarch64_init.o
+ [LLC] randdp_x86_64_init.o
+ [LLC] randdp_aarch64_init.o
+ [LLC] c_print_results_x86_64_init.o
+ [LLC] c_print_results_aarch64_init.o
+ [LLC] wtime_x86_64_init.o
+ [LLC] wtime_aarch64_init.o
+ [LLC] verify_x86_64_init.o
+ [LLC] verify_aarch64_init.o
+ [OPT] convect_opt.ll
+ [OPT] utils_opt.ll
+ [CALLSITE ALIGN] move_cs_align.json
+ [CALLSITE ALIGN] c_timers_cs_align.json
+1 warning generated.
+ [CALLSITE ALIGN] print_results_cs_align.json
+ [CALLSITE ALIGN] randdp_cs_align.json
+ [CALLSITE ALIGN] c_print_results_cs_align.json
+ [CALLSITE ALIGN] wtime_cs_align.json
+ [CALLSITE ALIGN] verify_cs_align.json
+ [OPT] precond_opt.ll
+ [LLC] ua_x86_64_init.o
+ [LLC] ua_aarch64_init.o
+ [OPT] adapt_opt.ll
+ [LLC] diffuse_x86_64_init.o
+ [LLC] diffuse_aarch64_init.o
+ [LLC] setup_x86_64_init.o
+ [LLC WITH CALLSITE ALIGNMENT] move_aarch64.o
+ [LLC] setup_aarch64_init.o
+ [LLC WITH CALLSITE ALIGNMENT] c_timers_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] randdp_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] wtime_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] verify_aarch64.o
+ [LLC] convect_x86_64_init.o
+ [LLC] convect_aarch64_init.o
+ [LLC] precond_x86_64_init.o
+ [LLC] precond_aarch64_init.o
+ [LLC] utils_x86_64_init.o
+ [LLC] utils_aarch64_init.o
+ [CALLSITE ALIGN] diffuse_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] move_x86_64.o
+ [CALLSITE ALIGN] setup_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] c_timers_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] print_results_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] randdp_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] move_x86_64.o move_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_print_results_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] wtime_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] c_timers_x86_64.o c_timers_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] randdp_x86_64.o randdp_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] print_results_x86_64.o print_results_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] wtime_x86_64.o wtime_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] c_print_results_x86_64.o c_print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] verify_x86_64.o
+ [CALLSITE ALIGN] convect_cs_align.json
+ [OPT] transfer_opt.ll
+ [CALLSITE ALIGN] utils_cs_align.json
+ [CHECK CALLSITE ALIGNMENT] verify_x86_64.o verify_aarch64.o
+ [CALLSITE ALIGN] ua_cs_align.json
+ [LLC] adapt_x86_64_init.o
+ [LLC] adapt_aarch64_init.o
+ [LLC WITH CALLSITE ALIGNMENT] diffuse_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] setup_aarch64.o
+ [CALLSITE ALIGN] precond_cs_align.json
+ [LLC] transfer_x86_64_init.o
+ [LLC] transfer_aarch64_init.o
+ [LLC WITH CALLSITE ALIGNMENT] utils_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] ua_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] convect_aarch64.o
+ [OPT] mason_opt.ll
+ [LLC WITH CALLSITE ALIGNMENT] diffuse_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] precond_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] utils_x86_64.o
+ [LLC] mason_x86_64_init.o
+ [CHECK CALLSITE ALIGNMENT] diffuse_x86_64.o diffuse_aarch64.o
+ [LLC] mason_aarch64_init.o
+ [LLC WITH CALLSITE ALIGNMENT] ua_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] setup_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] utils_x86_64.o utils_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] convect_x86_64.o
+ [CALLSITE ALIGN] adapt_cs_align.json
+ [CHECK CALLSITE ALIGNMENT] ua_x86_64.o ua_aarch64.o
+ [CALLSITE ALIGN] transfer_cs_align.json
+ [CHECK CALLSITE ALIGNMENT] convect_x86_64.o convect_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] adapt_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] precond_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] setup_x86_64.o setup_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] transfer_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] precond_x86_64.o precond_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] adapt_x86_64.o
+ [CALLSITE ALIGN] mason_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] transfer_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] mason_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] adapt_x86_64.o adapt_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] transfer_x86_64.o transfer_aarch64.o
+ [LD] ua_aarch64_unaligned.out
+ [LLC WITH CALLSITE ALIGNMENT] mason_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] mason_x86_64.o mason_aarch64.o
+ [LD] ua_x86_64_unaligned.out
+ [ALIGN] build_x86-64/aligned_linker_script_x86.x
+ [LD] ua_x86_64_aligned.out
+rm wtime_cs_align.json convect_cs_align.json c_timers_cs_align.json diffuse_cs_align.json wtime_opt.ll c_print_results_cs_align.json print_results_opt.ll setup_opt.ll randdp_cs_align.json c_print_results_opt.ll adapt_opt.ll precond_opt.ll setup_cs_align.json mason_opt.ll move_cs_align.json convect_opt.ll c_timers_opt.ll verify_cs_align.json randdp_opt.ll adapt_cs_align.json utils_opt.ll precond_cs_align.json utils_cs_align.json diffuse_opt.ll transfer_cs_align.json move_opt.ll mason_cs_align.json transfer_opt.ll print_results_cs_align.json verify_opt.ll
+make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/ua'

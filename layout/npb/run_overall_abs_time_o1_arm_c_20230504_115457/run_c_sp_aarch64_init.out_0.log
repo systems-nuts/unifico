@@ -1,0 +1,74 @@
+
+
+ NAS Parallel Benchmarks (NPB3.3-SER-C) - SP Benchmark
+
+ No input file inputsp.data. Using compiled defaults
+ Size:   64x  64x  64
+ Iterations:  400    dt:   0.001500
+
+ Time step    1
+ Time step   20
+ Time step   40
+ Time step   60
+ Time step   80
+ Time step  100
+ Time step  120
+ Time step  140
+ Time step  160
+ Time step  180
+ Time step  200
+ Time step  220
+ Time step  240
+ Time step  260
+ Time step  280
+ Time step  300
+ Time step  320
+ Time step  340
+ Time step  360
+ Time step  380
+ Time step  400
+ Verification being performed for class A
+ accuracy setting for epsilon =  1.0000000000000E-08
+ Comparison of RMS-norms of residual
+           1 2.4799822399301E+00 2.4799822399300E+00 3.7783667064086E-14
+           2 1.1276337964370E+00 1.1276337964369E+00 9.3730103051439E-14
+           3 1.5028977888771E+00 1.5028977888770E+00 3.7822544740904E-14
+           4 1.4217816211696E+00 1.4217816211695E+00 7.7305880032040E-14
+           5 2.1292113035139E+00 2.1292113035138E+00 4.0045404676605E-14
+ Comparison of RMS-norms of solution error
+           1 1.0900140297816E-04 1.0900140297821E-04 4.2484760770966E-13
+           2 3.7343951769287E-05 3.7343951769282E-05 1.2320825064020E-13
+           3 5.0092785406541E-05 5.0092785406542E-05 1.6097634803929E-14
+           4 4.7671093939539E-05 4.7671093939528E-05 2.3212470091345E-13
+           5 1.3621613399212E-04 1.3621613399213E-04 5.1338294573355E-14
+ Verification Successful
+
+
+ SP Benchmark Completed.
+ Class           =                        A
+ Size            =             64x  64x  64
+ Iterations      =                      400
+ Time in seconds =                    70.07
+ Mop/s total     =                  1213.23
+ Operation type  =           floating point
+ Verification    =               SUCCESSFUL
+ Version         =                    3.3.1
+ Compile date    =              03 Nov 2017
+
+ Compile options:
+    CC           = gcc
+    CLINK        = $(CC)
+    C_LIB        = -lm
+    C_INC        = -I../common
+    CFLAGS       = -g -Wall -O3 -mcmodel=medium
+    CLINKFLAGS   = -O3 -mcmodel=medium
+    RAND         = (none)
+
+--------------------------------------
+ Please send all errors/feedbacks to:
+ Center for Manycore Programming
+ cmp@aces.snu.ac.kr
+ http://aces.snu.ac.kr
+--------------------------------------
+
+71.00
