@@ -50,7 +50,9 @@ IR_NODBG := $(SRC:.c=_nodbg.ll)
 # Dump flag info in JSON-like fields
 $(info {"CFLAGS": "${CFLAGS}",)
 $(info "OPT_FLAGS": "${OPT_FLAGS}",)
-$(info "LLC_FLAGS": "${LLC_FLAGS}"})
+$(info "LLC_FLAGS": "${LLC_FLAGS}",)
+$(info "LLC_FLAGS_ARM64": "${LLC_FLAGS_ARM64}",)
+$(info "LLC_FLAGS_X86": "${LLC_FLAGS_X86}"})
 
 ###############################################################################
 # Linker and Flags
