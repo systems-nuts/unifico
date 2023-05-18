@@ -287,7 +287,7 @@ def parse_arm_asm(input_file, func_name="main", callsite=1):
                 else:
                     offset = 0
                 if second_operand not in program_state.registers.keys():
-                    sys.exit("Storing using an untracked pointer!")
+                    sys.exit(f"Storing using an untracked pointer:\n{line}")
                 offset = program_state.registers[second_operand] + offset
                 program_state.push(first_operand, offset)
                 continue
@@ -306,7 +306,7 @@ def parse_arm_asm(input_file, func_name="main", callsite=1):
                 else:
                     offset = 0
                 if third_operand not in program_state.registers.keys():
-                    sys.exit("Storing using an untracked pointer!")
+                    sys.exit(f"Storing using an untracked pointer:\n{line}")
                 offset = program_state.registers[third_operand] + offset
                 program_state.push(first_operand, offset)
                 additional_offset = 8 if first_operand[0] == "x" else 4
@@ -393,7 +393,7 @@ def parse_x86_asm(input_file, func_name="main", callsite=1):
                     offset = 0
                 value = match_result.group(6)
                 if pointer_register not in program_state.registers.keys():
-                    sys.exit("Storing using an untracked pointer!")
+                    sys.exit(f"Storing using an untracked pointer:\n{line}")
                 offset = program_state.registers[pointer_register] + offset
                 program_state.push(value, offset)
                 continue
