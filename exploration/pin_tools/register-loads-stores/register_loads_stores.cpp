@@ -25,6 +25,10 @@ KNOB<string> KnobOutputFile(KNOB_MODE_WRITEONCE, "pintool", "o",
 KNOB<string> FunctionName(KNOB_MODE_WRITEONCE, "pintool", "f", "",
                           "Function to examine");
 
+KNOB<bool> ProfileAllMemoryAccesses(
+    KNOB_MODE_WRITEONCE, "pintool", "a", "0",
+    "Profile all memory accesses, not only mov-like instructions");
+
 ofstream outFile;
 static UINT64 load_count = 0;
 static UINT64 store_count = 0;
@@ -48,10 +52,14 @@ VOID Routine(RTN rtn, VOID *v)
     // For each instruction of the routine
     for (INS ins = RTN_InsHead(rtn); INS_Valid(ins); ins = INS_Next(ins)) {
 
-        // Examine all MOV-like instructions
-        if (INS_Opcode(ins) < XED_ICLASS_MOV ||
-            INS_Opcode(ins) > XED_ICLASS_MOV_DR)
+        // Examine either all memory accesses or only MOV-like instructions
+        if (!ProfileAllMemoryAccesses && (INS_Opcode(ins) < XED_ICLASS_MOV ||
+                                          INS_Opcode(ins) > XED_ICLASS_MOV_DR))
             continue;
+
+        if (INS_OperandCount(ins) < 2) {
+            continue;
+        }
 
         // If not at least one of the operands is a register, continue (e.g., in
         // the case of `movsb`).
