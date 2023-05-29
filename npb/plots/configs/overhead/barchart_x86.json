@@ -1,0 +1,50 @@
+{
+    "plot": {
+        "logy": true,
+        "figsize": [
+            8,
+            4
+        ],
+        "color": [
+            "#7fcdbb",
+            "#75a7cd",
+            "#e0edf2"
+        ]
+    },
+    "bar": {
+        "width": 0.85
+    },
+    "axis": {
+        "grid": "y",
+        "xlabel": "",
+        "ylabel": "Overhead ($\\times$)",
+        "yscale": "linear",
+        "ylim": [
+            0.5,
+            1.3
+        ],
+        "xticks": {
+            "rotation": 0
+        },
+        "yticks": {
+            "values": [
+                0,
+                0.75,
+                1,
+                1.25
+            ]
+        }
+    },
+    "legend": {
+        "ncol": 4,
+        "title": "Input Class",
+        "loc": "upper right",
+        "frame_linewidth": 0.4,
+        "bbox_to_anchor": [
+            0,
+            1,
+            1,
+            0.1
+        ]
+    }
+}
