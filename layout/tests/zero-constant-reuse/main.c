@@ -1,3 +1,7 @@
+/*
+ * SEE: https://github.com/systems-nuts/unifico/issues/134
+ */
+
 typedef enum { false, true } logical;
 
 void simple(int n) { return; }
