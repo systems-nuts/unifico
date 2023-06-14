@@ -21,8 +21,9 @@ LLC		:= $(LLVM_TOOLCHAIN)/llc
 OBJDUMP	:= $(LLVM_TOOLCHAIN)/llvm-objdump
 X86_64_OBJDUMP := x86_64-linux-gnu-objdump
 
+OPT_LEVEL ?= -O0
+override CFLAGS += $(OPT_LEVEL) -Wall
 override CFLAGS += -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer
-override CFLAGS += -O0 -Wall
 
 ifndef UNMODIFIED
 override CFLAGS += -mllvm -align-bytes-to-four
