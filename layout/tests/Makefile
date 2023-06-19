@@ -7,6 +7,8 @@ TEST_SUITE += ep-main-1 zero-constant-reuse ep-main-3 ep-main
 TEST_SUITE += ft-verify ft-comp-init ft-fft3d-2 ft-fft3d-3 ft-appft-1 ft-appft-2
 TEST_SUITE += mg-interp-umaddl exit
 
+TEST_SUITE_O1 := bubble-sort call-leaf factorial long-int-slot fp-args fp-spill-weight
+
 .PHONY: clean
 
 all:
@@ -17,6 +19,11 @@ all:
 test:
 	for W in $(TEST_SUITE); do \
 		(make -C $$W stackmaps-check PROJECT_DIR=../../..) || exit 1; \
+	done
+
+test-O1:
+	for W in $(TEST_SUITE_O1); do \
+		(make -C $$W stackmaps-check PROJECT_DIR=../../.. OPT_LEVEL=-O1) || exit 1; \
 	done
 
 clean:
