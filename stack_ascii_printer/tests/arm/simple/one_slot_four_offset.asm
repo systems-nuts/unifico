@@ -1,7 +1,7 @@
 # RUN: print_ascii_stack.py -i %s -f main -c 1 -a arm | filecheck %s
 
-# CHECK:      0x0   : ||----|w19|| : 0x0
-# CHECK-NEXT: 0x8   : ||--------|| : 0x8
+# CHECK:      0x0   : ||----|w19-|| : 0x0
+# CHECK-NEXT: 0x8   : ||---------|| : 0x8
 # CHECK-NEXT:
 # CHECK-NEXT: sp : 0x0
 

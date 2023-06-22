@@ -4,7 +4,7 @@ import re
 import sys
 import argparse
 
-FRAME_LINE = "||--------||"
+FRAME_LINE = "||---------||"
 
 
 FUNCTION_REGEX = re.compile(

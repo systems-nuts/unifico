@@ -1,31 +1,31 @@
 # RUN: print_ascii_stack.py -i %s -f main -c 3 -a x86 | filecheck %s
 
-# CHECK:      0x0  : ||--------|| : -0xc0
-# CHECK-NEXT: 0x8  : ||----|eax|| : -0xb8
-# CHECK-NEXT: 0x10 : ||--------|| : -0xb0
-# CHECK-NEXT: 0x18 : ||--------|| : -0xa8
-# CHECK-NEXT: 0x20 : ||--------|| : -0xa0
-# CHECK-NEXT: 0x28 : ||--------|| : -0x98
-# CHECK-NEXT: 0x30 : ||--------|| : -0x90
-# CHECK-NEXT: 0x38 : ||--------|| : -0x88
-# CHECK-NEXT: 0x40 : ||--------|| : -0x80
-# CHECK-NEXT: 0x48 : ||--------|| : -0x78
-# CHECK-NEXT: 0x50 : ||--------|| : -0x70
-# CHECK-NEXT: 0x58 : ||--------|| : -0x68
-# CHECK-NEXT: 0x60 : ||--------|| : -0x60
-# CHECK-NEXT: 0x68 : ||--------|| : -0x58
-# CHECK-NEXT: 0x70 : ||--------|| : -0x50
-# CHECK-NEXT: 0x78 : ||--------|| : -0x48
-# CHECK-NEXT: 0x80 : ||--------|| : -0x40
-# CHECK-NEXT: 0x88 : ||--------|| : -0x38
-# CHECK-NEXT: 0x90 : ||xmm0----|| : -0x30
-# CHECK-NEXT: 0x98 : ||xmm0----|| : -0x28
-# CHECK-NEXT: 0xa0 : ||rsi-----|| : -0x20
-# CHECK-NEXT: 0xa8 : ||edi-|0x0|| : -0x18
-# CHECK-NEXT: 0xb0 : ||--------|| : -0x10
-# CHECK-NEXT: 0xb8 : ||rbx-----|| : -0x8
-# CHECK-NEXT: 0xc0 : ||rbp-----|| : 0x0
-# CHECK-NEXT: 0xc8 : ||--------|| : 0x8
+# CHECK:      0x0  : ||---------|| : -0xc0
+# CHECK-NEXT: 0x8  : ||----|eax-|| : -0xb8
+# CHECK-NEXT: 0x10 : ||---------|| : -0xb0
+# CHECK-NEXT: 0x18 : ||---------|| : -0xa8
+# CHECK-NEXT: 0x20 : ||---------|| : -0xa0
+# CHECK-NEXT: 0x28 : ||---------|| : -0x98
+# CHECK-NEXT: 0x30 : ||---------|| : -0x90
+# CHECK-NEXT: 0x38 : ||---------|| : -0x88
+# CHECK-NEXT: 0x40 : ||---------|| : -0x80
+# CHECK-NEXT: 0x48 : ||---------|| : -0x78
+# CHECK-NEXT: 0x50 : ||---------|| : -0x70
+# CHECK-NEXT: 0x58 : ||---------|| : -0x68
+# CHECK-NEXT: 0x60 : ||---------|| : -0x60
+# CHECK-NEXT: 0x68 : ||---------|| : -0x58
+# CHECK-NEXT: 0x70 : ||---------|| : -0x50
+# CHECK-NEXT: 0x78 : ||---------|| : -0x48
+# CHECK-NEXT: 0x80 : ||---------|| : -0x40
+# CHECK-NEXT: 0x88 : ||---------|| : -0x38
+# CHECK-NEXT: 0x90 : ||xmm0-----|| : -0x30
+# CHECK-NEXT: 0x98 : ||xmm0-----|| : -0x28
+# CHECK-NEXT: 0xa0 : ||rsi------|| : -0x20
+# CHECK-NEXT: 0xa8 : ||edi-|0x0-|| : -0x18
+# CHECK-NEXT: 0xb0 : ||---------|| : -0x10
+# CHECK-NEXT: 0xb8 : ||rbx------|| : -0x8
+# CHECK-NEXT: 0xc0 : ||rbp------|| : 0x0
+# CHECK-NEXT: 0xc8 : ||---------|| : 0x8
 # CHECK-NEXT:
 # CHECK-NEXT: rsp: 0x0
 # CHECK-NEXT: rbp: 0xc0

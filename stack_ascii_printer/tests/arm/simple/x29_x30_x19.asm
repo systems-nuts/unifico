@@ -1,9 +1,9 @@
 # RUN: print_ascii_stack.py -i %s -f main -c 1 -a arm | filecheck %s
 
-# CHECK:      0x0   : ||x19-----|| : -0x10
-# CHECK-NEXT: 0x8   : ||--------|| : -0x8
-# CHECK-NEXT: 0x10  : ||x29-----|| : 0x0
-# CHECK-NEXT: 0x18  : ||x30-----|| : 0x8
+# CHECK:      0x0   : ||x19------|| : -0x10
+# CHECK-NEXT: 0x8   : ||---------|| : -0x8
+# CHECK-NEXT: 0x10  : ||x29------|| : 0x0
+# CHECK-NEXT: 0x18  : ||x30------|| : 0x8
 # CHECK-NEXT:
 # CHECK-NEXT: sp : 0x0
 # CHECK-NEXT: x29: 0x10
