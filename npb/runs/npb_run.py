@@ -248,7 +248,7 @@ class NPBRunner:
 
         run_wd = os.path.join(self.cwd, "run")
         if os.path.exists(run_wd):
-            self.eprint('Error: "{run_wd}" already exists!')
+            self.eprint(f'Error: "{run_wd}" already exists!')
             exit(2)
 
         print(f"Creating dir: {run_wd}")
@@ -266,7 +266,7 @@ class NPBRunner:
 
             if not int(bench_cfg["iterations"]):
                 self.eprint(
-                    'Warning: "No iterations specified for {benchmark}!'
+                    f'Warning: "No iterations specified for {benchmark}!'
                 )
 
             self.execute_benchmark(bench_cfg, benchmark, self.args.dryrun)
@@ -296,7 +296,7 @@ class NPBRunner:
         """
         run_wd = os.path.join(self.cwd, "run")
         if not os.path.exists(run_wd):
-            self.eprint('Error: "{run_wd}" does not exist!')
+            self.eprint(f'Error: "{run_wd}" does not exist!')
             exit(2)
 
         print(f"Changing working dir: {run_wd}")
