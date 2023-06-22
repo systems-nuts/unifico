@@ -35,11 +35,11 @@ def get_average_time(df):
 
 
 def combine_dataframes_column(df1, df2, column):
-    df_results = pd.DataFrame()
-    df_results["{} % Overhead".format(column)] = df1[column].combine(
+    df_results = pd.DataFrame(index=df1.index)
+    df_results["{}_overhead".format(column)] = df1[column].combine(
         df2[column], lambda x1, x2: (x2 / x1 - 1) * 100
     )
-    df_results["{} Speedup".format(column)] = df1[column].combine(
+    df_results["{}_speedup".format(column)] = df1[column].combine(
         df2[column], lambda x1, x2: x1 / x2
     )
     return df_results
@@ -47,65 +47,40 @@ def combine_dataframes_column(df1, df2, column):
 
 if __name__ == "__main__":
 
-    df_chris_x86 = pd.read_csv(CHRIS_X86_PATH, nrows=4)
-    df_chris_arm = pd.read_csv(CHRIS_ARM_PATH, nrows=4)
-
-    df_unifico = df_from_dir(UNIFICO_FOLDER)
-    df_unifico_x86 = get_average_time(
-        df_unifico[df_unifico["Architecture"] == "x86_64"]
+    df_unifico_x86 = pd.read_csv(
+        "/home/blackgeorge/Documents/phd/unified_abi/npb/runs/experiments/performance-regression/20230619_211239/run/results.csv",
+        index_col="benchmark",
     )
-    df_unifico_arm = get_average_time(
-        df_unifico[df_unifico["Architecture"] == "aarch64"]
+    df_vanilla_x86 = pd.read_csv(
+        "/home/blackgeorge/Documents/phd/unified_abi/npb/runs/experiments/cgo2024/x86_init_B/run/results.csv",
+        index_col="benchmark",
     )
 
-    df_unmodified = df_from_dir(UNMODIFIED_FOLDER)
-    df_unmodified_x86 = get_average_time(
-        df_unmodified[df_unmodified["Architecture"] == "x86_64"]
+    x86_overhead = combine_dataframes_column(
+        df_vanilla_x86, df_unifico_x86, "time_O0"
     )
-    df_unmodified_arm = get_average_time(
-        df_unmodified[df_unmodified["Architecture"] == "aarch64"]
+    print(x86_overhead)
+
+    x86_overhead.to_csv(
+        "x86_overhead.csv",
+        header=True,
     )
 
-    df_results_arm = pd.DataFrame()
-    df_results_arm["Benchmark"] = df_unmodified_arm["Benchmark"]
+    df_unifico_arm = pd.read_csv(
+        "/home/blackgeorge/Documents/phd/unified_abi/npb/runs/experiments/performance-regression/20230619_210656/run/results.csv",
+        index_col="benchmark",
+    )
+    df_vanilla_arm = pd.read_csv(
+        "/home/blackgeorge/Documents/phd/unified_abi/npb/runs/experiments/cgo2024/arm_init_B/run/results.csv",
+        index_col="benchmark",
+    )
 
-    df_results_x86 = pd.DataFrame()
-    df_results_x86["Benchmark"] = df_unmodified_x86["Benchmark"]
+    arm_overhead = combine_dataframes_column(
+        df_vanilla_arm, df_unifico_arm, "time_O0"
+    )
+    print(arm_overhead)
 
-    for class_name in ["A", "B", "C"]:
-
-        res = combine_dataframes_column(
-            df_unmodified_arm, df_unifico_arm, class_name
-        )
-        df_results_arm = pd.concat([df_results_arm, res], axis=1)
-
-        res = combine_dataframes_column(
-            df_unmodified_x86, df_unifico_x86, class_name
-        )
-        df_results_x86 = pd.concat([df_results_x86, res], axis=1)
-
-    df_results_x86 = pd.concat([df_results_x86, df_chris_x86], axis=0)
-    df_results_arm = pd.concat([df_results_arm, df_chris_arm], axis=0)
-
-    df_results_x86.set_index("Benchmark", inplace=True)
-    df_results_arm.set_index("Benchmark", inplace=True)
-    # df_results_arm.loc['Geomean'] = df_results_arm[df_results_arm.notna()].apply(gmean, axis=0)
-    # df_results_x86.loc['Geomean'] = df_results_x86[df_results_x86.notna()].apply(gmean, axis=0)
-    # df_results_x86.loc['Average'] = df_results_x86.mean(axis=0)
-    # df_results_arm.loc['Geomean'] = df_results_arm[df_results_arm.notna()].apply(gmean, axis=0)
-    # df_results_arm.loc['Average'] = df_results_arm.mean(axis=0)
-    with pd.option_context(
-        "display.max_rows",
-        None,
-        "display.max_columns",
-        None,
-        "display.expand_frame_repr",
-        False,
-    ):  # more options can be specified also
-        print(df_results_arm)
-        print(df_results_x86)
-
-    with open(OUT_X86_PATH, "w") as fp:
-        df_results_x86.to_csv(fp)
-    with open(OUT_ARM_PATH, "w") as fp:
-        df_results_arm.to_csv(fp)
+    arm_overhead.to_csv(
+        "arm_overhead.csv",
+        header=True,
+    )
