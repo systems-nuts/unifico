@@ -553,3 +553,6 @@ layout/experimentation
 # Intel's Pin
 *pin.log
 *pintool.log
+
+# Sigil
+*.gz
