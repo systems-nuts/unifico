@@ -549,3 +549,7 @@ layout/experimentation
 *.zip
 
 !requirements.txt
+
+# Intel's Pin
+*pin.log
+*pintool.log
