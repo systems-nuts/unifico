@@ -32,7 +32,7 @@
                     "/home/nikos/phd/unified_abi/npb/runs/file.txt",
                     "scp",
                     "-r",
-                    "nikos@nettuno:/home/nikos/phd/unified_abi/npb/runs/o1-unifico-B/bins/${executable}",
+                    "nikos@nettuno:/home/nikos/phd/unified_abi/npb/runs/experiment_20230619_210656/bins/${executable}",
                     "${dest_dir}"
                 ]
             },
@@ -44,7 +44,7 @@
                     "/home/nikos/phd/unified_abi/npb/runs/file.txt",
                     "scp",
                     "-r",
-                    "nikos@nettuno:/home/nikos/phd/unified_abi/npb/runs/o1-unifico-B/bins/${executable}_build.log",
+                    "nikos@nettuno:/home/nikos/phd/unified_abi/npb/runs/experiment_20230619_210656/bins/${executable}_build.log",
                     "${dest_dir}"
                 ]
             }
