@@ -73,9 +73,7 @@ class NPBRunner:
             now = datetime.now()
             date = now.strftime("%Y%m%d")
             time = now.strftime("%H%M%S")
-            experiment_dir = os.path.join(
-                self.cwd, sep.join(["experiment", date, time])
-            )
+            experiment_dir = os.path.join(self.cwd, sep.join([date, time]))
 
         if os.path.exists(experiment_dir):
             print(f'WARNING: "{experiment_dir}" already exists')
