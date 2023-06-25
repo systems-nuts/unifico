@@ -88,6 +88,7 @@ class NPBRunner:
 
         self.cwd = os.getcwd()
         self.bin_dir = self.get_abs_dir(self.cwd, self.cfg["bin_dir"])
+        self.run_dir = self.get_abs_dir(self.cwd, self.cfg["run_dir"])
 
     @staticmethod
     def cmd_line_arguments(arg_parser: argparse.ArgumentParser):
@@ -244,18 +245,17 @@ class NPBRunner:
 
     def run(self):
 
-        run_wd = os.path.join(self.cwd, "run")
-        if os.path.exists(run_wd):
-            self.eprint(f'Error: "{run_wd}" already exists!')
+        if os.path.exists(self.run_dir):
+            self.eprint(f'Error: "{self.run_dir}" already exists!')
             exit(2)
 
-        print(f"Creating dir: {run_wd}")
+        print(f"Creating dir: {self.run_dir}")
         if not self.args.dryrun:
-            os.mkdir(run_wd)
+            os.mkdir(self.run_dir)
 
-        print(f"Changing working dir: {run_wd}")
+        print(f"Changing working dir: {self.run_dir}")
         if not self.args.dryrun:
-            os.chdir(run_wd)
+            os.chdir(self.run_dir)
 
         for benchmark in self.cfg["executables"]:
             bench_cfg = self.cfg["*"].copy()
@@ -292,14 +292,13 @@ class NPBRunner:
         Produces a .csv with aggregated and post-processed results.
         @return:
         """
-        run_wd = os.path.join(self.cwd, "run")
-        if not os.path.exists(run_wd):
-            self.eprint(f'Error: "{run_wd}" does not exist!')
+        if not os.path.exists(self.run_dir):
+            self.eprint(f'Error: "{self.run_dir}" does not exist!')
             exit(2)
 
-        print(f"Changing working dir: {run_wd}")
+        print(f"Changing working dir: {self.run_dir}")
         if not self.args.dryrun:
-            os.chdir(run_wd)
+            os.chdir(self.run_dir)
 
         df = pd.DataFrame(columns=["benchmark", "time_O0"])
         df.to_csv("results.csv", index=False)
