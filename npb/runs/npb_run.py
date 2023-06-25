@@ -15,6 +15,7 @@ from subprocess import STDOUT, DEVNULL
 
 from datetime import datetime
 from string import Template
+from scipy.stats import gmean
 
 import pandas as pd
 
@@ -314,7 +315,10 @@ class NPBRunner:
 
             self.post_process_benchmark(bench_cfg, benchmark, self.args.dryrun)
 
-        df = pd.read_csv("results.csv")
+        df = pd.read_csv("results.csv", index_col="benchmark")
+        df = df.apply(pd.to_numeric)
+        df.loc["Geomean"] = df.apply(gmean, axis=0)
+        df.to_csv("results.csv")
 
     def dispatch(self):
         if self.args.build:
