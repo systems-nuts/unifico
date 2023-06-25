@@ -87,8 +87,12 @@ class NPBRunner:
             os.chdir(experiment_dir)
 
         self.cwd = os.getcwd()
-        self.bin_dir = self.get_abs_dir(self.cwd, self.cfg["bin_dir"])
-        self.run_dir = self.get_abs_dir(self.cwd, self.cfg["run_dir"])
+        self.bin_dir = self.get_abs_dir(
+            self.cwd, self.cfg.get("bin_dir", "bin")
+        )
+        self.run_dir = self.get_abs_dir(
+            self.cwd, self.cfg.get("run_dir", "run")
+        )
 
     @staticmethod
     def cmd_line_arguments(arg_parser: argparse.ArgumentParser):
