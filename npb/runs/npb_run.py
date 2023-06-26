@@ -189,7 +189,7 @@ class NPBRunner:
                     dryrun,
                     build_dir=build_dir,
                     executable=executable,
-                    dest_dir=self.experiment_dir,
+                    dest_dir=self.bin_dir,
                     output="",
                 )
 
