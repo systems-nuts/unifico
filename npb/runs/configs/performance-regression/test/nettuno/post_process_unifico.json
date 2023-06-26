@@ -1,0 +1,56 @@
+{
+    "info": {},
+    "tags": [
+        "exec_time"
+    ],
+    "executables": [
+        "ep_x86_64_aligned.out",
+        "is_x86_64_aligned.out"
+    ],
+    "env": {},
+    "*": {
+        "prepend": [],
+        "append": [],
+        "post_process": [
+            {
+                "args": [
+                    "grep",
+                    "-o",
+                    "'[0-9\\.][0-9\\.]*'",
+                    "time_${executable}.log"
+                ],
+                "output": "data.log"
+            },
+            {
+                "args": [
+                    "LC_NUMERIC=\"C\"",
+                    "awk",
+                    "'{sum+=sprintf(\"%f\",$1)}END{printf \"%.2f\\n\",sum/NR}'",
+                    "data.log"
+                ],
+                "output": "avg.log"
+            },
+            {
+                "args": [
+                    "echo -n",
+                    "${benchmark},",
+                    ">>results.csv"
+                ]
+            },
+            {
+                "args": [
+                    "cat",
+                    "avg.log",
+                    ">>results.csv"
+                ]
+            },
+            {
+                "args": [
+                    "rm",
+                    "data.log",
+                    "avg.log"
+                ]
+            }
+        ]
+    }
+}

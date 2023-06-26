@@ -1,0 +1,76 @@
+{
+    "info": {},
+    "tags": [
+        "exec_time"
+    ],
+    "executables": [
+        "ep_aarch64_aligned.out",
+        "is_aarch64_aligned.out"
+    ],
+    "env": {},
+
+    "*": {
+        "npb_class": "S",
+        "iterations": 3,
+        "output": "run_${executable}_${iteration}.log",
+        "prepend": [],
+        "append": [],
+        "build": [
+            {
+                "before": false,
+                "args": [
+                    "sshpass",
+                    "-f",
+                    "/home/nikos/phd/unified_abi/npb/runs/file.txt",
+                    "scp",
+                    "-r",
+                    "nikos@nettuno:${dest_dir}/${executable}",
+                    "${dest_dir}"
+                ]
+            },
+            {
+                "before": false,
+                "args": [
+                    "sshpass",
+                    "-f",
+                    "/home/nikos/phd/unified_abi/npb/runs/file.txt",
+                    "scp",
+                    "-r",
+                    "nikos@nettuno:${dest_dir}/${executable}_build.log",
+                    "${dest_dir}"
+                ]
+            }
+        ],
+        "run": [
+            {
+                "before": false,
+                "args": [
+                    "grep",
+                    "-h",
+                    "\"Time in\"",
+                    "run_${executable}*.log"
+                ],
+                "output": "time_${executable}.log"
+            },
+            {
+                "before": false,
+                "args": [
+                    "grep",
+                    "-h",
+                    "\"Time in\"",
+                    "run_${executable}*.log"
+                ],
+                "output": "time_${executable}.log"
+            },
+            {
+                "before": false,
+                "args": [
+                    "rm",
+                    "-rf",
+                    "run_${executable}*.log"
+                ],
+                "output": ""
+            }
+        ]
+    }
+}
