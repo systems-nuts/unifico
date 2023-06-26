@@ -194,8 +194,8 @@ class NPBRunner:
                 )
 
     def build(self):
-        print(f"Creating dir: {self.bin_dir}")
         if not self.args.dryrun and not os.path.exists(self.bin_dir):
+            print(f"Creating dir: {self.bin_dir}")
             os.mkdir(self.bin_dir)
 
         suite_dir = os.getenv("NPB_PATH")
@@ -250,13 +250,8 @@ class NPBRunner:
                 )
 
     def run(self):
-
-        if os.path.exists(self.run_dir):
-            self.eprint(f'Error: "{self.run_dir}" already exists!')
-            exit(2)
-
-        print(f"Creating dir: {self.run_dir}")
-        if not self.args.dryrun:
+        if not self.args.dryrun and not os.path.exists(self.run_dir):
+            print(f"Creating dir: {self.run_dir}")
             os.mkdir(self.run_dir)
 
         print(f"Changing working dir: {self.run_dir}")
