@@ -90,15 +90,6 @@
             {
                 "before": false,
                 "args": [
-                    "awk",
-                    "'BEGIN{E = exp(1)} $2>0{tot+=log($2); c++} END{m=tot/c; printf \"%.2f\\n\", E^m}'",
-                    "time_${executable}.log"
-                ],
-                "output": "geomean.log"
-            },
-            {
-                "before": false,
-                "args": [
                     "rm",
                     "-rf",
                     "run_${executable}*.log"
