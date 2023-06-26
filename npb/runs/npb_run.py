@@ -74,7 +74,7 @@ class NPBRunner:
             now = datetime.now()
             date = now.strftime("%Y%m%d")
             time = now.strftime("%H%M%S")
-            experiment_dir = os.path.join(self.cwd, sep.join([date, time]))
+            experiment_dir = sep.join([date, time])
 
         if os.path.exists(experiment_dir):
             print(f'WARNING: "{experiment_dir}" already exists')
@@ -87,6 +87,7 @@ class NPBRunner:
         if not self.args.dryrun:
             os.chdir(experiment_dir)
 
+        self.experiment_dir = experiment_dir
         self.cwd = os.getcwd()
         self.bin_dir = self.get_abs_dir(
             self.cwd, self.cfg.get("bin_dir", "bin")
@@ -188,7 +189,7 @@ class NPBRunner:
                     dryrun,
                     build_dir=build_dir,
                     executable=executable,
-                    dest_dir=self.bin_dir,
+                    dest_dir=self.experiment_dir,
                     output="",
                 )
 
