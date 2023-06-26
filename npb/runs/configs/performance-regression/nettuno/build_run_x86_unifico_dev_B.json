@@ -15,7 +15,6 @@
         "ua_x86_64_aligned.out"
     ],
     "env": {},
-    "bin_dir": "bins",
 
     "*": {
         "npb_class": "B",

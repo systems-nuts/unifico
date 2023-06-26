@@ -15,7 +15,6 @@
         "ua_aarch64_aligned.out"
     ],
     "env": {},
-    "bin_dir": "bins",
     "*": {
         "prepend": [],
         "append": [],
