@@ -15,7 +15,6 @@
         "ua_x86_64_aligned.out"
     ],
     "env": {},
-    "bin_dir": "bins",
 
     "*": {
         "npb_class": "B",
@@ -86,15 +85,6 @@
                     "run_${executable}*.log"
                 ],
                 "output": "time_${executable}.log"
-            },
-            {
-                "before": false,
-                "args": [
-                    "awk",
-                    "'BEGIN{E = exp(1)} $2>0{tot+=log($2); c++} END{m=tot/c; printf \"%.2f\\n\", E^m}'",
-                    "time_${executable}.log"
-                ],
-                "output": "geomean.log"
             },
             {
                 "before": false,

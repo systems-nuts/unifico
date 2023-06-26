@@ -4,20 +4,13 @@
         "exec_time"
     ],
     "executables": [
-        "bt_aarch64_aligned.out",
-        "cg_aarch64_aligned.out",
         "ep_aarch64_aligned.out",
-        "ft_aarch64_aligned.out",
-        "is_aarch64_aligned.out",
-        "lu_aarch64_aligned.out",
-        "mg_aarch64_aligned.out",
-        "sp_aarch64_aligned.out",
-        "ua_aarch64_aligned.out"
+        "is_aarch64_aligned.out"
     ],
     "env": {},
 
     "*": {
-        "npb_class": "B",
+        "npb_class": "S",
         "iterations": 3,
         "output": "run_${executable}_${iteration}.log",
         "prepend": [],
