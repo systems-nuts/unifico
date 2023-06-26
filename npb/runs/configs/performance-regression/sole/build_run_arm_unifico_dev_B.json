@@ -32,7 +32,7 @@
                     "/home/nikos/phd/unified_abi/npb/runs/file.txt",
                     "scp",
                     "-r",
-                    "nikos@nettuno:/home/nikos/phd/unified_abi/npb/runs/${dest_dir}/bins/${executable}",
+                    "nikos@nettuno:${dest_dir}/${executable}",
                     "${dest_dir}"
                 ]
             },
@@ -44,7 +44,7 @@
                     "/home/nikos/phd/unified_abi/npb/runs/file.txt",
                     "scp",
                     "-r",
-                    "nikos@nettuno:/home/nikos/phd/unified_abi/npb/runs/${dest_dir}/bins/${executable}_build.log",
+                    "nikos@nettuno:${dest_dir}/${executable}_build.log",
                     "${dest_dir}"
                 ]
             }
