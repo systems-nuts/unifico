@@ -25,13 +25,15 @@ OPT_LEVEL ?= -O0
 override CFLAGS += $(OPT_LEVEL) -Wall
 override CFLAGS += -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer
 
-ifndef UNMODIFIED
+ifndef UNMODIFIED_LLVM
 override CFLAGS += -mllvm -align-bytes-to-four
 
 override OPT_FLAGS	+= -name-string-literals -static-var-sections -live-values -insert-stackmaps
 
 override LLC_FLAGS	+= -function-sections -data-sections
 override LLC_FLAGS	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
+
+ifndef EXPERIMENT_MODE
 # Callsite-related
 override LLC_FLAGS  += -disable-block-align --mc-relax-all
 # Custom
@@ -39,6 +41,7 @@ override LLC_FLAGS  += -disable-x86-frame-obj-order -aarch64-csr-alignment=8 -al
 
 override LLC_FLAGS_ARM64 += -mattr=-disable-hoist-in-lowering,+disable-fp-imm-materialize,-avoid-f128,+avoid-wide-mul-add
 override LLC_FLAGS_X86 += -mattr=+aarch64-sized-imm,-multiply-with-imm,-non-zero-imm-to-mem,+force-vector-mem-op,+aarch64-constant-cost-model,+simple-reg-offset-addr,+avoid-opt-mul-1 -no-x86-call-frame-opt -x86-enable-simplify-cfg
+endif
 endif
 
 LLC_PASSES_TO_DEBUG	?= isel regalloc stackmaps stacktransform

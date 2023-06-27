@@ -1,0 +1,73 @@
+{
+    "info": {},
+    "tags": [
+        "exec_time"
+    ],
+    "executables": [
+        "bt_aarch64_aligned.out",
+        "cg_aarch64_aligned.out",
+        "ep_aarch64_aligned.out",
+        "ft_aarch64_aligned.out",
+        "is_aarch64_aligned.out",
+        "lu_aarch64_aligned.out",
+        "mg_aarch64_aligned.out",
+        "sp_aarch64_aligned.out",
+        "ua_aarch64_aligned.out"
+    ],
+    "env": {},
+
+    "*": {
+        "npb_class": "B",
+        "output": "run_${executable}_${iteration}.log",
+        "prepend": [],
+        "append": [],
+        "build": [
+            {
+                "before": true,
+                "args": [
+                    "make",
+                    "clean"
+                ]
+            },
+            {
+                "before": true,
+                "args": [
+                    "make",
+                    "${npb_class}"
+                ]
+            },
+            {
+                "before": true,
+                "args": [
+                    "make",
+                    "-C",
+                    "${build_dir}",
+                    "-j10",
+                    "${executable}",
+                    "EXPERIMENT_MODE=1",
+                    "UNMODIFIED_MUSL=1",
+                    "LLC_FLAGS=\"-disable-block-align --mc-relax-all -disable-x86-frame-obj-order\"",
+                    "LLC_FLAGS+=\"-aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot\""
+                ],
+                "output": "${build_dir}/${executable}_build.log"
+            },
+            {
+                "before": false,
+                "args": [
+                    "cp",
+                    "${build_dir}/${executable}",
+                    "${dest_dir}"
+                ]
+            },
+            {
+                "before": false,
+                "args": [
+                    "mv",
+                    "${build_dir}/${executable}_build.log",
+                    "${dest_dir}"
+                ]
+            }
+        ],
+        "run": []
+    }
+}
