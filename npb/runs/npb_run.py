@@ -314,6 +314,7 @@ class NPBRunner:
         df = pd.read_csv("results.csv", index_col="benchmark")
         df = df.apply(pd.to_numeric)
         df.loc["Geomean"] = df.apply(gmean, axis=0)
+        df = df.round(2)
         df.to_csv("results.csv")
 
     def dispatch(self):
