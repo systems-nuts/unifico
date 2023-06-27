@@ -1,7 +1,13 @@
 POPCORN ?= /usr/local/popcorn
 
-# LLVM Toolchain
+# Generic UNMODIFIED flag
 ifdef UNMODIFIED
+UNMODIFIED_LLVM := 1
+UNMODIFIED_MUSL := 1
+endif
+
+# LLVM Toolchain
+ifdef UNMODIFIED_LLVM
 LLVM_TOOLCHAIN ?= ~/llvm-9.0.1/toolchain/bin
 else
 LLVM_TOOLCHAIN ?= ~/llvm-9/toolchain/bin
@@ -10,7 +16,7 @@ endif
 PROJECT_DIR ?= ../..
 
 # Lib musl directories per architecture
-ifdef UNMODIFIED
+ifdef UNMODIFIED_MUSL
 MUSL_TOOLCHAIN ?= ~/musl-toolchains/unmodified
 else
 MUSL_TOOLCHAIN ?= ~/musl-toolchains/criu

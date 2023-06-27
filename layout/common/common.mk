@@ -25,7 +25,7 @@ OPT_LEVEL ?= -O0
 override CFLAGS += $(OPT_LEVEL) -Wall
 override CFLAGS += -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer
 
-ifndef UNMODIFIED
+ifndef UNMODIFIED_LLVM
 override CFLAGS += -mllvm -align-bytes-to-four
 
 override OPT_FLAGS	+= -name-string-literals -static-var-sections -live-values -insert-stackmaps
