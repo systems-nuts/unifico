@@ -4,15 +4,15 @@
         "exec_time"
     ],
     "executables": [
-        "bt_aarch64_aligned.out",
-        "cg_aarch64_aligned.out",
-        "ep_aarch64_aligned.out",
-        "ft_aarch64_aligned.out",
-        "is_aarch64_aligned.out",
-        "lu_aarch64_aligned.out",
-        "mg_aarch64_aligned.out",
-        "sp_aarch64_aligned.out",
-        "ua_aarch64_aligned.out"
+        "bt_x86_64_aligned.out",
+        "cg_x86_64_aligned.out",
+        "ep_x86_64_aligned.out",
+        "ft_x86_64_aligned.out",
+        "is_x86_64_aligned.out",
+        "lu_x86_64_aligned.out",
+        "mg_x86_64_aligned.out",
+        "sp_x86_64_aligned.out",
+        "ua_x86_64_aligned.out"
     ],
     "env": {},
 
@@ -46,8 +46,9 @@
                     "-j10",
                     "${executable}",
                     "EXPERIMENT_MODE=1",
+                    "UNMODIFIED_MUSL=1",
                     "LLC_FLAGS=\"-disable-block-align --mc-relax-all -disable-x86-frame-obj-order\"",
-                    "LLC_FLAGS=\"-aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot\""
+                    "LLC_FLAGS+=\"-aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot\""
                 ],
                 "output": "${build_dir}/${executable}_build.log"
             },
