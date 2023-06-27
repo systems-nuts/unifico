@@ -66,7 +66,6 @@ class NPBRunner:
             if not self.args.dryrun:
                 os.environ[k] = self.env[k]
 
-        self.cwd = os.getcwd()
         sep = "_"
         if self.args.dest:
             experiment_dir = self.args.dest
