@@ -1,10 +1,11 @@
 benchmark,time_O0
 bt,335.68
 cg,92.84
-ep,105.80
+ep,105.8
 ft,138.25
 is,2.76
 lu,276.04
 mg,12.41
 sp,225.45
 ua,315.28
+Geomean,87.68
