@@ -327,7 +327,7 @@ class NPBRunner:
         if not self.args.dryrun:
             os.chdir(self.run_dir)
 
-        df = pd.DataFrame(columns=["benchmark", "time_O0"])
+        df = pd.DataFrame(columns=["benchmark", "time"])
         df.to_csv("results.csv", index=False)
 
         for benchmark in self.cfg["executables"]:
