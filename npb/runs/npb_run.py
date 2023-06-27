@@ -66,6 +66,9 @@ class NPBRunner:
             if not self.args.dryrun:
                 os.environ[k] = self.env[k]
 
+        if self.args.compare:
+            self.compare_dir = self.args.compare
+
         sep = "_"
         if self.args.dest:
             experiment_dir = self.args.dest
@@ -135,6 +138,14 @@ class NPBRunner:
             nargs="?",
             help="Optional destination directory name (default: timestamp)",
         )
+        arg_parser.add_argument(
+            "-m",
+            "--compare",
+            const=str,
+            nargs="?",
+            help="Optional base directory to compare results with. "
+            "Prints a comparison csv on the destination directory",
+        )
 
     @staticmethod
     def eprint(*args, **kwargs):
@@ -191,6 +202,22 @@ class NPBRunner:
                     dest_dir=self.bin_dir,
                     output="",
                 )
+
+    @staticmethod
+    def combine_dataframes_column(df1, df2, column=None):
+        if not column:
+            column = df1.columns[0]
+            assert (
+                column in df2.columns
+            ), f"{column} missing in second dataframe"
+        df_results = pd.DataFrame(index=df1.index)
+        df_results["{}_overhead".format(column)] = df1[column].combine(
+            df2[column], lambda x1, x2: (x2 / x1 - 1) * 100
+        )
+        df_results["{}_speedup".format(column)] = df1[column].combine(
+            df2[column], lambda x1, x2: x1 / x2
+        )
+        return df_results
 
     def build(self):
         if not self.args.dryrun and not os.path.exists(self.bin_dir):
@@ -316,6 +343,26 @@ class NPBRunner:
         df = df.round(2)
         df.to_csv("results.csv")
 
+    def compare(self):
+        """
+        Compare the results of the destination directory with the ones in base directory.
+
+        Assumes that there is a results.csv in both directories.
+        Produces a .csv with the comparison results.
+        @return:
+        """
+        df_current = pd.read_csv(
+            os.path.join(self.run_dir, "results.csv"), index_col="benchmark"
+        )
+        df_base = pd.read_csv(
+            os.path.join(self.compare_dir, "results.csv"),
+            index_col="benchmark",
+        )
+        df_overhead = self.combine_dataframes_column(df_base, df_current)
+        df_overhead = df_overhead.round(2)
+        print("Dumping overhead.csv")
+        df_overhead.to_csv("overhead.csv", header=True)
+
     def dispatch(self):
         if self.args.build:
             self.build()
@@ -323,6 +370,8 @@ class NPBRunner:
             self.run()
         if self.args.post_process:
             self.post_process()
+        if self.args.compare:
+            self.compare()
 
 
 def __main__():
