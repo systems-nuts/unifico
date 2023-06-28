@@ -1,5 +1,5 @@
 olden_benchmarks := olden/treeadd olden/perimeter
-prim_benchmarks := prim/bfs
+prim_benchmarks := prim/bfs prim/bfs-omp
 test_dir := tests
 
 .PHONY: all $(olden_benchmarks) $(prim_benchmarks)
