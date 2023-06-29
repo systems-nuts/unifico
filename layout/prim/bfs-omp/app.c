@@ -47,6 +47,9 @@ int main(int argc, char **argv)
     uint32_t *prevFrontier = buffer1;
     uint32_t *currFrontier = buffer2;
 
+    uint32_t numNodesPerDPU =
+        ROUND_UP_TO_MULTIPLE_OF_2((csrGraph.numNodes - 1) / 4 + 1);
+
     // Calculating result on CPU
     PRINT_INFO(p.verbosity >= 1, "Calculating result on CPU (OpenMP)");
     omp_set_num_threads(thread_num);
@@ -63,14 +66,28 @@ int main(int argc, char **argv)
 #pragma omp parallel for
         for (uint32_t i = 0; i < numPrevFrontier; ++i) {
             uint32_t node = prevFrontier[i];
+
+            int tid = omp_get_thread_num();
+            uint32_t threadLocation = tid;
+            uint32_t nodeLocation = node / numNodesPerDPU;
+            if (tid == 0 && nodeLocation != threadLocation) {
+                printf("Migration for poped node\n");
+                threadLocation = nodeLocation;
+            }
+
             for (uint32_t edge = csrGraph.nodePtrs[node];
                  edge < csrGraph.nodePtrs[node + 1]; ++edge) {
                 uint32_t neighbor = csrGraph.neighborIdxs[edge];
+                uint32_t neighborLocation = neighbor / numNodesPerDPU;
+                if (tid == 0 && neighborLocation != threadLocation) {
+                    printf("	Migration for neighbor\n");
+                    threadLocation = neighborLocation;
+                }
                 uint32_t justVisited = 0;
 #pragma omp critical
                 {
-                    if (nodeLevel[neighbor] ==
-                        UINT32_MAX) { // Node not previously visited
+                    // Node not previously visited
+                    if (nodeLevel[neighbor] == UINT32_MAX) {
                         nodeLevel[neighbor] = level;
                         justVisited = 1;
                     }
