@@ -347,7 +347,11 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 		$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -debug-only=$$PASS 2>$(X86_64_BUILD)/$*_$$PASS.txt; \
 		done \
 		}
-	$(QUIET) $(CALLSITE_ALIGN_CHECK) $(ARM64_BUILD)/$*_aarch64.objdump $(X86_64_BUILD)/$*_x86_64.objdump
+	$(QUIET) { \
+		if [ -z ${EXPERIMENT_MODE} ]; then \
+			$(CALLSITE_ALIGN_CHECK) $(ARM64_BUILD)/$*_aarch64.objdump $(X86_64_BUILD)/$*_x86_64.objdump; \
+		fi \
+		}
 
 $(X86_64_INIT): $(X86_64_OBJ_INIT)
 	@echo " [LD] $@"
