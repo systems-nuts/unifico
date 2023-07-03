@@ -98,6 +98,11 @@ class NPBRunner:
             self.cwd, self.cfg.get("run_dir", "run")
         )
 
+        if self.args.metric:
+            self.metric = self.args.metric
+        else:
+            self.metric = "time_O0"
+
     @staticmethod
     def cmd_line_arguments(arg_parser: argparse.ArgumentParser):
         """
@@ -145,6 +150,12 @@ class NPBRunner:
             nargs="?",
             help="Optional base directory to compare results with. "
             "Prints a comparison csv on the destination directory",
+        )
+        arg_parser.add_argument(
+            "--metric",
+            const=str,
+            nargs="?",
+            help="Optional metric name to use when post-processing (default: time_O0)",
         )
 
     @staticmethod
@@ -327,7 +338,7 @@ class NPBRunner:
         if not self.args.dryrun:
             os.chdir(self.run_dir)
 
-        df = pd.DataFrame(columns=["benchmark", "time"])
+        df = pd.DataFrame(columns=["benchmark", self.metric])
         df.to_csv("results.csv", index=False)
 
         for benchmark in self.cfg["executables"]:
