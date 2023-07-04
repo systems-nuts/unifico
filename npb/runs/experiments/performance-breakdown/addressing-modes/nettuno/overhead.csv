@@ -1,0 +1,12 @@
+benchmark,time_O0_overhead,time_O0_speedup
+bt,2.55,0.98
+cg,-0.15,1.0
+ep,-0.35,1.0
+ft,0.0,1.0
+is,0.0,1.0
+lu,1.81,0.98
+mg,1.69,0.98
+sp,5.0,0.95
+ua,2.11,0.98
+Mean,1.41,0.99
+Geomean,,0.99
