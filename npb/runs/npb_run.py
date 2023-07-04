@@ -370,6 +370,11 @@ class NPBRunner:
             index_col="benchmark",
         )
         df_overhead = self.combine_dataframes_column(df_base, df_current)
+        df_overhead = df_overhead.drop("Geomean", axis=0)
+        mean_metric = df_overhead.mean(axis=0)
+        geomean_metric = df_overhead.apply(gmean, axis=0)
+        df_overhead.loc["Mean"] = mean_metric
+        df_overhead.loc["Geomean"] = geomean_metric
         df_overhead = df_overhead.round(2)
         print("Dumping overhead.csv")
         df_overhead.to_csv("overhead.csv", header=True)
