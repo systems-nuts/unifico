@@ -33,16 +33,47 @@ override OPT_FLAGS	+= -name-string-literals -static-var-sections -live-values -i
 override LLC_FLAGS	+= -function-sections -data-sections
 override LLC_FLAGS	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
 
+#######################
+# Unifico modifications
+#######################
+# If EXPERIMENT_MODE is defined, then we do not keep any of the flags.
+# We only define the subset of the flags from the command line.
 ifndef EXPERIMENT_MODE
-# Callsite-related
-override LLC_FLAGS  += -disable-block-align --mc-relax-all
-# Custom
-override LLC_FLAGS  += -disable-x86-frame-obj-order -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -enable-misched=false
 
-override LLC_FLAGS_ARM64 += -mattr=-disable-hoist-in-lowering,+disable-fp-imm-materialize,-avoid-f128,+avoid-wide-mul-add,+copy-wzr-temp
-override LLC_FLAGS_X86 += -mattr=+aarch64-sized-imm,-multiply-with-imm,-non-zero-imm-to-mem,+force-vector-mem-op,+aarch64-constant-cost-model,+simple-reg-offset-addr,+avoid-opt-mul-1 -no-x86-call-frame-opt -x86-enable-simplify-cfg -enable-lea32
-endif
-endif
+############
+# Categories
+############
+# Callsite alignment
+override LLC_FLAGS       += -disable-block-align --mc-relax-all
+
+# Stack Alignment
+override LLC_FLAGS       += -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot
+
+# Scheduling
+override LLC_FLAGS       += -enable-misched=false
+
+# Addressing modes
+override LLC_FLAGS_X86   += -mattr=+simple-reg-offset-addr
+
+# Immediate Encoding
+override LLC_FLAGS_ARM64 += -mattr=+disable-fp-imm-materialize
+override LLC_FLAGS_X86   += -mattr=-multiply-with-imm,+aarch64-sized-imm
+
+# Register allocation (includes compiling LLVM with -DLLVM_UNIFICO_TABLEGEN_FEATURES=-DUNIFICO_REGALLOC_RULES)
+override LLC_FLAGS_ARM64 += -mattr=+avoid-wide-mul-add,+copy-wzr-temp
+override LLC_FLAGS_X86   += -mattr=-non-zero-imm-to-mem
+
+# Rematerialization and Code Motion (includes compiling LLVM with -DLLVM_UNIFICO_TABLEGEN_FEATURES=-DUNIFICO_REMAT_RULES)
+# -disable-hoist-in-lowering is currently unused
+override LLC_FLAGS_ARM64 += -mattr=-disable-hoist-in-lowering
+override LLC_FLAGS_X86   += -mattr=+aarch64-constant-cost-model -x86-enable-simplify-cfg
+
+# Other optimizations
+override LLC_FLAGS_ARM64 += -mattr=-avoid-f128
+override LLC_FLAGS_X86   += -mattr=+force-vector-mem-op,+avoid-opt-mul-1 -no-x86-call-frame-opt -disable-x86-frame-obj-order -enable-lea32
+
+endif # EXPERIMENT_MODE
+endif # UNMODIFIED_LLVM
 
 LLC_PASSES_TO_DEBUG	?= isel regalloc stackmaps stacktransform
 
