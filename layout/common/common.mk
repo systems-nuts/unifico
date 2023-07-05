@@ -19,6 +19,7 @@ CC		:= $(LLVM_TOOLCHAIN)/clang
 OPT		:= $(LLVM_TOOLCHAIN)/opt
 LLC		:= $(LLVM_TOOLCHAIN)/llc
 OBJDUMP	:= $(LLVM_TOOLCHAIN)/llvm-objdump
+ARM64_OBJDUMP := aarch64-linux-gnu-objdump
 X86_64_OBJDUMP := x86_64-linux-gnu-objdump
 
 OPT_LEVEL ?= -O0
@@ -325,7 +326,7 @@ $(ARM64_INIT): $(ARM64_OBJ_INIT)
 			$(SSHPASS_IGNORE)sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`; \
 		fi \
 		}
-	$(QUIET) $(OBJDUMP) -d -S --print-imm-hex $@ >aarch64_objdump.txt
+	$(QUIET) $(ARM64_OBJDUMP) -ldSrwC --no-show-raw-insn --visualize-jumps $@ >aarch64_objdump.asm
 
 $(ARM64_UNALIGNED): $(ARM64_OBJ)
 	@echo " [LD] $@"
@@ -342,7 +343,7 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 			$(SSHPASS_IGNORE)sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`; \
 		fi \
 		}
-	$(QUIET) $(OBJDUMP) -d -S --print-imm-hex $@ >aarch64_objdump.txt
+	$(QUIET) $(ARM64_OBJDUMP) -ldSrwC --no-show-raw-insn --visualize-jumps $@ >aarch64_objdump.asm
 
 ##########
 # x86-64 #
@@ -387,7 +388,7 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 $(X86_64_INIT): $(X86_64_OBJ_INIT)
 	@echo " [LD] $@"
 	$(QUIET) $(LD) -o $@ $^ $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_MAP)
-	$(QUIET) $(X86_64_OBJDUMP) -d -S -M intel $@ >x86_objdump.txt
+	$(QUIET) $(X86_64_OBJDUMP) -ldSrwC -M intel --no-show-raw-insn --visualize-jumps $@ >x86_objdump.asm
 
 $(X86_64_UNALIGNED): $(X86_64_OBJ)
 	@echo " [LD] $@"
@@ -403,7 +404,7 @@ $(X86_64_LD_SCRIPT): $(ARM64_UNALIGNED) $(X86_64_UNALIGNED)
 $(X86_64_ALIGNED): $(X86_64_LD_SCRIPT)
 	@echo " [LD] $@"
 	$(QUIET) $(LD) -o $@ $(X86_64_OBJ) $(LDFLAGS) $(X86_64_LDFLAGS) -Map $(X86_64_ALIGNED_MAP) -T $<
-	$(QUIET) $(X86_64_OBJDUMP) -d -S -M intel $@ >x86_objdump.txt
+	$(QUIET) $(X86_64_OBJDUMP) -ldSrwC -M intel --no-show-raw-insn --visualize-jumps $@ >x86_objdump.asm
 
 check_un: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	@echo " [CHECK] Checking unalignment for $^"
