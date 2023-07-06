@@ -534,6 +534,7 @@ utilities/lstopo_p.txt
 *.docx
 *.json
 *.txt
+*.asm
 *.dot
 *aarch64
 *x86-64
