@@ -1,0 +1,41 @@
+make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/is'
+{"CFLAGS": "-O0 -Wall -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mllvm -align-bytes-to-four",
+"OPT_FLAGS": "-name-string-literals -static-var-sections -live-values -insert-stackmaps",
+"LLC_FLAGS": "-function-sections -data-sections -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse",
+"LLC_FLAGS_ARM64": "-mattr=+disable-fp-imm-materialize",
+"LLC_FLAGS_X86": "-mattr=-multiply-with-imm,+aarch64-sized-imm"}
+ [IR] is.ll
+ [IR] c_timers.ll
+ [IR] c_print_results.ll
+ [IR] wtime.ll
+ [OPT] wtime_opt.ll
+ [OPT] c_timers_opt.ll
+ [OPT] is_opt.ll
+ [OPT] c_print_results_opt.ll
+ [LLC] wtime_x86_64_init.o
+ [LLC] wtime_aarch64_init.o
+ [LLC] c_timers_x86_64_init.o
+ [LLC] c_timers_aarch64_init.o
+ [LLC] c_print_results_aarch64_init.o
+ [LLC] c_print_results_x86_64_init.o
+ [LLC] is_x86_64_init.o
+ [LLC] is_aarch64_init.o
+ [CALLSITE ALIGN] wtime_cs_align.json
+ [CALLSITE ALIGN] c_timers_cs_align.json
+ [CALLSITE ALIGN] c_print_results_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] wtime_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_timers_aarch64.o
+ [CALLSITE ALIGN] is_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] wtime_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_timers_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_print_results_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] wtime_x86_64.o wtime_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] c_timers_x86_64.o c_timers_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_print_results_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] is_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] c_print_results_x86_64.o c_print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] is_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] is_x86_64.o is_aarch64.o
+ [LD] is_x86_64_unaligned.out
+rm wtime_cs_align.json c_timers_cs_align.json wtime_opt.ll c_print_results_cs_align.json c_print_results_opt.ll c_timers_opt.ll
+make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/is'
