@@ -29,7 +29,10 @@ override CFLAGS += -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-poi
 ifndef UNMODIFIED_LLVM
 override CFLAGS += -mllvm -align-bytes-to-four
 
-override OPT_FLAGS	+= -name-string-literals -static-var-sections -live-values -insert-stackmaps
+override OPT_FLAGS	+= -name-string-literals -static-var-sections -live-values
+ifndef NO_STACKMAPS
+override OPT_FLAGS  += -insert-stackmaps
+endif
 
 override LLC_FLAGS	+= -function-sections -data-sections
 override LLC_FLAGS	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
