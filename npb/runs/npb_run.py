@@ -83,7 +83,7 @@ class NPBRunner:
 
         if not self.args.dryrun and not os.path.exists(experiment_dir):
             print(f"Creating dir: {experiment_dir}")
-            os.mkdir(experiment_dir)
+            os.makedirs(experiment_dir, exist_ok=True)
 
         print(f"Changing working dir: {experiment_dir}")
         if not self.args.dryrun:
@@ -233,7 +233,7 @@ class NPBRunner:
     def build(self):
         if not self.args.dryrun and not os.path.exists(self.bin_dir):
             print(f"Creating dir: {self.bin_dir}")
-            os.mkdir(self.bin_dir)
+            os.makedirs(self.bin_dir, exist_ok=True)
 
         suite_dir = os.getenv("NPB_PATH")
 
@@ -289,7 +289,7 @@ class NPBRunner:
     def run(self):
         if not self.args.dryrun and not os.path.exists(self.run_dir):
             print(f"Creating dir: {self.run_dir}")
-            os.mkdir(self.run_dir)
+            os.makedirs(self.run_dir, exist_ok=True)
 
         print(f"Changing working dir: {self.run_dir}")
         if not self.args.dryrun:
