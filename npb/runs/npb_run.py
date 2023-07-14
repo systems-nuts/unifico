@@ -179,9 +179,12 @@ class NPBRunner:
 
         print(f'Executing command: {" ".join(sargs)}')
         if not dryrun:
-            subprocess.run(
+            result = subprocess.run(
                 " ".join(sargs), shell=True, stderr=STDOUT, stdout=output
             )
+            if result.returncode != 0:
+                print(f"Error: Command failed: {' '.join(sargs)}")
+                exit(1)
 
     def build_benchmark(self, config, executable, dryrun=False):
 
