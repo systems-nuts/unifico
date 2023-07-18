@@ -7,7 +7,8 @@ TEST_SUITE += ep-main-1 zero-constant-reuse ep-main-3 ep-main
 TEST_SUITE += ft-verify ft-comp-init ft-fft3d-2 ft-fft3d-3 ft-appft-1 ft-appft-2
 TEST_SUITE += mg-interp-umaddl exit dec-to-lea-32
 
-TEST_SUITE_O1 := call-leaf factorial long-int-slot fp-args fp-spill-weight int-loop dec-to-lea-32
+TEST_SUITE_O1 := call-leaf factorial long-int-slot fp-args fp-spill-weight int-loop
+TEST_SUITE_O1 += dec-to-lea-32
 
 .PHONY: clean
 
