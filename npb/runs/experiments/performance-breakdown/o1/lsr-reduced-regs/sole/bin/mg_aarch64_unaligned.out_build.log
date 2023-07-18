@@ -1,0 +1,45 @@
+make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/mg'
+{"CFLAGS": "-O1 -Wall -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mllvm -align-bytes-to-four",
+"OPT_FLAGS": "-name-string-literals -static-var-sections -live-values",
+"LLC_FLAGS": "-disable-lsr-solver -function-sections -data-sections -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse",
+"LLC_FLAGS_ARM64": "",
+"LLC_FLAGS_X86": ""}
+ [IR] mg.ll
+ [IR] c_timers.ll
+ [IR] print_results.ll
+ [IR] randdp.ll
+ [IR] c_print_results.ll
+ [IR] wtime.ll
+ [OPT] wtime_opt.ll
+ [OPT] c_print_results_opt.ll
+ [OPT] c_timers_opt.ll
+ [OPT] print_results_opt.ll
+ [OPT] randdp_opt.ll
+ [LLC] wtime_x86_64_init.o
+ [LLC] wtime_aarch64_init.o
+ [LLC] c_timers_x86_64_init.o
+ [LLC] c_timers_aarch64_init.o
+ [LLC] c_print_results_x86_64_init.o
+ [LLC] c_print_results_aarch64_init.o
+ [LLC] randdp_x86_64_init.o
+ [LLC] randdp_aarch64_init.o
+ [LLC] print_results_x86_64_init.o
+ [LLC] print_results_aarch64_init.o
+ [CALLSITE ALIGN] wtime_cs_align.json
+ [CALLSITE ALIGN] c_timers_cs_align.json
+ [CALLSITE ALIGN] c_print_results_cs_align.json
+ [CALLSITE ALIGN] randdp_cs_align.json
+ [CALLSITE ALIGN] print_results_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] wtime_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_timers_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] randdp_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] print_results_aarch64.o
+ [OPT] mg_opt.ll
+ [LLC] mg_x86_64_init.o
+ [LLC] mg_aarch64_init.o
+ [CALLSITE ALIGN] mg_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] mg_aarch64.o
+ [LD] mg_aarch64_unaligned.out
+rm wtime_cs_align.json c_timers_cs_align.json wtime_opt.ll c_print_results_cs_align.json print_results_opt.ll randdp_cs_align.json c_print_results_opt.ll c_timers_opt.ll randdp_opt.ll print_results_cs_align.json
+make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/mg'
