@@ -19,7 +19,7 @@ CC		:= $(LLVM_TOOLCHAIN)/clang
 OPT		:= $(LLVM_TOOLCHAIN)/opt
 LLC		:= $(LLVM_TOOLCHAIN)/llc
 OBJDUMP	:= $(LLVM_TOOLCHAIN)/llvm-objdump
-ARM64_OBJDUMP := aarch64-linux-gnu-objdump
+ARM64_OBJDUMP := $(OBJDUMP)
 X86_64_OBJDUMP := x86_64-linux-gnu-objdump
 
 OPT_LEVEL ?= -O0
@@ -329,7 +329,7 @@ $(ARM64_INIT): $(ARM64_OBJ_INIT)
 			$(SSHPASS_IGNORE)sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`; \
 		fi \
 		}
-	$(QUIET) $(ARM64_OBJDUMP) -ldSrwC --no-show-raw-insn --visualize-jumps $@ >aarch64_objdump.asm
+	$(QUIET) $(ARM64_OBJDUMP) -ldSrwC --no-show-raw-insn --print-imm-hex $@ >aarch64_objdump.asm
 
 $(ARM64_UNALIGNED): $(ARM64_OBJ)
 	@echo " [LD] $@"
@@ -346,7 +346,7 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 			$(SSHPASS_IGNORE)sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`; \
 		fi \
 		}
-	$(QUIET) $(ARM64_OBJDUMP) -ldSrwC --no-show-raw-insn --visualize-jumps $@ >aarch64_objdump.asm
+	$(QUIET) $(ARM64_OBJDUMP) -ldSrwC --no-show-raw-insn --print-imm-hex $@ >aarch64_objdump.asm
 
 ##########
 # x86-64 #
