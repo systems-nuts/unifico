@@ -51,7 +51,7 @@ ifndef EXPERIMENT_MODE
 override LLC_FLAGS       += -disable-block-align --mc-relax-all
 
 # Stack Alignment
-override LLC_FLAGS       += -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot
+override LLC_FLAGS       += -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -align-objects-to-four
 
 # Scheduling
 override LLC_FLAGS       += -enable-misched=false
