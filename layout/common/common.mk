@@ -442,12 +442,16 @@ view_isel_dag_%: %_cs_align.json %_opt.ll %_aarch64.o
 	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -view-isel-dags -filter-view-dags=$(BASIC_BLOCK)
 
 clean:
-	@echo " [CLEAN] $(ARM64_ALIGNED) $(ARM64_BUILD) $(ARM64_JSON_DIR) $(X86_64_ALIGNED) $(X86_64_BUILD) $(X86_64_JSON_DIR) \
+	@echo " [CLEAN] $(ARM64_ALIGNED) $(ARM64_JSON_DIR) $(X86_64_ALIGNED) $(X86_64_JSON_DIR) \
 		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.json *.o *.out"
-	@rm -rf $(ARM64_ALIGNED) $(ARM64_BUILD) $(ARM64_JSON_DIR) $(X86_64_ALIGNED) $(X86_64_BUILD) $(X86_64_JSON_DIR) \
+	@rm -rf $(ARM64_ALIGNED) $(ARM64_JSON_DIR) $(X86_64_ALIGNED) $(X86_64_JSON_DIR) \
 		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.json *.o *.out
 
-.PHONY: all check clean \
+deepclean: clean
+	@echo " [DEEPCLEAN] $(ARM64_BUILD) $(X86_64_BUILD)"
+	@rm -rf $(ARM64_BUILD) $(X86_64_BUILD)
+
+.PHONY: all check clean deepclean \
 	aligned aligned-aarch64 aligned-x86-64 \
 	unaligned unaligned-aarch64 unaligned-x86-64 \
 	init init-aarch64 init-x86-64 \
