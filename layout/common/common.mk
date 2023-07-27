@@ -65,7 +65,7 @@ override LLC_FLAGS_X86   += -mattr=-multiply-with-imm,+aarch64-sized-imm
 
 # Register allocation (includes compiling LLVM with -DLLVM_UNIFICO_TABLEGEN_FEATURES=-DUNIFICO_REGALLOC_RULES)
 override LLC_FLAGS_ARM64 += -mattr=+avoid-wide-mul-add,+copy-wzr-temp
-override LLC_FLAGS_X86   += -mattr=-non-zero-imm-to-mem
+override LLC_FLAGS_X86   += -mattr=-non-zero-imm-to-mem -disable-gr32temp-inflate
 
 # Rematerialization and Code Motion (includes compiling LLVM with -DLLVM_UNIFICO_TABLEGEN_FEATURES=-DUNIFICO_REMAT_RULES)
 # -disable-hoist-in-lowering is currently unused
