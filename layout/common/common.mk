@@ -184,7 +184,7 @@ json: json-x86-64 json-aarch64
 aligned: aligned-x86-64 aligned-aarch64
 unaligned: unaligned-x86-64 unaligned-aarch64
 init: init-x86-64 init-aarch64
-stackmaps-dump: stackmaps-dump-x86-64 stackmaps-dump-aarch64
+stackmaps-dump: stackmaps-dump-aarch64 stackmaps-dump-x86-64
 
 aligned-x86-64: $(X86_64_ALIGNED)
 unaligned-x86-64: $(X86_64_UNALIGNED)
