@@ -129,7 +129,7 @@ STACKMAP_SRC_DIR	:= $(PROJECT_DIR)/stack-metadata/
 # X86-64
 ###############################################################################
 X86_64_POPCORN     := $(POPCORN)/x86_64
-X86_64_BUILD       := build_x86-64
+X86_64_BUILD       := build_x86-64/$(subst -,,$(OPT_LEVEL))
 X86_64_ALIGNED     := $(BIN)_x86_64_aligned.out
 X86_64_UNALIGNED   := $(BIN)_x86_64_unaligned.out
 X86_64_INIT        := $(BIN)_x86_64_init.out
@@ -152,7 +152,7 @@ X86_64_LDFLAGS := -m elf_x86_64 -L$(X86_64_MUSL)/lib \
 # Aarch64
 ###############################################################################
 ARM64_POPCORN			:= $(POPCORN)/aarch64
-ARM64_BUILD       := build_aarch64
+ARM64_BUILD       := build_aarch64/$(subst -,,$(OPT_LEVEL))
 ARM64_ALIGNED     := $(BIN)_aarch64_aligned.out
 ARM64_UNALIGNED   := $(BIN)_aarch64_unaligned.out
 ARM64_INIT        := $(BIN)_aarch64_init.out
@@ -450,8 +450,8 @@ clean:
 		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.json *.o *.out
 
 deepclean: clean
-	@echo " [DEEPCLEAN] $(ARM64_BUILD) $(X86_64_BUILD)"
-	@rm -rf $(ARM64_BUILD) $(X86_64_BUILD)
+	@echo " [DEEPCLEAN] build_*"
+	@rm -rf build_*
 
 .PHONY: all check clean deepclean \
 	aligned aligned-aarch64 aligned-x86-64 \
