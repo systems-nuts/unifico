@@ -262,6 +262,7 @@ stackmaps-check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 %_opt.ll: %.ll
 	@echo " [OPT] $@"
 	$(QUIET) $(OPT) $(OPT_FLAGS) -S -o $@ $<
+	$(QUIET) $(OPT) $(OPT_FLAGS) -S -o $*_opt$(OPT_LEVEL).ll.backup $<
 
 %_nodbg.ll: %.c
 	@echo " [IR NO DEBUG] $@"
@@ -450,8 +451,8 @@ clean:
 		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.json *.o *.out
 
 deepclean: clean
-	@echo " [DEEPCLEAN] build_*"
-	@rm -rf build_*
+	@echo " [DEEPCLEAN] build_* *.backup"
+	@rm -rf build_* *.backup
 
 .PHONY: all check clean deepclean \
 	aligned aligned-aarch64 aligned-x86-64 \
