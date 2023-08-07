@@ -424,6 +424,9 @@ debug_pass_%: %_cs_align.json %_opt.ll %_aarch64.o
 	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -debug-only=$(PASS) 2>$(X86_64_BUILD)/$*_$(PASS).txt
 	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -debug-only=$(PASS) 2>$(ARM64_BUILD)/$*_$(PASS).txt
 
+opt_debug_pass_%: %.ll
+	$(QUIET) $(OPT) $(OPT_FLAGS) -S -o temp_opt.ll -debug-only=$(PASS) $< 2>$*_$(PASS).txt
+
 pass_structure_%: %_cs_align.json %_opt.ll %_aarch64.o
 	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -debug-pass=Structure 2>$(X86_64_BUILD)/$*_pass_structure.txt
 	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -debug-pass=Structure 2>$(ARM64_BUILD)/$*_pass_structure.txt
