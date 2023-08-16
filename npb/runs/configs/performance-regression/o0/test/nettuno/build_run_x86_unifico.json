@@ -75,6 +75,16 @@
                 "before": false,
                 "args": [
                     "grep",
+                    "-vzq",
+                    "\"UNSUCCESSFUL\"",
+                    "run_${executable}*.log"
+                ],
+                "output": ""
+            },
+            {
+                "before": false,
+                "args": [
+                    "grep",
                     "-h",
                     "\"Time in\"",
                     "run_${executable}*.log"
@@ -84,11 +94,6 @@
             {
                 "before": false,
                 "args": [
-                    "grep",
-                    "-vzq",
-                    "\"UNSUCCESSFUL\"",
-                    "run_${executable}*.log",
-                    "&&",
                     "rm",
                     "-rf",
                     "run_${executable}*.log"
