@@ -184,6 +184,12 @@ class NPBRunner:
             )
             if result.returncode != 0:
                 print(f"Error: Command failed: {' '.join(sargs)}")
+                if f != "":
+                    print(f"Output file: ")
+                    print("====== OUTPUT START ======")
+                    with open(f, "r") as f:
+                        print(f.read())
+                    print("====== OUTPUT END ======")
                 exit(1)
 
     def build_benchmark(self, config, executable, dryrun=False):
