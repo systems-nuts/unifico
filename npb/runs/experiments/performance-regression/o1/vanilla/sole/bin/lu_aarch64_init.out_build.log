@@ -1,0 +1,78 @@
+make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/lu'
+{"CFLAGS": "-O1 -Wall -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer",
+"OPT_FLAGS": "",
+"LLC_FLAGS": "",
+"LLC_FLAGS_ARM64": "",
+"LLC_FLAGS_X86": ""}
+ [IR] blts.ll
+ [IR] buts.ll
+ [IR] domain.ll
+ [IR] erhs.ll
+ [IR] error.ll
+ [IR] exact.ll
+ [IR] c_timers.ll
+ [IR] jacld.ll
+ [IR] jacu.ll
+ [IR] l2norm.ll
+ [IR] lu.ll
+ [IR] pintgr.ll
+ [IR] read_input.ll
+ [IR] rhs.ll
+ [IR] setbv.ll
+ [IR] setcoeff.ll
+ [IR] setiv.ll
+ [IR] ssor.ll
+ [IR] verify.ll
+ [IR] print_results.ll
+ [IR] randdp.ll
+ [IR] c_print_results.ll
+ [IR] wtime.ll
+ [OPT] blts_opt.ll
+ [OPT] buts_opt.ll
+ [OPT] domain_opt.ll
+ [OPT] error_opt.ll
+ [OPT] exact_opt.ll
+ [OPT] c_timers_opt.ll
+ [OPT] jacld_opt.ll
+ [OPT] jacu_opt.ll
+ [OPT] l2norm_opt.ll
+ [OPT] lu_opt.ll
+ [OPT] pintgr_opt.ll
+ [OPT] read_input_opt.ll
+ [OPT] setbv_opt.ll
+ [OPT] setcoeff_opt.ll
+ [OPT] setiv_opt.ll
+ [OPT] ssor_opt.ll
+ [OPT] verify_opt.ll
+ [OPT] print_results_opt.ll
+ [OPT] randdp_opt.ll
+ [OPT] c_print_results_opt.ll
+ [OPT] wtime_opt.ll
+ [LLC] blts_aarch64_init.o
+ [LLC] buts_aarch64_init.o
+ [LLC] domain_aarch64_init.o
+ [OPT] erhs_opt.ll
+ [LLC] error_aarch64_init.o
+ [LLC] exact_aarch64_init.o
+ [LLC] c_timers_aarch64_init.o
+ [LLC] jacld_aarch64_init.o
+ [LLC] jacu_aarch64_init.o
+ [LLC] l2norm_aarch64_init.o
+ [LLC] lu_aarch64_init.o
+ [LLC] pintgr_aarch64_init.o
+ [LLC] read_input_aarch64_init.o
+ [LLC] setbv_aarch64_init.o
+ [LLC] setcoeff_aarch64_init.o
+ [LLC] setiv_aarch64_init.o
+ [LLC] ssor_aarch64_init.o
+ [LLC] verify_aarch64_init.o
+ [LLC] print_results_aarch64_init.o
+ [LLC] randdp_aarch64_init.o
+ [LLC] c_print_results_aarch64_init.o
+ [LLC] wtime_aarch64_init.o
+ [LLC] erhs_aarch64_init.o
+ [OPT] rhs_opt.ll
+ [LLC] rhs_aarch64_init.o
+ [LD] lu_aarch64_init.out
+rm jacld_opt.ll rhs_opt.ll error_opt.ll wtime_opt.ll erhs_opt.ll print_results_opt.ll domain_opt.ll c_print_results_opt.ll pintgr_opt.ll setbv_opt.ll setcoeff_opt.ll l2norm_opt.ll c_timers_opt.ll randdp_opt.ll setiv_opt.ll ssor_opt.ll jacu_opt.ll exact_opt.ll buts_opt.ll read_input_opt.ll verify_opt.ll blts_opt.ll
+make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/lu'
