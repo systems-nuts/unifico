@@ -103,6 +103,8 @@ class NPBRunner:
         else:
             self.metric = "time_O0"
 
+        self.npb_class = self.args.npb_class
+
     @staticmethod
     def cmd_line_arguments(arg_parser: argparse.ArgumentParser):
         """
@@ -156,6 +158,13 @@ class NPBRunner:
             const=str,
             nargs="?",
             help="Optional metric name to use when post-processing (default: time_O0)",
+        )
+        arg_parser.add_argument(
+            "--npb-class",
+            const=int,
+            nargs="?",
+            default="S",
+            help="NPB Class size to run (default: S)",
         )
 
     @staticmethod
@@ -211,7 +220,6 @@ class NPBRunner:
     def build_benchmark(self, config, executable, dryrun=False):
 
         commands = config["build"]
-        npb_class = config["npb_class"]
 
         for c in commands:
             # Assumes build dir are named bt/, cg/, etc, so you can infer the build dir from the first two letters.
@@ -220,7 +228,7 @@ class NPBRunner:
                 self.execute_cmd(
                     c["args"],
                     dryrun,
-                    npb_class=npb_class,
+                    npb_class=self.npb_class,
                     build_dir=build_dir,
                     executable=executable,
                     output=c.get("output", ""),
@@ -282,6 +290,7 @@ class NPBRunner:
             self.execute_cmd(
                 [*config["prepend"], cmd, *config["append"]],
                 dryrun,
+                npb_class=self.npb_class,
                 executable=executable,
                 iteration=i,
                 output=config["output"],
@@ -292,6 +301,7 @@ class NPBRunner:
                 self.execute_cmd(
                     c["args"],
                     dryrun,
+                    npb_class=self.npb_class,
                     executable=executable,
                     output=c["output"],
                 )
@@ -327,6 +337,7 @@ class NPBRunner:
             self.execute_cmd(
                 c["args"],
                 dryrun,
+                npb_class=self.npb_class,
                 benchmark=benchmark,
                 executable=executable,
                 output=c.get("output", ""),
