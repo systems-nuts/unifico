@@ -192,6 +192,22 @@ class NPBRunner:
                     print("====== OUTPUT END ======")
                 exit(1)
 
+    @staticmethod
+    def combine_dataframes_column(df1, df2, column=None):
+        if not column:
+            column = df1.columns[0]
+            assert (
+                column in df2.columns
+            ), f"{column} missing in second dataframe"
+        df_results = pd.DataFrame(index=df1.index)
+        df_results["{}_overhead".format(column)] = df1[column].combine(
+            df2[column], lambda x1, x2: (x2 / x1 - 1) * 100
+        )
+        df_results["{}_speedup".format(column)] = df1[column].combine(
+            df2[column], lambda x1, x2: x1 / x2
+        )
+        return df_results
+
     def build_benchmark(self, config, executable, dryrun=False):
 
         commands = config["build"]
@@ -217,27 +233,12 @@ class NPBRunner:
                 self.execute_cmd(
                     c["args"],
                     dryrun,
+                    npb_class=self.npb_class,
                     build_dir=build_dir,
                     executable=executable,
                     dest_dir=self.bin_dir,
                     output="",
                 )
-
-    @staticmethod
-    def combine_dataframes_column(df1, df2, column=None):
-        if not column:
-            column = df1.columns[0]
-            assert (
-                column in df2.columns
-            ), f"{column} missing in second dataframe"
-        df_results = pd.DataFrame(index=df1.index)
-        df_results["{}_overhead".format(column)] = df1[column].combine(
-            df2[column], lambda x1, x2: (x2 / x1 - 1) * 100
-        )
-        df_results["{}_speedup".format(column)] = df1[column].combine(
-            df2[column], lambda x1, x2: x1 / x2
-        )
-        return df_results
 
     def build(self):
         if not self.args.dryrun and not os.path.exists(self.bin_dir):
