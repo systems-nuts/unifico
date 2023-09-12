@@ -398,8 +398,10 @@ class NPBRunner:
         df_overhead.loc["Mean"] = mean_metric
         df_overhead.loc["Geomean"] = geomean_metric
         df_overhead = df_overhead.round(2)
-        print("Dumping overhead.csv")
-        df_overhead.to_csv("overhead.csv", header=True)
+
+        overhead_csv = f"overhead_{self.npb_class}.csv"
+        print(f"Dumping overhead results to {overhead_csv}")
+        df_overhead.to_csv(overhead_csv, header=True)
 
     def dispatch(self):
         if self.args.build:
