@@ -98,11 +98,7 @@ class NPBRunner:
             self.cwd, self.cfg.get("run_dir", "run")
         )
 
-        if self.args.metric:
-            self.metric = self.args.metric
-        else:
-            self.metric = "time_O0"
-
+        self.metric = self.args.metric
         self.npb_class = self.args.npb_class
 
     @staticmethod
@@ -157,7 +153,8 @@ class NPBRunner:
             "--metric",
             const=str,
             nargs="?",
-            help="Optional metric name to use when post-processing (default: time_O0)",
+            default="time",
+            help="Optional metric name to use when post-processing (default: time)",
         )
         arg_parser.add_argument(
             "--npb-class",
