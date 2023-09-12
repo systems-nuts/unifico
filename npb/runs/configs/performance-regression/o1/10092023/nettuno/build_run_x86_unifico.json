@@ -19,7 +19,7 @@
     "*": {
         "npb_class": "A",
         "iterations": 3,
-        "output": "run_${executable}_${iteration}.log",
+        "output": "run_${executable}_${npb_class}_${iteration}.log",
         "prepend": [],
         "append": [],
         "build": [
@@ -51,7 +51,7 @@
                     "LLC_FLAGS=\"-disable-block-align --mc-relax-all -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -align-objects-to-four -enable-misched=false\"",
                     "LLC_FLAGS_X86=\"-mattr=+simple-reg-offset,-multiply-with-imm,+aarch64-sized-imm,-non-zero-imm-to-mem,-disable-gr32temp-inflate,+aarch64-constant-cost-model,+force-vector-mem-op,+avoid-opt-mul-1,+avoid-select-to-fsetcc -x86-enable-simplify-cfg -no-x86-call-frame-opt -disable-x86-frame-obj-order -enable-lea32 -mul-constant-optimization=false\""
                 ],
-                "output": "${build_dir}/${executable}_build.log"
+                "output": "${build_dir}/${executable}_${npb_class}_build.log"
             },
             {
                 "before": false,
@@ -65,7 +65,7 @@
                 "before": false,
                 "args": [
                     "mv",
-                    "${build_dir}/${executable}_build.log",
+                    "${build_dir}/${executable}_${npb_class}_build.log",
                     "${dest_dir}"
                 ]
             }
@@ -89,7 +89,7 @@
                     "\"Time in\"",
                     "run_${executable}*.log"
                 ],
-                "output": "time_${executable}.log"
+                "output": "time_${executable}_${npb_class}.log"
             },
             {
                 "before": false,
@@ -107,7 +107,7 @@
                     "grep",
                     "-o",
                     "'[0-9\\.][0-9\\.]*'",
-                    "time_${executable}.log"
+                    "time_${executable}_${npb_class}.log"
                 ],
                 "output": "data.log"
             },
@@ -124,14 +124,14 @@
                 "args": [
                     "echo -n",
                     "${benchmark},",
-                    ">>results.csv"
+                    ">>results_${npb_class}.csv"
                 ]
             },
             {
                 "args": [
                     "cat",
                     "avg.log",
-                    ">>results.csv"
+                    ">>results_${npb_class}.csv"
                 ]
             },
             {
