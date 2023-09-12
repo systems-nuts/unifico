@@ -356,10 +356,10 @@ class NPBRunner:
         if not self.args.dryrun:
             os.chdir(self.run_dir)
 
-        out_csv = f"results_{self.npb_class}.csv"
+        results_csv = f"results_{self.npb_class}.csv"
 
         df = pd.DataFrame(columns=["benchmark", self.metric])
-        df.to_csv(out_csv, index=False)
+        df.to_csv(results_csv, index=False)
 
         for benchmark in self.cfg["executables"]:
             bench_cfg = self.cfg["*"].copy()
@@ -368,11 +368,11 @@ class NPBRunner:
 
             self.post_process_benchmark(bench_cfg, benchmark, self.args.dryrun)
 
-        df = pd.read_csv(out_csv, index_col="benchmark")
+        df = pd.read_csv(results_csv, index_col="benchmark")
         df = df.apply(pd.to_numeric)
         df.loc["Geomean"] = df.apply(gmean, axis=0)
         df = df.round(2)
-        df.to_csv(out_csv)
+        df.to_csv(results_csv)
 
     def compare(self):
         """
@@ -382,11 +382,13 @@ class NPBRunner:
         Produces a .csv with the comparison results.
         @return:
         """
+        results_csv = f"results_{self.npb_class}.csv"
+
         df_current = pd.read_csv(
-            os.path.join(self.run_dir, "results.csv"), index_col="benchmark"
+            os.path.join(self.run_dir, results_csv), index_col="benchmark"
         )
         df_base = pd.read_csv(
-            os.path.join(self.compare_dir, "results.csv"),
+            os.path.join(self.compare_dir, results_csv),
             index_col="benchmark",
         )
         df_overhead = self.combine_dataframes_column(df_base, df_current)
@@ -396,8 +398,10 @@ class NPBRunner:
         df_overhead.loc["Mean"] = mean_metric
         df_overhead.loc["Geomean"] = geomean_metric
         df_overhead = df_overhead.round(2)
-        print("Dumping overhead.csv")
-        df_overhead.to_csv("overhead.csv", header=True)
+
+        overhead_csv = f"overhead_{self.npb_class}.csv"
+        print(f"Dumping overhead results to {overhead_csv}")
+        df_overhead.to_csv(overhead_csv, header=True)
 
     def dispatch(self):
         if self.args.build:
