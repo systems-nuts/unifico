@@ -1,0 +1,62 @@
+make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/ua'
+{"CFLAGS": "-O0 -Wall -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mllvm -align-bytes-to-four",
+"OPT_FLAGS": "-name-string-literals -static-var-sections -live-values",
+"LLC_FLAGS": "-disable-block-align --mc-relax-all -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -enable-misched=false -function-sections -data-sections -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse",
+"LLC_FLAGS_ARM64": "-mattr=+disable-fp-imm-materialize,+avoid-wide-mul-add,-disable-hoist-in-lowering,-avoid-f128",
+"LLC_FLAGS_X86": ""}
+ [IR] ua.ll
+ [IR] adapt.ll
+ [IR] diffuse.ll
+ [IR] move.ll
+ [IR] setup.ll
+ [IR] c_timers.ll
+ [IR] print_results.ll
+ [IR] randdp.ll
+ [IR] c_print_results.ll
+ [IR] wtime.ll
+ [IR] verify.ll
+ [IR] convect.ll
+ [IR] mason.ll
+ [IR] precond.ll
+ [IR] transfer.ll
+ [IR] utils.ll
+ [OPT] diffuse_opt.ll
+ [OPT] move_opt.ll
+ [OPT] c_timers_opt.ll
+ [OPT] print_results_opt.ll
+ [OPT] randdp_opt.ll
+ [OPT] c_print_results_opt.ll
+ [OPT] wtime_opt.ll
+ [OPT] verify_opt.ll
+precond.c:757:9: warning: implicitly declaring library function 'printf' with type 'int (const char *, ...)' [-Wimplicit-function-declaration]
+        printf("Unreachable\n"); /* TODO temporary handling for Unifico */
+        ^
+precond.c:757:9: note: include the header <stdio.h> or explicitly provide a declaration for 'printf'
+ [OPT] convect_opt.ll
+ [OPT] utils_opt.ll
+ [OPT] ua_opt.ll
+1 warning generated.
+ [OPT] adapt_opt.ll
+ [LLC] diffuse_aarch64_init.o
+ [LLC] move_aarch64_init.o
+ [OPT] setup_opt.ll
+ [LLC] c_timers_aarch64_init.o
+ [LLC] print_results_aarch64_init.o
+ [LLC] randdp_aarch64_init.o
+ [LLC] c_print_results_aarch64_init.o
+ [LLC] wtime_aarch64_init.o
+ [LLC] verify_aarch64_init.o
+ [OPT] mason_opt.ll
+ [OPT] precond_opt.ll
+ [OPT] transfer_opt.ll
+ [LLC] utils_aarch64_init.o
+ [LLC] ua_aarch64_init.o
+ [LLC] convect_aarch64_init.o
+ [LLC] setup_aarch64_init.o
+ [LLC] adapt_aarch64_init.o
+ [LLC] precond_aarch64_init.o
+ [LLC] transfer_aarch64_init.o
+ [LLC] mason_aarch64_init.o
+ [LD] ua_aarch64_init.out
+rm wtime_opt.ll print_results_opt.ll setup_opt.ll c_print_results_opt.ll adapt_opt.ll precond_opt.ll mason_opt.ll convect_opt.ll c_timers_opt.ll randdp_opt.ll utils_opt.ll diffuse_opt.ll move_opt.ll transfer_opt.ll verify_opt.ll
+make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/ua'

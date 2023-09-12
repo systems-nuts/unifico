@@ -98,10 +98,8 @@ class NPBRunner:
             self.cwd, self.cfg.get("run_dir", "run")
         )
 
-        if self.args.metric:
-            self.metric = self.args.metric
-        else:
-            self.metric = "time_O0"
+        self.metric = self.args.metric
+        self.npb_class = self.args.npb_class
 
     @staticmethod
     def cmd_line_arguments(arg_parser: argparse.ArgumentParser):
@@ -155,7 +153,15 @@ class NPBRunner:
             "--metric",
             const=str,
             nargs="?",
-            help="Optional metric name to use when post-processing (default: time_O0)",
+            default="time",
+            help="Optional metric name to use when post-processing (default: time)",
+        )
+        arg_parser.add_argument(
+            "--npb-class",
+            const=int,
+            nargs="?",
+            default="S",
+            help="NPB Class size to run (default: S)",
         )
 
     @staticmethod
@@ -192,37 +198,6 @@ class NPBRunner:
                     print("====== OUTPUT END ======")
                 exit(1)
 
-    def build_benchmark(self, config, executable, dryrun=False):
-
-        commands = config["build"]
-        npb_class = config["npb_class"]
-
-        for c in commands:
-            # Assumes build dir are named bt/, cg/, etc, so you can infer the build dir from the first two letters.
-            build_dir = executable[:2]
-            if c["before"]:
-                self.execute_cmd(
-                    c["args"],
-                    dryrun,
-                    npb_class=npb_class,
-                    build_dir=build_dir,
-                    executable=executable,
-                    output=c.get("output", ""),
-                )
-
-        for c in commands:
-            # Assumes build dir are named bt/, cg/, etc, so you can infer the build dir from the first two letters.
-            build_dir = executable[:2]
-            if not c["before"]:
-                self.execute_cmd(
-                    c["args"],
-                    dryrun,
-                    build_dir=build_dir,
-                    executable=executable,
-                    dest_dir=self.bin_dir,
-                    output="",
-                )
-
     @staticmethod
     def combine_dataframes_column(df1, df2, column=None):
         if not column:
@@ -238,6 +213,37 @@ class NPBRunner:
             df2[column], lambda x1, x2: x1 / x2
         )
         return df_results
+
+    def build_benchmark(self, config, executable, dryrun=False):
+
+        commands = config["build"]
+
+        for c in commands:
+            # Assumes build dir are named bt/, cg/, etc, so you can infer the build dir from the first two letters.
+            build_dir = executable[:2]
+            if c["before"]:
+                self.execute_cmd(
+                    c["args"],
+                    dryrun,
+                    npb_class=self.npb_class,
+                    build_dir=build_dir,
+                    executable=executable,
+                    output=c.get("output", ""),
+                )
+
+        for c in commands:
+            # Assumes build dir are named bt/, cg/, etc, so you can infer the build dir from the first two letters.
+            build_dir = executable[:2]
+            if not c["before"]:
+                self.execute_cmd(
+                    c["args"],
+                    dryrun,
+                    npb_class=self.npb_class,
+                    build_dir=build_dir,
+                    executable=executable,
+                    dest_dir=self.bin_dir,
+                    output="",
+                )
 
     def build(self):
         if not self.args.dryrun and not os.path.exists(self.bin_dir):
@@ -281,6 +287,7 @@ class NPBRunner:
             self.execute_cmd(
                 [*config["prepend"], cmd, *config["append"]],
                 dryrun,
+                npb_class=self.npb_class,
                 executable=executable,
                 iteration=i,
                 output=config["output"],
@@ -291,6 +298,7 @@ class NPBRunner:
                 self.execute_cmd(
                     c["args"],
                     dryrun,
+                    npb_class=self.npb_class,
                     executable=executable,
                     output=c["output"],
                 )
@@ -326,6 +334,7 @@ class NPBRunner:
             self.execute_cmd(
                 c["args"],
                 dryrun,
+                npb_class=self.npb_class,
                 benchmark=benchmark,
                 executable=executable,
                 output=c.get("output", ""),
@@ -347,8 +356,10 @@ class NPBRunner:
         if not self.args.dryrun:
             os.chdir(self.run_dir)
 
+        out_csv = f"results_{self.npb_class}.csv"
+
         df = pd.DataFrame(columns=["benchmark", self.metric])
-        df.to_csv("results.csv", index=False)
+        df.to_csv(out_csv, index=False)
 
         for benchmark in self.cfg["executables"]:
             bench_cfg = self.cfg["*"].copy()
@@ -357,11 +368,11 @@ class NPBRunner:
 
             self.post_process_benchmark(bench_cfg, benchmark, self.args.dryrun)
 
-        df = pd.read_csv("results.csv", index_col="benchmark")
+        df = pd.read_csv(out_csv, index_col="benchmark")
         df = df.apply(pd.to_numeric)
         df.loc["Geomean"] = df.apply(gmean, axis=0)
         df = df.round(2)
-        df.to_csv("results.csv")
+        df.to_csv(out_csv)
 
     def compare(self):
         """

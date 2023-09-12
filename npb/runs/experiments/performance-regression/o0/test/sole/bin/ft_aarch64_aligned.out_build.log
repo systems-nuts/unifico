@@ -1,0 +1,93 @@
+make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/ft'
+{"CFLAGS": "-O0 -Wall -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mllvm -align-bytes-to-four",
+"OPT_FLAGS": "-name-string-literals -static-var-sections -live-values",
+"LLC_FLAGS": "-disable-block-align --mc-relax-all -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -enable-misched=false -function-sections -data-sections -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse",
+"LLC_FLAGS_ARM64": "-mattr=+disable-fp-imm-materialize,+avoid-wide-mul-add,-disable-hoist-in-lowering,-avoid-f128",
+"LLC_FLAGS_X86": ""}
+ [IR] appft.ll
+ [IR] auxfnct.ll
+ [IR] fft3d.ll
+ [IR] mainft.ll
+ [IR] verify.ll
+ [IR] c_timers.ll
+ [IR] print_results.ll
+ [IR] randdp.ll
+ [IR] c_print_results.ll
+ [IR] wtime.ll
+ [OPT] wtime_opt.ll
+ [OPT] c_timers_opt.ll
+ [OPT] print_results_opt.ll
+ [OPT] c_print_results_opt.ll
+ [OPT] auxfnct_opt.ll
+ [OPT] mainft_opt.ll
+ [OPT] randdp_opt.ll
+ [OPT] appft_opt.ll
+ [OPT] fft3d_opt.ll
+ [OPT] verify_opt.ll
+ [LLC] wtime_x86_64_init.o
+ [LLC] wtime_aarch64_init.o
+ [LLC] c_timers_x86_64_init.o
+ [LLC] c_timers_aarch64_init.o
+ [LLC] print_results_x86_64_init.o
+ [LLC] print_results_aarch64_init.o
+ [LLC] c_print_results_x86_64_init.o
+ [LLC] c_print_results_aarch64_init.o
+ [CALLSITE ALIGN] wtime_cs_align.json
+ [LLC] appft_x86_64_init.o
+ [LLC] appft_aarch64_init.o
+ [LLC] auxfnct_x86_64_init.o
+ [LLC] auxfnct_aarch64_init.o
+ [LLC] mainft_x86_64_init.o
+ [LLC] mainft_aarch64_init.o
+ [CALLSITE ALIGN] c_timers_cs_align.json
+ [CALLSITE ALIGN] print_results_cs_align.json
+ [LLC] randdp_x86_64_init.o
+ [LLC] randdp_aarch64_init.o
+ [CALLSITE ALIGN] c_print_results_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] wtime_aarch64.o
+ [CALLSITE ALIGN] mainft_cs_align.json
+ [CALLSITE ALIGN] appft_cs_align.json
+ [LLC] fft3d_x86_64_init.o
+ [LLC] fft3d_aarch64_init.o
+ [LLC] verify_x86_64_init.o
+ [LLC] verify_aarch64_init.o
+ [LLC WITH CALLSITE ALIGNMENT] c_timers_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] print_results_aarch64.o
+ [CALLSITE ALIGN] auxfnct_cs_align.json
+ [CALLSITE ALIGN] randdp_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] wtime_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] mainft_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_timers_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] wtime_x86_64.o wtime_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] print_results_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] appft_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] auxfnct_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] mainft_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_print_results_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] c_timers_x86_64.o c_timers_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] randdp_aarch64.o
+ [CALLSITE ALIGN] fft3d_cs_align.json
+ [CHECK CALLSITE ALIGNMENT] print_results_x86_64.o print_results_aarch64.o
+ [CALLSITE ALIGN] verify_cs_align.json
+ [CHECK CALLSITE ALIGNMENT] mainft_x86_64.o mainft_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] c_print_results_x86_64.o c_print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] randdp_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] appft_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] auxfnct_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] fft3d_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] randdp_x86_64.o randdp_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] appft_x86_64.o appft_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] verify_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] auxfnct_x86_64.o auxfnct_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] fft3d_x86_64.o
+ [LD] ft_aarch64_unaligned.out
+ [LLC WITH CALLSITE ALIGNMENT] verify_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] fft3d_x86_64.o fft3d_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] verify_x86_64.o verify_aarch64.o
+ [LD] ft_x86_64_unaligned.out
+ [ALIGN] build_x86-64/O0/aligned_linker_script_x86.x
+ [ALIGN] build_aarch64/O0/aligned_linker_script_arm.x
+ [LD] ft_aarch64_aligned.out
+rm wtime_cs_align.json appft_opt.ll c_timers_cs_align.json wtime_opt.ll mainft_cs_align.json c_print_results_cs_align.json print_results_opt.ll randdp_cs_align.json c_print_results_opt.ll fft3d_opt.ll auxfnct_opt.ll mainft_opt.ll c_timers_opt.ll verify_cs_align.json randdp_opt.ll auxfnct_cs_align.json appft_cs_align.json fft3d_cs_align.json print_results_cs_align.json verify_opt.ll
+make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/ft'
