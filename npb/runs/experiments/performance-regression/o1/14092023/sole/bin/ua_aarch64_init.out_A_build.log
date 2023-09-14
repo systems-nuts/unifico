@@ -1,8 +1,8 @@
 make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/ua'
-{"CFLAGS": "-O1 -Wall -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer",
-"OPT_FLAGS": "",
-"LLC_FLAGS": "",
-"LLC_FLAGS_ARM64": "",
+{"CFLAGS": "-O1 -Wall -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mllvm -align-bytes-to-four",
+"OPT_FLAGS": "-name-string-literals -static-var-sections -live-values",
+"LLC_FLAGS": "-disable-block-align --mc-relax-all -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -align-objects-to-four -enable-misched=false -function-sections -data-sections -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse",
+"LLC_FLAGS_ARM64": "-mattr=+disable-fp-imm-materialize,+avoid-wide-mul-add,+copy-zr-temp,-disable-hoist-in-lowering,-avoid-f128",
 "LLC_FLAGS_X86": ""}
  [IR] ua.ll
  [IR] adapt.ll
@@ -32,7 +32,6 @@ precond.c:757:9: note: include the header <stdio.h> or explicitly provide a decl
  [OPT] c_print_results_opt.ll
  [OPT] wtime_opt.ll
  [OPT] verify_opt.ll
- [OPT] convect_opt.ll
  [OPT] utils_opt.ll
  [LLC] ua_aarch64_init.o
  [OPT] diffuse_opt.ll
@@ -44,15 +43,16 @@ precond.c:757:9: note: include the header <stdio.h> or explicitly provide a decl
  [LLC] c_print_results_aarch64_init.o
  [LLC] wtime_aarch64_init.o
  [LLC] verify_aarch64_init.o
- [LLC] convect_aarch64_init.o
+ [OPT] convect_opt.ll
  [LLC] utils_aarch64_init.o
  [LLC] diffuse_aarch64_init.o
-1 warning generated.
- [LLC] setup_aarch64_init.o
- [OPT] precond_opt.ll
  [OPT] adapt_opt.ll
- [LLC] precond_aarch64_init.o
+ [LLC] setup_aarch64_init.o
+1 warning generated.
+ [OPT] precond_opt.ll
+ [LLC] convect_aarch64_init.o
  [LLC] adapt_aarch64_init.o
+ [LLC] precond_aarch64_init.o
  [OPT] transfer_opt.ll
  [LLC] transfer_aarch64_init.o
  [OPT] mason_opt.ll
