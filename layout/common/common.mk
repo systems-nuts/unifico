@@ -18,6 +18,7 @@ QUIET = @
 CC		:= $(LLVM_TOOLCHAIN)/clang
 OPT		:= $(LLVM_TOOLCHAIN)/opt
 LLC		:= $(LLVM_TOOLCHAIN)/llc
+LLVM_CONFIG	:= $(LLVM_TOOLCHAIN)/llvm-config
 OBJDUMP	:= $(LLVM_TOOLCHAIN)/llvm-objdump
 ARM64_OBJDUMP := $(OBJDUMP)
 X86_64_OBJDUMP := x86_64-linux-gnu-objdump
@@ -88,12 +89,18 @@ HET_CFLAGS	:= $(CFLAGS) #-fno-common -ftls-model=initial-exec
 IR := $(SRC:.c=.ll)
 IR_NODBG := $(SRC:.c=_nodbg.ll)
 
-# Dump flag info in JSON-like fields
-$(info {"CFLAGS": "${CFLAGS}",)
+# Dump compilation info in JSON-like fields
+$(info {)
+$(info "LLVM VERSION": "$(shell ${CC} --version)")
+$(info "LLVM BIN DIR": "$(shell ${LLVM_CONFIG} --bindir)")
+$(info "LLVM LIB DIR": "$(shell ${LLVM_CONFIG} --libdir)")
+$(info "LLVM UNIFICO FLAGS": "$(shell ${LLVM_CONFIG} --unifico-flags)")
+$(info "CFLAGS": "${CFLAGS}",)
 $(info "OPT_FLAGS": "${OPT_FLAGS}",)
 $(info "LLC_FLAGS": "${LLC_FLAGS}",)
 $(info "LLC_FLAGS_ARM64": "${LLC_FLAGS_ARM64}",)
-$(info "LLC_FLAGS_X86": "${LLC_FLAGS_X86}"})
+$(info "LLC_FLAGS_X86": "${LLC_FLAGS_X86}")
+$(info })
 
 ###############################################################################
 # Linker and Flags
