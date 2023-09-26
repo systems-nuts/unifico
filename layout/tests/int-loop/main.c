@@ -2,8 +2,6 @@
 
 int fmul(int x, int y) { return x * y; }
 
-// a loop with funciton call inside it
-// with two problem: formula change and register split
 int loop(int *a1, int *a2, int len)
 {
     int sum = 0;
