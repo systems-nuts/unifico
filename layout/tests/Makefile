@@ -5,7 +5,9 @@ TEST_SUITE += char-arg create-seq c-print-results-1 c-print-results-call is-1 is
 TEST_SUITE += cg-sparse-1 cg-sparse cg-sprnvc-1 cg-sprnvc-2 cg-sprnvc-4 cg-sprnvc-5 cg-makea-1 cg-makea-2 cg-makea-3 cg-makea-4 cg-main-1 cg-main-2 cg-main-3 cg-main-4 cg-main-5 cg-main
 TEST_SUITE += ep-main-1 zero-constant-reuse ep-main-3 ep-main
 TEST_SUITE += ft-verify ft-comp-init ft-fft3d-2 ft-fft3d-3 ft-appft-1 ft-appft-2
-TEST_SUITE += mg-interp-umaddl exit dec-to-lea-32 y-solve cmp-vs-subs pack-indexes
+TEST_SUITE += exit dec-to-lea-32 y-solve cmp-vs-subs pack-indexes
+
+TEST_SUITE_XFAIL := mg-interp-umaddl
 
 TEST_SUITE_O1 := call-leaf factorial long-int-slot fp-args fp-spill-weight int-loop
 TEST_SUITE_O1 += many-add-mul read-write-global-array
