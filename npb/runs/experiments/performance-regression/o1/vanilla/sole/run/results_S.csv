@@ -1,0 +1,11 @@
+benchmark,time
+bt,0.28
+cg,0.17
+ep,3.36
+ft,0.26
+is,0.01
+lu,0.14
+mg,0.02
+sp,0.14
+ua,1.72
+Geomean,0.19

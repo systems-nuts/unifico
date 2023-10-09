@@ -82,6 +82,7 @@ precond.c:757:9: note: include the header <stdio.h> or explicitly provide a decl
  [LLC] ua_x86_64_init.o
  [OPT] diffuse_opt.ll
  [LLC] move_x86_64_init.o
+ [OPT] setup_opt.ll
  [LLC] c_timers_x86_64_init.o
  [LLC] print_results_x86_64_init.o
  [LLC] randdp_x86_64_init.o
@@ -91,12 +92,11 @@ precond.c:757:9: note: include the header <stdio.h> or explicitly provide a decl
  [OPT] convect_opt.ll
  [LLC] utils_x86_64_init.o
  [LLC] diffuse_x86_64_init.o
- [OPT] setup_opt.ll
-1 warning generated.
- [LLC] convect_x86_64_init.o
- [OPT] precond_opt.ll
- [OPT] adapt_opt.ll
  [LLC] setup_x86_64_init.o
+1 warning generated.
+ [OPT] adapt_opt.ll
+ [OPT] precond_opt.ll
+ [LLC] convect_x86_64_init.o
  [LLC] precond_x86_64_init.o
  [LLC] adapt_x86_64_init.o
  [OPT] transfer_opt.ll

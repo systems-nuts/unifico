@@ -1,0 +1,109 @@
+make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/bt'
+{
+"LLVM VERSION": "clang version 9.0.1 (git@github.com:blackgeorge-boom/llvm-project.git faf5dbf23c358a06098838f33a23f8ccb66f82ff) Target: x86_64-unknown-linux-gnu Thread model: posix InstalledDir: /home/nikos/llvm-9.0.1/toolchain/bin"
+"LLVM BIN DIR": "/home/nikos/llvm-9.0.1/toolchain/bin"
+"LLVM LIB DIR": "/home/nikos/llvm-9.0.1/toolchain/lib"
+usage: llvm-config <OPTION>... [<COMPONENT>...]
+
+Get various configuration information needed to compile programs which use
+LLVM.  Typically called from 'configure' scripts.  Examples:
+  llvm-config --cxxflags
+  llvm-config --ldflags
+  llvm-config --libs engine bcreader scalaropts
+
+Options:
+  --version         Print LLVM version.
+  --prefix          Print the installation prefix.
+  --src-root        Print the source root LLVM was built from.
+  --obj-root        Print the object root used to build LLVM.
+  --bindir          Directory containing LLVM executables.
+  --includedir      Directory containing LLVM headers.
+  --libdir          Directory containing LLVM libraries.
+  --cmakedir        Directory containing LLVM cmake modules.
+  --cppflags        C preprocessor flags for files that include LLVM headers.
+  --cflags          C compiler flags for files that include LLVM headers.
+  --cxxflags        C++ compiler flags for files that include LLVM headers.
+  --ldflags         Print Linker flags.
+  --system-libs     System Libraries needed to link against LLVM components.
+  --libs            Libraries needed to link against LLVM components.
+  --libnames        Bare library names for in-tree builds.
+  --libfiles        Fully qualified library filenames for makefile depends.
+  --components      List of all possible components.
+  --targets-built   List of all targets currently built.
+  --host-target     Target triple used to configure LLVM.
+  --build-mode      Print build mode of LLVM tree (e.g. Debug or Release).
+  --assertion-mode  Print assertion mode of LLVM tree (ON or OFF).
+  --build-system    Print the build system used to build LLVM (always cmake).
+  --has-rtti        Print whether or not LLVM was built with rtti (YES or NO).
+  --has-global-isel Print whether or not LLVM was built with global-isel support (ON or OFF).
+  --shared-mode     Print how the provided components can be collectively linked (`shared` or `static`).
+  --link-shared     Link the components as shared libraries.
+  --link-static     Link the component libraries statically.
+  --ignore-libllvm  Ignore libLLVM and link component libraries instead.
+Typical components:
+  all               All LLVM libraries (default).
+  engine            Either a native JIT or a bitcode interpreter.
+"LLVM UNIFICO FLAGS": ""
+"CFLAGS": "-O1 -Wall -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer",
+"OPT_FLAGS": "",
+"LLC_FLAGS": "",
+"LLC_FLAGS_ARM64": "",
+"LLC_FLAGS_X86": ""
+}
+ [IR] bt.ll
+ [IR] c_timers.ll
+ [IR] c_print_results.ll
+ [IR] wtime.ll
+ [IR] add.ll
+ [IR] adi.ll
+ [IR] error.ll
+ [IR] exact_rhs.ll
+ [IR] exact_solution.ll
+ [IR] initialize.ll
+ [IR] rhs.ll
+ [IR] set_constants.ll
+ [IR] solve_subs.ll
+ [IR] verify.ll
+ [IR] x_solve.ll
+ [IR] y_solve.ll
+ [IR] z_solve.ll
+ [IR] print_results.ll
+ [OPT] bt_opt.ll
+ [OPT] c_timers_opt.ll
+ [OPT] c_print_results_opt.ll
+ [OPT] wtime_opt.ll
+ [OPT] add_opt.ll
+ [OPT] adi_opt.ll
+ [OPT] error_opt.ll
+ [OPT] exact_solution_opt.ll
+ [OPT] initialize_opt.ll
+ [OPT] set_constants_opt.ll
+ [OPT] verify_opt.ll
+ [OPT] print_results_opt.ll
+ [LLC] bt_aarch64_init.o
+ [LLC] c_timers_aarch64_init.o
+ [LLC] c_print_results_aarch64_init.o
+ [LLC] wtime_aarch64_init.o
+ [LLC] add_aarch64_init.o
+ [LLC] adi_aarch64_init.o
+ [LLC] error_aarch64_init.o
+ [OPT] exact_rhs_opt.ll
+ [LLC] exact_solution_aarch64_init.o
+ [LLC] initialize_aarch64_init.o
+ [LLC] set_constants_aarch64_init.o
+ [OPT] solve_subs_opt.ll
+ [LLC] verify_aarch64_init.o
+ [LLC] print_results_aarch64_init.o
+ [LLC] exact_rhs_aarch64_init.o
+ [LLC] solve_subs_aarch64_init.o
+ [OPT] rhs_opt.ll
+ [OPT] x_solve_opt.ll
+ [OPT] y_solve_opt.ll
+ [OPT] z_solve_opt.ll
+ [LLC] rhs_aarch64_init.o
+ [LLC] x_solve_aarch64_init.o
+ [LLC] y_solve_aarch64_init.o
+ [LLC] z_solve_aarch64_init.o
+ [LD] bt_aarch64_init.out
+rm y_solve_opt.ll rhs_opt.ll exact_solution_opt.ll error_opt.ll set_constants_opt.ll x_solve_opt.ll wtime_opt.ll print_results_opt.ll c_print_results_opt.ll c_timers_opt.ll adi_opt.ll add_opt.ll exact_rhs_opt.ll initialize_opt.ll solve_subs_opt.ll z_solve_opt.ll verify_opt.ll
+make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/bt'

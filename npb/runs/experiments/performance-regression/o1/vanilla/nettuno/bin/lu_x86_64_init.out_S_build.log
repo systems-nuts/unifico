@@ -1,0 +1,124 @@
+make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/lu'
+{
+"LLVM VERSION": "clang version 9.0.1 (git@github.com:blackgeorge-boom/llvm-project.git faf5dbf23c358a06098838f33a23f8ccb66f82ff) Target: x86_64-unknown-linux-gnu Thread model: posix InstalledDir: /home/nikos/llvm-9.0.1/toolchain/bin"
+"LLVM BIN DIR": "/home/nikos/llvm-9.0.1/toolchain/bin"
+"LLVM LIB DIR": "/home/nikos/llvm-9.0.1/toolchain/lib"
+usage: llvm-config <OPTION>... [<COMPONENT>...]
+
+Get various configuration information needed to compile programs which use
+LLVM.  Typically called from 'configure' scripts.  Examples:
+  llvm-config --cxxflags
+  llvm-config --ldflags
+  llvm-config --libs engine bcreader scalaropts
+
+Options:
+  --version         Print LLVM version.
+  --prefix          Print the installation prefix.
+  --src-root        Print the source root LLVM was built from.
+  --obj-root        Print the object root used to build LLVM.
+  --bindir          Directory containing LLVM executables.
+  --includedir      Directory containing LLVM headers.
+  --libdir          Directory containing LLVM libraries.
+  --cmakedir        Directory containing LLVM cmake modules.
+  --cppflags        C preprocessor flags for files that include LLVM headers.
+  --cflags          C compiler flags for files that include LLVM headers.
+  --cxxflags        C++ compiler flags for files that include LLVM headers.
+  --ldflags         Print Linker flags.
+  --system-libs     System Libraries needed to link against LLVM components.
+  --libs            Libraries needed to link against LLVM components.
+  --libnames        Bare library names for in-tree builds.
+  --libfiles        Fully qualified library filenames for makefile depends.
+  --components      List of all possible components.
+  --targets-built   List of all targets currently built.
+  --host-target     Target triple used to configure LLVM.
+  --build-mode      Print build mode of LLVM tree (e.g. Debug or Release).
+  --assertion-mode  Print assertion mode of LLVM tree (ON or OFF).
+  --build-system    Print the build system used to build LLVM (always cmake).
+  --has-rtti        Print whether or not LLVM was built with rtti (YES or NO).
+  --has-global-isel Print whether or not LLVM was built with global-isel support (ON or OFF).
+  --shared-mode     Print how the provided components can be collectively linked (`shared` or `static`).
+  --link-shared     Link the components as shared libraries.
+  --link-static     Link the component libraries statically.
+  --ignore-libllvm  Ignore libLLVM and link component libraries instead.
+Typical components:
+  all               All LLVM libraries (default).
+  engine            Either a native JIT or a bitcode interpreter.
+"LLVM UNIFICO FLAGS": ""
+"CFLAGS": "-O1 -Wall -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer",
+"OPT_FLAGS": "",
+"LLC_FLAGS": "",
+"LLC_FLAGS_ARM64": "",
+"LLC_FLAGS_X86": ""
+}
+ [IR] blts.ll
+ [IR] buts.ll
+ [IR] domain.ll
+ [IR] erhs.ll
+ [IR] error.ll
+ [IR] exact.ll
+ [IR] c_timers.ll
+ [IR] jacld.ll
+ [IR] jacu.ll
+ [IR] l2norm.ll
+ [IR] lu.ll
+ [IR] pintgr.ll
+ [IR] read_input.ll
+ [IR] rhs.ll
+ [IR] setbv.ll
+ [IR] setcoeff.ll
+ [IR] setiv.ll
+ [IR] ssor.ll
+ [IR] verify.ll
+ [IR] print_results.ll
+ [IR] randdp.ll
+ [IR] c_print_results.ll
+ [IR] wtime.ll
+ [OPT] blts_opt.ll
+ [OPT] buts_opt.ll
+ [OPT] domain_opt.ll
+ [OPT] error_opt.ll
+ [OPT] exact_opt.ll
+ [OPT] c_timers_opt.ll
+ [OPT] jacld_opt.ll
+ [OPT] jacu_opt.ll
+ [OPT] l2norm_opt.ll
+ [OPT] lu_opt.ll
+ [OPT] pintgr_opt.ll
+ [OPT] read_input_opt.ll
+ [OPT] setbv_opt.ll
+ [OPT] setcoeff_opt.ll
+ [OPT] setiv_opt.ll
+ [OPT] ssor_opt.ll
+ [OPT] verify_opt.ll
+ [OPT] print_results_opt.ll
+ [OPT] randdp_opt.ll
+ [OPT] c_print_results_opt.ll
+ [OPT] wtime_opt.ll
+ [LLC] blts_x86_64_init.o
+ [LLC] buts_x86_64_init.o
+ [LLC] domain_x86_64_init.o
+ [OPT] erhs_opt.ll
+ [LLC] error_x86_64_init.o
+ [LLC] exact_x86_64_init.o
+ [LLC] c_timers_x86_64_init.o
+ [LLC] jacld_x86_64_init.o
+ [LLC] jacu_x86_64_init.o
+ [LLC] l2norm_x86_64_init.o
+ [LLC] lu_x86_64_init.o
+ [LLC] pintgr_x86_64_init.o
+ [LLC] read_input_x86_64_init.o
+ [OPT] rhs_opt.ll
+ [LLC] setbv_x86_64_init.o
+ [LLC] setcoeff_x86_64_init.o
+ [LLC] setiv_x86_64_init.o
+ [LLC] ssor_x86_64_init.o
+ [LLC] verify_x86_64_init.o
+ [LLC] print_results_x86_64_init.o
+ [LLC] randdp_x86_64_init.o
+ [LLC] c_print_results_x86_64_init.o
+ [LLC] wtime_x86_64_init.o
+ [LLC] erhs_x86_64_init.o
+ [LLC] rhs_x86_64_init.o
+ [LD] lu_x86_64_init.out
+rm jacld_opt.ll rhs_opt.ll error_opt.ll wtime_opt.ll erhs_opt.ll print_results_opt.ll domain_opt.ll c_print_results_opt.ll pintgr_opt.ll setbv_opt.ll setcoeff_opt.ll l2norm_opt.ll c_timers_opt.ll randdp_opt.ll setiv_opt.ll ssor_opt.ll jacu_opt.ll exact_opt.ll buts_opt.ll read_input_opt.ll verify_opt.ll blts_opt.ll
+make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/lu'
