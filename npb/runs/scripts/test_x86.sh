@@ -5,7 +5,6 @@ experiment=$1
 # Setup
 echo "====================[ Setting up the experiment ]===================="
 source ../../venv/bin/activate || exit 1
-export NPB_PATH=/home/nikos/phd/unified_abi/layout/npb
 
 # Build arm
 echo "====================[ Building the arm test experiment ]===================="
