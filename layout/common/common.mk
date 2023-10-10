@@ -38,6 +38,11 @@ endif
 override LLC_FLAGS	+= -function-sections -data-sections
 override LLC_FLAGS	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
 
+# Set this to avoid printing warnings about unhandled instructions for stackmaps.
+ifdef NO_SM_WARN
+  override LLC_FLAGS += -no-sm-warn
+endif
+
 OBJDUMP_FLAGS ?= --visualize-jumps
 
 #######################
