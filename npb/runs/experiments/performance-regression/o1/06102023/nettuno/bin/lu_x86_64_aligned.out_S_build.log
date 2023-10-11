@@ -1,9 +1,9 @@
 make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/lu'
 {
-"LLVM VERSION": "clang version 9.0.1 (git@github.com:blackgeorge-boom/llvm-project.git 58a716b49ee47652459df019510456d531a4ddd2) Target: x86_64-unknown-linux-gnu Thread model: posix InstalledDir: /home/nikos/llvm-9/toolchain/bin"
+"LLVM VERSION": "clang version 9.0.1 (git@github.com:blackgeorge-boom/llvm-unifico.git ec5e688d5bbb528ce41161ae3b96762a0b1bf1ec) Target: x86_64-unknown-linux-gnu Thread model: posix InstalledDir: /home/nikos/llvm-9/toolchain/bin"
 "LLVM BIN DIR": "/home/nikos/llvm-9/toolchain/bin"
 "LLVM LIB DIR": "/home/nikos/llvm-9/toolchain/lib"
-"LLVM UNIFICO FLAGS": "-DUNIFICO_GPR_CALLING_CONV -DUNIFICO_FPR_CALLING_CONV -DUNIFICO_REGALLOC_RULES -DUNIFICO_REMAT_RULES -DUNIFICO_REG_COST -DUNIFICO_AARCH64_TWOADDR "
+"LLVM UNIFICO FLAGS": "-DUNIFICO_GPR_CALLING_CONV -DUNIFICO_FPR_CALLING_CONV -DUNIFICO_REGALLOC_RULES -DUNIFICO_REMAT_RULES -DUNIFICO_REG_COST -DUNIFICO_AARCH64_TWOADDR -DUNIFICO_INSTR_EXTENSION -DUNIFICO_CHEAP_MOVES"
 "CFLAGS": "-O1 -Wall -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mllvm -align-bytes-to-four",
 "OPT_FLAGS": "-name-string-literals -static-var-sections -live-values",
 "LLC_FLAGS": "-disable-block-align --mc-relax-all -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -align-objects-to-four -enable-misched=false -pack-indexes -function-sections -data-sections -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse",
@@ -144,37 +144,37 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/lu'
  [LLC WITH CALLSITE ALIGNMENT] exact_x86_64.o
  [LLC WITH CALLSITE ALIGNMENT] c_timers_x86_64.o
  [CHECK CALLSITE ALIGNMENT] domain_x86_64.o domain_aarch64.o
- [CALLSITE ALIGN] jacld_cs_align.json
+ [CHECK CALLSITE ALIGNMENT] error_x86_64.o error_aarch64.o
  [CHECK CALLSITE ALIGNMENT] exact_x86_64.o exact_aarch64.o
  [CHECK CALLSITE ALIGNMENT] c_timers_x86_64.o c_timers_aarch64.o
- [CHECK CALLSITE ALIGNMENT] error_x86_64.o error_aarch64.o
+ [CALLSITE ALIGN] jacld_cs_align.json
  [CALLSITE ALIGN] jacu_cs_align.json
  [LLC WITH CALLSITE ALIGNMENT] l2norm_x86_64.o
- [CHECK CALLSITE ALIGNMENT] blts_x86_64.o blts_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] read_input_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] blts_x86_64.o blts_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] l2norm_x86_64.o l2norm_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] read_input_x86_64.o read_input_aarch64.o
  [CHECK CALLSITE ALIGNMENT] buts_x86_64.o buts_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] setbv_x86_64.o
- [CHECK CALLSITE ALIGNMENT] l2norm_x86_64.o l2norm_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] setcoeff_x86_64.o
- [CHECK CALLSITE ALIGNMENT] read_input_x86_64.o read_input_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] setiv_x86_64.o
  [LLC WITH CALLSITE ALIGNMENT] ssor_x86_64.o
  [LLC WITH CALLSITE ALIGNMENT] verify_x86_64.o
- [CHECK CALLSITE ALIGNMENT] setbv_x86_64.o setbv_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] print_results_x86_64.o
  [CHECK CALLSITE ALIGNMENT] setcoeff_x86_64.o setcoeff_aarch64.o
  [CHECK CALLSITE ALIGNMENT] setiv_x86_64.o setiv_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] setbv_x86_64.o setbv_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] print_results_x86_64.o print_results_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] randdp_x86_64.o
  [LLC WITH CALLSITE ALIGNMENT] c_print_results_x86_64.o
- [CHECK CALLSITE ALIGNMENT] print_results_x86_64.o print_results_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] wtime_x86_64.o
- [CHECK CALLSITE ALIGNMENT] ssor_x86_64.o ssor_aarch64.o
- [CHECK CALLSITE ALIGNMENT] verify_x86_64.o verify_aarch64.o
- [CHECK CALLSITE ALIGNMENT] randdp_x86_64.o randdp_aarch64.o
- [CHECK CALLSITE ALIGNMENT] c_print_results_x86_64.o c_print_results_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] jacld_aarch64.o
- [CHECK CALLSITE ALIGNMENT] wtime_x86_64.o wtime_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] verify_x86_64.o verify_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] jacu_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] randdp_x86_64.o randdp_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] ssor_x86_64.o ssor_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] wtime_x86_64.o wtime_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] c_print_results_x86_64.o c_print_results_aarch64.o
  [CALLSITE ALIGN] lu_cs_align.json
  [LLC WITH CALLSITE ALIGNMENT] pintgr_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] lu_aarch64.o
@@ -188,8 +188,8 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/lu'
  [CHECK CALLSITE ALIGNMENT] pintgr_x86_64.o pintgr_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] jacld_x86_64.o
  [LLC WITH CALLSITE ALIGNMENT] jacu_x86_64.o
- [CHECK CALLSITE ALIGNMENT] jacu_x86_64.o jacu_aarch64.o
  [CHECK CALLSITE ALIGNMENT] jacld_x86_64.o jacld_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] jacu_x86_64.o jacu_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] erhs_x86_64.o
  [LD] lu_aarch64_unaligned.out
  [LLC WITH CALLSITE ALIGNMENT] rhs_x86_64.o

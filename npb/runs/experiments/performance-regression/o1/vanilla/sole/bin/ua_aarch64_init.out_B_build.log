@@ -68,11 +68,11 @@ Typical components:
  [IR] utils.ll
  [OPT] ua_opt.ll
  [OPT] move_opt.ll
- [OPT] c_timers_opt.ll
 precond.c:757:9: warning: implicitly declaring library function 'printf' with type 'int (const char *, ...)' [-Wimplicit-function-declaration]
         printf("Unreachable\n"); /* TODO temporary handling for Unifico */
         ^
 precond.c:757:9: note: include the header <stdio.h> or explicitly provide a declaration for 'printf'
+ [OPT] c_timers_opt.ll
  [OPT] print_results_opt.ll
  [OPT] randdp_opt.ll
  [OPT] c_print_results_opt.ll
@@ -91,14 +91,14 @@ precond.c:757:9: note: include the header <stdio.h> or explicitly provide a decl
  [LLC] verify_aarch64_init.o
  [OPT] convect_opt.ll
  [LLC] utils_aarch64_init.o
+ [OPT] adapt_opt.ll
  [LLC] diffuse_aarch64_init.o
- [LLC] setup_aarch64_init.o
 1 warning generated.
+ [LLC] setup_aarch64_init.o
  [OPT] precond_opt.ll
  [LLC] convect_aarch64_init.o
- [OPT] adapt_opt.ll
- [LLC] precond_aarch64_init.o
  [LLC] adapt_aarch64_init.o
+ [LLC] precond_aarch64_init.o
  [OPT] transfer_opt.ll
  [LLC] transfer_aarch64_init.o
  [OPT] mason_opt.ll

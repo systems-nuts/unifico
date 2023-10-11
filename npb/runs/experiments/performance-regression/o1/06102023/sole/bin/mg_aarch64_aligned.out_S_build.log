@@ -1,9 +1,9 @@
 make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/mg'
 {
-"LLVM VERSION": "clang version 9.0.1 (git@github.com:blackgeorge-boom/llvm-project.git 58a716b49ee47652459df019510456d531a4ddd2) Target: x86_64-unknown-linux-gnu Thread model: posix InstalledDir: /home/nikos/llvm-9/toolchain/bin"
+"LLVM VERSION": "clang version 9.0.1 (git@github.com:blackgeorge-boom/llvm-unifico.git ec5e688d5bbb528ce41161ae3b96762a0b1bf1ec) Target: x86_64-unknown-linux-gnu Thread model: posix InstalledDir: /home/nikos/llvm-9/toolchain/bin"
 "LLVM BIN DIR": "/home/nikos/llvm-9/toolchain/bin"
 "LLVM LIB DIR": "/home/nikos/llvm-9/toolchain/lib"
-"LLVM UNIFICO FLAGS": "-DUNIFICO_GPR_CALLING_CONV -DUNIFICO_FPR_CALLING_CONV -DUNIFICO_REGALLOC_RULES -DUNIFICO_REMAT_RULES -DUNIFICO_REG_COST -DUNIFICO_AARCH64_TWOADDR "
+"LLVM UNIFICO FLAGS": "-DUNIFICO_GPR_CALLING_CONV -DUNIFICO_FPR_CALLING_CONV -DUNIFICO_REGALLOC_RULES -DUNIFICO_REMAT_RULES -DUNIFICO_REG_COST -DUNIFICO_AARCH64_TWOADDR -DUNIFICO_INSTR_EXTENSION -DUNIFICO_CHEAP_MOVES"
 "CFLAGS": "-O1 -Wall -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mllvm -align-bytes-to-four",
 "OPT_FLAGS": "-name-string-literals -static-var-sections -live-values",
 "LLC_FLAGS": "-disable-block-align --mc-relax-all -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -align-objects-to-four -enable-misched=false -pack-indexes -function-sections -data-sections -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse",
@@ -41,11 +41,11 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/mg'
  [LLC WITH CALLSITE ALIGNMENT] c_print_results_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] randdp_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] wtime_x86_64.o
- [LLC WITH CALLSITE ALIGNMENT] print_results_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] c_timers_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] print_results_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] c_print_results_x86_64.o
- [LLC WITH CALLSITE ALIGNMENT] randdp_x86_64.o
  [CHECK CALLSITE ALIGNMENT] wtime_x86_64.o wtime_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] randdp_x86_64.o
  [CHECK CALLSITE ALIGNMENT] c_timers_x86_64.o c_timers_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] print_results_x86_64.o
  [CHECK CALLSITE ALIGNMENT] c_print_results_x86_64.o c_print_results_aarch64.o

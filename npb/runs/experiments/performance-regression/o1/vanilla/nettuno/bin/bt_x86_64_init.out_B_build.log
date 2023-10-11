@@ -75,10 +75,10 @@ Typical components:
  [OPT] add_opt.ll
  [OPT] adi_opt.ll
  [OPT] error_opt.ll
+ [OPT] exact_rhs_opt.ll
  [OPT] exact_solution_opt.ll
  [OPT] initialize_opt.ll
  [OPT] set_constants_opt.ll
- [OPT] solve_subs_opt.ll
  [OPT] verify_opt.ll
  [OPT] print_results_opt.ll
  [LLC] bt_x86_64_init.o
@@ -88,22 +88,22 @@ Typical components:
  [LLC] add_x86_64_init.o
  [LLC] adi_x86_64_init.o
  [LLC] error_x86_64_init.o
- [OPT] exact_rhs_opt.ll
+ [LLC] exact_rhs_x86_64_init.o
  [LLC] exact_solution_x86_64_init.o
  [LLC] initialize_x86_64_init.o
  [LLC] set_constants_x86_64_init.o
- [LLC] solve_subs_x86_64_init.o
+ [OPT] solve_subs_opt.ll
  [LLC] verify_x86_64_init.o
  [LLC] print_results_x86_64_init.o
- [LLC] exact_rhs_x86_64_init.o
  [OPT] rhs_opt.ll
- [OPT] x_solve_opt.ll
- [OPT] y_solve_opt.ll
  [OPT] z_solve_opt.ll
+ [LLC] solve_subs_x86_64_init.o
+ [OPT] y_solve_opt.ll
+ [OPT] x_solve_opt.ll
  [LLC] rhs_x86_64_init.o
- [LLC] x_solve_x86_64_init.o
- [LLC] y_solve_x86_64_init.o
  [LLC] z_solve_x86_64_init.o
+ [LLC] y_solve_x86_64_init.o
+ [LLC] x_solve_x86_64_init.o
  [LD] bt_x86_64_init.out
 rm y_solve_opt.ll rhs_opt.ll exact_solution_opt.ll error_opt.ll set_constants_opt.ll x_solve_opt.ll wtime_opt.ll print_results_opt.ll c_print_results_opt.ll c_timers_opt.ll adi_opt.ll add_opt.ll exact_rhs_opt.ll initialize_opt.ll solve_subs_opt.ll z_solve_opt.ll verify_opt.ll
 make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/bt'
