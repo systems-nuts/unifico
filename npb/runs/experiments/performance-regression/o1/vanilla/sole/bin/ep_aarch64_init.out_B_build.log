@@ -62,11 +62,11 @@ Typical components:
  [OPT] print_results_opt.ll
  [OPT] randdp_opt.ll
  [OPT] ep_opt.ll
- [LLC] wtime_aarch64_init.o
  [LLC] c_timers_aarch64_init.o
+ [LLC] wtime_aarch64_init.o
  [LLC] c_print_results_aarch64_init.o
- [LLC] randdp_aarch64_init.o
  [LLC] print_results_aarch64_init.o
+ [LLC] randdp_aarch64_init.o
  [LLC] ep_aarch64_init.o
  [LD] ep_aarch64_init.out
 rm wtime_opt.ll print_results_opt.ll c_print_results_opt.ll c_timers_opt.ll randdp_opt.ll

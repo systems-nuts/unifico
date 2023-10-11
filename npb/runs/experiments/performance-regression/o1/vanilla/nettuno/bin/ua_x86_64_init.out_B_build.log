@@ -91,14 +91,14 @@ precond.c:757:9: note: include the header <stdio.h> or explicitly provide a decl
  [LLC] verify_x86_64_init.o
  [OPT] convect_opt.ll
  [LLC] utils_x86_64_init.o
+ [OPT] adapt_opt.ll
  [LLC] diffuse_x86_64_init.o
  [LLC] setup_x86_64_init.o
 1 warning generated.
- [OPT] adapt_opt.ll
  [OPT] precond_opt.ll
  [LLC] convect_x86_64_init.o
- [LLC] precond_x86_64_init.o
  [LLC] adapt_x86_64_init.o
+ [LLC] precond_x86_64_init.o
  [OPT] transfer_opt.ll
  [LLC] transfer_x86_64_init.o
  [OPT] mason_opt.ll
