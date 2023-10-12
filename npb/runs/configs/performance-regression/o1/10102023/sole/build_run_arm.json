@@ -33,18 +33,6 @@
                     "nikos@nettuno:${dest_dir}/${executable}",
                     "${dest_dir}"
                 ]
-            },
-            {
-                "before": false,
-                "args": [
-                    "sshpass",
-                    "-f",
-                    "/home/nikos/phd/unified_abi/npb/runs/file.txt",
-                    "scp",
-                    "-r",
-                    "nikos@nettuno:${dest_dir}/${executable}_${npb_class}_build.log",
-                    "${dest_dir}"
-                ]
             }
         ],
         "run": [
