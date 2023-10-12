@@ -1,0 +1,74 @@
+{
+    "info": {},
+    "tags": [
+        "exec_time"
+    ],
+    "executables": [
+        "bt_aarch64_aligned.out",
+        "cg_aarch64_aligned.out",
+        "ep_aarch64_aligned.out",
+        "ft_aarch64_aligned.out",
+        "is_aarch64_aligned.out",
+        "lu_aarch64_aligned.out",
+        "mg_aarch64_aligned.out",
+        "sp_aarch64_aligned.out",
+        "ua_aarch64_init.out"
+    ],
+    "env": {},
+
+    "*": {
+        "output": "run_${executable}_${npb_class}_${iteration}.log",
+        "prepend": [],
+        "append": [],
+        "build": [
+            {
+                "before": true,
+                "args": [
+                    "make",
+                    "clean"
+                ]
+            },
+            {
+                "before": true,
+                "args": [
+                    "make",
+                    "${npb_class}"
+                ]
+            },
+            {
+                "before": true,
+                "args": [
+                    "make",
+                    "-C",
+                    "${build_dir}",
+                    "-j10",
+                    "${executable}",
+                    "OPT_LEVEL=-O1",
+                    "NO_STACKMAPS=1",
+                    "EXPERIMENT_MODE=1",
+                    "LLC_FLAGS=\"-disable-block-align --mc-relax-all -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -align-objects-to-four -enable-misched=false -pack-indexes\"",
+                    "LLC_FLAGS_ARM64=\"-mattr=+disable-fp-imm-materialize,+avoid-wide-mul,+copy-zr-temp,-disable-hoist-in-lowering,-avoid-f128,+advanced-ra-split-cost\"",
+                    "LLC_FLAGS_X86=\"-mattr=+simple-reg-offset-addr,-multiply-with-imm,+aarch64-sized-imm,-non-zero-imm-to-mem,+aarch64-constant-cost-model,+force-vector-mem-op,+avoid-opt-mul-1,+avoid-select-to-fsetcc -x86-enable-simplify-cfg -no-x86-call-frame-opt -disable-x86-frame-obj-order -enable-lea32 -mul-constant-optimization=false -disable-gr32temp-inflate\""
+                ],
+                "output": "${build_dir}/${executable}_${npb_class}_build.log"
+            },
+            {
+                "before": false,
+                "args": [
+                    "cp",
+                    "${build_dir}/${executable}",
+                    "${dest_dir}"
+                ]
+            },
+            {
+                "before": false,
+                "args": [
+                    "mv",
+                    "${build_dir}/${executable}_${npb_class}_build.log",
+                    "${dest_dir}"
+                ]
+            }
+        ],
+        "run": []
+    }
+}

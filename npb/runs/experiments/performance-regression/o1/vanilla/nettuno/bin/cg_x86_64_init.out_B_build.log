@@ -64,8 +64,8 @@ Typical components:
  [LLC] wtime_x86_64_init.o
  [LLC] c_timers_x86_64_init.o
  [LLC] c_print_results_x86_64_init.o
- [LLC] print_results_x86_64_init.o
  [LLC] randdp_x86_64_init.o
+ [LLC] print_results_x86_64_init.o
  [OPT] cg_opt.ll
  [LLC] cg_x86_64_init.o
  [LD] cg_x86_64_init.out
