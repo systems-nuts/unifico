@@ -2,7 +2,8 @@
 
 # Parameters
 experiment=$1
-class=$2
+baseline=$2
+class=$3
 
 # Setup
 echo "====================[ Setting up the experiment ]===================="
@@ -12,8 +13,8 @@ export NPB_PATH=/home/nikos/phd/unified_abi/layout/npb
 # Build arm
 echo "====================[ Building the arm baseline experiment ]===================="
 npb \
-    --config configs/performance-regression/o1/vanilla/nettuno/build_arm.json \
-    --dest experiments/performance-regression/o1/vanilla/sole \
+    --config configs/performance-regression/o1/${baseline}/nettuno/build_arm.json \
+    --dest experiments/performance-regression/o1/${baseline}/sole \
     --npb-class ${class} \
     --build || exit 1
 
