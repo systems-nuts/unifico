@@ -61,23 +61,23 @@ Typical components:
  [IR] c_print_results.ll
  [IR] wtime.ll
  [OPT] wtime_opt.ll
+ [OPT] mainft_opt.ll
  [OPT] c_timers_opt.ll
  [OPT] c_print_results_opt.ll
  [OPT] print_results_opt.ll
  [OPT] randdp_opt.ll
- [OPT] mainft_opt.ll
  [OPT] appft_opt.ll
  [OPT] auxfnct_opt.ll
  [LLC] wtime_x86_64_init.o
  [LLC] c_timers_x86_64_init.o
+ [LLC] mainft_x86_64_init.o
  [LLC] c_print_results_x86_64_init.o
  [LLC] print_results_x86_64_init.o
  [LLC] randdp_x86_64_init.o
  [OPT] verify_opt.ll
- [LLC] mainft_x86_64_init.o
  [LLC] appft_x86_64_init.o
- [LLC] auxfnct_x86_64_init.o
  [OPT] fft3d_opt.ll
+ [LLC] auxfnct_x86_64_init.o
  [LLC] verify_x86_64_init.o
  [LLC] fft3d_x86_64_init.o
  [LD] ft_x86_64_init.out
