@@ -2,7 +2,8 @@
 
 # Parameters
 experiment=$1
-class=$2
+baseline=$2
+class=$3
 
 # Setup
 echo "====================[ Setting up the experiment ]===================="
@@ -18,8 +19,8 @@ done
 # Baseline experiment
 echo "====================[ Running the baseline experiment ]===================="
 npb \
-    --config configs/performance-regression/o1/vanilla/nettuno/build_run_x86.json \
-    --dest experiments/performance-regression/o1/vanilla/nettuno \
+    --config configs/performance-regression/o1/${baseline}/nettuno/build_run_x86.json \
+    --dest experiments/performance-regression/o1/${baseline}/nettuno \
     --npb-class ${class} \
     --build \
     --run \
@@ -40,7 +41,7 @@ echo "====================[ Comparing the experiments ]===================="
 npb \
     --config configs/performance-regression/o1/${experiment}/nettuno/build_run_x86.json \
     --dest experiments/performance-regression/o1/${experiment}/nettuno \
-    --compare /home/nikos/phd/unified_abi/npb/runs/experiments/performance-regression/o1/vanilla/nettuno/run \
+    --compare /home/nikos/phd/unified_abi/npb/runs/experiments/performance-regression/o1/${baseline}/nettuno/run \
     --npb-class ${class} || exit 1
 
 # Revert governor to "ondemand"
