@@ -1,6 +1,12 @@
 # Running experiments
 
-## Test
+### Export the top-level NPB directory
+
+```bash
+export NPB_PATH=<path_to_npb>
+```
+
+### Test
 
 ```bash
 # 1. on the x86 machine
