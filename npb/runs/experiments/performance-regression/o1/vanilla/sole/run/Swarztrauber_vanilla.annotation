@@ -1,0 +1,382 @@
+Swarztrauber() /home/nikos/phd/unified_abi/layout/npb/ft/ft_aarch64_init.out
+Event: cycles
+
+Percent        
+               
+               
+             Disassembly of section .text:
+               
+             00000000004011b8 <Swarztrauber>:
+             Swarztrauber():
+             // Swarztrauber to
+             // perform FFTs
+             //---------------------------------------------------------------------
+             static void Swarztrauber(int is, int m, int vlen, int n, int xd1, void *ox,
+             dcomplex exponent[n])
+             {          
+  0.00         sub    sp, sp, #0x90
+               stp    x28, x27, [sp, #48]
+               stp    x26, x25, [sp, #64]
+               stp    x24, x23, [sp, #80]
+               stp    x22, x21, [sp, #96]
+               stp    x20, x19, [sp, #112]
+               stp    x29, x30, [sp, #128]
+               add    x29, sp, #0x80
+               
+             int i, j, l;
+             dcomplex u1, x11, x21;
+             int k, n1, li, lj, lk, ku, i11, i12, i21, i22;
+               
+             if (timers_enabled)
+               adrp   x8, mal+0x3b0
+               ldr    w8, [x8, #768]
+               mov    w25, w4 
+               mov    w22, w2 
+               mov    w24, w0 
+  0.00         str    x6, [sp, #40]
+               str    x5, [sp, #16]
+               str    w3, [sp, #24]
+               str    w1, [sp, #32]
+  0.00       ↓ cbz    w8, 50  
+             timer_start(4);
+               mov    w0, #0x4                        // #4
+             → bl     timer_start
+  0.00   50:   ldr    w8, [sp, #24]
+               ldr    w9, [sp, #32]
+             //---------------------------------------------------------------------
+             // Perform one variant of the Stockham FFT.
+             //---------------------------------------------------------------------
+             n1 = n / 2;
+               cmp    w8, #0x0
+               cinc   w8, w8, lt  // lt = tstop
+             lj = 1;    
+             li = 1 << m;
+             for (l = 1; l <= m; l += 2) {
+               cmp    w9, #0x1
+             ↓ b.lt   3c0     
+               asr    w8, w8, #1
+               str    w8, [sp, #28]
+               ldr    w8, [sp, #24]
+               mov    w9, w25 
+               mov    w3, #0x1                        // #1
+               adrp   x15, plane+0x41d90
+               mov    w8, w8  
+               str    x8, [sp, #8]
+               ldr    x8, [sp, #16]
+               mov    w19, w22
+  0.00         mov    w13, #0x210                     // #528
+               add    x15, x15, #0x270
+               add    x12, x8, #0x8
+               ldr    w8, [sp, #32]
+             lk = lj;   
+             lj = 2 * lk;
+             li = li / 2;
+             ku = li;   
+               
+             for (i = 0; i <= li - 1; i++) {
+               lsl    x16, x9, #4
+               mov    w0, #0x1                        // #1
+             li = 1 << m;
+               lsl    w1, w3, w8
+             ↓ b      cc      
+  0.00   b0:   mov    w2, w18 
+  0.00   b4:   ldr    w8, [sp, #32]
+             for (l = 1; l <= m; l += 2) {
+  0.00         add    w3, w3, #0x2
+  0.00         mov    w1, w17 
+               mov    w0, w2  
+  0.01         cmp    w3, w8  
+  0.00       ↓ b.gt   3c0     
+             li = li / 2;
+         cc:   cmp    w1, #0x0
+  0.00         cinc   w8, w1, lt  // lt = tstop
+             lj = 2 * lk;
+               lsl    w18, w0, #1
+             for (i = 0; i <= li - 1; i++) {
+  0.00         cmp    w1, #0x2
+             li = li / 2;
+  0.00         asr    w17, w8, #1
+  0.00         str    w3, [sp, #36]
+             for (i = 0; i <= li - 1; i++) {
+             ↓ b.lt   20c     
+  0.00         ldr    w25, [sp, #28]
+               sxtw   x8, w0  
+               adrp   x9, plane+0x41d90
+  0.00         mov    x2, xzr 
+               sxtw   x3, w17 
+  0.00         mov    w4, w0  
+  0.00         mul    x5, x16, x8
+  0.00         smull  x6, w18, w13
+  0.00         add    x9, x9, #0x278
+               mov    w27, w0 
+  0.00         mov    x11, x12
+             ↓ b      134     
+  0.04  118:   add    x2, x2, #0x1
+  0.00         add    x11, x11, x5
+  0.02         add    w27, w27, w18
+  0.01         add    w25, w25, w0
+  0.01         cmp    x2, x17 
+  0.00         add    x9, x9, x6
+             ↓ b.eq   20c     
+  0.02  134:   ldr    x10, [sp, #40]
+  0.01         add    x8, x2, x3
+             i11 = i * lk;
+             i12 = i11 + n1;
+             i21 = i * lj;
+             i22 = i21 + lk;
+               
+             if (is >= 1) {
+  0.00         cmp    w24, #0x0
+  0.00         add    x8, x10, x8, lsl #4
+  0.06         ldr    d0, [x8, #8]
+  0.26         fneg   d1, d0  
+  0.11         fcsel  d0, d0, d1, gt
+             u1 = exponent[ku + i];
+             }          
+             else {     
+             u1 = dconjg(exponent[ku + i]);
+             }          
+             for (k = 0; k <= lk - 1; k++) {
+  0.01         cmp    w0, #0x1
+             ↑ b.lt   118     
+  0.00         ldr    d1, [x8]
+  0.00         mov    x30, xzr
+  0.03         mov    x14, x9 
+  0.01         mov    w20, w25
+  0.00         mov    w26, w27
+  0.00         mov    x21, x11
+             for (j = 0; j < vlen; j++) {
+  0.03         cmp    w22, #0x1
+             ↓ b.ge   19c     
+             for (k = 0; k <= lk - 1; k++) {
+  0.09  178:   add    x30, x30, #0x1
+  0.03         add    x21, x21, x16
+  0.02         add    w26, w26, #0x1
+  0.00         add    w20, w20, #0x1
+  0.08         cmp    x30, x4 
+  0.03         add    x14, x14, #0x210
+             ↑ b.eq   118     
+             for (j = 0; j < vlen; j++) {
+  0.02         cmp    w22, #0x1
+  0.00       ↑ b.lt   178     
+  0.07  19c:   smaddl x8, w26, w13, x15
+  0.03         sxtw   x10, w20
+  0.03         add    x8, x8, #0x8
+  0.08         madd   x23, x16, x10, x12
+  0.03         mov    x7, x14 
+  0.03         mov    x28, x21
+  0.07         mov    x10, x19
+             x11 = x[i11 + k][j];
+  0.11  1b8:   ldp    d2, d3, [x28, #-8]
+             x21 = x[i12 + k][j];
+  6.89         ldp    d4, d5, [x23, #-8]
+             for (j = 0; j < vlen; j++) {
+  7.98         subs   x10, x10, #0x1
+  2.47         add    x28, x28, #0x10
+  4.61         add    x23, x23, #0x10
+             scr[i21 + k][j] = dcmplx_add(x11, x21);
+  2.68         fadd   d6, d2, d4
+  0.66         fadd   d7, d3, d5
+             scr[i22 + k][j] = dcmplx_mul(u1, dcmplx_sub(x11, x21));
+  2.42         fsub   d2, d2, d4
+  0.75         fsub   d3, d3, d5
+  3.43         fmul   d4, d1, d2
+  1.13         fmul   d5, d0, d3
+  2.30         fmul   d3, d1, d3
+  0.57         fmul   d2, d0, d2
+  6.22         fsub   d4, d4, d5
+  1.26         fadd   d2, d2, d3
+             scr[i21 + k][j] = dcmplx_add(x11, x21);
+  0.94         stp    d6, d7, [x7, #-8]
+             scr[i22 + k][j] = dcmplx_mul(u1, dcmplx_sub(x11, x21));
+  0.65         stp    d4, d2, [x8, #-8]
+             for (j = 0; j < vlen; j++) {
+  9.29         add    x8, x8, #0x10
+  0.42         add    x7, x7, #0x10
+             ↑ b.ne   1b8     
+  0.08       ↑ b      178     
+  0.01  20c:   ldp    w8, w3, [sp, #32]
+             }          
+             }          
+             }          
+               
+             if (l == m) {
+  0.01         cmp    w3, w8  
+             ↓ b.ne   274     
+  0.00         ldr    w8, [sp, #24]
+             for (k = 0; k < n; k++) {
+               cmp    w8, #0x1
+             ↑ b.lt   b0      
+               ldp    x1, x9, [sp, #8]
+               mov    x8, xzr 
+               mov    x10, x15
+             for (j = 0; j < vlen; j++) {
+               cmp    w22, #0x1
+             ↓ b.ge   254     
+             for (k = 0; k < n; k++) {
+  0.03  238:   add    x8, x8, #0x1
+               add    x10, x10, #0x210
+  0.01         cmp    x8, x1  
+               add    x9, x9, x16
+  0.01       ↑ b.eq   b0      
+             for (j = 0; j < vlen; j++) {
+               cmp    w22, #0x1
+             ↑ b.lt   238     
+  0.02  254:   mov    x11, x9 
+               mov    x14, x10
+  0.01         mov    x0, x19 
+             x[k][j] = scr[k][j];
+  0.06  260:   ldr    q0, [x14], #16
+             for (j = 0; j < vlen; j++) {
+  0.48         subs   x0, x0, #0x1
+             x[k][j] = scr[k][j];
+  0.85         str    q0, [x11], #16
+             for (j = 0; j < vlen; j++) {
+  0.23       ↑ b.ne   260     
+             ↑ b      238     
+             }          
+             }          
+             else {     
+             lk = lj;   
+             lj = 2 * lk;
+             li = li / 2;
+  0.00  274:   add    w8, w1, #0x3
+  0.00         cmp    w1, #0x0
+               csel   w8, w8, w1, lt  // lt = tstop
+             lj = 2 * lk;
+               lsl    w2, w0, #2
+             ku = li;   
+               
+             for (i = 0; i <= li - 1; i++) {
+               cmp    w1, #0x4
+             li = li / 2;
+               asr    w17, w8, #2
+             for (i = 0; i <= li - 1; i++) {
+             ↑ b.lt   b4      
+  0.00         ldr    w25, [sp, #28]
+               sxtw   x3, w18 
+  0.00         sxtw   x8, w2  
+               add    x9, x3, x3, lsl #5
+  0.00         adrp   x28, plane+0x41d90
+  0.00         mov    x1, xzr 
+               sxtw   x4, w17 
+               lsl    x5, x9, #4
+  0.00         mul    x6, x16, x8
+               mov    x7, x12 
+               mov    w27, w18
+  0.00         add    x28, x28, #0x278
+             ↓ b      2e0     
+  0.07  2c4:   add    x1, x1, #0x1
+  0.00         add    x28, x28, x5
+  0.01         add    w27, w27, w2
+  0.00         add    w25, w25, w18
+  0.00         cmp    x1, x17 
+  0.00         add    x7, x7, x6
+             ↓ b.eq   3b8     
+  0.01  2e0:   ldr    x9, [sp, #40]
+  0.00         add    x8, x1, x4
+             i11 = i * lk;
+             i12 = i11 + n1;
+             i21 = i * lj;
+             i22 = i21 + lk;
+               
+             if (is >= 1) {
+  0.00         cmp    w24, #0x0
+  0.00         add    x8, x9, x8, lsl #4
+  0.04         ldr    d0, [x8, #8]
+  0.23         fneg   d1, d0  
+  0.07         fcsel  d0, d0, d1, gt
+             u1 = exponent[ku + i];
+             }          
+             else {     
+             u1 = dconjg(exponent[ku + i]);
+             }          
+             for (k = 0; k <= lk - 1; k++) {
+  0.00         cmp    w0, #0x1
+             ↑ b.lt   2c4     
+               ldr    d1, [x8]
+  0.00         mov    x30, xzr
+  0.02         mov    x14, x7 
+  0.00         mov    w20, w25
+  0.00         mov    w26, w27
+  0.00         mov    x21, x28
+             for (j = 0; j < vlen; j++) {
+  0.02         cmp    w22, #0x1
+             ↓ b.ge   348     
+             for (k = 0; k <= lk - 1; k++) {
+  0.09  324:   add    x30, x30, #0x1
+  0.02         add    x21, x21, #0x210
+  0.01         add    w26, w26, #0x1
+  0.00         add    w20, w20, #0x1
+  0.09         cmp    x30, x3 
+  0.03         add    x14, x14, x16
+             ↑ b.ge   2c4     
+             for (j = 0; j < vlen; j++) {
+  0.02         cmp    w22, #0x1
+  0.00       ↑ b.lt   324     
+  0.08  348:   sxtw   x8, w26 
+  0.02         smaddl x9, w20, w13, x15
+  0.04         madd   x8, x16, x8, x12
+  0.11         add    x23, x9, #0x8
+  0.01         mov    x9, x14 
+  0.02         mov    x11, x21
+  0.08         mov    x10, x19
+             x11 = scr[i11 + k][j];
+  0.12  364:   ldp    d2, d3, [x11, #-8]
+             x21 = scr[i12 + k][j];
+  3.11         ldp    d4, d5, [x23, #-8]
+             for (j = 0; j < vlen; j++) {
+  2.80         subs   x10, x10, #0x1
+  2.38         add    x11, x11, #0x10
+  2.59         add    x23, x23, #0x10
+             x[i21 + k][j] = dcmplx_add(x11, x21);
+  1.66         fadd   d6, d2, d4
+  0.83         fadd   d7, d3, d5
+             x[i22 + k][j] = dcmplx_mul(u1, dcmplx_sub(x11, x21));
+  2.26         fsub   d2, d2, d4
+  0.65         fsub   d3, d3, d5
+  2.34         fmul   d4, d1, d2
+  1.43         fmul   d5, d0, d3
+  2.11         fmul   d3, d1, d3
+  0.46         fmul   d2, d0, d2
+  6.23         fsub   d4, d4, d5
+  1.11         fadd   d2, d2, d3
+             x[i21 + k][j] = dcmplx_add(x11, x21);
+  0.91         stp    d6, d7, [x9, #-8]
+             x[i22 + k][j] = dcmplx_mul(u1, dcmplx_sub(x11, x21));
+  0.54         stp    d4, d2, [x8, #-8]
+             for (j = 0; j < vlen; j++) {
+  9.23         add    x8, x8, #0x10
+  0.28         add    x9, x9, #0x10
+             ↑ b.ne   364     
+  0.00       ↑ b      324     
+  0.01  3b8:   ldr    w3, [sp, #36]
+  0.00       ↑ b      b4      
+             }          
+             }          
+             }          
+             }          
+             }          
+             if (timers_enabled)
+  0.00  3c0:   adrp   x8, mal+0x3b0
+               ldr    w8, [x8, #768]
+  0.01       ↓ cbz    w8, 3f0 
+             timer_stop(4);
+               ldp    x29, x30, [sp, #128]
+               ldp    x20, x19, [sp, #112]
+               ldp    x22, x21, [sp, #96]
+               ldp    x24, x23, [sp, #80]
+               ldp    x26, x25, [sp, #64]
+               ldp    x28, x27, [sp, #48]
+               mov    w0, #0x4                        // #4
+               add    sp, sp, #0x90
+             → b      timer_stop
+             }          
+        3f0:   ldp    x29, x30, [sp, #128]
+  0.00         ldp    x20, x19, [sp, #112]
+  0.00         ldp    x22, x21, [sp, #96]
+  0.00         ldp    x24, x23, [sp, #80]
+               ldp    x26, x25, [sp, #64]
+               ldp    x28, x27, [sp, #48]
+               add    sp, sp, #0x90
+             ← ret            

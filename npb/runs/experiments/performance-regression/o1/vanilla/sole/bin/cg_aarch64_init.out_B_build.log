@@ -56,11 +56,11 @@ Typical components:
  [IR] randdp.ll
  [IR] c_print_results.ll
  [IR] wtime.ll
- [OPT] wtime_opt.ll
  [OPT] c_timers_opt.ll
+ [OPT] wtime_opt.ll
  [OPT] c_print_results_opt.ll
- [OPT] print_results_opt.ll
  [OPT] randdp_opt.ll
+ [OPT] print_results_opt.ll
  [LLC] wtime_aarch64_init.o
  [LLC] c_timers_aarch64_init.o
  [LLC] c_print_results_aarch64_init.o

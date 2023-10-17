@@ -1,0 +1,709 @@
+fftXYZ() /home/nikos/phd/unified_abi/layout/npb/ft/ft_aarch64_aligned.out
+Event: cycles
+
+Percent        
+               
+               
+        3    Disassembly of section .text:
+               
+        5    0000000000501f70 <fftXYZ>:
+        6    fftXYZ():  
+        145  }          
+               
+        147  void fftXYZ(int sign, int n1, int n2, int n3, dcomplex x[n3][n2][n1 + 1],
+        148  dcomplex xout[(n1 + 1) * n2 * n3], dcomplex exp1[n1],
+        149  dcomplex exp2[n2], dcomplex exp3[n3])
+        150  {          
+               sub   sp, sp, #0x110
+               stp   x20, x19, [sp, #240]
+               stp   x29, x30, [sp, #256]
+               add   x29, sp, #0x100
+               mov   w8, w2   
+               stp   x8, x4, [x29, #-112]
+        142  void fftXYZ(int sign, int n1, int n2, int n3, dcomplex x[n3][n2][n1 + 1],
+               add   w8, w1, #0x1
+               stur  x8, [x29, #-72]
+        151  int i, j, k, log;
+        152  int bls, ble;
+        153  int len;   
+        154  int blkp;  
+               
+        156  if (timers_enabled)
+               adrp  x8, __libc
+               ldr   w8, [x8, #136]
+               mov   x19, x5  
+               mov   w20, w2  
+               stur  w3, [x29, #-92]
+               stp   w0, w1, [x29, #-80]
+             ↓ cbz   w8, 54   
+        152  timer_start(3);
+               mov   w0, #0x3                        // #3
+               nop            
+             → bl    timer_start
+               ldur  w1, [x29, #-76]
+               ldp   x8, x3, [x29, #24]
+               ldr   x2, [x29, #16]
+         54:   mov   w8, #0x2000                     // #8192
+               
+        155  fftblock = CACHESIZE / n1;
+               sdiv  w8, w8, w1
+        155  if (fftblock >= BLOCKMAX)
+               cmp   w8, #0x20
+               mov   w3, #0x20                       // #32
+               csel  w8, w8, w3, lt  // lt = tstop
+               adrp  x3, sums 
+        158  fftblock = BLOCKMAX;
+        159  blkp = fftblock + 1;
+        160  log = ilog2(n1);
+               mov   w0, w1   
+               str   w8, [x3, #336]
+               stur  x20, [x29, #-40]
+        157  blkp = fftblock + 1;
+               add   w20, w8, #0x1
+        158  log = ilog2(n1);
+             → bl    ilog2    
+               ldur  w3, [x29, #-76]
+               ldp   x2, x1, [x29, #24]
+               ldr   x0, [x29, #16]
+               ldur  w7, [x29, #-92]
+               ldur  x18, [x29, #-40]
+               mov   w17, w8  
+        159  if (timers_enabled)
+               adrp  x8, __libc
+               ldr   w8, [x8, #136]
+               mov   x5, x19  
+               stur  x19, [x29, #-88]
+               str   w17, [sp, #112]
+             ↓ cbz   w8, d4   
+        160  timer_start(7);
+               mov   w0, #0x7                        // #7
+             → bl    timer_start
+               ldur  x18, [x29, #-40]
+               ldur  w3, [x29, #-76]
+               ldur  w7, [x29, #-92]
+               ldur  x5, [x29, #-88]
+               ldp   x8, x2, [x29, #24]
+               ldr   x1, [x29, #16]
+               ldr   w17, [sp, #112]
+        161  for (k = 0; k < n3; k++) {
+         d4:   cmp   w7, #0x1 
+             ↓ b.lt  38c      
+               sxtw  x1, w20  
+               sub   w8, w18, #0x1
+               str   x1, [sp, #96]
+               ldur  w1, [x29, #-92]
+               str   w8, [sp, #104]
+               ldur  x2, [x29, #-112]
+               ldur  x8, [x29, #-72]
+               mov   x4, x20  
+               sbfiz x19, x20, #4, #32
+               ldur  x20, [x29, #-104]
+               mov   w1, w1   
+               mul   x2, x2, x8
+               str   x1, [sp, #64]
+               mov   w1, w3   
+               stur  x1, [x29, #-32]
+               str   x2, [sp, #120]
+               lsl   x2, x2, #4
+               lsl   x30, x8, #4
+               adrp  x1, sums 
+               str   x2, [sp, #16]
+               str   xzr, [sp, #72]
+               str   x30, [sp, #24]
+               str   x4, [sp, #88]
+        162  for (bls = 0; bls < n2; bls += fftblock) {
+               cmp   w18, #0x1
+             ↓ b.ge  16c      
+        140:   ldr   x2, [sp, #72]
+               ldr   x8, [sp, #16]
+        161  for (k = 0; k < n3; k++) {
+               add   x2, x2, #0x1
+               add   x20, x20, x8
+               str   x2, [sp, #72]
+               mov   x8, x2   
+               ldr   x2, [sp, #64]
+               subs  x8, x8, x2
+             ↓ b.eq  38c      
+        162  for (bls = 0; bls < n2; bls += fftblock) {
+               cmp   w18, #0x1
+             ↑ b.lt  140      
+        16c:   ldr   x8, [sp, #120]
+  0.00         ldr   x2, [sp, #72]
+               ldur  x5, [x29, #-104]
+               mov   w16, wzr 
+               mov   x0, x8   
+               mul   x0, x0, x2
+               str   x0, [sp, #56]
+               add   x0, x5, x0, lsl #4
+               mul   x8, x8, x2
+               stp   x8, x0, [sp, #40]
+               add   x8, x5, x8, lsl #4
+               mov   w0, wzr  
+               str   x8, [sp, #32]
+             ↓ b     1d0      
+  0.00  1a4:   adrp  x1, sums 
+               ldr   w8, [x1, #336]
+               ldur  x18, [x29, #-40]
+  0.00         ldr   w17, [sp, #112]
+  0.00         mov   w0, wzr  
+               add   w16, w16, w8
+               mov   w8, w16  
+               sub   w0, w0, w16
+               subs  w8, w8, w18
+               mov   x4, x6   
+             ↑ b.ge  140      
+        163  ble = bls + fftblock - 1;
+        1d0:   ldr   w8, [x1, #336]
+               ldr   x7, [x29, #16]
+               stur  w0, [x29, #-56]
+               stur  x16, [x29, #-48]
+               add   w8, w8, w16
+               sub   w8, w8, #0x1
+        164  if (ble > n2)
+               mov   w2, w8   
+               subs  w2, w2, w18
+               ldr   w2, [sp, #104]
+  0.00         csel  w2, w2, w8, gt
+        166  ble = n2 - 1;
+        167  len = ble - bls + 1;
+               add   w8, w0, w2
+               add   w8, w8, #0x1
+               stur  w8, [x29, #-120]
+        167  for (j = bls; j <= ble; j++) {
+               mov   w8, w16  
+               subs  w8, w8, w2
+               stur  x2, [x29, #-64]
+             ↓ b.gt  28c      
+               ldur  x0, [x29, #-48]
+  0.00         ldp   x1, x2, [x29, #-72]
+               sxtw  x8, w0   
+               sxtw  x16, w2  
+               mov   x2, x8   
+  0.00         mul   x2, x2, x1
+               add   x5, x20, x2, lsl #4
+               ldur  w2, [x29, #-56]
+               add   w6, w2, w0
+        168  for (i = 0; i < n1; i++) {
+               cmp   w3, #0x1 
+             ↓ b.ge  260      
+        167  for (j = bls; j <= ble; j++) {
+  0.01  240:   add   x2, x8, #0x1
+  0.00         subs  x8, x8, x16
+  0.00         add   x5, x5, x30
+               add   w6, w6, #0x1
+  0.01         mov   x8, x2   
+             ↓ b.ge  28c      
+        168  for (i = 0; i < n1; i++) {
+               cmp   w3, #0x1 
+             ↑ b.lt  240      
+  0.00  260:   ldur  x1, [x29, #-32]
+               adrp  x2, sums 
+               add   x2, x2, #0x160
+               add   x0, x2, w6, sxtw #4
+  0.04         mov   x2, x5   
+        169  plane[j - bls + blkp * i] = x[k][j][i];
+  0.50  274:   ldr   q0, [x2], #16
+        168  for (i = 0; i < n1; i++) {
+  3.93         subs  x1, x1, #0x1
+        169  plane[j - bls + blkp * i] = x[k][j][i];
+ 21.55         str   q0, [x0] 
+        168  for (i = 0; i < n1; i++) {
+  0.01         add   x0, x0, x19
+  2.36       ↑ b.ne  274      
+  0.04       ↑ b     240      
+  0.01  28c:   ldur  w0, [x29, #-80]
+  0.00         ldur  w2, [x29, #-120]
+  0.00         cmp   w3, #0x0 
+               cset  w8, gt   
+  0.01         cmp   w18, #0x0
+        172  }          
+        173  }          
+        174  Swarztrauber(sign, log, len, n1, blkp, plane, exp1);
+  0.01         adrp  x5, sums 
+               str   w8, [sp, #128]
+               cset  w8, gt   
+               mov   w1, w17  
+               add   x5, x5, #0x160
+               str   w8, [sp, #80]
+               str   x7, [sp] 
+               nop            
+               nop            
+               nop            
+               nop            
+               nop            
+               nop            
+               nop            
+             → bl    Swarztrauber
+  0.01         ldr   x18, [sp, #88]
+  0.00         ldur  w3, [x29, #-76]
+               ldur  x7, [x29, #-88]
+               ldp   x2, x8, [x29, #24]
+  0.01         ldur  x1, [x29, #-48]
+               ldur  w0, [x29, #-56]
+               ldur  x4, [x29, #-64]
+               ldr   x5, [x29, #16]
+               mov   x6, x18  
+               ldr   x30, [sp, #24]
+               mov   x16, x1  
+               mov   x2, x4   
+        173  for (j = bls; j <= ble; j++) {
+               mov   w8, w16  
+               mov   x5, x7   
+               subs  w8, w8, w2
+             ↑ b.gt  1a4      
+               sxtw  x8, w16  
+               mov   w17, w0  
+  0.00         mov   x18, x8  
+               sxtw  x4, w2   
+               add   w17, w17, w16
+               mul   x18, x18, x30
+        174  for (i = 0; i < n1; i++) {
+               cmp   w3, #0x1 
+             ↓ b.ge  35c      
+        173  for (j = bls; j <= ble; j++) {
+        33c:   add   x1, x8, #0x1
+  0.01         subs  x8, x8, x4
+               add   w17, w17, #0x1
+  0.01         add   x18, x18, x30
+               mov   x8, x1   
+             ↑ b.ge  1a4      
+        174  for (i = 0; i < n1; i++) {
+               cmp   w3, #0x1 
+             ↑ b.lt  33c      
+  0.01  35c:   adrp  x2, sums 
+               add   x2, x2, #0x160
+  0.01         add   x1, x2, w17, sxtw #4
+  0.01         ldur  x2, [x29, #-32]
+               mov   x0, x18  
+        175  x[k][j][i] = plane[j - bls + blkp * i];
+  2.54  370:   ldr   q0, [x1] 
+        174  for (i = 0; i < n1; i++) {
+  0.01         subs  x2, x2, #0x1
+ 11.64         add   x1, x1, x19
+        175  x[k][j][i] = plane[j - bls + blkp * i];
+               str   q0, [x20, x0]
+        174  for (i = 0; i < n1; i++) {
+  1.99         add   x0, x0, #0x10
+             ↑ b.ne  370      
+  0.05       ↑ b     33c      
+        180  }          
+        181  }          
+        182  }          
+        183  }          
+        184  if (timers_enabled)
+        38c:   adrp  x8, __libc
+               ldr   w8, [x8, #136]
+               ldur  x20, [x29, #-104]
+               mov   x19, x5  
+             ↓ cbz   w8, 3b0  
+        181  timer_stop(7);
+               mov   w0, #0x7                        // #7
+             → bl    timer_stop
+               ldur  x18, [x29, #-40]
+               ldp   x3, x8, [x29, #24]
+        3b0:   mov   w8, #0x2000                     // #8192
+               
+        184  fftblock = CACHESIZE / n2;
+               sdiv  w8, w8, w18
+        184  if (fftblock >= BLOCKMAX)
+               cmp   w8, #0x20
+               mov   w3, #0x20                       // #32
+               csel  w8, w8, w3, lt  // lt = tstop
+               adrp  x3, sums 
+        187  fftblock = BLOCKMAX;
+        188  blkp = fftblock + 1;
+        189  log = ilog2(n2);
+               mov   w0, w18  
+               str   w8, [x3, #336]
+             → bl    ilog2    
+               ldur  x3, [x29, #-40]
+               ldur  w2, [x29, #-92]
+               ldp   w4, w1, [x29, #-80]
+               ldur  x5, [x29, #-112]
+               ldp   x18, x0, [x29, #24]
+               ldur  x7, [x29, #-72]
+               stur  w8, [x29, #-48]
+        188  if (timers_enabled)
+               adrp  x8, __libc
+               ldr   w8, [x8, #136]
+               mov   x6, x20  
+               mov   w19, w1  
+               mov   w20, w4  
+               mov   x1, x5   
+               mov   x4, x7   
+               mov   x7, x18  
+             ↓ cbz   w8, 43c  
+        189  timer_start(8);
+               mov   w0, #0x8                        // #8
+             → bl    timer_start
+               ldp   x7, x19, [x29, #24]
+               ldur  x3, [x29, #-40]
+               ldur  x4, [x29, #-72]
+               ldp   x1, x6, [x29, #-112]
+               mov   x8, x19  
+               ldur  w19, [x29, #-76]
+               ldur  w2, [x29, #-92]
+               ldur  x0, [x29, #-88]
+        43c:   mov   w18, w2  
+        190  for (k = 0; k < n3; k++) {
+               cmp   w2, #0x1 
+             ↓ b.lt  53c      
+               mov   x8, x1   
+               mul   x8, x8, x4
+               sub   w30, w19, #0x1
+               str   x8, [sp, #112]
+               mov   w8, w18  
+               adrp  x2, sums 
+               str   xzr, [sp, #128]
+               stur  w30, [x29, #-56]
+               str   x8, [sp, #120]
+        191  for (bls = 0; bls < n1; bls += fftblock) {
+               cmp   w19, #0x1
+             ↓ b.ge  490      
+        474:   ldp   x0, x8, [sp, #120]
+        190  for (k = 0; k < n3; k++) {
+  0.00         add   x8, x8, #0x1
+               str   x8, [sp, #128]
+               subs  x8, x8, x0
+             ↓ b.eq  53c      
+        191  for (bls = 0; bls < n1; bls += fftblock) {
+               cmp   w19, #0x1
+             ↑ b.lt  474      
+        490:   ldr   x8, [sp, #112]
+               ldr   x0, [sp, #128]
+               mul   x8, x8, x0
+               add   x8, x6, x8, lsl #4
+               mov   w0, wzr  
+               str   x8, [sp, #104]
+        4a8:   cmp   w19, #0x0
+               cset  w8, gt   
+               stur  w8, [x29, #-64]
+        192  ble = bls + fftblock - 1;
+               ldr   w8, [x2, #336]
+               stur  w0, [x29, #-32]
+               ldur  w1, [x29, #-48]
+        196  if (ble > n1)
+        197  ble = n1 - 1;
+        198  len = ble - bls + 1;
+        199  Swarztrauber(sign, log, len, n2, n1 + 1, &x[k][0][bls], exp2);
+               str   x7, [sp] 
+        192  ble = bls + fftblock - 1;
+               add   w8, w8, w0
+               sub   w8, w8, #0x1
+        193  if (ble > n1)
+               mov   w2, w8   
+               subs  w2, w2, w19
+               csel  w8, w30, w8, gt
+        195  len = ble - bls + 1;
+  0.00         sub   w8, w8, w0
+               add   w2, w8, #0x1
+               ldr   x8, [sp, #104]
+               stur  w2, [x29, #-120]
+        196  Swarztrauber(sign, log, len, n2, n1 + 1, &x[k][0][bls], exp2);
+               add   x20, x8, w0, sxtw #4
+  0.00         ldur  w0, [x29, #-80]
+  0.00         mov   x5, x20  
+             → bl    Swarztrauber
+               ldp   x7, x19, [x29, #24]
+  0.01         ldur  x3, [x29, #-40]
+               ldur  x4, [x29, #-72]
+               ldp   x1, x6, [x29, #-112]
+  0.00         mov   x8, x19  
+               ldur  w19, [x29, #-76]
+               ldur  w18, [x29, #-92]
+               ldur  x5, [x29, #-88]
+        191  for (bls = 0; bls < n1; bls += fftblock) {
+               adrp  x2, sums 
+               ldur  w0, [x29, #-32]
+               ldr   w8, [x2, #336]
+               ldur  w30, [x29, #-56]
+  0.01         add   w0, w0, w8
+               mov   w8, w0   
+               subs  w8, w8, w19
+             ↑ b.lt  4a8      
+             ↑ b     474      
+        199  }          
+        200  }          
+        201  if (timers_enabled)
+        53c:   adrp  x8, __libc
+               ldr   w8, [x8, #136]
+               mov   x20, x6  
+             ↓ cbz   w8, 564  
+        200  timer_stop(8);
+               mov   w0, #0x8                        // #8
+               mov   x19, x3  
+               nop            
+             → bl    timer_stop
+               ldur  w18, [x29, #-92]
+               ldr   x8, [x29, #32]
+        564:   mov   w8, #0x2000                     // #8192
+               
+        203  fftblock = CACHESIZE / n3;
+               sdiv  w8, w8, w18
+        203  if (fftblock >= BLOCKMAX)
+               cmp   w8, #0x20
+               mov   w3, #0x20                       // #32
+               csel  w3, w8, w3, lt  // lt = tstop
+               adrp  x8, sums 
+        206  fftblock = BLOCKMAX;
+        207  blkp = fftblock + 1;
+        208  log = ilog2(n3);
+               mov   w0, w18  
+               str   w3, [x8, #336]
+               stur  w3, [x29, #-32]
+        205  blkp = fftblock + 1;
+               add   w19, w3, #0x1
+        206  log = ilog2(n3);
+             → bl    ilog2    
+               ldur  w3, [x29, #-92]
+               ldr   x2, [x29, #32]
+               ldur  w18, [x29, #-76]
+               mov   w1, w8   
+        207  if (timers_enabled)
+               adrp  x8, __libc
+               ldr   w8, [x8, #136]
+               mov   w20, w19 
+               ldur  x19, [x29, #-40]
+               str   w1, [sp, #112]
+             ↓ cbz   w8, 5d0  
+        208  timer_start(9);
+               mov   w0, #0x9                        // #9
+             → bl    timer_start
+               ldur  w18, [x29, #-76]
+               ldur  w3, [x29, #-92]
+               ldr   x8, [x29, #32]
+               ldr   w1, [sp, #112]
+        209  for (k = 0; k < n2; k++) {
+        5d0:   cmp   w19, #0x1
+             ↓ b.lt  8b0      
+               sub   w8, w18, #0x1
+               str   w8, [sp, #104]
+               ldur  x8, [x29, #-112]
+               ldur  x2, [x29, #-72]
+               sxtw  x0, w19  
+               mov   w4, w20  
+               adrp  x20, sums
+               mul   x8, x8, x2
+               stur  x8, [x29, #-112]
+               lsl   x8, x8, #4
+               stur  x8, [x29, #-64]
+               ldur  w8, [x29, #-32]
+               sxtw  x5, w2   
+               mov   w19, w19 
+               mov   w30, w3  
+               add   w8, w8, #0x1
+               stur  w8, [x29, #-48]
+               mov   x8, x0   
+               mul   x8, x8, x5
+               lsl   x16, x8, #4
+               ldur  x8, [x29, #-104]
+               lsl   x2, x2, #4
+               adrp  x7, sums 
+               add   x20, x20, #0x160
+               str   x19, [sp, #72]
+               str   x2, [sp, #16]
+               str   x0, [sp, #48]
+               str   x5, [sp, #80]
+               str   xzr, [sp, #32]
+               str   x8, [sp, #24]
+               str   xzr, [sp, #88]
+               stur  x30, [x29, #-120]
+               str   x16, [sp, #40]
+        210  for (bls = 0; bls < n1; bls += fftblock) {
+               cmp   w18, #0x1
+             ↓ b.ge  6a4      
+  0.01  664:   ldp   x8, x2, [sp, #16]
+               ldr   x5, [sp, #88]
+        209  for (k = 0; k < n2; k++) {
+               add   x2, x2, x8
+               str   x2, [sp, #24]
+               ldr   x8, [sp, #80]
+               ldr   x2, [sp, #32]
+               add   x5, x5, #0x1
+               str   x5, [sp, #88]
+               add   x2, x2, x8
+               str   x2, [sp, #32]
+               ldr   x2, [sp, #72]
+               mov   x8, x5   
+               subs  x8, x8, x2
+             ↓ b.eq  8b0      
+        210  for (bls = 0; bls < n1; bls += fftblock) {
+               cmp   w18, #0x1
+             ↑ b.lt  664      
+        6a4:   ldr   x2, [sp, #88]
+               ldur  x8, [x29, #-72]
+               mov   w0, wzr  
+               mov   w17, wzr 
+               mul   x2, x2, x8
+               ldur  x8, [x29, #-104]
+               str   x2, [sp, #64]
+               add   x8, x8, x2, lsl #4
+  0.00         str   x8, [sp, #56]
+             ↓ b     6f4      
+  0.00  6cc:   adrp  x7, sums 
+               ldr   w8, [x7, #336]
+               ldr   w1, [sp, #112]
+               mov   w0, wzr  
+               mov   w4, w6   
+               add   w17, w17, w8
+  0.01         mov   w8, w17  
+               sub   w0, w0, w17
+               subs  w8, w8, w18
+             ↑ b.ge  664      
+        211  ble = bls + fftblock - 1;
+        6f4:   ldr   w8, [x7, #336]
+               stur  x17, [x29, #-56]
+               stur  w0, [x29, #-32]
+               add   w8, w8, w17
+               sub   w8, w8, #0x1
+        212  if (ble > n1)
+               mov   w2, w8   
+               subs  w2, w2, w18
+               ldr   w2, [sp, #104]
+               csel  w8, w2, w8, gt
+               stur  x8, [x29, #-40]
+        215  ble = n1 - 1;
+        216  len = ble - bls + 1;
+        217  for (i = 0; i < n3; i++) {
+               cmp   w3, #0x1 
+        214  len = ble - bls + 1;
+               add   w8, w8, w0
+               add   w8, w8, #0x1
+  0.00         str   w8, [sp, #128]
+        215  for (i = 0; i < n3; i++) {
+             ↓ b.lt  7bc      
+  0.00         ldur  x8, [x29, #-40]
+               ldur  x0, [x29, #-56]
+               mov   x7, xzr  
+  0.01         sxtw  x17, w8  
+               ldr   x8, [sp, #24]
+               sxtw  x2, w0   
+               sub   x16, x2, #0x1
+  0.00         add   x5, x8, w0, sxtw #4
+  0.00         ldur  w8, [x29, #-32]
+               add   w6, w8, w0
+             ↓ b     77c      
+  0.05  75c:   ldur  x8, [x29, #-64]
+  0.15         add   x7, x7, #0x1
+  0.02         mov   x2, x7   
+  0.03         subs  x2, x2, x30
+  0.10         add   x5, x5, x8
+  0.03         ldur  w8, [x29, #-48]
+  0.05         add   w6, w6, w8
+             ↓ b.eq  7bc      
+  0.02  77c:   ldur  x8, [x29, #-56]
+        216  for (j = bls; j <= ble; j++) {
+  0.04         mov   w2, w8   
+  0.05         ldur  x8, [x29, #-40]
+  0.03         subs  w2, w2, w8
+  0.04       ↑ b.gt  75c      
+  0.05         mov   w8, w6   
+  0.05         mov   x2, x5   
+  0.03         mov   x0, x16  
+        217  plane[j - bls + blkp * i] = x[i][k][j];
+  1.61  79c:   ldr   q0, [x2], #16
+        216  for (j = bls; j <= ble; j++) {
+  5.78         add   x0, x0, #0x1
+  0.62         mov   x19, x0  
+ 24.20         subs  x19, x19, x17
+        217  plane[j - bls + blkp * i] = x[i][k][j];
+  0.85         str   q0, [x20, w8, sxtw #4]
+        216  for (j = bls; j <= ble; j++) {
+  3.10         add   w8, w8, #0x1
+             ↑ b.lt  79c      
+  0.02       ↑ b     75c      
+  0.02  7bc:   cmp   w3, #0x0 
+               cset  w8, gt   
+               cmp   w18, #0x0
+               str   w8, [sp, #120]
+               cset  w8, gt   
+               str   w8, [sp, #96]
+               ldr   x8, [x29, #32]
+               ldur  w0, [x29, #-80]
+               ldr   w2, [sp, #128]
+        220  }          
+        221  }          
+        222  Swarztrauber(sign, log, len, n3, blkp, plane, exp3);
+               adrp  x5, sums 
+  0.01         add   x5, x5, #0x160
+               str   x8, [sp] 
+               mov   w19, w4  
+             → bl    Swarztrauber
+  0.01         ldur  w18, [x29, #-76]
+               ldur  w3, [x29, #-92]
+  0.00         ldur  x2, [x29, #-88]
+               ldur  x8, [x29, #-56]
+               ldr   x1, [x29, #32]
+               mov   w6, w19  
+               ldur  x30, [x29, #-120]
+               ldr   x16, [sp, #40]
+               mov   x17, x8  
+        221  for (i = 0; i <= n3 - 1; i++) {
+               cmp   w3, #0x1 
+             ↑ b.lt  6cc      
+               ldur  w0, [x29, #-32]
+               ldur  x8, [x29, #-40]
+               sxtw  x1, w17  
+               sub   x4, x1, #0x1
+               add   w0, w0, w17
+               stur  w0, [x29, #-32]
+               ldr   x0, [sp, #32]
+  0.01         sxtw  x8, w8   
+               mov   x7, xzr  
+               add   x1, x1, x0
+               add   x5, x2, x1, lsl #4
+  0.00       ↓ b     874      
+  0.10  850:   ldur  w2, [x29, #-48]
+  0.05         ldur  w1, [x29, #-32]
+  0.06         add   x7, x7, #0x1
+  0.04         add   x5, x5, x16
+  0.06         add   w1, w1, w2
+  0.02         mov   x2, x7   
+  0.03         subs  x2, x2, x30
+  0.06         stur  w1, [x29, #-32]
+  0.04       ↑ b.eq  6cc      
+  0.03  874:   ldur  x1, [x29, #-40]
+        222  for (j = bls; j <= ble; j++) {
+  0.04         mov   w2, w17  
+  0.04         subs  w2, w2, w1
+  0.04       ↑ b.gt  850      
+  0.08         ldur  w19, [x29, #-32]
+  0.04         mov   x0, x5   
+  0.04         mov   x1, x4   
+        224  xout[j + (n1 + 1) * (k + n2 * i)] =
+        225  plane[j - bls + blkp * i];
+  1.35  890:   ldr   q0, [x20, w19, sxtw #4]
+        222  for (j = bls; j <= ble; j++) {
+  5.36         add   x1, x1, #0x1
+  1.23         mov   x2, x1   
+  1.46         add   w19, w19, #0x1
+        224  plane[j - bls + blkp * i];
+  5.71         str   q0, [x0], #16
+        222  for (j = bls; j <= ble; j++) {
+  2.25         subs  x2, x2, x8
+             ↑ b.lt  890      
+  0.03       ↑ b     850      
+        229  }          
+        230  }          
+        231  }          
+        232  }          
+        233  if (timers_enabled)
+        8b0:   adrp  x8, __libc
+               ldr   w8, [x8, #136]
+             ↓ cbz   w8, 8dc  
+        230  timer_stop(9);
+               mov   w0, #0x9                        // #9
+             → bl    timer_stop
+        231  if (timers_enabled)
+               adrp  x8, __libc
+               ldr   w8, [x8, #136]
+             ↓ cbz   w8, 8dc  
+        232  timer_stop(3);
+               mov   w0, #0x3                        // #3
+               nop            
+             → bl    timer_stop
+        233  }          
+        8dc:   ldp   x29, x30, [sp, #256]
+               ldp   x20, x19, [sp, #240]
+               add   sp, sp, #0x110
+             ← ret            
