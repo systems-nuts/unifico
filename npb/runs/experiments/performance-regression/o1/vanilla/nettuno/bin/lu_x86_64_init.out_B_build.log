@@ -107,6 +107,7 @@ Typical components:
  [LLC] lu_x86_64_init.o
  [LLC] pintgr_x86_64_init.o
  [LLC] read_input_x86_64_init.o
+ [OPT] rhs_opt.ll
  [LLC] setbv_x86_64_init.o
  [LLC] setcoeff_x86_64_init.o
  [LLC] setiv_x86_64_init.o
@@ -117,7 +118,6 @@ Typical components:
  [LLC] c_print_results_x86_64_init.o
  [LLC] wtime_x86_64_init.o
  [LLC] erhs_x86_64_init.o
- [OPT] rhs_opt.ll
  [LLC] rhs_x86_64_init.o
  [LD] lu_x86_64_init.out
 rm jacld_opt.ll rhs_opt.ll error_opt.ll wtime_opt.ll erhs_opt.ll print_results_opt.ll domain_opt.ll c_print_results_opt.ll pintgr_opt.ll setbv_opt.ll setcoeff_opt.ll l2norm_opt.ll c_timers_opt.ll randdp_opt.ll setiv_opt.ll ssor_opt.ll jacu_opt.ll exact_opt.ll buts_opt.ll read_input_opt.ll verify_opt.ll blts_opt.ll

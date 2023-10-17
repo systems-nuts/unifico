@@ -97,12 +97,12 @@ Typical components:
  [LLC] exact_rhs_x86_64_init.o
  [OPT] rhs_opt.ll
  [LLC] solve_subs_x86_64_init.o
- [OPT] y_solve_opt.ll
  [OPT] x_solve_opt.ll
+ [OPT] y_solve_opt.ll
  [OPT] z_solve_opt.ll
  [LLC] rhs_x86_64_init.o
- [LLC] y_solve_x86_64_init.o
  [LLC] x_solve_x86_64_init.o
+ [LLC] y_solve_x86_64_init.o
  [LLC] z_solve_x86_64_init.o
  [LD] bt_x86_64_init.out
 rm y_solve_opt.ll rhs_opt.ll exact_solution_opt.ll error_opt.ll set_constants_opt.ll x_solve_opt.ll wtime_opt.ll print_results_opt.ll c_print_results_opt.ll c_timers_opt.ll adi_opt.ll add_opt.ll exact_rhs_opt.ll initialize_opt.ll solve_subs_opt.ll z_solve_opt.ll verify_opt.ll

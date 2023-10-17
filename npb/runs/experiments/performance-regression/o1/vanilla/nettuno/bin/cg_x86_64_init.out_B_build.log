@@ -59,8 +59,8 @@ Typical components:
  [OPT] wtime_opt.ll
  [OPT] c_timers_opt.ll
  [OPT] c_print_results_opt.ll
- [OPT] print_results_opt.ll
  [OPT] randdp_opt.ll
+ [OPT] print_results_opt.ll
  [LLC] wtime_x86_64_init.o
  [LLC] c_timers_x86_64_init.o
  [LLC] c_print_results_x86_64_init.o
