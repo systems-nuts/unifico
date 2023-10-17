@@ -99,7 +99,11 @@ $(info {)
 $(info "LLVM VERSION": "$(shell ${CC} --version)")
 $(info "LLVM BIN DIR": "$(shell ${LLVM_CONFIG} --bindir)")
 $(info "LLVM LIB DIR": "$(shell ${LLVM_CONFIG} --libdir)")
+
+ifndef UNMODIFIED_LLVM
 $(info "LLVM UNIFICO FLAGS": "$(shell ${LLVM_CONFIG} --unifico-flags)")
+endif
+
 $(info "CFLAGS": "${CFLAGS}",)
 $(info "OPT_FLAGS": "${OPT_FLAGS}",)
 $(info "LLC_FLAGS": "${LLC_FLAGS}",)
