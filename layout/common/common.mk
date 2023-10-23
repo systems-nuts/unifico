@@ -459,6 +459,10 @@ before_after_pass_%: %_cs_align.json %_opt.ll %_aarch64.o
 	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -print-before=$(PASS) --filter-print-funcs=$(FUNC) 2>$(ARM64_BUILD)/$*_before_$(PASS).txt
 	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -print-after=$(PASS) --filter-print-funcs=$(FUNC) 2>$(ARM64_BUILD)/$*_after_$(PASS).txt
 
+after_all_%: %_cs_align.json %_opt.ll %_aarch64.o
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -print-after-all --filter-print-funcs=$(FUNC) 2>$(X86_64_BUILD)/$*_all.txt
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -print-after-all --filter-print-funcs=$(FUNC) 2>$(ARM64_BUILD)/$*_all.txt
+
 init_before_after_pass_%: %_opt.ll
 	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -o temp.o $< -print-before=$(PASS) 2>$(X86_64_BUILD)/$*_before_$(PASS).txt
 	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -o temp.o $< -print-after=$(PASS) 2>$(X86_64_BUILD)/$*_after_$(PASS).txt
