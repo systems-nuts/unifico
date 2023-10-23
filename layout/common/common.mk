@@ -43,6 +43,8 @@ ifdef NO_SM_WARN
   override LLC_FLAGS += -no-sm-warn
 endif
 
+# Show rich assembly output, with jump arrows (only in x86 currently).
+# Supress by setting OBJDUMP_FLAGS with the empty string.
 OBJDUMP_FLAGS ?= --visualize-jumps
 
 #######################
