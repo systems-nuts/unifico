@@ -188,6 +188,8 @@ class NPBRunner:
             result = subprocess.run(
                 " ".join(sargs), shell=True, stderr=STDOUT, stdout=output
             )
+            if f != "":
+                output.close()
             if result.returncode != 0:
                 print(f"Error: Command failed: {' '.join(sargs)}")
                 if f != "":
