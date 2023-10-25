@@ -7,13 +7,13 @@ TEST_SUITE += ep-main-1 zero-constant-reuse ep-main-3 ep-main
 TEST_SUITE += ft-verify ft-comp-init ft-fft3d-2 ft-fft3d-3 ft-appft-1 ft-appft-2
 TEST_SUITE += exit dec-to-lea-32 y-solve cmp-vs-subs pack-indexes twoaddr-madd movsx-64bit-src remat-ldr-loadui mov-imm8-to-mem select-two-addr
 
-TEST_SUITE_XFAIL := mg-interp-umaddl
+TEST_SUITE_XFAIL := mg-interp-umaddl fabs
 
 TEST_SUITE_O1 := call-leaf factorial long-int-slot fp-args fp-spill-weight int-loop
 TEST_SUITE_O1 += many-add-mul read-write-global-array
 TEST_SUITE_O1 += csr-example lsr-simple global-const global-fp-mul fp-loop-simple fp-loop regalloc-complex-split
 TEST_SUITE_O1 += char-arg c-print-results-1 c-print-results-call is-1 is-2 is-3 is-4 is-5 is-6 select-to-fsetcc
-TEST_SUITE_O1 += cg-main-1 cg-main-2 cg-main-3 cg-main-4 cg-main-5
+TEST_SUITE_O1 += cg-main-1 cg-main-2 cg-main-3 cg-main-4 cg-main-5 fabs
 TEST_SUITE_O1 += dec-to-lea-32 cmp-vs-subs pack-indexes twoaddr-madd movsx-64bit-src remat-ldr-loadui mov-imm8-to-mem select-two-addr
 
 .PHONY: clean
