@@ -9,7 +9,8 @@
             "#7fcdbb",
             "#75a7cd",
             "#e0edf2"
-        ]
+        ],
+        "title": "AArch64"
     },
     "bar": {
         "width": 0.85
@@ -17,7 +18,7 @@
     "axis": {
         "grid": "y",
         "xlabel": "",
-        "ylabel": "Overhead ($\\times$)",
+        "ylabel": "Overhead ($\\%$)",
         "yscale": "linear",
         "ylim": [
             0.5,
@@ -29,9 +30,11 @@
         "yticks": {
             "values": [
                 0,
-                0.75,
-                1,
-                1.25
+                5,
+                10,
+                15,
+                20,
+                25
             ]
         }
     },

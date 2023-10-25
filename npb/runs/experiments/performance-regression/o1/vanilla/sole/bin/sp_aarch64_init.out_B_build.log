@@ -56,8 +56,8 @@ Typical components:
  [IR] error.ll
  [IR] exact_rhs.ll
  [IR] c_timers.ll
- [IR] print_results.ll
  [IR] exact_solution.ll
+ [IR] print_results.ll
  [IR] initialize.ll
  [IR] ninvr.ll
  [IR] pinvr.ll
@@ -110,8 +110,8 @@ Typical components:
  [LLC] randdp_aarch64_init.o
  [LLC] c_print_results_aarch64_init.o
  [LLC] wtime_aarch64_init.o
- [OPT] rhs_opt.ll
  [LLC] exact_rhs_aarch64_init.o
+ [OPT] rhs_opt.ll
  [LLC] x_solve_aarch64_init.o
  [LLC] y_solve_aarch64_init.o
  [LLC] z_solve_aarch64_init.o
