@@ -4,6 +4,7 @@
 experiment=$1
 baseline=$2
 class=$3
+skip_baseline=$4
 
 # Setup
 echo "====================[ Setting up the experiment ]===================="
@@ -16,15 +17,17 @@ do
   sudo bash -c "echo performance >$i"
 done
 
-# Baseline experiment
-echo "====================[ Running the baseline experiment ]===================="
-npb \
-    --config configs/performance-regression/o1/${baseline}/nettuno/build_run_x86.json \
-    --dest experiments/performance-regression/o1/${baseline}/nettuno \
-    --npb-class ${class} \
-    --build \
-    --run \
-    --post-process || exit 1
+if [ -z ${skip_baseline} ]; then
+  # Baseline experiment
+  echo "====================[ Running the baseline experiment ]===================="
+  npb \
+      --config configs/performance-regression/o1/${baseline}/nettuno/build_run_x86.json \
+      --dest experiments/performance-regression/o1/${baseline}/nettuno \
+      --npb-class ${class} \
+      --build \
+      --run \
+      --post-process || exit 1
+fi
 
 # Regression experiment
 echo "====================[ Running the regression experiment ]===================="
