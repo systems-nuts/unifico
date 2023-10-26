@@ -1,6 +1,6 @@
 BIN := main
 
-SRC := main.c c_timers.c print_results.c randdp.c c_print_results.c wtime.c
+SRC := main.c c_timers.c randdp.c wtime.c
 
 INC_DIR := ../common/
 

@@ -4,7 +4,6 @@
 #include <stdlib.h>
 
 #include "globals.h"
-#include "print_results.h"
 #include "randdp.h"
 #include "timers.h"
 
