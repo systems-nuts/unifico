@@ -87,7 +87,7 @@ override LLC_FLAGS_ARM64 += -mattr=-disable-hoist-in-lowering
 override LLC_FLAGS_X86   += -mattr=+aarch64-constant-cost-model -x86-enable-simplify-cfg
 
 # Other optimizations
-override LLC_FLAGS_ARM64 += -mattr=-avoid-f128,+x86-fabs-fneg
+override LLC_FLAGS_ARM64 += -mattr=-avoid-f128,+x86-fabs-fneg,+x86-select
 override LLC_FLAGS_X86   += -mattr=+force-vector-mem-op,+avoid-opt-mul-1,+avoid-select-to-fsetcc -no-x86-call-frame-opt -disable-x86-frame-obj-order -enable-lea32 -mul-constant-optimization=false
 
 endif # EXPERIMENT_MODE
