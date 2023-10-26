@@ -71,7 +71,7 @@ override LLC_FLAGS       += -aarch64-csr-alignment=8 -align-bytes-to-four -reg-s
 override LLC_FLAGS       += -enable-misched=false
 
 # Addressing modes
-override LLC_FLAGS_X86   += -mattr=+simple-reg-offset-addr
+override LLC_FLAGS_X86   += -mattr=+simple-reg-offset-addr,+aarch64-legal-addr
 
 # Immediate Encoding
 override LLC_FLAGS_ARM64 += -mattr=+disable-fp-imm-materialize
