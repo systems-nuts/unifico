@@ -11,13 +11,14 @@ include $(DEFS_MKFILE)
 
 SSHPASS_IGNORE ?= @- # silent and ignored by default - override with DEFS_MAKEFILE
 QUIET = @
+CCACHE ?= ccache
 
 ###############################################################################
 # LLVM Tools and Flags
 ###############################################################################
-CC		:= $(LLVM_TOOLCHAIN)/clang
-OPT		:= $(LLVM_TOOLCHAIN)/opt
-LLC		:= $(LLVM_TOOLCHAIN)/llc
+CC		:= $(CCACHE) $(LLVM_TOOLCHAIN)/clang
+OPT		:= $(CCACHE) $(LLVM_TOOLCHAIN)/opt
+LLC		:= $(CCACHE) $(LLVM_TOOLCHAIN)/llc
 LLVM_CONFIG	:= $(LLVM_TOOLCHAIN)/llvm-config
 OBJDUMP	:= $(LLVM_TOOLCHAIN)/llvm-objdump
 ARM64_OBJDUMP := $(OBJDUMP)
