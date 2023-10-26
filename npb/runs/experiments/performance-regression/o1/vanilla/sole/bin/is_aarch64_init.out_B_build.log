@@ -18,8 +18,8 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/is'
  [OPT] c_print_results_opt.ll
  [LLC] wtime_aarch64_init.o
  [LLC] c_timers_aarch64_init.o
- [LLC] c_print_results_aarch64_init.o
  [OPT] is_opt.ll
+ [LLC] c_print_results_aarch64_init.o
  [LLC] is_aarch64_init.o
  [LD] is_aarch64_init.out
 rm wtime_opt.ll c_print_results_opt.ll c_timers_opt.ll
