@@ -1,18 +1,21 @@
 #!/bin/bash
 
 experiment=$1
+skip_arm=$2
 
 # Setup
 echo "====================[ Setting up the experiment ]===================="
 source ../../venv/bin/activate || exit 1
 
 # Build arm
-echo "====================[ Building the arm test experiment ]===================="
-npb \
-    --config configs/performance-regression/o1/${experiment}/nettuno/build_arm.json \
-    --dest experiments/performance-regression/o1/${experiment}/sole \
-    --npb-class S \
-    --build || exit 1
+if [ -z ${skip_arm} ]; then
+  echo "====================[ Building the arm test experiment ]===================="
+  npb \
+      --config configs/performance-regression/o1/${experiment}/nettuno/build_arm.json \
+      --dest experiments/performance-regression/o1/${experiment}/sole \
+      --npb-class S \
+      --build || exit 1
+fi
 
 # Regression experiment
 echo "====================[ Running the test experiment ]===================="
