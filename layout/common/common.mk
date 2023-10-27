@@ -89,7 +89,7 @@ override LLC_FLAGS_X86   += -mattr=+aarch64-constant-cost-model -x86-enable-simp
 
 # Other optimizations
 override LLC_FLAGS_ARM64 += -mattr=-avoid-f128,+x86-fabs-fneg,+x86-select
-override LLC_FLAGS_X86   += -mattr=+force-vector-mem-op,+avoid-opt-mul-1,+avoid-select-to-fsetcc -no-x86-call-frame-opt -disable-x86-frame-obj-order -enable-lea32 -mul-constant-optimization=false
+override LLC_FLAGS_X86   += -mattr=+force-vector-mem-op,+avoid-opt-mul-1,+avoid-select-to-fsetcc -no-x86-call-frame-opt -disable-x86-frame-obj-order -enable-lea32 -mul-constant-optimization=false -aarch64-fcmp-cost
 
 endif # EXPERIMENT_MODE
 endif # UNMODIFIED_LLVM
