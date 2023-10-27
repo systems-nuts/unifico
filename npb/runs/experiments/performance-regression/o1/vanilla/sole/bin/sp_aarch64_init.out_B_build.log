@@ -9,8 +9,8 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/sp'
 "LLC_FLAGS_ARM64": "",
 "LLC_FLAGS_X86": ""
 }
- [IR] sp.ll
  [IR] add.ll
+ [IR] sp.ll
  [IR] adi.ll
  [IR] error.ll
  [IR] exact_rhs.ll
@@ -59,6 +59,7 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/sp'
  [LLC] initialize_aarch64_init.o
  [LLC] ninvr_aarch64_init.o
  [LLC] pinvr_aarch64_init.o
+ [OPT] rhs_opt.ll
  [LLC] set_constants_aarch64_init.o
  [LLC] txinvr_aarch64_init.o
  [LLC] tzetar_aarch64_init.o
@@ -70,11 +71,10 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/sp'
  [LLC] c_print_results_aarch64_init.o
  [LLC] wtime_aarch64_init.o
  [LLC] exact_rhs_aarch64_init.o
- [OPT] rhs_opt.ll
+ [LLC] rhs_aarch64_init.o
  [LLC] x_solve_aarch64_init.o
  [LLC] y_solve_aarch64_init.o
  [LLC] z_solve_aarch64_init.o
- [LLC] rhs_aarch64_init.o
  [LD] sp_aarch64_init.out
 rm y_solve_opt.ll rhs_opt.ll exact_solution_opt.ll error_opt.ll set_constants_opt.ll x_solve_opt.ll tzetar_opt.ll wtime_opt.ll print_results_opt.ll c_print_results_opt.ll ninvr_opt.ll pinvr_opt.ll c_timers_opt.ll adi_opt.ll randdp_opt.ll add_opt.ll exact_rhs_opt.ll initialize_opt.ll txinvr_opt.ll z_solve_opt.ll verify_opt.ll
 make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/sp'

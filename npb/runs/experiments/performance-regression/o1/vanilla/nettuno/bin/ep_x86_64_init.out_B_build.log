@@ -15,13 +15,13 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/ep'
  [IR] randdp.ll
  [IR] c_print_results.ll
  [IR] wtime.ll
- [OPT] wtime_opt.ll
- [OPT] c_timers_opt.ll
- [OPT] c_print_results_opt.ll
- [OPT] randdp_opt.ll
- [OPT] print_results_opt.ll
- [LLC] wtime_x86_64_init.o
  [OPT] ep_opt.ll
+ [OPT] c_timers_opt.ll
+ [OPT] print_results_opt.ll
+ [OPT] randdp_opt.ll
+ [OPT] c_print_results_opt.ll
+ [OPT] wtime_opt.ll
+ [LLC] wtime_x86_64_init.o
  [LLC] c_timers_x86_64_init.o
  [LLC] c_print_results_x86_64_init.o
  [LLC] randdp_x86_64_init.o

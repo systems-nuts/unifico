@@ -18,13 +18,13 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/cg'
  [OPT] wtime_opt.ll
  [OPT] c_timers_opt.ll
  [OPT] c_print_results_opt.ll
- [OPT] randdp_opt.ll
  [OPT] print_results_opt.ll
- [LLC] wtime_aarch64_init.o
+ [OPT] randdp_opt.ll
  [LLC] c_timers_aarch64_init.o
+ [LLC] wtime_aarch64_init.o
  [LLC] c_print_results_aarch64_init.o
- [LLC] randdp_aarch64_init.o
  [LLC] print_results_aarch64_init.o
+ [LLC] randdp_aarch64_init.o
  [OPT] cg_opt.ll
  [LLC] cg_aarch64_init.o
  [LD] cg_aarch64_init.out

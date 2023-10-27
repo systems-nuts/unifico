@@ -13,13 +13,13 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/is'
  [IR] c_timers.ll
  [IR] c_print_results.ll
  [IR] wtime.ll
- [OPT] wtime_opt.ll
  [OPT] c_timers_opt.ll
  [OPT] c_print_results_opt.ll
+ [OPT] is_opt.ll
+ [OPT] wtime_opt.ll
  [LLC] wtime_x86_64_init.o
  [LLC] c_timers_x86_64_init.o
  [LLC] c_print_results_x86_64_init.o
- [OPT] is_opt.ll
  [LLC] is_x86_64_init.o
  [LD] is_x86_64_init.out
 rm wtime_opt.ll c_print_results_opt.ll c_timers_opt.ll
