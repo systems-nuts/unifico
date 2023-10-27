@@ -19,7 +19,7 @@ PROJECT_DIR ?= ../..
 ifdef UNMODIFIED_MUSL
 MUSL_TOOLCHAIN ?= ~/musl-toolchains/unmodified
 else
-MUSL_TOOLCHAIN ?= ~/musl-toolchains/criu
+MUSL_TOOLCHAIN ?= ~/musl-toolchains/criu-3
 endif
 
 ARM64_MUSL	?= $(MUSL_TOOLCHAIN)/aarch64
