@@ -244,7 +244,7 @@ class NPBRunner:
                     build_dir=build_dir,
                     executable=executable,
                     dest_dir=self.bin_dir,
-                    output="",
+                    output=c.get("output", ""),
                 )
 
     def build(self):
