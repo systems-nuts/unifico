@@ -1,0 +1,32 @@
+make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/cg'
+{
+"LLVM VERSION": "clang version 9.0.1 (git@github.com:blackgeorge-boom/llvm-project.git faf5dbf23c358a06098838f33a23f8ccb66f82ff) Target: x86_64-unknown-linux-gnu Thread model: posix InstalledDir: /home/nikos/llvm-9.0.1/toolchain/bin"
+"LLVM BIN DIR": "/home/nikos/llvm-9.0.1/toolchain/bin"
+"LLVM LIB DIR": "/home/nikos/llvm-9.0.1/toolchain/lib"
+"CFLAGS": "-O0 -Wall -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer",
+"OPT_FLAGS": "",
+"LLC_FLAGS": "",
+"LLC_FLAGS_ARM64": "",
+"LLC_FLAGS_X86": ""
+}
+ [IR] cg.ll
+ [IR] c_timers.ll
+ [IR] print_results.ll
+ [IR] randdp.ll
+ [IR] c_print_results.ll
+ [IR] wtime.ll
+ [OPT] wtime_opt.ll
+ [OPT] c_timers_opt.ll
+ [OPT] c_print_results_opt.ll
+ [OPT] randdp_opt.ll
+ [OPT] print_results_opt.ll
+ [LLC] wtime_x86_64_init.o
+ [OPT] cg_opt.ll
+ [LLC] c_timers_x86_64_init.o
+ [LLC] c_print_results_x86_64_init.o
+ [LLC] randdp_x86_64_init.o
+ [LLC] print_results_x86_64_init.o
+ [LLC] cg_x86_64_init.o
+ [LD] cg_x86_64_init.out
+rm wtime_opt.ll print_results_opt.ll c_print_results_opt.ll c_timers_opt.ll randdp_opt.ll
+make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/cg'

@@ -1,0 +1,24 @@
+sp/sp_aarch64_init.out  :
+section                       size      addr
+.note.gnu.build-id              36   4194648
+.text                       105056   4194688
+.rodata                      12752   4299744
+.eh_frame                     2008   4312496
+.got                            64   4390824
+.got.plt                        24   4390888
+.data                          264   4390912
+.bss                     191744520   4391184
+.comment                       225         0
+.debug_str                    7462         0
+.debug_loc                   87976         0
+.debug_abbrev                17896         0
+.debug_info                  66071         0
+.debug_macinfo                  84         0
+.debug_frame                  5984         0
+.debug_line                  34681         0
+.debug_ranges                 6544         0
+.debug_aranges                  48         0
+.note.gnu.gold-version          28         0
+Total                    192091723
+
+

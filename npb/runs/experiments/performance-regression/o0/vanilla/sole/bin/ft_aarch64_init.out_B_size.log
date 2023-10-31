@@ -1,0 +1,24 @@
+ft/ft_aarch64_init.out  :
+section                        size      addr
+.note.gnu.build-id               36   4194648
+.text                         53856   4194688
+.rodata                       18872   4248544
+.eh_frame                      1216   4267416
+.got                             64   4390824
+.got.plt                         24   4390888
+.data                           264   4390912
+.bss                     1345343988   4391184
+.debug_str                     8137         0
+.debug_abbrev                 17694         0
+.debug_info                   62893         0
+.debug_macinfo                   90         0
+.comment                        225         0
+.debug_line                   35211         0
+.debug_loc                    71416         0
+.debug_frame                   5488         0
+.debug_ranges                  4912         0
+.debug_aranges                   48         0
+.note.gnu.gold-version           28         0
+Total                    1345624462
+
+

@@ -1,0 +1,68 @@
+make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/ua'
+{
+"LLVM VERSION": "clang version 9.0.1 (git@github.com:blackgeorge-boom/llvm-project.git cba12e0552706ae503d6b663fdb3ef4316dfb5f5) Target: x86_64-unknown-linux-gnu Thread model: posix InstalledDir: /home/nikos/llvm-9/toolchain/bin"
+"LLVM BIN DIR": "/home/nikos/llvm-9/toolchain/bin"
+"LLVM LIB DIR": "/home/nikos/llvm-9/toolchain/lib"
+"LLVM UNIFICO FLAGS": "-DUNIFICO_GPR_CALLING_CONV -DUNIFICO_FPR_CALLING_CONV -DUNIFICO_REGALLOC_RULES -DUNIFICO_REMAT_RULES -DUNIFICO_REG_COST -DUNIFICO_AARCH64_TWOADDR -DUNIFICO_INSTR_EXTENSION -DUNIFICO_CHEAP_MOVES -DUNIFICO_AARCH64_TWOADDR_FP"
+"CFLAGS": "-O0 -Wall -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mllvm -align-bytes-to-four",
+"OPT_FLAGS": "-name-string-literals -static-var-sections -live-values",
+"LLC_FLAGS": "-disable-block-align --mc-relax-all -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -align-objects-to-four -enable-misched=false -pack-indexes -function-sections -data-sections -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse --disable-debug-info-print",
+"LLC_FLAGS_ARM64": "-mattr=+disable-fp-imm-materialize,+avoid-wide-mul,+copy-zr-temp,-disable-hoist-in-lowering,-avoid-f128,+x86-fabs-fneg,+x86-select,+advanced-ra-split-cost",
+"LLC_FLAGS_X86": "-mattr=+simple-reg-offset-addr,+aarch64-legal-addr,-multiply-with-imm,+aarch64-sized-imm,-non-zero-imm-to-mem,+aarch64-constant-cost-model,+force-vector-mem-op,+avoid-opt-mul-1,+avoid-select-to-fsetcc,+aarch64-legal-addr -x86-enable-simplify-cfg -no-x86-call-frame-opt -disable-x86-frame-obj-order -enable-lea32 -mul-constant-optimization=false -disable-gr32temp-inflate -aarch64-fcmp-cost"
+}
+ [IR] ua.ll
+ [IR] adapt.ll
+ [IR] diffuse.ll
+ [IR] move.ll
+ [IR] setup.ll
+ [IR] c_timers.ll
+ [IR] print_results.ll
+ [IR] randdp.ll
+ [IR] c_print_results.ll
+ [IR] wtime.ll
+ [IR] verify.ll
+ [IR] convect.ll
+ [IR] mason.ll
+ [IR] precond.ll
+ [IR] transfer.ll
+ [IR] utils.ll
+ [OPT] diffuse_opt.ll
+ [OPT] move_opt.ll
+ [OPT] c_timers_opt.ll
+precond.c:757:9: warning: implicitly declaring library function 'printf' with type 'int (const char *, ...)' [-Wimplicit-function-declaration]
+        printf("Unreachable\n"); /* TODO temporary handling for Unifico */
+        ^
+precond.c:757:9: note: include the header <stdio.h> or explicitly provide a declaration for 'printf'
+1 warning generated.
+ [OPT] print_results_opt.ll
+ [OPT] randdp_opt.ll
+ [OPT] c_print_results_opt.ll
+ [OPT] wtime_opt.ll
+ [OPT] verify_opt.ll
+ [OPT] convect_opt.ll
+ [OPT] precond_opt.ll
+ [OPT] transfer_opt.ll
+ [OPT] ua_opt.ll
+ [OPT] adapt_opt.ll
+ [LLC] diffuse_x86_64_init.o
+ [LLC] move_x86_64_init.o
+ [OPT] setup_opt.ll
+ [LLC] c_timers_x86_64_init.o
+ [LLC] print_results_x86_64_init.o
+ [LLC] randdp_x86_64_init.o
+ [LLC] c_print_results_x86_64_init.o
+ [LLC] wtime_x86_64_init.o
+ [LLC] verify_x86_64_init.o
+ [LLC] convect_x86_64_init.o
+ [OPT] mason_opt.ll
+ [OPT] utils_opt.ll
+ [LLC] ua_x86_64_init.o
+ [LLC] precond_x86_64_init.o
+ [LLC] setup_x86_64_init.o
+ [LLC] transfer_x86_64_init.o
+ [LLC] utils_x86_64_init.o
+ [LLC] adapt_x86_64_init.o
+ [LLC] mason_x86_64_init.o
+ [LD] ua_x86_64_init.out
+rm wtime_opt.ll print_results_opt.ll setup_opt.ll c_print_results_opt.ll adapt_opt.ll precond_opt.ll mason_opt.ll convect_opt.ll c_timers_opt.ll randdp_opt.ll utils_opt.ll diffuse_opt.ll move_opt.ll transfer_opt.ll verify_opt.ll
+make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/ua'
