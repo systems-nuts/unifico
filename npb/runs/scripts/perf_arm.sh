@@ -11,6 +11,12 @@ echo "====================[ Setting up the experiment ]===================="
 source ../../venv/bin/activate || exit 1
 export NPB_PATH=/home/nikos/phd/unified_abi/layout/npb
 
+echo "====================[ Setting governor to \"performance\"]===================="
+for i in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+do
+  sudo bash -c "echo performance >$i"
+done
+
 # Baseline experiment
 if [ -z ${skip_baseline} ]; then
   echo "====================[ Running the baseline experiment ]===================="
@@ -40,3 +46,10 @@ npb \
     --dest experiments/performance-regression/o1/${experiment}/sole \
     --compare /home/nikos/phd/unified_abi/npb/runs/experiments/performance-regression/o1/${baseline}/sole/run \
     --npb-class ${class} || exit 1
+
+# Revert governor to "ondemand"
+echo "====================[ Reverting governor to \"ondemand\"]===================="
+for i in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+do
+  sudo bash -c "echo ondemand >$i"
+done
