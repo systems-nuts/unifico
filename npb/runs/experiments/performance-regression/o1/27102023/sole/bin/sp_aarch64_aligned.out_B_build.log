@@ -131,8 +131,8 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/sp'
  [CALLSITE ALIGN] rhs_cs_align.json
  [LLC WITH CALLSITE ALIGNMENT] set_constants_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] txinvr_aarch64.o
- [LLC WITH CALLSITE ALIGNMENT] verify_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] tzetar_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] verify_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] x_solve_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] y_solve_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] z_solve_aarch64.o
@@ -148,40 +148,40 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/sp'
  [CHECK CALLSITE ALIGNMENT] adi_x86_64.o adi_aarch64.o
  [CHECK CALLSITE ALIGNMENT] add_x86_64.o add_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] initialize_x86_64.o
- [CHECK CALLSITE ALIGNMENT] error_x86_64.o error_aarch64.o
  [CHECK CALLSITE ALIGNMENT] c_timers_x86_64.o c_timers_aarch64.o
- [LLC WITH CALLSITE ALIGNMENT] ninvr_x86_64.o
  [CHECK CALLSITE ALIGNMENT] print_results_x86_64.o print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] ninvr_x86_64.o
  [CHECK CALLSITE ALIGNMENT] exact_solution_x86_64.o exact_solution_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] error_x86_64.o error_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] pinvr_x86_64.o
  [LLC WITH CALLSITE ALIGNMENT] set_constants_x86_64.o
  [LLC WITH CALLSITE ALIGNMENT] txinvr_x86_64.o
  [LLC WITH CALLSITE ALIGNMENT] tzetar_x86_64.o
- [LLC WITH CALLSITE ALIGNMENT] verify_x86_64.o
  [CHECK CALLSITE ALIGNMENT] ninvr_x86_64.o ninvr_aarch64.o
  [CHECK CALLSITE ALIGNMENT] pinvr_x86_64.o pinvr_aarch64.o
- [LLC WITH CALLSITE ALIGNMENT] y_solve_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] verify_x86_64.o
  [LLC WITH CALLSITE ALIGNMENT] randdp_x86_64.o
  [LLC WITH CALLSITE ALIGNMENT] c_print_results_x86_64.o
- [CHECK CALLSITE ALIGNMENT] set_constants_x86_64.o set_constants_aarch64.o
- [LLC WITH CALLSITE ALIGNMENT] wtime_x86_64.o
- [CHECK CALLSITE ALIGNMENT] tzetar_x86_64.o tzetar_aarch64.o
  [CHECK CALLSITE ALIGNMENT] txinvr_x86_64.o txinvr_aarch64.o
- [CHECK CALLSITE ALIGNMENT] initialize_x86_64.o initialize_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] tzetar_x86_64.o tzetar_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] wtime_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] set_constants_x86_64.o set_constants_aarch64.o
  [CALLSITE ALIGN] sp_cs_align.json
- [CHECK CALLSITE ALIGNMENT] randdp_x86_64.o randdp_aarch64.o
- [CHECK CALLSITE ALIGNMENT] c_print_results_x86_64.o c_print_results_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] rhs_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] initialize_x86_64.o initialize_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] exact_rhs_x86_64.o
  [LLC WITH CALLSITE ALIGNMENT] x_solve_x86_64.o
- [CHECK CALLSITE ALIGNMENT] verify_x86_64.o verify_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] randdp_x86_64.o randdp_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] c_print_results_x86_64.o c_print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] y_solve_x86_64.o
  [CHECK CALLSITE ALIGNMENT] wtime_x86_64.o wtime_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] z_solve_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] verify_x86_64.o verify_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] sp_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] sp_x86_64.o
- [CHECK CALLSITE ALIGNMENT] y_solve_x86_64.o y_solve_aarch64.o
- [CHECK CALLSITE ALIGNMENT] sp_x86_64.o sp_aarch64.o
  [CHECK CALLSITE ALIGNMENT] x_solve_x86_64.o x_solve_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] sp_x86_64.o sp_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] y_solve_x86_64.o y_solve_aarch64.o
  [CHECK CALLSITE ALIGNMENT] exact_rhs_x86_64.o exact_rhs_aarch64.o
  [CHECK CALLSITE ALIGNMENT] z_solve_x86_64.o z_solve_aarch64.o
  [LD] sp_aarch64_unaligned.out

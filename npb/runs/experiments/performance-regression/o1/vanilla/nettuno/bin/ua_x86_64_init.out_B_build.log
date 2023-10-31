@@ -11,8 +11,8 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/ua'
 }
  [IR] ua.ll
  [IR] adapt.ll
- [IR] move.ll
  [IR] diffuse.ll
+ [IR] move.ll
  [IR] setup.ll
  [IR] c_timers.ll
  [IR] print_results.ll

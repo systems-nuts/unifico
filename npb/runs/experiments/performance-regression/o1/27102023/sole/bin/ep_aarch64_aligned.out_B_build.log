@@ -16,46 +16,46 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/ep'
  [IR] randdp.ll
  [IR] c_print_results.ll
  [IR] wtime.ll
+ [OPT] ep_opt.ll
  [OPT] c_timers_opt.ll
  [OPT] print_results_opt.ll
  [OPT] randdp_opt.ll
  [OPT] c_print_results_opt.ll
  [OPT] wtime_opt.ll
- [OPT] ep_opt.ll
  [LLC] wtime_x86_64_init.o
  [LLC] wtime_aarch64_init.o
  [LLC] c_timers_x86_64_init.o
  [LLC] c_timers_aarch64_init.o
- [LLC] print_results_x86_64_init.o
- [LLC] print_results_aarch64_init.o
  [LLC] randdp_x86_64_init.o
  [LLC] randdp_aarch64_init.o
  [LLC] c_print_results_x86_64_init.o
  [LLC] c_print_results_aarch64_init.o
+ [LLC] ep_aarch64_init.o
+ [LLC] ep_x86_64_init.o
+ [LLC] print_results_x86_64_init.o
+ [LLC] print_results_aarch64_init.o
  [CALLSITE ALIGN] wtime_cs_align.json
  [CALLSITE ALIGN] c_timers_cs_align.json
- [CALLSITE ALIGN] print_results_cs_align.json
  [CALLSITE ALIGN] randdp_cs_align.json
  [CALLSITE ALIGN] c_print_results_cs_align.json
- [LLC] ep_x86_64_init.o
- [LLC] ep_aarch64_init.o
+ [CALLSITE ALIGN] print_results_cs_align.json
+ [CALLSITE ALIGN] ep_cs_align.json
  [LLC WITH CALLSITE ALIGNMENT] wtime_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] c_timers_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] randdp_aarch64.o
- [LLC WITH CALLSITE ALIGNMENT] print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_print_results_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] wtime_x86_64.o
  [LLC WITH CALLSITE ALIGNMENT] c_timers_x86_64.o
- [LLC WITH CALLSITE ALIGNMENT] c_print_results_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] randdp_x86_64.o
- [LLC WITH CALLSITE ALIGNMENT] print_results_x86_64.o
- [CALLSITE ALIGN] ep_cs_align.json
- [CHECK CALLSITE ALIGNMENT] wtime_x86_64.o wtime_aarch64.o
- [CHECK CALLSITE ALIGNMENT] c_timers_x86_64.o c_timers_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] print_results_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] c_print_results_x86_64.o
- [CHECK CALLSITE ALIGNMENT] randdp_x86_64.o randdp_aarch64.o
- [CHECK CALLSITE ALIGNMENT] print_results_x86_64.o print_results_aarch64.o
- [CHECK CALLSITE ALIGNMENT] c_print_results_x86_64.o c_print_results_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] wtime_x86_64.o wtime_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] ep_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] c_timers_x86_64.o c_timers_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] randdp_x86_64.o randdp_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] print_results_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] c_print_results_x86_64.o c_print_results_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] print_results_x86_64.o print_results_aarch64.o
  [LD] ep_aarch64_unaligned.out
  [LLC WITH CALLSITE ALIGNMENT] ep_x86_64.o
  [CHECK CALLSITE ALIGNMENT] ep_x86_64.o ep_aarch64.o

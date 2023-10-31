@@ -30,10 +30,10 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/ft'
  [OPT] randdp_opt.ll
  [OPT] c_print_results_opt.ll
  [OPT] wtime_opt.ll
- [LLC] mainft_x86_64_init.o
- [LLC] mainft_aarch64_init.o
  [LLC] c_timers_x86_64_init.o
  [LLC] c_timers_aarch64_init.o
+ [LLC] mainft_x86_64_init.o
+ [LLC] mainft_aarch64_init.o
  [LLC] randdp_x86_64_init.o
  [LLC] randdp_aarch64_init.o
  [LLC] c_print_results_x86_64_init.o
@@ -58,33 +58,33 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/ft'
  [CALLSITE ALIGN] appft_cs_align.json
  [CALLSITE ALIGN] auxfnct_cs_align.json
  [LLC WITH CALLSITE ALIGNMENT] mainft_aarch64.o
- [CALLSITE ALIGN] verify_cs_align.json
  [LLC WITH CALLSITE ALIGNMENT] c_timers_aarch64.o
+ [CALLSITE ALIGN] verify_cs_align.json
  [CALLSITE ALIGN] print_results_cs_align.json
  [LLC WITH CALLSITE ALIGNMENT] mainft_x86_64.o
- [LLC WITH CALLSITE ALIGNMENT] randdp_aarch64.o
- [LLC WITH CALLSITE ALIGNMENT] wtime_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] c_timers_x86_64.o
- [CALLSITE ALIGN] fft3d_cs_align.json
  [LLC WITH CALLSITE ALIGNMENT] c_print_results_aarch64.o
- [LLC WITH CALLSITE ALIGNMENT] appft_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] wtime_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] randdp_aarch64.o
+ [CALLSITE ALIGN] fft3d_cs_align.json
  [LLC WITH CALLSITE ALIGNMENT] auxfnct_aarch64.o
- [LLC WITH CALLSITE ALIGNMENT] wtime_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] appft_aarch64.o
  [CHECK CALLSITE ALIGNMENT] mainft_x86_64.o mainft_aarch64.o
- [LLC WITH CALLSITE ALIGNMENT] randdp_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] wtime_x86_64.o
  [CHECK CALLSITE ALIGNMENT] c_timers_x86_64.o c_timers_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] c_print_results_x86_64.o
  [LLC WITH CALLSITE ALIGNMENT] verify_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] randdp_x86_64.o
  [LLC WITH CALLSITE ALIGNMENT] print_results_aarch64.o
  [CHECK CALLSITE ALIGNMENT] wtime_x86_64.o wtime_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] appft_x86_64.o
- [CHECK CALLSITE ALIGNMENT] randdp_x86_64.o randdp_aarch64.o
- [LLC WITH CALLSITE ALIGNMENT] fft3d_aarch64.o
  [CHECK CALLSITE ALIGNMENT] c_print_results_x86_64.o c_print_results_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] auxfnct_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] randdp_x86_64.o randdp_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] fft3d_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] print_results_x86_64.o
- [LLC WITH CALLSITE ALIGNMENT] verify_x86_64.o
  [CHECK CALLSITE ALIGNMENT] print_results_x86_64.o print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] verify_x86_64.o
  [CHECK CALLSITE ALIGNMENT] appft_x86_64.o appft_aarch64.o
  [CHECK CALLSITE ALIGNMENT] auxfnct_x86_64.o auxfnct_aarch64.o
  [CHECK CALLSITE ALIGNMENT] verify_x86_64.o verify_aarch64.o
