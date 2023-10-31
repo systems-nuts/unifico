@@ -1,0 +1,29 @@
+ft/ft_aarch64_aligned.out  :
+section                                                size         addr
+.text                                                 56160      5242880
+.rodata                                               23181      6291456
+.rodata.cst8                                            400      6314640
+.rodata.___src_stdio_vfprintf_c_xdigits                  16      6315040
+.rodata.___src_errno_strerror_c_errid                    89      6315056
+.rodata.___src_math___rem_pio2_large_c_init_jk           16      6315148
+.eh_frame                                               920      6315168
+.data                                                  4360      7340032
+.bss                                             1345347952      8388608
+.tdata                                                 4096   1354760192
+.tbss                                                  4096   1355808768
+.got                                                     64   1355812864
+.got.plt                                                 24   1355812928
+.comment                                                225            0
+.debug_str                                             7247            0
+.debug_loc                                            76955            0
+.debug_abbrev                                         16133            0
+.debug_info                                           59936            0
+.debug_ranges                                          5200            0
+.debug_macinfo                                           78            0
+.debug_frame                                           5112            0
+.debug_line                                           30192            0
+.debug_aranges                                           48            0
+.note.gnu.gold-version                                   28            0
+Total                                            1345642528
+
+

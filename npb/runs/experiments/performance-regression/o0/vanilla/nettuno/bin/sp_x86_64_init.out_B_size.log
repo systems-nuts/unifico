@@ -1,0 +1,22 @@
+sp/sp_x86_64_init.out  :
+section                       size      addr
+.note.gnu.build-id              36   4194592
+.text                        93309   4194640
+.rodata                      13932   4287952
+.eh_frame                     1056   4301888
+.data                          264   4304896
+.bss                     191744520   4305168
+.comment                       225         0
+.debug_str                    7234         0
+.debug_loc                   71849         0
+.debug_abbrev                17503         0
+.debug_info                  61051         0
+.debug_macinfo                  79         0
+.debug_frame                  6616         0
+.debug_line                  34458         0
+.debug_ranges                 5456         0
+.debug_aranges                 288         0
+.note.gnu.gold-version          28         0
+Total                    192057904
+
+

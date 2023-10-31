@@ -1,0 +1,22 @@
+ua/ua_x86_64_init.out  :
+section                       size      addr
+.note.gnu.build-id              36   4194592
+.text                       128557   4194640
+.rodata                      22780   4323200
+.eh_frame                     2656   4345984
+.data                          504   4349952
+.bss                     133717316   4350464
+.comment                       225         0
+.debug_str                    8161         0
+.debug_loc                   79862         0
+.debug_abbrev                20764         0
+.debug_info                  68962         0
+.debug_macinfo                  95         0
+.debug_frame                  7504         0
+.debug_line                  40014         0
+.debug_ranges                 5664         0
+.debug_aranges                 288         0
+.note.gnu.gold-version          28         0
+Total                    134103416
+
+

@@ -1,0 +1,30 @@
+mg/mg_aarch64_aligned.out  :
+section                                                  size        addr
+.text                                                   82496     5242880
+.rodata                                                 17692     6291456
+.rodata.cst8                                              160     6309152
+.rodata.cst16                                             256     6309312
+.rodata.___src_stdio_vfprintf_c_xdigits                    16     6309568
+.rodata.___src_errno_strerror_c_errid                      89     6309584
+.rodata.___src_internal_floatscan_c_decfloat_p10s          32     6309676
+.eh_frame                                                1456     6309712
+.data                                                    4360     7340032
+.bss                                                472916368     8388608
+.tdata                                                   4096   482344960
+.tbss                                                    4096   483393536
+.got                                                       64   483397632
+.got.plt                                                   24   483397696
+.comment                                                  225           0
+.debug_str                                               7643           0
+.debug_loc                                              93818           0
+.debug_abbrev                                           18168           0
+.debug_info                                             68889           0
+.debug_ranges                                            6768           0
+.debug_macinfo                                             83           0
+.debug_frame                                             5608           0
+.debug_line                                             36161           0
+.debug_aranges                                             48           0
+.note.gnu.gold-version                                     28           0
+Total                                               473268644
+
+

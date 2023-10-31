@@ -1,0 +1,30 @@
+bt/bt_aarch64_aligned.out  :
+section                                                  size        addr
+.text                                                  117472     5242880
+.rodata                                                 11436     6291456
+.rodata.cst8                                              224     6302896
+.rodata.___src_stdio_vfprintf_c_xdigits                    16     6303120
+.rodata.___src_errno_strerror_c_errid                      89     6303136
+.rodata.cst16                                             208     6303232
+.rodata.___src_internal_floatscan_c_decfloat_p10s          32     6303440
+.eh_frame                                                1608     6303472
+.data                                                    4360     7340032
+.bss                                                181915696     8388608
+.tdata                                                   4096   190840832
+.tbss                                                    4096   191889408
+.got                                                       64   191893504
+.got.plt                                                   24   191893568
+.comment                                                  225           0
+.debug_str                                               7191           0
+.debug_loc                                              89138           0
+.debug_abbrev                                           17990           0
+.debug_info                                             68191           0
+.debug_ranges                                            6352           0
+.debug_macinfo                                             81           0
+.debug_frame                                             5632           0
+.debug_line                                             34973           0
+.debug_aranges                                             48           0
+.note.gnu.gold-version                                     28           0
+Total                                               182289270
+
+

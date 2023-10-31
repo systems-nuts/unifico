@@ -1,0 +1,22 @@
+mg/mg_x86_64_init.out  :
+section                       size      addr
+.note.gnu.build-id              36   4194592
+.text                        52557   4194640
+.rodata                       7564   4247200
+.eh_frame                     1096   4254768
+.data                          264   4259960
+.bss                     472912408   4260224
+.comment                       225         0
+.debug_str                    6761         0
+.debug_loc                   67454         0
+.debug_abbrev                17273         0
+.debug_info                  60311         0
+.debug_macinfo                  77         0
+.debug_frame                  6624         0
+.debug_line                  33299         0
+.debug_ranges                 5168         0
+.debug_aranges                 288         0
+.note.gnu.gold-version          28         0
+Total                    473171433
+
+

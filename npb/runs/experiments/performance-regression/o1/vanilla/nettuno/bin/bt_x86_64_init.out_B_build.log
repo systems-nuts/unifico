@@ -9,8 +9,8 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/bt'
 "LLC_FLAGS_ARM64": "",
 "LLC_FLAGS_X86": ""
 }
- [IR] bt.ll
  [IR] c_timers.ll
+ [IR] bt.ll
  [IR] c_print_results.ll
  [IR] wtime.ll
  [IR] add.ll

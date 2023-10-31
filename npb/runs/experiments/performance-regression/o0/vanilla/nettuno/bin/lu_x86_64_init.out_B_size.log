@@ -1,0 +1,22 @@
+lu/lu_x86_64_init.out  :
+section                       size      addr
+.note.gnu.build-id              36   4194592
+.text                        99277   4194640
+.rodata                      14652   4293920
+.eh_frame                      992   4308576
+.data                          264   4313664
+.bss                     155582220   4313936
+.comment                       225         0
+.debug_str                    7234         0
+.debug_loc                   71849         0
+.debug_abbrev                17503         0
+.debug_info                  61051         0
+.debug_macinfo                  79         0
+.debug_frame                  6616         0
+.debug_line                  34458         0
+.debug_ranges                 5456         0
+.debug_aranges                 288         0
+.note.gnu.gold-version          28         0
+Total                    155902228
+
+

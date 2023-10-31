@@ -1,0 +1,24 @@
+ua/ua_aarch64_init.out  :
+section                       size      addr
+.note.gnu.build-id              36   4194648
+.text                       129824   4194688
+.rodata                      14512   4324512
+.eh_frame                     3200   4339024
+.got                            64   4456360
+.got.plt                        24   4456424
+.data                          504   4456448
+.bss                     133717316   4456960
+.comment                       225         0
+.debug_str                    8160         0
+.debug_loc                   95719         0
+.debug_abbrev                20892         0
+.debug_info                  75504         0
+.debug_ranges                 6416         0
+.debug_macinfo                  97         0
+.debug_frame                  6440         0
+.debug_line                  39618         0
+.debug_aranges                  48         0
+.note.gnu.gold-version          28         0
+Total                    134118627
+
+

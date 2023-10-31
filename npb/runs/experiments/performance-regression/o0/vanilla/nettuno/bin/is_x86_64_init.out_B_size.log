@@ -1,0 +1,22 @@
+is/is_x86_64_init.out  :
+section                       size      addr
+.note.gnu.build-id              36   4194592
+.text                        24669   4194640
+.rodata                       4572   4219312
+.eh_frame                      424   4223888
+.data                          632   4228416
+.bss                     276836652   4229056
+.debug_str                    6494         0
+.debug_abbrev                12887         0
+.debug_info                  46296         0
+.debug_ranges                 3792         0
+.debug_macinfo                  58         0
+.comment                       225         0
+.debug_line                  24420         0
+.debug_loc                   45511         0
+.debug_frame                  4832         0
+.debug_aranges                 144         0
+.note.gnu.gold-version          28         0
+Total                    277011672
+
+

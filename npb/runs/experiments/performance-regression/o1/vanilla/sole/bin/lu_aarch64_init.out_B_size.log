@@ -1,0 +1,24 @@
+lu/lu_aarch64_init.out  :
+section                       size      addr
+.note.gnu.build-id              36   4194648
+.text                        93344   4194688
+.rodata                       7228   4288032
+.eh_frame                     2216   4295264
+.got                            64   4390824
+.got.plt                        24   4390888
+.data                          264   4390912
+.bss                     155582220   4391184
+.comment                       225         0
+.debug_str                    7015         0
+.debug_loc                   84918         0
+.debug_abbrev                17978         0
+.debug_info                  67028         0
+.debug_macinfo                  82         0
+.debug_frame                  6048         0
+.debug_line                  33805         0
+.debug_ranges                 6224         0
+.debug_aranges                  48         0
+.note.gnu.gold-version          28         0
+Total                    155908795
+
+
