@@ -237,24 +237,24 @@ json-aarch64: $(ARM64_JSON)
 stackmaps-dump-aarch64: $(ARM64_ALIGNED)
 	@echo " [STACKMAP DUMP] $^"
 	$(QUIET) { \
-		if [ -z ${FUNC} ] && [ -z ${TARGET_CALLSITE} ]; then \
+		if [ -z ${FUNC} ] && [ -z ${CALLSITE} ]; then \
 		$(STACKMAP_DUMP) -f $(ARM64_ALIGNED); \
-		elif [ -z ${TARGET_CALLSITE} ]; then \
+		elif [ -z ${CALLSITE} ]; then \
 		$(STACKMAP_DUMP) -f $(ARM64_ALIGNED) -n $(FUNC); \
 		else \
-		$(STACKMAP_DUMP) -f $(ARM64_ALIGNED) -n $(FUNC) -c $(TARGET_CALLSITE); \
+		$(STACKMAP_DUMP) -f $(ARM64_ALIGNED) -n $(FUNC) -c $(CALLSITE); \
 		fi \
 		}
 
 stackmaps-dump-x86-64: $(X86_64_ALIGNED)
 	@echo " [STACKMAP DUMP] $^"
 	$(QUIET) { \
-		if [ -z ${FUNC} ] && [ -z ${TARGET_CALLSITE} ]; then \
+		if [ -z ${FUNC} ] && [ -z ${CALLSITE} ]; then \
 		$(STACKMAP_DUMP) -f $(X86_64_ALIGNED); \
-		elif [ -z ${TARGET_CALLSITE} ]; then \
+		elif [ -z ${CALLSITE} ]; then \
 		$(STACKMAP_DUMP) -f $(X86_64_ALIGNED) -n $(FUNC); \
 		else \
-		$(STACKMAP_DUMP) -f $(X86_64_ALIGNED) -n $(FUNC) -c $(TARGET_CALLSITE); \
+		$(STACKMAP_DUMP) -f $(X86_64_ALIGNED) -n $(FUNC) -c $(CALLSITE); \
 		fi \
 		}
 
