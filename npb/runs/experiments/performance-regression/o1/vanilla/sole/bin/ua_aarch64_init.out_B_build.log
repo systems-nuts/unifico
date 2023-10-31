@@ -46,7 +46,7 @@ precond.c:757:9: note: include the header <stdio.h> or explicitly provide a decl
  [OPT] precond_opt.ll
  [OPT] transfer_opt.ll
  [OPT] utils_opt.ll
- [LLC] ua_aarch64_init.o
+ [LLC] diffuse_aarch64_init.o
  [LLC] move_aarch64_init.o
  [LLC] c_timers_aarch64_init.o
  [LLC] print_results_aarch64_init.o
@@ -56,8 +56,8 @@ precond.c:757:9: note: include the header <stdio.h> or explicitly provide a decl
  [LLC] verify_aarch64_init.o
  [LLC] convect_aarch64_init.o
  [LLC] utils_aarch64_init.o
+ [LLC] ua_aarch64_init.o
  [LLC] adapt_aarch64_init.o
- [LLC] diffuse_aarch64_init.o
  [LLC] setup_aarch64_init.o
  [LLC] precond_aarch64_init.o
  [LLC] transfer_aarch64_init.o
