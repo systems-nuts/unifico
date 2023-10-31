@@ -67,6 +67,16 @@
                     "${build_dir}/${executable}_${npb_class}_build.log",
                     "${dest_dir}"
                 ]
+            },
+            {
+                "before": false,
+                "args": [
+                    "size",
+                    "-A",
+                    "-d",
+                    "${build_dir}/${executable}"
+                ],
+                "output": "${dest_dir}/${executable}_${npb_class}_size.log"
             }
         ],
         "run": []
