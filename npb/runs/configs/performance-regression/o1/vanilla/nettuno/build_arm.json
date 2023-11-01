@@ -45,7 +45,8 @@
                     "-j10",
                     "${executable}",
                     "OPT_LEVEL=-O1",
-                    "UNMODIFIED=1"
+                    "UNMODIFIED=1",
+                    "DEBUG_ASM=1"
                 ],
                 "output": "${build_dir}/${executable}_${npb_class}_build.log"
             },

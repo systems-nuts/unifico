@@ -47,6 +47,7 @@
                     "OPT_LEVEL=-O1",
                     "NO_STACKMAPS=1",
                     "EXPERIMENT_MODE=1",
+                    "DEBUG_ASM=1",
                     "LLC_FLAGS=\"-disable-block-align --mc-relax-all -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -align-objects-to-four -enable-misched=false -pack-indexes\"",
                     "LLC_FLAGS_ARM64=\"-mattr=+disable-fp-imm-materialize,+avoid-wide-mul,+copy-zr-temp,-disable-hoist-in-lowering,-avoid-f128,+x86-fabs-fneg,+x86-select,+advanced-ra-split-cost\"",
                     "LLC_FLAGS_X86=\"-mattr=+simple-reg-offset-addr,+aarch64-legal-addr,-multiply-with-imm,+aarch64-sized-imm,-non-zero-imm-to-mem,+aarch64-constant-cost-model,+force-vector-mem-op,+avoid-opt-mul-1,+avoid-select-to-fsetcc,+aarch64-legal-addr -x86-enable-simplify-cfg -no-x86-call-frame-opt -disable-x86-frame-obj-order -enable-lea32 -mul-constant-optimization=false -disable-gr32temp-inflate -aarch64-fcmp-cost\""
