@@ -1,0 +1,28 @@
+cg/cg_aarch64_aligned.out  :
+section                                      size       addr
+.text                                       41760    5242880
+.rodata                                     16029    6291456
+.rodata.cst8                                  144    6307488
+.rodata.___src_stdio_vfprintf_c_xdigits        16    6307632
+.rodata.___src_errno_strerror_c_errid          89    6307648
+.eh_frame                                     736    6307744
+.data                                        4360    7340032
+.bss                                      1290752    8388608
+.tdata                                       4096   10485760
+.tbss                                        4096   11534336
+.got                                           64   11538432
+.got.plt                                       24   11538496
+.debug_str                                   7797          0
+.debug_loc                                  79903          0
+.debug_abbrev                               16555          0
+.debug_info                                 64478          0
+.debug_ranges                                5616          0
+.debug_macinfo                                 78          0
+.comment                                      225          0
+.debug_line                                 30841          0
+.debug_frame                                 4888          0
+.debug_aranges                                 48          0
+.note.gnu.gold-version                         28          0
+Total                                     1572623
+
+

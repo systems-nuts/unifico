@@ -10,8 +10,8 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/sp'
 "LLC_FLAGS_X86": ""
 }
  [IR] sp.ll
- [IR] add.ll
  [IR] adi.ll
+ [IR] add.ll
  [IR] error.ll
  [IR] exact_rhs.ll
  [IR] c_timers.ll

@@ -1,0 +1,24 @@
+ep/ep_aarch64_init.out  :
+section                     size      addr
+.note.gnu.build-id            36   4194648
+.text                      38480   4194688
+.rodata                     9113   4233168
+.eh_frame                    912   4242288
+.got                          64   4325288
+.got.plt                      24   4325352
+.data                        264   4325376
+.bss                     1052896   4325648
+.debug_str                  6888         0
+.debug_loc                 65494         0
+.debug_abbrev              15285         0
+.debug_info                55787         0
+.debug_macinfo                75         0
+.comment                     225         0
+.debug_line                26433         0
+.debug_frame                5000         0
+.debug_ranges               4496         0
+.debug_aranges                48         0
+.note.gnu.gold-version        28         0
+Total                    1281548
+
+

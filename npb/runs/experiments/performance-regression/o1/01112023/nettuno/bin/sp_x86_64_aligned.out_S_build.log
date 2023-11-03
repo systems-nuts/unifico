@@ -1,0 +1,194 @@
+make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/sp'
+{
+"LLVM VERSION": "clang version 9.0.1 (git@github.com:blackgeorge-boom/llvm-project.git f10292be0aa745b6c49cc30e7c1d10c2057bc364) Target: x86_64-unknown-linux-gnu Thread model: posix InstalledDir: /home/nikos/llvm-9/toolchain/bin"
+"LLVM BIN DIR": "/home/nikos/llvm-9/toolchain/bin"
+"LLVM LIB DIR": "/home/nikos/llvm-9/toolchain/lib"
+"LLVM UNIFICO FLAGS": "-DUNIFICO_GPR_CALLING_CONV -DUNIFICO_FPR_CALLING_CONV -DUNIFICO_REGALLOC_RULES -DUNIFICO_REMAT_RULES -DUNIFICO_REG_COST -DUNIFICO_AARCH64_TWOADDR -DUNIFICO_INSTR_EXTENSION -DUNIFICO_CHEAP_MOVES -DUNIFICO_AARCH64_TWOADDR_FP"
+"CFLAGS": "-O1 -Wall -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mllvm -align-bytes-to-four",
+"OPT_FLAGS": "-name-string-literals -static-var-sections -live-values",
+"LLC_FLAGS": "-disable-block-align --mc-relax-all -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -align-objects-to-four -enable-misched=false -pack-indexes -function-sections -data-sections -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse",
+"LLC_FLAGS_ARM64": "-mattr=+disable-fp-imm-materialize,+avoid-wide-mul,+copy-zr-temp,-disable-hoist-in-lowering,-avoid-f128,+x86-fabs-fneg,+x86-select,+advanced-ra-split-cost,-mov-64-imm32",
+"LLC_FLAGS_X86": "-mattr=+simple-reg-offset-addr,+aarch64-legal-addr,-multiply-with-imm,+aarch64-sized-imm,-non-zero-imm-to-mem,+aarch64-constant-cost-model,+force-vector-mem-op,+avoid-opt-mul-1,+avoid-select-to-fsetcc,+aarch64-legal-addr -x86-enable-simplify-cfg -no-x86-call-frame-opt -disable-x86-frame-obj-order -enable-lea32 -mul-constant-optimization=false -disable-gr32temp-inflate -aarch64-fcmp-cost"
+}
+ [IR] sp.ll
+ [IR] adi.ll
+ [IR] add.ll
+ [IR] error.ll
+ [IR] exact_rhs.ll
+ [IR] c_timers.ll
+ [IR] print_results.ll
+ [IR] exact_solution.ll
+ [IR] initialize.ll
+ [IR] ninvr.ll
+ [IR] pinvr.ll
+ [IR] rhs.ll
+ [IR] set_constants.ll
+ [IR] txinvr.ll
+ [IR] tzetar.ll
+ [IR] verify.ll
+ [IR] x_solve.ll
+ [IR] y_solve.ll
+ [IR] z_solve.ll
+ [IR] randdp.ll
+ [IR] c_print_results.ll
+ [IR] wtime.ll
+ [OPT] add_opt.ll
+ [OPT] adi_opt.ll
+ [OPT] error_opt.ll
+ [OPT] exact_rhs_opt.ll
+ [OPT] c_timers_opt.ll
+ [OPT] print_results_opt.ll
+ [OPT] exact_solution_opt.ll
+ [OPT] initialize_opt.ll
+ [OPT] ninvr_opt.ll
+ [OPT] pinvr_opt.ll
+ [OPT] rhs_opt.ll
+ [OPT] set_constants_opt.ll
+ [OPT] txinvr_opt.ll
+ [OPT] tzetar_opt.ll
+ [OPT] verify_opt.ll
+ [OPT] x_solve_opt.ll
+ [OPT] y_solve_opt.ll
+ [OPT] z_solve_opt.ll
+ [OPT] randdp_opt.ll
+ [OPT] c_print_results_opt.ll
+ [OPT] wtime_opt.ll
+ [OPT] sp_opt.ll
+ [LLC] add_x86_64_init.o
+ [LLC] add_aarch64_init.o
+ [LLC] adi_x86_64_init.o
+ [LLC] adi_aarch64_init.o
+ [LLC] error_x86_64_init.o
+ [LLC] error_aarch64_init.o
+ [LLC] exact_rhs_x86_64_init.o
+ [LLC] exact_rhs_aarch64_init.o
+ [LLC] c_timers_x86_64_init.o
+ [LLC] c_timers_aarch64_init.o
+ [LLC] print_results_x86_64_init.o
+ [LLC] print_results_aarch64_init.o
+ [LLC] exact_solution_x86_64_init.o
+ [LLC] exact_solution_aarch64_init.o
+ [LLC] initialize_x86_64_init.o
+ [LLC] initialize_aarch64_init.o
+ [LLC] ninvr_x86_64_init.o
+ [LLC] ninvr_aarch64_init.o
+ [LLC] pinvr_x86_64_init.o
+ [LLC] pinvr_aarch64_init.o
+ [LLC] rhs_x86_64_init.o
+ [LLC] rhs_aarch64_init.o
+ [LLC] set_constants_x86_64_init.o
+ [LLC] set_constants_aarch64_init.o
+ [LLC] txinvr_x86_64_init.o
+ [LLC] txinvr_aarch64_init.o
+ [LLC] tzetar_x86_64_init.o
+ [LLC] tzetar_aarch64_init.o
+ [LLC] verify_x86_64_init.o
+ [LLC] verify_aarch64_init.o
+ [LLC] x_solve_x86_64_init.o
+ [LLC] x_solve_aarch64_init.o
+ [LLC] y_solve_x86_64_init.o
+ [LLC] y_solve_aarch64_init.o
+ [LLC] z_solve_x86_64_init.o
+ [LLC] z_solve_aarch64_init.o
+ [LLC] randdp_x86_64_init.o
+ [LLC] randdp_aarch64_init.o
+ [LLC] c_print_results_x86_64_init.o
+ [LLC] c_print_results_aarch64_init.o
+ [LLC] wtime_x86_64_init.o
+ [LLC] wtime_aarch64_init.o
+ [CALLSITE ALIGN] add_cs_align.json
+ [CALLSITE ALIGN] adi_cs_align.json
+ [CALLSITE ALIGN] error_cs_align.json
+ [CALLSITE ALIGN] exact_rhs_cs_align.json
+ [CALLSITE ALIGN] c_timers_cs_align.json
+ [CALLSITE ALIGN] print_results_cs_align.json
+ [CALLSITE ALIGN] exact_solution_cs_align.json
+ [CALLSITE ALIGN] initialize_cs_align.json
+ [CALLSITE ALIGN] ninvr_cs_align.json
+ [CALLSITE ALIGN] pinvr_cs_align.json
+ [CALLSITE ALIGN] set_constants_cs_align.json
+ [CALLSITE ALIGN] txinvr_cs_align.json
+ [CALLSITE ALIGN] tzetar_cs_align.json
+ [CALLSITE ALIGN] verify_cs_align.json
+ [CALLSITE ALIGN] x_solve_cs_align.json
+ [CALLSITE ALIGN] y_solve_cs_align.json
+ [CALLSITE ALIGN] z_solve_cs_align.json
+ [CALLSITE ALIGN] randdp_cs_align.json
+ [CALLSITE ALIGN] c_print_results_cs_align.json
+ [CALLSITE ALIGN] wtime_cs_align.json
+ [LLC] sp_x86_64_init.o
+ [LLC] sp_aarch64_init.o
+ [LLC WITH CALLSITE ALIGNMENT] add_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] adi_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] error_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] exact_rhs_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_timers_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] exact_solution_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] initialize_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] ninvr_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] pinvr_aarch64.o
+ [CALLSITE ALIGN] rhs_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] set_constants_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] txinvr_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] tzetar_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] verify_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] x_solve_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] y_solve_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] z_solve_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] randdp_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] wtime_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] add_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] adi_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] error_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_timers_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] print_results_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] exact_solution_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] adi_x86_64.o adi_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] add_x86_64.o add_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] c_timers_x86_64.o c_timers_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] initialize_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] print_results_x86_64.o print_results_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] error_x86_64.o error_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] ninvr_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] exact_solution_x86_64.o exact_solution_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] pinvr_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] set_constants_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] txinvr_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] tzetar_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] ninvr_x86_64.o ninvr_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] pinvr_x86_64.o pinvr_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] verify_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] x_solve_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] y_solve_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] randdp_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_print_results_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] set_constants_x86_64.o set_constants_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] txinvr_x86_64.o txinvr_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] tzetar_x86_64.o tzetar_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] wtime_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] initialize_x86_64.o initialize_aarch64.o
+ [CALLSITE ALIGN] sp_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] rhs_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] randdp_x86_64.o randdp_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] c_print_results_x86_64.o c_print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] exact_rhs_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] verify_x86_64.o verify_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] z_solve_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] wtime_x86_64.o wtime_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] sp_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] sp_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] y_solve_x86_64.o y_solve_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] x_solve_x86_64.o x_solve_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] sp_x86_64.o sp_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] exact_rhs_x86_64.o exact_rhs_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] z_solve_x86_64.o z_solve_aarch64.o
+ [LD] sp_aarch64_unaligned.out
+ [LLC WITH CALLSITE ALIGNMENT] rhs_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] rhs_x86_64.o rhs_aarch64.o
+ [LD] sp_x86_64_unaligned.out
+ [ALIGN] build_x86-64/O1/aligned_linker_script_x86.x
+ [LD] sp_x86_64_aligned.out
+rm wtime_cs_align.json y_solve_opt.ll rhs_opt.ll exact_solution_opt.ll error_opt.ll set_constants_opt.ll txinvr_cs_align.json x_solve_opt.ll c_timers_cs_align.json tzetar_opt.ll wtime_opt.ll c_print_results_cs_align.json print_results_opt.ll randdp_cs_align.json exact_rhs_cs_align.json c_print_results_opt.ll ninvr_opt.ll rhs_cs_align.json pinvr_opt.ll add_cs_align.json x_solve_cs_align.json tzetar_cs_align.json c_timers_opt.ll adi_opt.ll exact_solution_cs_align.json verify_cs_align.json randdp_opt.ll z_solve_cs_align.json initialize_cs_align.json add_opt.ll error_cs_align.json exact_rhs_opt.ll ninvr_cs_align.json initialize_opt.ll adi_cs_align.json txinvr_opt.ll set_constants_cs_align.json pinvr_cs_align.json z_solve_opt.ll print_results_cs_align.json y_solve_cs_align.json verify_opt.ll
+make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/sp'

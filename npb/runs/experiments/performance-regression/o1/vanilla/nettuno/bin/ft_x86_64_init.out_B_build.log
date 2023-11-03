@@ -29,16 +29,16 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/ft'
  [OPT] randdp_opt.ll
  [OPT] c_print_results_opt.ll
  [OPT] wtime_opt.ll
- [LLC] mainft_x86_64_init.o
  [LLC] c_timers_x86_64_init.o
- [LLC] print_results_x86_64_init.o
- [LLC] c_print_results_x86_64_init.o
+ [LLC] mainft_x86_64_init.o
  [LLC] randdp_x86_64_init.o
  [LLC] wtime_x86_64_init.o
+ [LLC] print_results_x86_64_init.o
+ [LLC] c_print_results_x86_64_init.o
  [LLC] appft_x86_64_init.o
  [LLC] auxfnct_x86_64_init.o
- [LLC] verify_x86_64_init.o
  [LLC] fft3d_x86_64_init.o
+ [LLC] verify_x86_64_init.o
  [LD] ft_x86_64_init.out
 rm appft_opt.ll wtime_opt.ll print_results_opt.ll c_print_results_opt.ll fft3d_opt.ll auxfnct_opt.ll mainft_opt.ll c_timers_opt.ll randdp_opt.ll verify_opt.ll
 make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/ft'
