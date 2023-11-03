@@ -558,3 +558,7 @@ layout/experimentation
 
 # Sigil
 *.gz
+
+# perf
+*.data
+*.data.old
