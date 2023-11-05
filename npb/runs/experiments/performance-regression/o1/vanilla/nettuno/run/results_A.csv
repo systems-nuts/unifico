@@ -1,11 +1,11 @@
 benchmark,time
-bt,65.21
+bt,65.3
 cg,1.4
-ep,31.09
+ep,31.16
 ft,4.27
 is,0.44
-lu,45.11
+lu,45.07
 mg,1.66
-sp,34.67
-ua,30.95
+sp,34.6
+ua,31.01
 Geomean,9.1
