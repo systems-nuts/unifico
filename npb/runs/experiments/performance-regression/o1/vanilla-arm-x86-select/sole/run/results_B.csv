@@ -1,0 +1,5 @@
+benchmark,time
+lu,351.17
+sp,327.04
+ua,306.71
+Geomean,327.8
