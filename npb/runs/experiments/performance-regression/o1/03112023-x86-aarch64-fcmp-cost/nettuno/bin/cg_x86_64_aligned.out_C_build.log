@@ -34,8 +34,8 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/cg'
  [LLC] print_results_aarch64_init.o
  [CALLSITE ALIGN] wtime_cs_align.json
  [CALLSITE ALIGN] c_timers_cs_align.json
- [CALLSITE ALIGN] randdp_cs_align.json
  [CALLSITE ALIGN] c_print_results_cs_align.json
+ [CALLSITE ALIGN] randdp_cs_align.json
  [CALLSITE ALIGN] print_results_cs_align.json
  [LLC WITH CALLSITE ALIGNMENT] wtime_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] c_timers_aarch64.o
@@ -50,9 +50,9 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/cg'
  [LLC WITH CALLSITE ALIGNMENT] c_print_results_x86_64.o
  [CHECK CALLSITE ALIGNMENT] wtime_x86_64.o wtime_aarch64.o
  [CHECK CALLSITE ALIGNMENT] c_timers_x86_64.o c_timers_aarch64.o
- [CHECK CALLSITE ALIGNMENT] randdp_x86_64.o randdp_aarch64.o
  [LLC WITH CALLSITE ALIGNMENT] print_results_x86_64.o
  [CHECK CALLSITE ALIGNMENT] c_print_results_x86_64.o c_print_results_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] randdp_x86_64.o randdp_aarch64.o
  [CHECK CALLSITE ALIGNMENT] print_results_x86_64.o print_results_aarch64.o
  [CALLSITE ALIGN] cg_cs_align.json
  [LLC WITH CALLSITE ALIGNMENT] cg_aarch64.o
