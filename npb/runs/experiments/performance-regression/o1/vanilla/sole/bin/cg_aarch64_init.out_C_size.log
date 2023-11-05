@@ -1,0 +1,24 @@
+cg/cg_aarch64_init.out  :
+section                       size      addr
+.note.gnu.build-id              36   4194648
+.text                        42528   4194688
+.rodata                      11440   4237216
+.eh_frame                     1152   4248656
+.got                            64   4325288
+.got.plt                        24   4325352
+.data                          264   4325376
+.bss                     497404384   4325648
+.debug_str                    7635         0
+.debug_loc                   73970         0
+.debug_abbrev                16395         0
+.debug_info                  61977         0
+.debug_ranges                 5056         0
+.debug_macinfo                  80         0
+.comment                       225         0
+.debug_line                  29623         0
+.debug_frame                  5256         0
+.debug_aranges                  48         0
+.note.gnu.gold-version          28         0
+Total                    497660185
+
+
