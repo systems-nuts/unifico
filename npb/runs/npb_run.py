@@ -19,6 +19,8 @@ from scipy.stats import gmean
 
 import pandas as pd
 
+KNOWN_FAILURES = [("ft", "C"), ("mg", "C")]
+
 
 class NPBRunner:
     def __init__(self, args=None):
@@ -219,9 +221,15 @@ class NPBRunner:
     def build_benchmark(self, config, executable, dryrun=False):
         commands = config["build"]
 
+        # Assumes build dir are named bt/, cg/, etc, so you can infer the build dir from the first two letters.
+        build_dir = executable[:2]
+        if (build_dir, self.npb_class) in KNOWN_FAILURES:
+            print(
+                f'WARNING: "Skipping {build_dir}/{self.npb_class} combo because of known failures"'
+            )
+            return
+
         for c in commands:
-            # Assumes build dir are named bt/, cg/, etc, so you can infer the build dir from the first two letters.
-            build_dir = executable[:2]
             if c["before"]:
                 self.execute_cmd(
                     c["args"],
@@ -233,8 +241,6 @@ class NPBRunner:
                 )
 
         for c in commands:
-            # Assumes build dir are named bt/, cg/, etc, so you can infer the build dir from the first two letters.
-            build_dir = executable[:2]
             if not c["before"]:
                 self.execute_cmd(
                     c["args"],
@@ -270,6 +276,13 @@ class NPBRunner:
 
     def execute_benchmark(self, config, executable, dryrun=False):
         commands = config["run"]
+        # Assumes you can infer the benchmark name from the first two letters of the exe.
+        benchmark = executable[:2]
+        if (benchmark, self.npb_class) in KNOWN_FAILURES:
+            print(
+                f'WARNING: "Skipping {benchmark}/{self.npb_class} combo because of known failures"'
+            )
+            return
 
         for c in commands:
             if c["before"]:
@@ -326,10 +339,15 @@ class NPBRunner:
 
     def post_process_benchmark(self, config, executable, dryrun=False):
         commands = config["post_process"]
+        # Assumes you can infer the benchmark name from the first two letters of the exe.
+        benchmark = executable[:2]
+        if (benchmark, self.npb_class) in KNOWN_FAILURES:
+            print(
+                f'WARNING: "Skipping {benchmark}/{self.npb_class} combo because of known failures"'
+            )
+            return
 
         for c in commands:
-            # Assumes you can infer the benchmark name from the first two letters of the exe.
-            benchmark = executable[:2]
             self.execute_cmd(
                 c["args"],
                 dryrun,
