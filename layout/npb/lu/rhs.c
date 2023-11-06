@@ -79,6 +79,7 @@ void rhs()
     //---------------------------------------------------------------------
     for (k = 1; k < nz - 1; k++) {
         for (j = jst; j < jend; j++) {
+            timer_start(12);
             for (i = 0; i < nx; i++) {
                 flux[i][0] = u[k][j][i][1];
                 u21 = u[k][j][i][1] * rho_i[k][j][i];
@@ -91,6 +92,7 @@ void rhs()
                 flux[i][4] = (C1 * u[k][j][i][4] - C2 * q) * u21;
             }
 
+            timer_start(13);
             for (i = ist; i < iend; i++) {
                 for (m = 0; m < 5; m++) {
                     rsd[k][j][i][m] = rsd[k][j][i][m] -
@@ -98,6 +100,7 @@ void rhs()
                 }
             }
 
+            timer_start(14);
             for (i = ist; i < nx; i++) {
                 tmp = rho_i[k][j][i];
 
@@ -125,6 +128,7 @@ void rhs()
                     C1 * C5 * tx3 * (u51i - u51im1);
             }
 
+            timer_start(15);
             for (i = ist; i < iend; i++) {
                 rsd[k][j][i][0] = rsd[k][j][i][0] +
                                   dx1 * tx1 *
@@ -159,6 +163,7 @@ void rhs()
             //---------------------------------------------------------------------
             // Fourth-order dissipation
             //---------------------------------------------------------------------
+            timer_start(16);
             for (m = 0; m < 5; m++) {
                 rsd[k][j][1][m] = rsd[k][j][1][m] -
                                   dssp * (+5.0 * u[k][j][1][m] -
@@ -169,6 +174,7 @@ void rhs()
                             4.0 * u[k][j][3][m] + u[k][j][4][m]);
             }
 
+            timer_start(17);
             for (i = 3; i < nx - 3; i++) {
                 for (m = 0; m < 5; m++) {
                     rsd[k][j][i][m] =
@@ -179,12 +185,14 @@ void rhs()
                 }
             }
 
+            timer_start(18);
             for (m = 0; m < 5; m++) {
                 rsd[k][j][nx - 3][m] =
                     rsd[k][j][nx - 3][m] -
                     dssp *
                         (u[k][j][nx - 5][m] - 4.0 * u[k][j][nx - 4][m] +
                          6.0 * u[k][j][nx - 3][m] - 4.0 * u[k][j][nx - 2][m]);
+                timer_start(19);
                 rsd[k][j][nx - 2][m] =
                     rsd[k][j][nx - 2][m] -
                     dssp * (u[k][j][nx - 4][m] - 4.0 * u[k][j][nx - 3][m] +
