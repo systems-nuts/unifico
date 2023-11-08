@@ -1,0 +1,16 @@
+********** Stack Slot Coloring **********
+********** Function: results
+Spill slot intervals:
+SS#0 [320r,432r:0)  0@x weight:2.000000e+00
+
+Color spill slot intervals:
+Assigning fi#0 to fi#0 align 16 size 16
+
+Spill slots after coloring:
+SS#0 [320r,432r:0)  0@x weight:2.000000e+00
+
+********** Stack Slot Coloring **********
+********** Function: main
+
+Color spill slot intervals:
+Assigning fi#0 to fi#0 align 8 size 8
