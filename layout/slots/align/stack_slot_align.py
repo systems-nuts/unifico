@@ -20,11 +20,11 @@ SLOT_REGEX = re.compile(
     r"""
  Assigning
  \s         # A whitespace
- fi\#\d+    # Original slot
+ fi\#(\d+)    # Original slot
  \s         # A whitespace
  to
  \s         # A whitespace
- fi\#(\d+)  # New slot
+ fi\#\d+  # New slot
  \s         # A whitespace
  align
  \s         # A whitespace
@@ -167,6 +167,12 @@ def align_stack_slots(text1, text2):
 
     for function in d1.keys():
         padding_dict[function] = {}
+        if list(d1[function].keys()) != list(d2[function].keys()):
+            print(
+                f"WARNING: Different stack slot numbering in function `{function}`.",
+                file=sys.stderr,
+            )
+            continue
         for stack_slot in d1[function].keys():
             # We are not adamant about the same stack slot number in both functions
             # Try your luck in the next function
