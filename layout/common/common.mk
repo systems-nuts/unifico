@@ -140,6 +140,7 @@ ALIGN	:= $(POPCORN)/bin/pyalign
 ALIGN_CHECK	:= $(POPCORN)/bin/check-align.py
 CALLSITE_ALIGN	:= $(PROJECT_DIR)/layout/callsites/align/callsite_align.py
 CALLSITE_ALIGN_CHECK	:= $(PROJECT_DIR)/layout/callsites/check_callsite_align.py
+STACK_SLOT_ALIGN	:= $(PROJECT_DIR)/layout/slots/align/stack_slot_align.py
 
 ###############################################################################
 # Stackmaps
@@ -229,6 +230,9 @@ json-aarch64: $(ARM64_JSON)
 
 .PRECIOUS: $(BIN)_cs_align.json
 .PRECIOUS: $(BIN)_opt.ll
+.PRECIOUS: $(BIN)_aarch64_stack_slots.txt
+.PRECIOUS: $(BIN)_x86_64_stack_slots.txt
+.PRECIOUS: $(BIN)_stack_slots.txt
 
 #############
 # Stackmaps #
@@ -305,6 +309,18 @@ stackmaps-check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	$(QUIET) $(OBJDUMP) -d --print-imm-hex $(word 2,$^) >$(ARM64_BUILD)/$*_aarch64_init.objdump
 	$(QUIET) $(CALLSITE_ALIGN) $(ARM64_BUILD)/$*_aarch64_init.objdump $(X86_64_BUILD)/$*_x86_64_init.objdump >$@
 
+%_aarch64_stack_slots.txt: %_opt.ll
+	@echo " [STACK SLOT COLORING DEBUG] $@"
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj $< -debug-only=stack-slot-coloring 2>$@
+
+%_x86_64_stack_slots.txt: %_opt.ll
+	@echo " [STACK SLOT COLORING DEBUG] $@"
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj $< -debug-only=stack-slot-coloring 2>$@
+
+%_stack_slots.txt: %_aarch64_stack_slots.txt %_x86_64_stack_slots.txt
+	@echo " [STACK SLOT ALIGN] $@"
+	$(QUIET) $(STACK_SLOT_ALIGN) $^ >$@
+
 src_changed: *.c
 	@echo " [SOURCE FILES CHANGED]"
 	echo $?
@@ -338,9 +354,9 @@ src_changed: *.c
 		}
 
 
-%_aarch64.o: %_cs_align.json %_opt.ll
+%_aarch64.o: %_cs_align.json %_opt.ll %_stack_slots.txt
 	@echo " [LLC WITH CALLSITE ALIGNMENT] $@"
-	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -align-stack-slots -o $@ $(word 2,$^)
 	$(QUIET){ \
 	for PASS in $(LLC_PASSES_TO_DEBUG); do \
 		$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -debug-only=$$PASS 2>$(ARM64_BUILD)/$*_$$PASS.txt; \
@@ -397,9 +413,9 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 		}
 
 
-%_x86_64.o: %_cs_align.json %_opt.ll %_aarch64.o
+%_x86_64.o: %_cs_align.json %_opt.ll %_aarch64.o %_stack_slots.txt
 	@echo " [LLC WITH CALLSITE ALIGNMENT] $@"
-	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -align-stack-slots -o $@ $(word 2,$^)
 	@echo " [CHECK CALLSITE ALIGNMENT] $@ $(word 3,$^)"
 	$(QUIET) $(X86_64_OBJDUMP) -d -M intel $@ >$(X86_64_BUILD)/$*_x86_64.objdump
 	$(QUIET) $(OBJDUMP) -d --print-imm-hex $(word 3,$^) >$(ARM64_BUILD)/$*_aarch64.objdump
@@ -484,9 +500,9 @@ view_sched_dag_%: %_cs_align.json %_opt.ll %_aarch64.o
 
 clean:
 	@echo " [CLEAN] $(ARM64_ALIGNED) $(ARM64_JSON_DIR) $(X86_64_ALIGNED) $(X86_64_JSON_DIR) \
-		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.json *.o *.out"
+		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.json *.txt *.o *.out"
 	@rm -rf $(ARM64_ALIGNED) $(ARM64_JSON_DIR) $(X86_64_ALIGNED) $(X86_64_JSON_DIR) \
-		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.json *.o *.out
+		$(X86_64_SD_BUILD) $(X86_64_LD_SCRIPT) $(ARM64_LD_SCRIPT) *.ll *.s *.json *.txt *.o *.out
 
 deepclean: clean
 	@echo " [DEEPCLEAN] build_* *.backup"
