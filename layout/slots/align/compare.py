@@ -1,6 +1,4 @@
-import sys
-
-from layout.slots.align.stack_slot_align import (
+from align.stack_slot_align import (
     get_stack_slots,
     check_stack_slot_number,
 )
