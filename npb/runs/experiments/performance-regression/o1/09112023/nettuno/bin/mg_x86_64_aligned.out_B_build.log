@@ -1,0 +1,97 @@
+make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/mg'
+{
+"LLVM VERSION": "clang version 9.0.1 (git@github.com:blackgeorge-boom/llvm-unifico.git 86df4d70e1f4a86c3e8813fcce955888cbdab1bb) Target: x86_64-unknown-linux-gnu Thread model: posix InstalledDir: /home/nikos/llvm-9/toolchain/bin"
+"LLVM BIN DIR": "/home/nikos/llvm-9/toolchain/bin"
+"LLVM LIB DIR": "/home/nikos/llvm-9/toolchain/lib"
+"LLVM UNIFICO FLAGS": "-DUNIFICO_GPR_CALLING_CONV -DUNIFICO_FPR_CALLING_CONV -DUNIFICO_REGALLOC_RULES -DUNIFICO_REMAT_RULES -DUNIFICO_REG_COST -DUNIFICO_AARCH64_TWOADDR -DUNIFICO_INSTR_EXTENSION -DUNIFICO_CHEAP_MOVES "
+"CFLAGS": "-O1 -Wall -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mllvm -align-bytes-to-four",
+"OPT_FLAGS": "-name-string-literals -static-var-sections -live-values",
+"LLC_FLAGS": "-disable-block-align --mc-relax-all -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -align-objects-to-four -enable-misched=false -pack-indexes -function-sections -data-sections -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse",
+"LLC_FLAGS_ARM64": "-mattr=+disable-fp-imm-materialize,+avoid-wide-mul,+copy-zr-temp,-disable-hoist-in-lowering,-avoid-f128,-x86-fabs-fneg,+x86-select,+advanced-ra-split-cost,-mov-64-imm32",
+"LLC_FLAGS_X86": "-mattr=+simple-reg-offset-addr,+aarch64-legal-addr,-multiply-with-imm,+aarch64-sized-imm,-non-zero-imm-to-mem,+aarch64-constant-cost-model,+force-vector-mem-op,+avoid-opt-mul-1,+avoid-select-to-fsetcc,+aarch64-legal-addr -x86-enable-simplify-cfg -no-x86-call-frame-opt -disable-x86-frame-obj-order -enable-lea32 -mul-constant-optimization=false -disable-gr32temp-inflate -aarch64-fcmp-cost"
+}
+ [IR] mg.ll
+ [IR] c_timers.ll
+ [IR] print_results.ll
+ [IR] randdp.ll
+ [IR] c_print_results.ll
+ [IR] wtime.ll
+ [OPT] c_timers_opt.ll
+ [OPT] print_results_opt.ll
+ [OPT] randdp_opt.ll
+ [OPT] c_print_results_opt.ll
+ [OPT] wtime_opt.ll
+ [OPT] mg_opt.ll
+ [LLC] wtime_x86_64_init.o
+ [LLC] wtime_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] wtime_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] wtime_x86_64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] c_timers_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] c_timers_x86_64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] print_results_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] print_results_x86_64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] randdp_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] randdp_x86_64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] c_print_results_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] c_print_results_x86_64_stack_slots.txt
+ [CALLSITE ALIGN] wtime_cs_align.json
+ [STACK SLOT ALIGN] wtime_stack_slots.txt
+ [LLC] c_timers_x86_64_init.o
+ [LLC] c_timers_aarch64_init.o
+ [STACK SLOT ALIGN] c_timers_stack_slots.txt
+ [LLC] print_results_x86_64_init.o
+ [LLC] print_results_aarch64_init.o
+ [STACK SLOT ALIGN] print_results_stack_slots.txt
+ [LLC] randdp_x86_64_init.o
+ [LLC] randdp_aarch64_init.o
+ [STACK SLOT ALIGN] randdp_stack_slots.txt
+ [LLC] c_print_results_x86_64_init.o
+ [LLC] c_print_results_aarch64_init.o
+ [STACK SLOT ALIGN] c_print_results_stack_slots.txt
+ [CALLSITE ALIGN] c_timers_cs_align.json
+WARNING: Different stack slot numbering in function `print_results`.
+ [CALLSITE ALIGN] print_results_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] wtime_aarch64.o
+ [CALLSITE ALIGN] randdp_cs_align.json
+ [CALLSITE ALIGN] c_print_results_cs_align.json
+ [LLC] mg_x86_64_init.o
+ [LLC] mg_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] mg_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] mg_x86_64_stack_slots.txt
+ [LLC WITH CALLSITE ALIGNMENT] wtime_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_timers_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] wtime_x86_64.o wtime_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] randdp_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_timers_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] randdp_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] print_results_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_print_results_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] c_timers_x86_64.o c_timers_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] randdp_x86_64.o randdp_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] print_results_x86_64.o print_results_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] c_print_results_x86_64.o c_print_results_aarch64.o
+ [CALLSITE ALIGN] mg_cs_align.json
+ [STACK SLOT ALIGN] mg_stack_slots.txt
+WARNING: Different stack slot numbering in function `main`.
+WARNING: Different stack slot numbering in function `setup`.
+WARNING: Different stack slot numbering in function `zero3`.
+WARNING: Different stack slot numbering in function `zran3`.
+WARNING: Different stack slot numbering in function `norm2u3`.
+WARNING: Different stack slot numbering in function `resid`.
+WARNING: Different stack slot numbering in function `mg3P`.
+WARNING: Different stack slot numbering in function `rprj3`.
+WARNING: Different stack slot numbering in function `psinv`.
+WARNING: Different stack slot numbering in function `interp`.
+WARNING: Different stack slot numbering in function `comm3`.
+WARNING: Different stack slot numbering in function `showall`.
+ [LLC WITH CALLSITE ALIGNMENT] mg_aarch64.o
+ [LD] mg_aarch64_unaligned.out
+ [LLC WITH CALLSITE ALIGNMENT] mg_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] mg_x86_64.o mg_aarch64.o
+ [LD] mg_x86_64_unaligned.out
+ [ALIGN] build_x86-64/O1/aligned_linker_script_x86.x
+ [LD] mg_x86_64_aligned.out
+rm wtime_cs_align.json wtime_x86_64_stack_slots.txt wtime_stack_slots.txt randdp_x86_64_stack_slots.txt c_timers_cs_align.json c_print_results_cs_align.json c_print_results_aarch64_stack_slots.txt randdp_cs_align.json c_timers_x86_64_stack_slots.txt print_results_stack_slots.txt print_results_x86_64_stack_slots.txt c_print_results_stack_slots.txt randdp_aarch64_stack_slots.txt wtime_aarch64_stack_slots.txt c_timers_aarch64_stack_slots.txt c_print_results_x86_64_stack_slots.txt c_timers_stack_slots.txt randdp_stack_slots.txt print_results_cs_align.json print_results_aarch64_stack_slots.txt
+make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/mg'

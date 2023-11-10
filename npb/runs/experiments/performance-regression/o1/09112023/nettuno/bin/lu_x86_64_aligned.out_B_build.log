@@ -1,0 +1,284 @@
+make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/lu'
+{
+"LLVM VERSION": "clang version 9.0.1 (git@github.com:blackgeorge-boom/llvm-unifico.git 86df4d70e1f4a86c3e8813fcce955888cbdab1bb) Target: x86_64-unknown-linux-gnu Thread model: posix InstalledDir: /home/nikos/llvm-9/toolchain/bin"
+"LLVM BIN DIR": "/home/nikos/llvm-9/toolchain/bin"
+"LLVM LIB DIR": "/home/nikos/llvm-9/toolchain/lib"
+"LLVM UNIFICO FLAGS": "-DUNIFICO_GPR_CALLING_CONV -DUNIFICO_FPR_CALLING_CONV -DUNIFICO_REGALLOC_RULES -DUNIFICO_REMAT_RULES -DUNIFICO_REG_COST -DUNIFICO_AARCH64_TWOADDR -DUNIFICO_INSTR_EXTENSION -DUNIFICO_CHEAP_MOVES "
+"CFLAGS": "-O1 -Wall -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mllvm -align-bytes-to-four",
+"OPT_FLAGS": "-name-string-literals -static-var-sections -live-values",
+"LLC_FLAGS": "-disable-block-align --mc-relax-all -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -align-objects-to-four -enable-misched=false -pack-indexes -function-sections -data-sections -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse",
+"LLC_FLAGS_ARM64": "-mattr=+disable-fp-imm-materialize,+avoid-wide-mul,+copy-zr-temp,-disable-hoist-in-lowering,-avoid-f128,-x86-fabs-fneg,+x86-select,+advanced-ra-split-cost,-mov-64-imm32",
+"LLC_FLAGS_X86": "-mattr=+simple-reg-offset-addr,+aarch64-legal-addr,-multiply-with-imm,+aarch64-sized-imm,-non-zero-imm-to-mem,+aarch64-constant-cost-model,+force-vector-mem-op,+avoid-opt-mul-1,+avoid-select-to-fsetcc,+aarch64-legal-addr -x86-enable-simplify-cfg -no-x86-call-frame-opt -disable-x86-frame-obj-order -enable-lea32 -mul-constant-optimization=false -disable-gr32temp-inflate -aarch64-fcmp-cost"
+}
+ [IR] blts.ll
+ [IR] buts.ll
+ [IR] domain.ll
+ [IR] erhs.ll
+ [IR] error.ll
+ [IR] exact.ll
+ [IR] c_timers.ll
+ [IR] jacld.ll
+ [IR] jacu.ll
+ [IR] l2norm.ll
+ [IR] lu.ll
+ [IR] pintgr.ll
+ [IR] read_input.ll
+ [IR] rhs.ll
+ [IR] setbv.ll
+ [IR] setcoeff.ll
+ [IR] setiv.ll
+ [IR] ssor.ll
+ [IR] verify.ll
+ [IR] print_results.ll
+ [IR] randdp.ll
+ [IR] c_print_results.ll
+ [IR] wtime.ll
+ [OPT] blts_opt.ll
+ [OPT] buts_opt.ll
+ [OPT] domain_opt.ll
+ [OPT] erhs_opt.ll
+ [OPT] error_opt.ll
+ [OPT] exact_opt.ll
+ [OPT] c_timers_opt.ll
+ [OPT] jacld_opt.ll
+ [OPT] jacu_opt.ll
+ [OPT] l2norm_opt.ll
+ [OPT] pintgr_opt.ll
+ [OPT] read_input_opt.ll
+ [OPT] rhs_opt.ll
+ [OPT] setbv_opt.ll
+ [OPT] setcoeff_opt.ll
+ [OPT] setiv_opt.ll
+ [OPT] ssor_opt.ll
+ [OPT] verify_opt.ll
+ [OPT] print_results_opt.ll
+ [OPT] randdp_opt.ll
+ [OPT] c_print_results_opt.ll
+ [OPT] wtime_opt.ll
+ [LLC] blts_x86_64_init.o
+ [LLC] blts_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] blts_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] blts_x86_64_stack_slots.txt
+ [LLC] buts_x86_64_init.o
+ [LLC] buts_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] buts_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] buts_x86_64_stack_slots.txt
+ [LLC] domain_x86_64_init.o
+ [LLC] domain_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] domain_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] domain_x86_64_stack_slots.txt
+ [LLC] erhs_x86_64_init.o
+ [LLC] erhs_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] erhs_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] erhs_x86_64_stack_slots.txt
+ [LLC] error_x86_64_init.o
+ [LLC] error_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] error_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] error_x86_64_stack_slots.txt
+ [LLC] exact_x86_64_init.o
+ [LLC] exact_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] exact_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] exact_x86_64_stack_slots.txt
+ [LLC] c_timers_x86_64_init.o
+ [LLC] c_timers_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] c_timers_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] c_timers_x86_64_stack_slots.txt
+ [LLC] jacld_x86_64_init.o
+ [LLC] jacld_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] jacld_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] jacld_x86_64_stack_slots.txt
+ [LLC] jacu_x86_64_init.o
+ [LLC] jacu_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] jacu_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] jacu_x86_64_stack_slots.txt
+ [LLC] l2norm_x86_64_init.o
+ [LLC] l2norm_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] l2norm_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] l2norm_x86_64_stack_slots.txt
+ [OPT] lu_opt.ll
+ [LLC] pintgr_x86_64_init.o
+ [LLC] pintgr_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] pintgr_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] pintgr_x86_64_stack_slots.txt
+ [LLC] read_input_x86_64_init.o
+ [LLC] read_input_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] read_input_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] read_input_x86_64_stack_slots.txt
+ [LLC] rhs_x86_64_init.o
+ [LLC] rhs_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] rhs_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] rhs_x86_64_stack_slots.txt
+ [LLC] setbv_x86_64_init.o
+ [LLC] setbv_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] setbv_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] setbv_x86_64_stack_slots.txt
+ [LLC] setcoeff_x86_64_init.o
+ [LLC] setcoeff_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] setcoeff_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] setcoeff_x86_64_stack_slots.txt
+ [LLC] setiv_x86_64_init.o
+ [LLC] setiv_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] setiv_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] setiv_x86_64_stack_slots.txt
+ [LLC] ssor_x86_64_init.o
+ [LLC] ssor_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] ssor_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] ssor_x86_64_stack_slots.txt
+ [LLC] verify_x86_64_init.o
+ [LLC] verify_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] verify_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] verify_x86_64_stack_slots.txt
+ [LLC] print_results_x86_64_init.o
+ [LLC] print_results_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] print_results_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] print_results_x86_64_stack_slots.txt
+ [LLC] randdp_x86_64_init.o
+ [LLC] randdp_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] randdp_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] randdp_x86_64_stack_slots.txt
+ [LLC] c_print_results_x86_64_init.o
+ [LLC] c_print_results_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] c_print_results_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] c_print_results_x86_64_stack_slots.txt
+ [LLC] wtime_x86_64_init.o
+ [LLC] wtime_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] wtime_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] wtime_x86_64_stack_slots.txt
+ [CALLSITE ALIGN] blts_cs_align.json
+ [STACK SLOT ALIGN] blts_stack_slots.txt
+ [CALLSITE ALIGN] buts_cs_align.json
+ [STACK SLOT ALIGN] buts_stack_slots.txt
+ [CALLSITE ALIGN] domain_cs_align.json
+ [STACK SLOT ALIGN] domain_stack_slots.txt
+ [CALLSITE ALIGN] erhs_cs_align.json
+ [STACK SLOT ALIGN] erhs_stack_slots.txt
+ [CALLSITE ALIGN] error_cs_align.json
+WARNING: Different stack slot numbering in function `buts`.
+WARNING: Different stack slot numbering in function `blts`.
+ [STACK SLOT ALIGN] error_stack_slots.txt
+ [CALLSITE ALIGN] exact_cs_align.json
+ [STACK SLOT ALIGN] exact_stack_slots.txt
+WARNING: Different stack slot numbering in function `erhs`.
+ [CALLSITE ALIGN] c_timers_cs_align.json
+ [STACK SLOT ALIGN] c_timers_stack_slots.txt
+ [CALLSITE ALIGN] jacld_cs_align.json
+ [STACK SLOT ALIGN] jacld_stack_slots.txt
+ [CALLSITE ALIGN] jacu_cs_align.json
+ [STACK SLOT ALIGN] jacu_stack_slots.txt
+ [CALLSITE ALIGN] l2norm_cs_align.json
+ [STACK SLOT ALIGN] l2norm_stack_slots.txt
+ [CALLSITE ALIGN] pintgr_cs_align.json
+WARNING: Different stack slot numbering in function `jacld`.
+ [STACK SLOT ALIGN] pintgr_stack_slots.txt
+ [CALLSITE ALIGN] read_input_cs_align.json
+ [STACK SLOT ALIGN] read_input_stack_slots.txt
+WARNING: Different stack slot numbering in function `jacu`.
+ [CALLSITE ALIGN] rhs_cs_align.json
+ [STACK SLOT ALIGN] rhs_stack_slots.txt
+WARNING: Different stack slot numbering in function `l2norm`.
+WARNING: Different stack slot numbering in function `pintgr`.
+ [CALLSITE ALIGN] setbv_cs_align.json
+ [STACK SLOT ALIGN] setbv_stack_slots.txt
+ [CALLSITE ALIGN] setcoeff_cs_align.json
+ [STACK SLOT ALIGN] setcoeff_stack_slots.txt
+WARNING: Different stack slot numbering in function `rhs`.
+ [CALLSITE ALIGN] setiv_cs_align.json
+ [STACK SLOT ALIGN] setiv_stack_slots.txt
+ [CALLSITE ALIGN] ssor_cs_align.json
+ [STACK SLOT ALIGN] ssor_stack_slots.txt
+ [CALLSITE ALIGN] verify_cs_align.json
+WARNING: Different stack slot numbering in function `setbv`.
+ [STACK SLOT ALIGN] verify_stack_slots.txt
+ [CALLSITE ALIGN] print_results_cs_align.json
+WARNING: Different stack slot numbering in function `ssor`.
+ [STACK SLOT ALIGN] print_results_stack_slots.txt
+ [CALLSITE ALIGN] randdp_cs_align.json
+ [STACK SLOT ALIGN] randdp_stack_slots.txt
+ [CALLSITE ALIGN] c_print_results_cs_align.json
+WARNING: Different stack slot numbering in function `verify`.
+ [STACK SLOT ALIGN] c_print_results_stack_slots.txt
+ [CALLSITE ALIGN] wtime_cs_align.json
+ [STACK SLOT ALIGN] wtime_stack_slots.txt
+ [LLC WITH CALLSITE ALIGNMENT] blts_aarch64.o
+WARNING: Different stack slot numbering in function `print_results`.
+ [LLC WITH CALLSITE ALIGNMENT] buts_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] domain_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] erhs_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] error_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] exact_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_timers_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] jacld_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] jacu_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] l2norm_aarch64.o
+ [LLC] lu_x86_64_init.o
+ [LLC] lu_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] lu_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] lu_x86_64_stack_slots.txt
+ [LLC WITH CALLSITE ALIGNMENT] pintgr_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] read_input_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] rhs_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] setbv_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] setcoeff_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] setiv_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] ssor_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] verify_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] randdp_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] wtime_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] blts_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] buts_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] domain_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] error_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] exact_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] domain_x86_64.o domain_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] error_x86_64.o error_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] exact_x86_64.o exact_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_timers_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] l2norm_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] read_input_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] c_timers_x86_64.o c_timers_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] blts_x86_64.o blts_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] buts_x86_64.o buts_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] setbv_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] l2norm_x86_64.o l2norm_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] read_input_x86_64.o read_input_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] setcoeff_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] setiv_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] ssor_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] verify_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] print_results_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] setbv_x86_64.o setbv_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] setcoeff_x86_64.o setcoeff_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] print_results_x86_64.o print_results_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] setiv_x86_64.o setiv_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] randdp_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_print_results_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] wtime_x86_64.o
+ [CALLSITE ALIGN] lu_cs_align.json
+ [CHECK CALLSITE ALIGNMENT] verify_x86_64.o verify_aarch64.o
+ [STACK SLOT ALIGN] lu_stack_slots.txt
+ [LLC WITH CALLSITE ALIGNMENT] jacld_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] ssor_x86_64.o ssor_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] randdp_x86_64.o randdp_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] c_print_results_x86_64.o c_print_results_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] wtime_x86_64.o wtime_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] jacu_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] pintgr_x86_64.o
+WARNING: Different stack slot numbering in function `main`.
+ [LLC WITH CALLSITE ALIGNMENT] lu_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] lu_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] lu_x86_64.o lu_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] erhs_x86_64.o
+ [LD] lu_aarch64_unaligned.out
+ [LLC WITH CALLSITE ALIGNMENT] rhs_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] pintgr_x86_64.o pintgr_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] jacld_x86_64.o jacld_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] jacu_x86_64.o jacu_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] erhs_x86_64.o erhs_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] rhs_x86_64.o rhs_aarch64.o
+ [LD] lu_x86_64_unaligned.out
+ [ALIGN] build_x86-64/O1/aligned_linker_script_x86.x
+ [LD] lu_x86_64_aligned.out
+rm wtime_cs_align.json buts_aarch64_stack_slots.txt wtime_x86_64_stack_slots.txt ssor_stack_slots.txt verify_aarch64_stack_slots.txt exact_x86_64_stack_slots.txt pintgr_stack_slots.txt setcoeff_cs_align.json jacu_stack_slots.txt wtime_stack_slots.txt randdp_x86_64_stack_slots.txt c_timers_cs_align.json jacld_x86_64_stack_slots.txt c_print_results_cs_align.json c_print_results_aarch64_stack_slots.txt setiv_cs_align.json rhs_stack_slots.txt erhs_aarch64_stack_slots.txt jacu_aarch64_stack_slots.txt randdp_cs_align.json buts_x86_64_stack_slots.txt exact_cs_align.json pintgr_cs_align.json erhs_cs_align.json c_timers_x86_64_stack_slots.txt read_input_cs_align.json print_results_stack_slots.txt jacld_aarch64_stack_slots.txt print_results_x86_64_stack_slots.txt domain_cs_align.json rhs_cs_align.json c_print_results_stack_slots.txt ssor_aarch64_stack_slots.txt setbv_stack_slots.txt setcoeff_stack_slots.txt setiv_aarch64_stack_slots.txt randdp_aarch64_stack_slots.txt l2norm_stack_slots.txt error_x86_64_stack_slots.txt read_input_aarch64_stack_slots.txt blts_x86_64_stack_slots.txt exact_stack_slots.txt blts_stack_slots.txt blts_aarch64_stack_slots.txt pintgr_x86_64_stack_slots.txt jacu_cs_align.json setbv_cs_align.json setcoeff_aarch64_stack_slots.txt erhs_x86_64_stack_slots.txt wtime_aarch64_stack_slots.txt c_timers_aarch64_stack_slots.txt exact_aarch64_stack_slots.txt buts_cs_align.json erhs_stack_slots.txt verify_cs_align.json jacld_stack_slots.txt read_input_stack_slots.txt setiv_stack_slots.txt setiv_x86_64_stack_slots.txt error_aarch64_stack_slots.txt c_print_results_x86_64_stack_slots.txt verify_stack_slots.txt pintgr_aarch64_stack_slots.txt ssor_cs_align.json domain_stack_slots.txt setbv_x86_64_stack_slots.txt jacld_cs_align.json read_input_x86_64_stack_slots.txt l2norm_aarch64_stack_slots.txt error_cs_align.json rhs_aarch64_stack_slots.txt domain_x86_64_stack_slots.txt domain_aarch64_stack_slots.txt setcoeff_x86_64_stack_slots.txt setbv_aarch64_stack_slots.txt jacu_x86_64_stack_slots.txt error_stack_slots.txt ssor_x86_64_stack_slots.txt blts_cs_align.json verify_x86_64_stack_slots.txt c_timers_stack_slots.txt rhs_x86_64_stack_slots.txt randdp_stack_slots.txt l2norm_cs_align.json print_results_cs_align.json buts_stack_slots.txt print_results_aarch64_stack_slots.txt l2norm_x86_64_stack_slots.txt
+make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/lu'

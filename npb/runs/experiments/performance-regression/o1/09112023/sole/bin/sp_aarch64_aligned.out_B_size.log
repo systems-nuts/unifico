@@ -1,0 +1,30 @@
+sp/sp_aarch64_aligned.out  :
+section                                                  size        addr
+.text                                                  109136     5242880
+.rodata                                                 11452     6291456
+.rodata.cst8                                              272     6302912
+.rodata.___src_stdio_vfprintf_c_xdigits                    16     6303184
+.rodata.___src_errno_strerror_c_errid                      89     6303200
+.rodata.cst16                                             208     6303296
+.rodata.___src_internal_floatscan_c_decfloat_p10s          32     6303504
+.eh_frame                                                1728     6303536
+.data                                                    4360     7340032
+.bss                                                191746096     8388608
+.tdata                                                   4096   200278016
+.tbss                                                    4096   201326592
+.got                                                       64   201330688
+.got.plt                                                   24   201330752
+.comment                                                  225           0
+.debug_str                                               7191           0
+.debug_loc                                              89138           0
+.debug_abbrev                                           17990           0
+.debug_info                                             68191           0
+.debug_ranges                                            6352           0
+.debug_macinfo                                             81           0
+.debug_frame                                             5632           0
+.debug_line                                             34973           0
+.debug_aranges                                             48           0
+.note.gnu.gold-version                                     28           0
+Total                                               192111518
+
+

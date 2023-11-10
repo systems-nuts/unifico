@@ -1,0 +1,137 @@
+make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/ft'
+{
+"LLVM VERSION": "clang version 9.0.1 (git@github.com:blackgeorge-boom/llvm-unifico.git 86df4d70e1f4a86c3e8813fcce955888cbdab1bb) Target: x86_64-unknown-linux-gnu Thread model: posix InstalledDir: /home/nikos/llvm-9/toolchain/bin"
+"LLVM BIN DIR": "/home/nikos/llvm-9/toolchain/bin"
+"LLVM LIB DIR": "/home/nikos/llvm-9/toolchain/lib"
+"LLVM UNIFICO FLAGS": "-DUNIFICO_GPR_CALLING_CONV -DUNIFICO_FPR_CALLING_CONV -DUNIFICO_REGALLOC_RULES -DUNIFICO_REMAT_RULES -DUNIFICO_REG_COST -DUNIFICO_AARCH64_TWOADDR -DUNIFICO_INSTR_EXTENSION -DUNIFICO_CHEAP_MOVES "
+"CFLAGS": "-O1 -Wall -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mllvm -align-bytes-to-four",
+"OPT_FLAGS": "-name-string-literals -static-var-sections -live-values",
+"LLC_FLAGS": "-disable-block-align --mc-relax-all -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -align-objects-to-four -enable-misched=false -pack-indexes -function-sections -data-sections -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse",
+"LLC_FLAGS_ARM64": "-mattr=+disable-fp-imm-materialize,+avoid-wide-mul,+copy-zr-temp,-disable-hoist-in-lowering,-avoid-f128,-x86-fabs-fneg,+x86-select,+advanced-ra-split-cost,-mov-64-imm32",
+"LLC_FLAGS_X86": "-mattr=+simple-reg-offset-addr,+aarch64-legal-addr,-multiply-with-imm,+aarch64-sized-imm,-non-zero-imm-to-mem,+aarch64-constant-cost-model,+force-vector-mem-op,+avoid-opt-mul-1,+avoid-select-to-fsetcc,+aarch64-legal-addr -x86-enable-simplify-cfg -no-x86-call-frame-opt -disable-x86-frame-obj-order -enable-lea32 -mul-constant-optimization=false -disable-gr32temp-inflate -aarch64-fcmp-cost"
+}
+ [IR] appft.ll
+ [IR] auxfnct.ll
+ [IR] fft3d.ll
+ [IR] mainft.ll
+ [IR] verify.ll
+ [IR] c_timers.ll
+ [IR] print_results.ll
+ [IR] randdp.ll
+ [IR] c_print_results.ll
+ [IR] wtime.ll
+ [OPT] wtime_opt.ll
+ [OPT] c_timers_opt.ll
+ [OPT] print_results_opt.ll
+ [OPT] c_print_results_opt.ll
+ [OPT] randdp_opt.ll
+ [OPT] mainft_opt.ll
+ [OPT] appft_opt.ll
+ [LLC] wtime_x86_64_init.o
+ [LLC] wtime_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] wtime_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] wtime_x86_64_stack_slots.txt
+ [OPT] verify_opt.ll
+ [STACK SLOT COLORING DEBUG] c_timers_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] c_timers_x86_64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] print_results_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] print_results_x86_64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] c_print_results_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] c_print_results_x86_64_stack_slots.txt
+ [CALLSITE ALIGN] wtime_cs_align.json
+ [STACK SLOT ALIGN] wtime_stack_slots.txt
+ [LLC] appft_x86_64_init.o
+ [LLC] appft_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] appft_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] appft_x86_64_stack_slots.txt
+ [OPT] auxfnct_opt.ll
+ [LLC] mainft_x86_64_init.o
+ [LLC] mainft_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] mainft_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] mainft_x86_64_stack_slots.txt
+ [LLC] verify_x86_64_init.o
+ [LLC] verify_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] verify_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] verify_x86_64_stack_slots.txt
+ [LLC] c_timers_x86_64_init.o
+ [LLC] c_timers_aarch64_init.o
+ [STACK SLOT ALIGN] c_timers_stack_slots.txt
+ [LLC] print_results_x86_64_init.o
+ [LLC] print_results_aarch64_init.o
+ [STACK SLOT ALIGN] print_results_stack_slots.txt
+ [LLC] randdp_x86_64_init.o
+ [LLC] randdp_aarch64_init.o
+ [STACK SLOT COLORING DEBUG] randdp_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] randdp_x86_64_stack_slots.txt
+ [LLC] c_print_results_x86_64_init.o
+ [LLC] c_print_results_aarch64_init.o
+ [STACK SLOT ALIGN] c_print_results_stack_slots.txt
+ [LLC WITH CALLSITE ALIGNMENT] wtime_aarch64.o
+WARNING: Different stack slot numbering in function `print_results`.
+ [CALLSITE ALIGN] appft_cs_align.json
+ [STACK SLOT ALIGN] appft_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] auxfnct_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] auxfnct_x86_64_stack_slots.txt
+ [OPT] fft3d_opt.ll
+ [CALLSITE ALIGN] mainft_cs_align.json
+ [STACK SLOT ALIGN] mainft_stack_slots.txt
+ [CALLSITE ALIGN] verify_cs_align.json
+ [STACK SLOT ALIGN] verify_stack_slots.txt
+ [CALLSITE ALIGN] c_timers_cs_align.json
+WARNING: Different stack slot numbering in function `appft`.
+ [CALLSITE ALIGN] print_results_cs_align.json
+WARNING: Different stack slot numbering in function `verify`.
+ [CALLSITE ALIGN] randdp_cs_align.json
+ [STACK SLOT ALIGN] randdp_stack_slots.txt
+ [CALLSITE ALIGN] c_print_results_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] wtime_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] appft_aarch64.o
+ [LLC] auxfnct_x86_64_init.o
+ [LLC] auxfnct_aarch64_init.o
+ [STACK SLOT ALIGN] auxfnct_stack_slots.txt
+ [LLC WITH CALLSITE ALIGNMENT] mainft_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] verify_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] wtime_x86_64.o wtime_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_timers_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] print_results_aarch64.o
+ [STACK SLOT COLORING DEBUG] fft3d_aarch64_stack_slots.txt
+ [STACK SLOT COLORING DEBUG] fft3d_x86_64_stack_slots.txt
+ [LLC] fft3d_x86_64_init.o
+WARNING: Different stack slot numbering in function `CompExp`.
+WARNING: Different stack slot numbering in function `compute_initial_conditions`.
+WARNING: Different stack slot numbering in function `evolve`.
+ [LLC] fft3d_aarch64_init.o
+ [LLC WITH CALLSITE ALIGNMENT] randdp_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] appft_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] mainft_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_timers_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] print_results_x86_64.o
+ [CALLSITE ALIGN] auxfnct_cs_align.json
+ [LLC WITH CALLSITE ALIGNMENT] verify_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] mainft_x86_64.o mainft_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] c_timers_x86_64.o c_timers_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] print_results_x86_64.o print_results_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] randdp_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] appft_x86_64.o appft_aarch64.o
+ [LLC WITH CALLSITE ALIGNMENT] c_print_results_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] auxfnct_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] verify_x86_64.o verify_aarch64.o
+ [STACK SLOT ALIGN] fft3d_stack_slots.txt
+ [CHECK CALLSITE ALIGNMENT] c_print_results_x86_64.o c_print_results_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] randdp_x86_64.o randdp_aarch64.o
+ [CALLSITE ALIGN] fft3d_cs_align.json
+WARNING: Different stack slot numbering in function `fftXYZ`.
+WARNING: Different stack slot numbering in function `Swarztrauber`.
+ [LLC WITH CALLSITE ALIGNMENT] auxfnct_x86_64.o
+ [LLC WITH CALLSITE ALIGNMENT] fft3d_aarch64.o
+ [CHECK CALLSITE ALIGNMENT] auxfnct_x86_64.o auxfnct_aarch64.o
+ [LD] ft_aarch64_unaligned.out
+ [LLC WITH CALLSITE ALIGNMENT] fft3d_x86_64.o
+ [CHECK CALLSITE ALIGNMENT] fft3d_x86_64.o fft3d_aarch64.o
+ [LD] ft_x86_64_unaligned.out
+ [ALIGN] build_x86-64/O1/aligned_linker_script_x86.x
+ [ALIGN] build_aarch64/O1/aligned_linker_script_arm.x
+ [LD] ft_aarch64_aligned.out
+rm wtime_cs_align.json fft3d_aarch64_stack_slots.txt wtime_x86_64_stack_slots.txt verify_aarch64_stack_slots.txt appft_aarch64_stack_slots.txt mainft_x86_64_stack_slots.txt appft_stack_slots.txt mainft_aarch64_stack_slots.txt wtime_stack_slots.txt randdp_x86_64_stack_slots.txt c_timers_cs_align.json mainft_cs_align.json c_print_results_cs_align.json auxfnct_x86_64_stack_slots.txt appft_x86_64_stack_slots.txt mainft_stack_slots.txt c_print_results_aarch64_stack_slots.txt auxfnct_stack_slots.txt randdp_cs_align.json auxfnct_aarch64_stack_slots.txt c_timers_x86_64_stack_slots.txt print_results_stack_slots.txt print_results_x86_64_stack_slots.txt c_print_results_stack_slots.txt randdp_aarch64_stack_slots.txt wtime_aarch64_stack_slots.txt c_timers_aarch64_stack_slots.txt fft3d_stack_slots.txt verify_cs_align.json c_print_results_x86_64_stack_slots.txt verify_stack_slots.txt auxfnct_cs_align.json appft_cs_align.json fft3d_cs_align.json verify_x86_64_stack_slots.txt c_timers_stack_slots.txt fft3d_x86_64_stack_slots.txt randdp_stack_slots.txt print_results_cs_align.json print_results_aarch64_stack_slots.txt
+make: Leaving directory '/home/nikos/phd/unified_abi/layout/npb/ft'

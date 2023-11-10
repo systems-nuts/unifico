@@ -53,14 +53,14 @@ precond.c:757:9: note: include the header <stdio.h> or explicitly provide a decl
  [LLC] randdp_x86_64_init.o
  [LLC] c_print_results_x86_64_init.o
  [LLC] wtime_x86_64_init.o
- [LLC] verify_x86_64_init.o
- [LLC] convect_x86_64_init.o
- [LLC] utils_x86_64_init.o
  [LLC] ua_x86_64_init.o
  [LLC] adapt_x86_64_init.o
  [LLC] setup_x86_64_init.o
+ [LLC] verify_x86_64_init.o
+ [LLC] convect_x86_64_init.o
  [LLC] precond_x86_64_init.o
  [LLC] transfer_x86_64_init.o
+ [LLC] utils_x86_64_init.o
  [LLC] mason_x86_64_init.o
  [LD] ua_x86_64_init.out
 rm wtime_opt.ll print_results_opt.ll setup_opt.ll c_print_results_opt.ll adapt_opt.ll precond_opt.ll mason_opt.ll convect_opt.ll c_timers_opt.ll randdp_opt.ll utils_opt.ll diffuse_opt.ll move_opt.ll transfer_opt.ll verify_opt.ll
