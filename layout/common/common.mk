@@ -39,6 +39,10 @@ endif
 override LLC_FLAGS	+= -function-sections -data-sections
 override LLC_FLAGS	+= -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse
 
+ifndef NO_ALIGN_SLOTS
+ALIGN_SLOTS := -align-stack-slots
+endif
+
 # Set this to avoid printing warnings about unhandled instructions for stackmaps.
 ifdef NO_SM_WARN
   override LLC_FLAGS += -no-sm-warn
@@ -356,7 +360,7 @@ src_changed: *.c
 
 %_aarch64.o: %_cs_align.json %_opt.ll %_stack_slots.txt
 	@echo " [LLC WITH CALLSITE ALIGNMENT] $@"
-	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -align-stack-slots -o $@ $(word 2,$^)
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) $(ALIGN_SLOTS) -march=aarch64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
 	$(QUIET){ \
 	for PASS in $(LLC_PASSES_TO_DEBUG); do \
 		$(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^) -debug-only=$$PASS 2>$(ARM64_BUILD)/$*_$$PASS.txt; \
@@ -415,7 +419,7 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 
 %_x86_64.o: %_cs_align.json %_opt.ll %_aarch64.o %_stack_slots.txt
 	@echo " [LLC WITH CALLSITE ALIGNMENT] $@"
-	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -align-stack-slots -o $@ $(word 2,$^)
+	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) $(ALIGN_SLOTS) -march=x86-64 -filetype=obj -callsite-padding=$< -o $@ $(word 2,$^)
 	@echo " [CHECK CALLSITE ALIGNMENT] $@ $(word 3,$^)"
 	$(QUIET) $(X86_64_OBJDUMP) -d -M intel $@ >$(X86_64_BUILD)/$*_x86_64.objdump
 	$(QUIET) $(OBJDUMP) -d --print-imm-hex $(word 3,$^) >$(ARM64_BUILD)/$*_aarch64.objdump
