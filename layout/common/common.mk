@@ -463,6 +463,10 @@ check: $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 	@echo " [CHECK] Checking alignment for $^"
 	$(QUIET) $(ALIGN_CHECK) $(ARM64_ALIGNED) $(X86_64_ALIGNED)
 
+###################
+# LLVM Debug Info #
+###################
+
 debug_pass_%: %_cs_align.json %_opt.ll %_aarch64.o
 	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_X86) -march=x86-64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -debug-only=$(PASS) 2>$(X86_64_BUILD)/$*_$(PASS).txt
 	$(QUIET) $(LLC) $(LLC_FLAGS) $(LLC_FLAGS_ARM64) -march=aarch64 -filetype=obj -callsite-padding=$< -o temp.o $(word 2,$^) -debug-only=$(PASS) 2>$(ARM64_BUILD)/$*_$(PASS).txt
