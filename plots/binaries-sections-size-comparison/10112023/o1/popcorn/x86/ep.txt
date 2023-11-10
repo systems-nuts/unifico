@@ -1,0 +1,34 @@
+ep/ep_x86-64  :
+section                                             size       addr
+.text                                             127292    5242880
+.rodata                                            19742    6291456
+.rodata.cst8                                         280    6311200
+.rodata.cst16                                        192    6311488
+.rodata.cst4                                          44    6311680
+.rodata.src_stdio_vfprintf_c_xdigits                  16    6311728
+.rodata.src_errno_strerror_c_errid                    88    6311744
+.rodata.src_internal_floatscan_c_decfloat_p10s        32    6311840
+.data                                               4592    7340032
+.bss                                             1193524    8388608
+.ldata                                                 0    9590328
+.eh_frame                                          12960    9590328
+.tdata                                              4096   10485760
+.tbss                                             913584   11534336
+.init_array                                           40   11538432
+.fini_array                                            8   11538472
+.llvm_pcn_stackmaps                                18368   11542528
+.debug_str                                         15132          0
+.debug_loc                                        124303          0
+.debug_abbrev                                      30343          0
+.debug_info                                       116136          0
+.debug_macinfo                                       128          0
+.comment                                             105          0
+.stack_transform.unwind                              316          0
+.stack_transform.unwind_arange                       384          0
+.debug_line                                        61694          0
+.debug_ranges                                      11952          0
+.debug_frame                                       11016          0
+.note.gnu.gold-version                                28          0
+Total                                            2666395
+
+

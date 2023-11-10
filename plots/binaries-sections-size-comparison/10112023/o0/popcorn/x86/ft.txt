@@ -1,0 +1,39 @@
+ft/ft_x86-64  :
+section                                               size        addr
+.text                                               148940     5242880
+.rodata                                              22894     6291456
+.rodata.cst8                                           880     6314352
+.rodata.cst16                                          240     6315232
+.rodata.src_math_exp_c_half                             16     6315472
+.rodata.src_math_pow_c_bp                               16     6315488
+.rodata.src_math_pow_c_dp_l                             16     6315504
+.rodata.src_math_pow_c_dp_h                             16     6315520
+.rodata.cst4                                            44     6315536
+.rodata.src_stdio_vfprintf_c_xdigits                    16     6315584
+.rodata.src_errno_strerror_c_errid                      88     6315600
+.rodata.src_math___rem_pio2_large_c_init_jk             16     6315696
+.rodata.src_internal_floatscan_c_decfloat_p10s          32     6315712
+.data                                                 4592     7340032
+.bss                                             337270324     8388608
+.ldata                                                   0   345667128
+.eh_frame                                            13472   345667128
+.tdata                                                4096   346030080
+.tbss                                               913584   347078656
+.init_array                                             40   347082752
+.fini_array                                              8   347082792
+.llvm_pcn_stackmaps                                  27600   347086848
+.debug_str                                           16073           0
+.debug_abbrev                                        32420           0
+.debug_info                                         123314           0
+.debug_macinfo                                         138           0
+.comment                                               105           0
+.stack_transform.unwind                                560           0
+.stack_transform.unwind_arange                         576           0
+.debug_line                                          70999           0
+.debug_ranges                                        12304           0
+.debug_loc                                          128181           0
+.debug_frame                                         11456           0
+.note.gnu.gold-version                                  28           0
+Total                                            338803084
+
+

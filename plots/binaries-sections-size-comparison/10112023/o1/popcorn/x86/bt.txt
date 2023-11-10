@@ -1,0 +1,34 @@
+bt/bt_x86-64  :
+section                                              size       addr
+.text                                              183164    5242880
+.rodata                                             20322    6291456
+.rodata.cst8                                          240    6311784
+.rodata.cst16                                         208    6312032
+.rodata.cst4                                           44    6312240
+.rodata.src_stdio_vfprintf_c_xdigits                   16    6312288
+.rodata.src_errno_strerror_c_errid                     88    6312304
+.rodata.src_internal_floatscan_c_decfloat_p10s         32    6312400
+.data                                                4592    7340032
+.bss                                             45643328    8388608
+.ldata                                                  0   54040128
+.eh_frame                                           13664   54040128
+.tdata                                               4096   54525952
+.tbss                                              913584   55574528
+.init_array                                            40   55578624
+.fini_array                                             8   55578664
+.llvm_pcn_stackmaps                                 34520   55582720
+.debug_str                                          16243          0
+.debug_loc                                         134666          0
+.debug_abbrev                                       31768          0
+.debug_info                                        121596          0
+.debug_ranges                                       12192          0
+.debug_macinfo                                        142          0
+.comment                                              105          0
+.stack_transform.unwind                               688          0
+.stack_transform.unwind_arange                        640          0
+.debug_line                                         87032          0
+.debug_frame                                        11152          0
+.note.gnu.gold-version                                 28          0
+Total                                            47234198
+
+
