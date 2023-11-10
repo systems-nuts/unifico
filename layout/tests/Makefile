@@ -37,6 +37,6 @@ test-O1:
 
 clean:
 	for W in $(TEST_SUITE); do \
-		make -C $$W clean; \
+		make -C $$W deepclean; \
 	done
 
