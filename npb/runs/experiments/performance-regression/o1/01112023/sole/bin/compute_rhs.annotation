@@ -1,0 +1,2672 @@
+compute_rhs() /home/nikos/phd/unified_abi/npb/runs/experiments/performance-regression/o1/01112023/sole/bin/sp_aarch64_aligned.out
+Event: cycles
+
+  0.00  504eb0:   sub   sp, sp, #0x1d0
+        504eb4:   stp   x20, x19, [sp, #432]
+        504eb8:   stp   x29, x30, [sp, #448]
+        504ebc:   add   x29, sp, #0x1c0
+        504ec0:   adrp  x8, bedb000 <rhoq+0x230>
+        504ec4:   ldr   w8, [x8, #2516]
+        504ec8: ↓ cbz   w8, 504ed8 <compute_rhs+0x28>
+        504ecc:   mov   w0, #0x5                        // #5
+        504ed0:   nop               
+        504ed4: → bl    503b00 <timer_start>
+        504ed8:   adrp  x8, bedb000 <rhoq+0x230>
+        504edc:   ldr   w8, [x8, #1712]
+        504ee0:   subs  w8, w8, #0x1
+        504ee4: ↓ b.lt  505278 <compute_rhs+0x3c8>  // b.tstop
+        504ee8:   adrp  x8, 9459000 <rho_i+0x840d00>
+        504eec:   add   x8, x8, #0xb30
+        504ef0:   stur  x8, [x29, #-120]
+        504ef4:   adrp  x8, 8c18000 <qs+0x841530>
+        504ef8:   add   x8, x8, #0x300
+        504efc:   stur  x8, [x29, #-128]
+        504f00:   adrp  x8, 83d6000 <u+0x2946e20>
+        504f04:   add   x8, x8, #0xad0
+        504f08:   stur  x8, [x29, #-136]
+        504f0c:   adrp  x8, 9c9b000 <speed+0x8414d0>
+        504f10:   add   x8, x8, #0x360
+        504f14:   stur  x8, [x29, #-144]
+        504f18:   adrp  x8, b55f000 <vs+0x840c40>
+        504f1c:   add   x8, x8, #0xbf0
+        504f20:   stur  x8, [x29, #-152]
+        504f24:   adrp  x8, a4dc000 <square+0x840ca0>
+        504f28:   add   x8, x8, #0xb90
+        504f2c:   stur  x8, [x29, #-160]
+        504f30:   adrp  x8, ad1e000 <us+0x841470>
+        504f34:   add   x8, x8, #0x3c0
+        504f38:   stur  x8, [x29, #-168]
+        504f3c:   adrp  x8, 5a8f000 <rhs+0x2947710>
+        504f40:   add   x8, x8, #0x1f0
+        504f44:   stur  x8, [x29, #-176]
+        504f48:   adrp  x8, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        504f4c:   ldr   d5, [x8, #3312]
+        504f50:   adrp  x8, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+  0.00  504f54:   ldr   d6, [x8, #3328]
+        504f58:   adrp  x5, bedb000 <rhoq+0x230>
+        504f5c:   adrp  x6, bedb000 <rhoq+0x230>
+        504f60:   stur  xzr, [x29, #-184]
+        504f64:   stp   d6, d5, [x29, #-96]
+        504f68: ↓ b     504ff8 <compute_rhs+0x148>
+  0.00  504f6c:   ldur  x3, [x29, #-120]
+        504f70:   mov   x0, #0x4b88                     // #19336
+        504f74:   movk  x0, #0x1, lsl #16
+  0.00  504f78:   ldur  x4, [x29, #-184]
+        504f7c:   add   x3, x3, x0  
+        504f80:   stur  x3, [x29, #-120]
+        504f84:   ldur  x3, [x29, #-128]
+        504f88:   adrp  x8, bedb000 <rhoq+0x230>
+        504f8c:   ldrsw x8, [x8, #1712]
+        504f90:   add   x4, x4, #0x1
+        504f94:   add   x3, x3, x0  
+        504f98:   stur  x3, [x29, #-128]
+        504f9c:   ldur  x3, [x29, #-136]
+        504fa0:   add   x3, x3, x0  
+        504fa4:   stur  x3, [x29, #-136]
+        504fa8:   ldur  x3, [x29, #-144]
+  0.00  504fac:   add   x3, x3, x0  
+        504fb0:   stur  x3, [x29, #-144]
+        504fb4:   ldur  x3, [x29, #-152]
+        504fb8:   add   x3, x3, x0  
+        504fbc:   stur  x3, [x29, #-152]
+        504fc0:   ldur  x3, [x29, #-160]
+        504fc4:   add   x3, x3, x0  
+        504fc8:   stur  x3, [x29, #-160]
+        504fcc:   ldur  x3, [x29, #-168]
+        504fd0:   add   x3, x3, x0  
+        504fd4:   stur  x3, [x29, #-168]
+        504fd8:   ldur  x3, [x29, #-176]
+        504fdc:   mov   x0, #0x79a8                     // #31144
+        504fe0:   movk  x0, #0x6, lsl #16
+        504fe4:   add   x3, x3, x0  
+  0.00  504fe8:   stp   x4, x3, [x29, #-184]
+  0.00  504fec:   mov   x3, x4      
+        504ff0:   subs  x3, x3, x8  
+        504ff4: ↓ b.ge  5051b0 <compute_rhs+0x300>  // b.tcont
+        504ff8:   adrp  x8, bedb000 <rhoq+0x230>
+        504ffc:   ldr   w8, [x8, #1708]
+        505000:   subs  w8, w8, #0x1
+        505004: ↑ b.lt  504f6c <compute_rhs+0xbc>  // b.tstop
+        505008:   ldur  x8, [x29, #-176]
+        50500c:   ldp   x7, x20, [x29, #-152]
+        505010:   ldp   x30, x2, [x29, #-136]
+  0.00  505014:   ldur  x1, [x29, #-120]
+        505018:   stp   xzr, x8, [x29, #-112]
+        50501c:   ldp   x8, x4, [x29, #-168]
+        505020:   stur  x8, [x29, #-32]
+        505024: ↓ b     505074 <compute_rhs+0x1c4>
+  0.00  505028:   ldur  x3, [x29, #-32]
+  0.00  50502c:   ldp   x18, x0, [x29, #-112]
+  0.00  505030:   adrp  x8, bedb000 <rhoq+0x230>
+  0.00  505034:   ldrsw x8, [x8, #1708]
+        505038:   add   x3, x3, #0x338
+  0.00  50503c:   add   x18, x18, #0x1
+  0.00  505040:   stur  x3, [x29, #-32]
+        505044:   mov   x3, #0x1018                     // #4120
+  0.00  505048:   add   x0, x0, x3  
+  0.00  50504c:   mov   x3, x18     
+  0.00  505050:   add   x1, x1, #0x338
+  0.00  505054:   add   x2, x2, #0x338
+        505058:   add   x30, x30, #0x338
+  0.00  50505c:   add   x20, x20, #0x338
+  0.00  505060:   add   x7, x7, #0x338
+  0.00  505064:   add   x4, x4, #0x338
+  0.00  505068:   subs  x3, x3, x8  
+        50506c:   stp   x18, x0, [x29, #-112]
+  0.00  505070: ↑ b.ge  504f6c <compute_rhs+0xbc>  // b.tcont
+        505074:   ldr   w8, [x5, #1704]
+  0.00  505078:   subs  w8, w8, #0x1
+        50507c: ↑ b.lt  505028 <compute_rhs+0x178>  // b.tstop
+  0.00  505080:   ldur  x19, [x29, #-104]
+  0.00  505084:   mov   x0, xzr     
+  0.00  505088:   stp   x4, x7, [x29, #-56]
+  0.00  50508c:   stp   x2, x30, [x29, #-72]
+  0.00  505090:   stur  x1, [x29, #-80]
+        505094: ↓ b     5050b4 <compute_rhs+0x204>
+  0.00  505098:   ldrsw x8, [x5, #1704]
+  0.01  50509c:   str   d1, [x1, x0, lsl #3]
+  0.09  5050a0:   add   x0, x0, #0x1
+  0.01  5050a4:   mov   x3, x0      
+  0.00  5050a8:   add   x19, x19, #0x28
+  0.10  5050ac:   subs  x3, x3, x8  
+        5050b0: ↑ b.ge  505028 <compute_rhs+0x178>  // b.tcont
+  0.00  5050b4:   ldur  d0, [x19, #-16]
+  0.03  5050b8:   ldur  d1, [x19, #-8]
+  0.00  5050bc:   lsl   x8, x0, #3  
+  0.08  5050c0:   ldur  x3, [x29, #-32]
+  0.90  5050c4:   fdiv  d0, d5, d0  
+  0.89  5050c8:   fmul  d2, d0, d1  
+  0.00  5050cc:   str   d2, [x4, x8]
+  0.09  5050d0:   ldr   d2, [x19]   
+  0.00  5050d4:   fmul  d1, d1, d1  
+  0.00  5050d8:   str   d0, [x2, x8]
+  0.84  5050dc:   fmul  d3, d0, d2  
+  0.00  5050e0:   str   d3, [x3, x8]
+  0.09  5050e4:   ldr   d3, [x19, #8]
+  0.00  5050e8:   fmul  d2, d2, d2  
+  0.03  5050ec:   fadd  d1, d1, d2  
+  0.74  5050f0:   fmul  d2, d3, d3  
+  0.16  5050f4:   fadd  d1, d1, d2  
+  0.08  5050f8:   fmul  d1, d1, d6  
+  0.10  5050fc:   fmul  d1, d0, d1  
+  0.13  505100:   fmul  d2, d0, d1  
+  0.07  505104:   str   d2, [x30, x8]
+  0.00  505108:   ldr   d2, [x6, #1760]
+  0.00  50510c:   fmul  d4, d0, d3  
+  0.07  505110:   str   d1, [x20, x8]
+  0.16  505114:   str   d4, [x7, x8]
+  0.07  505118:   fmul  d0, d0, d2  
+  0.04  50511c:   ldr   d2, [x19, #16]
+  0.78  505120:   fsub  d1, d2, d1  
+  0.06  505124:   fmul  d0, d0, d1  
+  1.46  505128:   fsqrt d1, d0      
+  0.51  50512c:   fcmp  d1, d1      
+  0.09  505130:   b.vc  505098 <compute_rhs+0x1e8>
+        505134:   stur  x0, [x29, #-40]
+        505138:   nop               
+        50513c:   nop               
+        505140:   nop               
+        505144:   nop               
+        505148:   nop               
+        50514c:   nop               
+        505150:   nop               
+        505154:   nop               
+        505158:   nop               
+        50515c:   nop               
+        505160:   nop               
+        505164:   nop               
+        505168:   nop               
+        50516c:   nop               
+        505170:   nop               
+        505174:   nop               
+        505178:   nop               
+        50517c:   nop               
+        505180:   nop               
+        505184:   nop               
+        505188:   nop               
+        50518c: → bl    5164c0 <sqrt>
+        505190:   ldp   x7, x0, [x29, #-48]
+        505194:   ldp   x1, x2, [x29, #-80]
+        505198:   ldp   x30, x4, [x29, #-64]
+        50519c:   ldp   d6, d5, [x29, #-96]
+        5051a0:   adrp  x6, bedb000 <rhoq+0x230>
+        5051a4:   adrp  x5, bedb000 <rhoq+0x230>
+        5051a8:   mov   v1.16b, v0.16b
+        5051ac: ↑ b     505098 <compute_rhs+0x1e8>
+        5051b0:   and   x4, x8, #0xffffffff
+        5051b4:   mov   w8, w4      
+        5051b8:   subs  w8, w8, #0x1
+        5051bc: ↓ b.lt  505278 <compute_rhs+0x3c8>  // b.tstop
+        5051c0:   adrp  x8, bedb000 <rhoq+0x230>
+        5051c4:   add   x8, x8, #0x6a8
+        5051c8:   ldp   w20, w16, [x8]
+        5051cc:   adrp  x6, 800000 <forcing>
+        5051d0:   adrp  x18, 3147000 <forcing+0x2947000>
+        5051d4:   mov   x5, #0x79a8                     // #31144
+        5051d8:   add   x6, x6, #0x0
+        5051dc:   add   x18, x18, #0x8f0
+        5051e0:   mov   x17, #0x1018                    // #4120
+        5051e4:   movk  x5, #0x6, lsl #16
+        5051e8:   mov   x7, xzr     
+        5051ec: ↓ b     505208 <compute_rhs+0x358>
+        5051f0:   add   x7, x7, #0x1
+        5051f4:   mov   x8, x7      
+        5051f8:   add   x6, x6, x5  
+        5051fc:   add   x18, x18, x5
+        505200:   subs  x8, x8, x4  
+        505204: ↓ b.eq  505278 <compute_rhs+0x3c8>  // b.none
+        505208:   mov   w8, w16     
+        50520c:   subs  w8, w8, #0x1
+        505210: ↑ b.lt  5051f0 <compute_rhs+0x340>  // b.tstop
+        505214:   mov   x19, x18    
+        505218:   mov   x3, x6      
+        50521c:   mov   x8, xzr     
+        505220: ↓ b     50523c <compute_rhs+0x38c>
+  0.00  505224:   add   x8, x8, #0x1
+  0.00  505228:   mov   x2, x8      
+  0.00  50522c:   add   x3, x3, x17 
+  0.00  505230:   add   x19, x19, x17
+  0.00  505234:   subs  x2, x2, x16 
+        505238: ↑ b.eq  5051f0 <compute_rhs+0x340>  // b.none
+  0.00  50523c:   mov   w2, w20     
+  0.00  505240:   subs  w2, w2, #0x1
+        505244: ↑ b.lt  505224 <compute_rhs+0x374>  // b.tstop
+        505248:   mov   x0, x19     
+  0.00  50524c:   mov   x1, x3      
+  0.00  505250:   mov   x2, x20     
+  0.09  505254:   ldp   q0, q1, [x1]
+  0.33  505258:   ldr   x30, [x1, #32]
+  0.01  50525c:   subs  x2, x2, #0x1
+  0.33  505260:   add   x1, x1, #0x28
+  0.55  505264:   stp   q0, q1, [x0]
+  0.33  505268:   str   x30, [x0, #32]
+  0.02  50526c:   add   x0, x0, #0x28
+  0.00  505270: ↑ b.ne  505254 <compute_rhs+0x3a4>  // b.any
+  0.00  505274: ↑ b     505224 <compute_rhs+0x374>
+        505278:   adrp  x8, bedb000 <rhoq+0x230>
+        50527c:   ldr   w8, [x8, #2516]
+        505280: ↓ cbz   w8, 505294 <compute_rhs+0x3e4>
+        505284:   mov   w0, #0x2                        // #2
+        505288:   nop               
+        50528c:   nop               
+        505290: → bl    503b00 <timer_start>
+        505294:   adrp  x8, bedb000 <rhoq+0x230>
+        505298:   ldr   w8, [x8, #2512]
+        50529c:   subs  w8, w8, #0x1
+        5052a0: ↓ b.lt  505bc4 <compute_rhs+0xd14>  // b.tstop
+        5052a4:   adrp  x8, bedb000 <rhoq+0x230>
+        5052a8:   ldr   w3, [x8, #2508]
+        5052ac:   adrp  x8, bedb000 <rhoq+0x230>
+        5052b0:   ldr   w2, [x8, #2504]
+        5052b4:   adrp  x8, bedb000 <rhoq+0x230>
+        5052b8:   ldr   d7, [x8, #2048]
+        5052bc:   adrp  x8, bedb000 <rhoq+0x230>
+        5052c0:   ldr   d1, [x8, #2312]
+        5052c4:   adrp  x8, bedb000 <rhoq+0x230>
+        5052c8:   ldr   d8, [x8, #2064]
+        5052cc:   adrp  x8, bedb000 <rhoq+0x230>
+        5052d0:   ldr   d9, [x8, #2384]
+        5052d4:   adrp  x8, bedb000 <rhoq+0x230>
+        5052d8:   ldr   d0, [x8, #1928]
+        5052dc:   adrp  x8, bedb000 <rhoq+0x230>
+        5052e0:   ldr   d10, [x8, #1776]
+        5052e4:   adrp  x8, bedb000 <rhoq+0x230>
+        5052e8:   ldr   d11, [x8, #2080]
+        5052ec:   adrp  x8, bedb000 <rhoq+0x230>
+        5052f0:   ldr   d12, [x8, #2096]
+        5052f4:   adrp  x8, bedb000 <rhoq+0x230>
+        5052f8:   ldr   d14, [x8, #2112]
+        5052fc:   adrp  x8, bedb000 <rhoq+0x230>
+        505300:   ldr   d15, [x8, #2392]
+        505304:   adrp  x8, bedb000 <rhoq+0x230>
+        505308:   fmul  d5, d9, d0  
+        50530c:   ldr   d0, [x8, #2400]
+        505310:   adrp  x8, bedb000 <rhoq+0x230>
+        505314:   sxtw  x0, w3      
+        505318:   mov   x6, x3      
+        50531c:   stur  d0, [x29, #-120]
+        505320:   ldr   d0, [x8, #2408]
+        505324:   adrp  x8, bedb000 <rhoq+0x230>
+        505328:   add   x6, x6, #0x1
+        50532c:   mov   x18, #0x4ed0                    // #20176
+        505330:   stur  d0, [x29, #-128]
+        505334:   ldr   d0, [x8, #1744]
+        505338:   adrp  x8, bedb000 <rhoq+0x230>
+        50533c:   ldr   d13, [x8, #1968]
+        505340:   mov   w8, w2      
+        505344:   sub   w8, w8, #0x1
+        505348:   stur  x8, [x29, #-136]
+        50534c:   sxtw  x30, w8     
+        505350:   mov   w8, w2      
+        505354:   sub   w8, w8, #0x3
+        505358:   sxtw  x19, w8     
+        50535c:   mov   w8, w2      
+        505360:   sub   w8, w8, #0x2
+        505364:   sxtw  x1, w8      
+        505368:   adrp  x8, bedb000 <rhoq+0x230>
+        50536c:   ldrsw x8, [x8, #2512]
+        505370:   stur  d0, [x29, #-32]
+        505374:   mov   x20, #0x4ec0                    // #20160
+        505378:   adrp  x16, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        50537c:   str   x8, [sp, #80]
+        505380:   sxtw  x8, w2      
+        505384:   stur  x0, [x29, #-184]
+        505388:   str   x3, [sp, #88]
+        50538c:   stur  x2, [x29, #-192]
+        505390:   stur  x8, [x29, #-176]
+        505394:   add   x8, x8, w2, sxtw #2
+        505398:   adrp  x2, 5af7000 <u+0x67e20>
+        50539c:   lsl   x8, x8, #3  
+        5053a0:   add   x2, x2, #0xba0
+        5053a4:   mov   x0, #0x28                       // #40
+        5053a8:   add   x3, x2, x8  
+        5053ac:   mul   x30, x30, x0
+        5053b0:   str   x3, [sp, #112]
+        5053b4:   add   x3, x2, x30 
+        5053b8:   str   x3, [sp, #104]
+        5053bc:   adrp  x3, 5af7000 <u+0x67e20>
+        5053c0:   add   x3, x3, #0xba0
+        5053c4:   str   x3, [sp, #160]
+        5053c8:   adrp  x3, 31b0000 <rhs+0x68710>
+        5053cc:   add   x3, x3, #0x2b0
+        5053d0:   add   x8, x8, x3  
+        5053d4:   str   x8, [sp, #120]
+        5053d8:   adrp  x8, 31b0000 <rhs+0x68710>
+        5053dc:   add   x8, x8, #0x2b0
+        5053e0:   add   x8, x8, #0x38
+        5053e4:   str   x8, [sp, #200]
+        5053e8:   adrp  x8, 5af7000 <u+0x67e20>
+        5053ec:   add   x8, x8, #0xba0
+        5053f0:   add   x8, x8, #0x38
+        5053f4:   str   x8, [sp, #192]
+        5053f8:   adrp  x8, 31b0000 <rhs+0x68710>
+        5053fc:   add   x8, x8, #0x2b0
+        505400:   add   x8, x8, #0x28
+        505404:   stp   x8, xzr, [sp, #176]
+        505408:   adrp  x8, 5af7000 <u+0x67e20>
+        50540c:   add   x8, x8, #0xba0
+        505410:   add   x8, x8, #0x28
+        505414:   str   x8, [sp, #208]
+        505418:   adrp  x8, 31b0000 <rhs+0x68710>
+        50541c:   add   x8, x8, #0x2b0
+        505420:   madd  x1, x1, x0, x2
+        505424:   madd  x19, x19, x0, x2
+        505428:   add   x30, x30, x3
+        50542c:   add   x8, x8, #0x50
+        505430:   add   x3, x3, #0x78
+        505434:   stp   x1, x19, [sp, #128]
+        505438:   str   x30, [sp, #144]
+        50543c:   str   x8, [sp, #168]
+        505440:   str   x3, [sp, #152]
+        505444:   stp   d8, d7, [x29, #-56]
+        505448:   stp   d10, d9, [x29, #-208]
+        50544c:   stur  d5, [x29, #-64]
+        505450:   stur  d1, [x29, #-216]
+        505454:   stp   d12, d11, [x29, #-104]
+        505458:   stur  d14, [x29, #-112]
+        50545c:   str   d15, [sp, #224]
+        505460:   str   x6, [sp, #216]
+        505464:   str   d13, [sp, #72]
+        505468:   ldur  d5, [x29, #-216]
+        50546c:   mov   x8, #0x1                        // #1
+        505470:   adrp  x17, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        505474:   movk  x18, #0x1, lsl #16
+        505478:   movk  x20, #0x1, lsl #16
+        50547c: ↓ b     505550 <compute_rhs+0x6a0>
+        505480:   ldr   x1, [sp, #184]
+        505484:   mov   x3, #0x4b88                     // #19336
+        505488:   movk  x3, #0x1, lsl #16
+  0.00  50548c:   ldr   x2, [sp, #96]
+        505490:   add   x1, x1, x3  
+        505494:   ldr   x3, [sp, #200]
+        505498:   str   x1, [sp, #184]
+        50549c:   mov   x1, #0x79a8                     // #31144
+        5054a0:   movk  x1, #0x6, lsl #16
+        5054a4:   add   x3, x3, x1  
+        5054a8:   str   x3, [sp, #200]
+        5054ac:   ldr   x3, [sp, #192]
+        5054b0:   mov   x8, x2      
+        5054b4:   add   x8, x8, #0x1
+        5054b8:   add   x3, x3, x1  
+        5054bc:   str   x3, [sp, #192]
+        5054c0:   ldr   x3, [sp, #176]
+        5054c4:   add   x3, x3, x1  
+        5054c8:   str   x3, [sp, #176]
+        5054cc:   ldr   x3, [sp, #208]
+        5054d0:   add   x3, x3, x1  
+        5054d4:   str   x3, [sp, #208]
+        5054d8:   ldr   x3, [sp, #168]
+        5054dc:   add   x3, x3, x1  
+        5054e0:   str   x3, [sp, #168]
+        5054e4:   ldr   x3, [sp, #160]
+        5054e8:   add   x3, x3, x1  
+        5054ec:   str   x3, [sp, #160]
+        5054f0:   ldr   x3, [sp, #152]
+        5054f4:   add   x3, x3, x1  
+        5054f8:   str   x3, [sp, #152]
+        5054fc:   ldr   x3, [sp, #112]
+        505500:   add   x3, x3, x1  
+        505504:   str   x3, [sp, #112]
+        505508:   ldr   x3, [sp, #104]
+        50550c:   add   x3, x3, x1  
+        505510:   str   x3, [sp, #104]
+        505514:   ldr   x3, [sp, #128]
+        505518:   add   x3, x3, x1  
+        50551c:   str   x3, [sp, #128]
+        505520:   ldr   x3, [sp, #136]
+        505524:   add   x3, x3, x1  
+        505528:   str   x3, [sp, #136]
+        50552c:   ldr   x3, [sp, #144]
+        505530:   add   x3, x3, x1  
+        505534:   str   x3, [sp, #144]
+        505538:   ldr   x3, [sp, #120]
+        50553c:   add   x3, x3, x1  
+        505540:   str   x3, [sp, #120]
+        505544:   ldr   x3, [sp, #80]
+        505548:   subs  x2, x2, x3  
+        50554c: ↓ b.ge  505bc4 <compute_rhs+0xd14>  // b.tcont
+        505550:   str   x8, [sp, #96]
+        505554:   ldr   x8, [sp, #88]
+        505558:   subs  w8, w8, #0x1
+        50555c: ↑ b.lt  505480 <compute_rhs+0x5d0>  // b.tstop
+        505560:   ldr   x3, [sp, #192]
+        505564:   mov   x8, #0x1                        // #1
+        505568:   stur  x3, [x29, #-160]
+        50556c:   ldr   x3, [sp, #200]
+        505570:   stur  x3, [x29, #-144]
+        505574:   ldr   x3, [sp, #184]
+        505578:   stur  x3, [x29, #-152]
+        50557c: ↓ b     5055bc <compute_rhs+0x70c>
+  0.01  505580:   ldp   x3, x1, [x29, #-152]
+        505584:   ldur  x2, [x29, #-168]
+        505588:   add   x3, x3, #0x338
+  0.00  50558c:   stur  x3, [x29, #-152]
+        505590:   mov   x3, #0x1018                     // #4120
+        505594:   add   x1, x1, x3  
+        505598:   stur  x1, [x29, #-144]
+  0.00  50559c:   ldur  x1, [x29, #-160]
+        5055a0:   mov   x8, x2      
+        5055a4:   add   x8, x8, #0x1
+        5055a8:   add   x1, x1, x3  
+  0.00  5055ac:   ldur  x3, [x29, #-184]
+        5055b0:   stur  x1, [x29, #-160]
+  0.00  5055b4:   subs  x2, x2, x3  
+        5055b8: ↓ b.ge  5058d0 <compute_rhs+0xa20>  // b.tcont
+        5055bc:   stur  x8, [x29, #-168]
+  0.00  5055c0:   ldur  x8, [x29, #-192]
+        5055c4:   ldp   d3, d1, [x29, #-56]
+  0.00  5055c8:   subs  w8, w8, #0x1
+  0.00  5055cc:   adrp  x8, a4dc000 <square+0x840ca0>
+  0.00  5055d0:   add   x8, x8, #0xb90
+        5055d4:   ldp   d13, d12, [x29, #-208]
+  0.00  5055d8:   ldur  d0, [x29, #-64]
+  0.00  5055dc:   ldr   d11, [sp, #224]
+        5055e0:   ldur  x6, [x29, #-176]
+        5055e4:   stur  x8, [x29, #-72]
+  0.00  5055e8:   adrp  x8, 9c9b000 <speed+0x8414d0>
+        5055ec:   add   x8, x8, #0x360
+        5055f0:   mov   x0, #0x4ec8                     // #20168
+        5055f4:   stur  x8, [x29, #-80]
+  0.00  5055f8:   adrp  x8, ad1e000 <us+0x841470>
+        5055fc:   adrp  x30, b55f000 <vs+0x840c40>
+        505600:   adrp  x5, 83d6000 <u+0x2946e20>
+        505604:   adrp  x1, 8c18000 <qs+0x841530>
+  0.00  505608:   movk  x0, #0x1, lsl #16
+        50560c:   add   x8, x8, #0x3c0
+        505610:   add   x30, x30, #0xbf0
+        505614:   add   x5, x5, #0xad0
+  0.00  505618:   add   x1, x1, #0x300
+        50561c:   stur  x8, [x29, #-88]
+        505620: ↑ b.lt  505580 <compute_rhs+0x6d0>  // b.tstop
+        505624:   ldp   x4, x19, [x29, #-160]
+  0.02  505628:   ldur  x3, [x29, #-144]
+        50562c:   mov   x2, xzr     
+        505630:   mov   x7, x4      
+  0.00  505634:   ldur  d6, [x4, #-16]
+  0.50  505638:   ldr   d4, [x4, #24]
+  0.00  50563c:   ldur  d2, [x3, #-16]
+        505640:   ldur  x8, [x29, #-72]
+  0.02  505644:   fadd  d6, d6, d6  
+  0.33  505648:   fsub  d4, d4, d6  
+  0.99  50564c:   ldur  d6, [x4, #-56]
+  0.00  505650:   add   x8, x8, x19 
+        505654:   ldr   d8, [x8, x0]
+  0.10  505658:   ldr   d15, [x8, x18]
+  0.01  50565c:   fadd  d4, d6, d4  
+  0.13  505660:   fmul  d4, d1, d4  
+  0.19  505664:   fadd  d2, d2, d4  
+  0.19  505668:   ldr   d4, [x4, #32]
+        50566c:   ldur  d6, [x4, #-48]
+  0.05  505670:   ldr   d14, [x8, x20]
+  0.20  505674:   stur  d8, [x29, #-40]
+        505678:   fadd  d8, d8, d8  
+  0.05  50567c:   fsub  d7, d4, d6  
+  0.06  505680:   fmul  d7, d5, d7  
+  0.29  505684:   fsub  d2, d2, d7  
+  0.00  505688:   ldur  d7, [x4, #-8]
+  0.01  50568c:   stur  d2, [x3, #-16]
+  0.02  505690:   ldur  d2, [x3, #-8]
+  0.00  505694:   ldur  x8, [x29, #-80]
+        505698:   fadd  d7, d7, d7  
+  0.42  50569c:   fsub  d7, d4, d7  
+  0.90  5056a0:   fadd  d7, d6, d7  
+  0.21  5056a4:   fmul  d7, d3, d7  
+  0.41  5056a8:   fadd  d2, d2, d7  
+  0.02  5056ac:   fsub  d7, d15, d8 
+  0.00  5056b0:   fadd  d7, d7, d14 
+  0.00  5056b4:   fmul  d7, d7, d0  
+  0.49  5056b8:   fadd  d9, d7, d2  
+  0.01  5056bc:   fmul  d2, d15, d4 
+        5056c0:   fmul  d4, d14, d6 
+        5056c4:   add   x8, x8, x19 
+  0.09  5056c8:   fsub  d10, d2, d4 
+  0.01  5056cc:   ldr   d2, [x4, #56]
+        5056d0:   ldr   d6, [x8, x18]
+  0.08  5056d4:   ldur  d4, [x4, #-24]
+  0.63  5056d8:   mov   v1.16b, v11.16b
+        5056dc:   add   x2, x2, #0x1
+  0.11  5056e0:   fsub  d7, d2, d6  
+  0.11  5056e4:   fsub  d11, d7, d4 
+  0.01  5056e8:   ldr   d7, [x8, x20]
+  0.02  5056ec:   fadd  d11, d11, d7
+  0.15  5056f0:   fmul  d11, d11, d13
+  0.35  5056f4:   fadd  d10, d10, d11
+  0.51  5056f8:   fmul  d10, d5, d10
+  0.53  5056fc:   fsub  d9, d9, d10 
+  0.00  505700:   stur  d9, [x3, #-8]
+  0.02  505704:   ldr   d9, [x3]    
+        505708:   ldr   d10, [x7, #40]!
+  0.44  50570c:   ldr   d11, [x4]   
+  0.73  505710:   ldur  d3, [x4, #-40]
+  0.00  505714:   ldur  x8, [x29, #-88]
+        505718:   ldur  d0, [x29, #-96]
+  0.09  50571c:   fadd  d11, d11, d11
+  0.01  505720:   fsub  d11, d10, d11
+  0.00  505724:   fadd  d11, d3, d11
+  0.00  505728:   add   x8, x8, x19 
+  0.08  50572c:   fmul  d11, d0, d11
+  0.01  505730:   mov   v0.16b, v12.16b
+        505734:   ldr   d12, [x8, x0]
+  0.10  505738:   fadd  d9, d9, d11 
+  0.01  50573c:   ldr   d11, [x8, x18]
+  0.00  505740:   fmul  d10, d15, d10
+  0.09  505744:   fadd  d12, d12, d12
+  0.00  505748:   fmul  d3, d14, d3 
+  0.16  50574c:   fsub  d11, d11, d12
+        505750:   ldr   d12, [x8, x20]
+  0.10  505754:   fsub  d3, d10, d3 
+  0.03  505758:   fmul  d3, d5, d3  
+  0.00  50575c:   ldr   d10, [x4, #8]
+  0.09  505760:   fadd  d11, d12, d11
+  0.04  505764:   fmul  d11, d0, d11
+  0.08  505768:   fadd  d9, d9, d11 
+  0.18  50576c:   fsub  d3, d9, d3  
+  0.06  505770:   ldr   d9, [x4, #48]
+        505774:   ldur  d11, [x4, #-32]
+        505778:   ldur  d12, [x29, #-104]
+  0.01  50577c:   str   d3, [x3]    
+  0.05  505780:   ldr   d3, [x3, #8]
+        505784:   fadd  d10, d10, d10
+  0.00  505788:   fsub  d10, d9, d10
+  0.21  50578c:   fadd  d10, d11, d10
+  0.94  505790:   add   x8, x30, x19
+  0.02  505794:   fmul  d10, d12, d10
+        505798:   ldr   d12, [x8, x0]
+  0.17  50579c:   fadd  d3, d3, d10 
+  0.00  5057a0:   ldr   d10, [x8, x18]
+  0.04  5057a4:   fmul  d9, d15, d9 
+  0.06  5057a8:   fadd  d12, d12, d12
+  0.19  5057ac:   fsub  d10, d10, d12
+        5057b0:   ldr   d12, [x8, x20]
+  0.10  5057b4:   add   x8, x5, x19 
+  0.02  5057b8:   fadd  d10, d12, d10
+  0.19  5057bc:   fmul  d10, d0, d10
+  0.41  5057c0:   fadd  d3, d3, d10 
+  0.00  5057c4:   fmul  d10, d14, d11
+        5057c8:   fsub  d9, d9, d10 
+        5057cc:   fmul  d9, d5, d9  
+  0.54  5057d0:   fsub  d3, d3, d9  
+  0.00  5057d4:   ldr   d9, [x4, #16]
+        5057d8:   mov   v12.16b, v0.16b
+  0.00  5057dc:   ldur  d0, [x29, #-112]
+  0.00  5057e0:   str   d3, [x3, #8]
+  0.02  5057e4:   ldr   d3, [x3, #16]
+  0.02  5057e8:   fadd  d9, d9, d9  
+  0.03  5057ec:   fsub  d10, d2, d9 
+  0.47  5057f0:   fadd  d10, d4, d10
+  1.00  5057f4:   fmul  d10, d0, d10
+        5057f8:   ldr   d11, [x8, x0]
+  0.36  5057fc:   fadd  d3, d3, d10 
+        505800:   ldr   d10, [x8, x18]
+  0.00  505804:   ldur  d0, [x29, #-40]
+  0.10  505808:   fadd  d11, d11, d11
+        50580c:   mov   x4, x7      
+  0.19  505810:   fsub  d10, d10, d11
+  0.00  505814:   ldr   d11, [x8, x20]
+  0.10  505818:   fmul  d0, d0, d8  
+  0.00  50581c:   fmul  d8, d14, d14
+        505820:   add   x8, x1, x19 
+  0.16  505824:   fadd  d10, d11, d10
+  0.28  505828:   fmul  d10, d1, d10
+  0.46  50582c:   fadd  d3, d3, d10 
+        505830:   fmul  d10, d15, d15
+  0.01  505834:   fsub  d0, d10, d0 
+        505838:   ldur  d10, [x29, #-120]
+  0.09  50583c:   fadd  d0, d0, d8  
+  0.00  505840:   ldr   d8, [x8, x0]
+  0.01  505844:   mov   v11.16b, v1.16b
+  0.09  505848:   fmul  d0, d0, d10 
+  0.34  50584c:   fadd  d0, d0, d3  
+  0.01  505850:   ldr   d3, [x8, x18]
+        505854:   fmul  d8, d9, d8  
+  0.09  505858:   add   x19, x19, #0x8
+  0.20  50585c:   fmul  d3, d2, d3  
+  0.01  505860:   fsub  d3, d3, d8  
+        505864:   ldr   d8, [x8, x20]
+  0.10  505868:   mov   x8, x2      
+  0.00  50586c:   subs  x8, x8, x6  
+  0.00  505870:   fmul  d8, d4, d8  
+  0.10  505874:   fadd  d3, d3, d8  
+  0.01  505878:   ldur  d8, [x29, #-128]
+  0.04  50587c:   fmul  d3, d8, d3  
+  0.35  505880:   fadd  d0, d0, d3  
+  0.00  505884:   ldur  d3, [x29, #-32]
+  0.00  505888:   fmul  d2, d2, d3  
+  0.00  50588c:   fmul  d3, d6, d13 
+  0.10  505890:   fsub  d2, d2, d3  
+  0.00  505894:   ldur  d3, [x29, #-32]
+  0.02  505898:   fmul  d2, d15, d2 
+        50589c:   fmul  d3, d4, d3  
+  0.09  5058a0:   fmul  d4, d7, d13 
+  0.00  5058a4:   fsub  d3, d3, d4  
+  0.02  5058a8:   fmul  d3, d14, d3 
+  0.08  5058ac:   fsub  d2, d2, d3  
+  0.25  5058b0:   fmul  d2, d5, d2  
+  0.46  5058b4:   fsub  d0, d0, d2  
+  0.00  5058b8:   ldp   d3, d1, [x29, #-56]
+  0.00  5058bc:   str   d0, [x3, #16]
+  0.00  5058c0:   ldur  d0, [x29, #-64]
+  0.00  5058c4:   add   x3, x3, #0x28
+        5058c8: ↑ b.lt  505634 <compute_rhs+0x784>  // b.tstop
+        5058cc: ↑ b     505580 <compute_rhs+0x6d0>
+  0.00  5058d0:   ldr   x6, [sp, #216]
+        5058d4:   ldr   d13, [sp, #72]
+        5058d8:   ldur  x8, [x29, #-184]
+        5058dc:   subs  w8, w8, #0x1
+        5058e0: ↑ b.lt  505480 <compute_rhs+0x5d0>  // b.tstop
+  0.00  5058e4:   ldp   x2, x0, [sp, #168]
+        5058e8:   ldr   x1, [sp, #208]
+        5058ec:   mov   x19, #0x1                       // #1
+        5058f0:   adrp  x4, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        5058f4:   adrp  x5, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        5058f8:   mov   x3, xzr     
+  0.00  5058fc:   add   x30, x1, x3 
+        505900:   ldr   d2, [x30]   
+        505904:   ldr   d3, [x4, #3336]
+  0.00  505908:   ldr   d4, [x5, #3360]
+  0.00  50590c:   ldr   d0, [x0, x3]
+  0.03  505910:   fmul  d2, d2, d3  
+  0.00  505914:   ldr   d3, [x30, #40]
+  0.01  505918:   fmul  d3, d3, d4  
+  0.03  50591c:   fadd  d2, d2, d3  
+        505920:   ldr   d3, [x30, #80]
+  0.01  505924:   fadd  d2, d3, d2  
+  0.01  505928:   fmul  d2, d13, d2 
+  0.01  50592c:   fsub  d0, d0, d2  
+        505930:   str   d0, [x0, x3]
+  0.00  505934:   add   x3, x3, #0x8
+        505938:   mov   x8, x3      
+        50593c:   subs  x8, x8, #0x28
+  0.02  505940: ↑ b.ne  5058fc <compute_rhs+0xa4c>  // b.any
+  0.01  505944:   add   x3, x1, x8  
+  0.00  505948:   ldr   d2, [x3]    
+  0.00  50594c:   ldr   d3, [x16, #3344]
+  0.00  505950:   ldr   d4, [x3, #40]
+  0.00  505954:   ldr   d6, [x17, #3352]
+        505958:   ldr   d0, [x2, x8]
+  0.00  50595c:   fmul  d2, d2, d3  
+  0.00  505960:   fmul  d4, d4, d6  
+  0.00  505964:   fsub  d2, d4, d2  
+  0.01  505968:   ldr   d4, [x3, #80]
+  0.00  50596c:   fmul  d3, d4, d3  
+  0.01  505970:   fsub  d2, d2, d3  
+  0.00  505974:   ldr   d3, [x3, #120]
+  0.01  505978:   fadd  d2, d3, d2  
+  0.01  50597c:   fmul  d2, d13, d2 
+  0.02  505980:   fsub  d0, d0, d2  
+        505984:   str   d0, [x2, x8]
+  0.00  505988:   add   x8, x8, #0x8
+  0.00  50598c:   mov   x3, x8      
+  0.00  505990:   subs  x3, x3, #0x28
+        505994: ↑ b.ne  505944 <compute_rhs+0xa94>  // b.any
+  0.00  505998:   add   x19, x19, #0x1
+        50599c:   mov   x8, #0x1018                     // #4120
+        5059a0:   add   x0, x0, x8  
+        5059a4:   add   x1, x1, x8  
+  0.00  5059a8:   add   x2, x2, x8  
+        5059ac:   mov   x8, x19     
+        5059b0:   subs  x8, x8, x6  
+        5059b4: ↑ b.ne  5058f8 <compute_rhs+0xa48>  // b.any
+        5059b8:   ldur  x8, [x29, #-184]
+  0.00  5059bc:   subs  w8, w8, #0x1
+        5059c0: ↑ b.lt  505480 <compute_rhs+0x5d0>  // b.tstop
+        5059c4:   ldr   x8, [sp, #208]
+        5059c8:   mov   x2, #0x1                        // #1
+        5059cc:   stur  x8, [x29, #-40]
+        5059d0:   ldr   x8, [sp, #152]
+        5059d4:   stur  x8, [x29, #-72]
+        5059d8:   ldr   x6, [sp, #160]
+        5059dc: ↓ b     505a14 <compute_rhs+0xb64>
+  0.00  5059e0:   ldp   x2, x3, [x29, #-80]
+  0.00  5059e4:   mov   x8, #0x1018                     // #4120
+  0.00  5059e8:   add   x6, x6, x8  
+  0.00  5059ec:   add   x3, x3, x8  
+        5059f0:   stur  x3, [x29, #-72]
+        5059f4:   ldur  x3, [x29, #-40]
+  0.00  5059f8:   add   x2, x2, #0x1
+  0.00  5059fc:   add   x3, x3, x8  
+  0.00  505a00:   stur  x3, [x29, #-40]
+        505a04:   ldr   x3, [sp, #216]
+  0.00  505a08:   mov   x8, x2      
+  0.00  505a0c:   subs  x8, x8, x3  
+  0.00  505a10: ↓ b.eq  505ad4 <compute_rhs+0xc24>  // b.none
+  0.00  505a14:   ldur  x8, [x29, #-176]
+  0.00  505a18:   stur  x2, [x29, #-80]
+  0.00  505a1c:   subs  w8, w8, #0x5
+  0.00  505a20: ↑ b.lt  5059e0 <compute_rhs+0xb30>  // b.tstop
+  0.00  505a24:   ldur  x1, [x29, #-40]
+  0.00  505a28:   ldur  x3, [x29, #-72]
+  0.00  505a2c:   mov   x30, #0x3                       // #3
+  0.00  505a30:   mov   w19, #0x5                       // #5
+        505a34:   mov   w2, #0x4                        // #4
+  0.00  505a38:   mov   w4, w19     
+  0.09  505a3c:   mov   x8, #0x28                       // #40
+  0.00  505a40:   mov   w5, w2      
+  0.00  505a44:   madd  x4, x4, x8, x6
+  0.09  505a48:   madd  x5, x5, x8, x6
+  0.00  505a4c:   add   x30, x30, #0x1
+  0.00  505a50:   mov   x7, xzr     
+  1.62  505a54:   add   x8, x1, x7  
+  0.00  505a58:   ldr   d3, [x8, #40]
+  0.03  505a5c:   ldr   d4, [x16, #3344]
+  0.00  505a60:   ldr   d2, [x8]    
+  0.44  505a64:   ldr   d6, [x17, #3352]
+  0.00  505a68:   ldr   d0, [x3, x7]
+  0.03  505a6c:   fmul  d3, d3, d4  
+  0.47  505a70:   fsub  d2, d2, d3  
+  0.00  505a74:   ldr   d3, [x8, #80]
+  0.22  505a78:   fmul  d3, d3, d6  
+  0.06  505a7c:   fadd  d2, d2, d3  
+  0.43  505a80:   ldr   d3, [x5, x7]
+  0.03  505a84:   fmul  d3, d3, d4  
+  0.10  505a88:   fsub  d2, d2, d3  
+  0.41  505a8c:   ldr   d3, [x4, x7]
+  0.48  505a90:   fadd  d2, d3, d2  
+  1.11  505a94:   fmul  d2, d13, d2 
+  2.13  505a98:   fsub  d0, d0, d2  
+        505a9c:   str   d0, [x3, x7]
+  0.05  505aa0:   add   x7, x7, #0x8
+  0.03  505aa4:   mov   x8, x7      
+        505aa8:   subs  x8, x8, #0x28
+        505aac: ↑ b.ne  505a54 <compute_rhs+0xba4>  // b.any
+  0.44  505ab0:   ldur  x0, [x29, #-136]
+        505ab4:   mov   x8, x30     
+  0.00  505ab8:   add   w19, w19, #0x1
+        505abc:   add   w2, w2, #0x1
+  0.09  505ac0:   add   x3, x3, #0x28
+  0.00  505ac4:   add   x1, x1, #0x28
+  0.00  505ac8:   subs  x8, x8, x0  
+        505acc: ↑ b.ne  505a38 <compute_rhs+0xb88>  // b.any
+  0.01  505ad0: ↑ b     5059e0 <compute_rhs+0xb30>
+  0.00  505ad4:   ldur  x8, [x29, #-184]
+        505ad8:   subs  w8, w8, #0x1
+        505adc: ↑ b.lt  505480 <compute_rhs+0x5d0>  // b.tstop
+        505ae0:   ldp   x2, x30, [sp, #120]
+  0.00  505ae4:   ldp   x5, x1, [sp, #136]
+  0.00  505ae8:   ldp   x19, x3, [sp, #104]
+        505aec:   mov   x4, #0x1                        // #1
+        505af0:   mov   x0, xzr     
+  0.00  505af4:   ldr   d3, [x30, x0]
+  0.00  505af8:   ldr   d4, [x16, #3344]
+  0.00  505afc:   ldr   d2, [x5, x0]
+  0.02  505b00:   ldr   d6, [x17, #3352]
+  0.00  505b04:   ldr   d0, [x1, x0]
+  0.01  505b08:   fmul  d3, d3, d4  
+  0.01  505b0c:   fsub  d2, d2, d3  
+  0.00  505b10:   ldr   d3, [x19, x0]
+  0.01  505b14:   fmul  d3, d3, d6  
+  0.01  505b18:   fadd  d2, d2, d3  
+        505b1c:   ldr   d3, [x3, x0]
+  0.01  505b20:   fmul  d3, d3, d4  
+  0.01  505b24:   fsub  d2, d2, d3  
+  0.01  505b28:   fmul  d2, d13, d2 
+  0.01  505b2c:   fsub  d0, d0, d2  
+        505b30:   str   d0, [x1, x0]
+  0.00  505b34:   add   x0, x0, #0x8
+  0.00  505b38:   mov   x8, x0      
+        505b3c:   subs  x8, x8, #0x28
+  0.01  505b40: ↑ b.ne  505af4 <compute_rhs+0xc44>  // b.any
+        505b44:   adrp  x7, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        505b48:   adrp  x6, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+  0.01  505b4c:   ldr   d3, [x19, x8]
+  0.00  505b50:   ldr   d4, [x6, #3360]
+  0.00  505b54:   ldr   d2, [x30, x8]
+  0.00  505b58:   ldr   d0, [x2, x8]
+  0.00  505b5c:   fmul  d3, d3, d4  
+  0.00  505b60:   fadd  d2, d2, d3  
+  0.00  505b64:   ldr   d3, [x3, x8]
+  0.01  505b68:   ldr   d4, [x7, #3336]
+  0.00  505b6c:   fmul  d3, d3, d4  
+  0.00  505b70:   fadd  d2, d2, d3  
+  0.01  505b74:   fmul  d2, d13, d2 
+  0.01  505b78:   fsub  d0, d0, d2  
+  0.00  505b7c:   str   d0, [x2, x8]
+  0.00  505b80:   add   x8, x8, #0x8
+  0.00  505b84:   mov   x0, x8      
+  0.00  505b88:   subs  x0, x0, #0x28
+        505b8c: ↑ b.ne  505b4c <compute_rhs+0xc9c>  // b.any
+  0.00  505b90:   ldr   x6, [sp, #216]
+        505b94:   add   x4, x4, #0x1
+        505b98:   mov   x8, #0x1018                     // #4120
+        505b9c:   add   x3, x3, x8  
+  0.00  505ba0:   add   x19, x19, x8
+        505ba4:   add   x30, x30, x8
+        505ba8:   add   x5, x5, x8  
+  0.00  505bac:   add   x1, x1, x8  
+  0.00  505bb0:   add   x2, x2, x8  
+        505bb4:   mov   x8, x4      
+        505bb8:   subs  x8, x8, x6  
+        505bbc: ↑ b.ne  505af0 <compute_rhs+0xc40>  // b.any
+  0.00  505bc0: ↑ b     505480 <compute_rhs+0x5d0>
+        505bc4:   adrp  x8, bedb000 <rhoq+0x230>
+        505bc8:   ldr   w8, [x8, #2516]
+  0.00  505bcc: ↓ cbz   w8, 505d2c <compute_rhs+0xe7c>
+        505bd0:   mov   w0, #0x2                        // #2
+        505bd4:   nop               
+        505bd8:   nop               
+        505bdc:   nop               
+        505be0:   nop               
+        505be4:   nop               
+        505be8:   nop               
+        505bec:   nop               
+        505bf0:   nop               
+        505bf4:   nop               
+        505bf8:   nop               
+        505bfc:   nop               
+        505c00:   nop               
+        505c04:   nop               
+        505c08:   nop               
+        505c0c:   nop               
+        505c10:   nop               
+        505c14:   nop               
+        505c18:   nop               
+        505c1c:   nop               
+        505c20:   nop               
+        505c24:   nop               
+        505c28:   nop               
+        505c2c:   nop               
+        505c30:   nop               
+        505c34:   nop               
+        505c38:   nop               
+        505c3c:   nop               
+        505c40:   nop               
+        505c44:   nop               
+        505c48:   nop               
+        505c4c:   nop               
+        505c50:   nop               
+        505c54:   nop               
+        505c58:   nop               
+        505c5c:   nop               
+        505c60:   nop               
+        505c64:   nop               
+        505c68:   nop               
+        505c6c:   nop               
+        505c70:   nop               
+        505c74:   nop               
+        505c78:   nop               
+        505c7c:   nop               
+        505c80:   nop               
+        505c84:   nop               
+        505c88:   nop               
+        505c8c:   nop               
+        505c90:   nop               
+        505c94:   nop               
+        505c98:   nop               
+        505c9c:   nop               
+        505ca0:   nop               
+        505ca4:   nop               
+        505ca8:   nop               
+        505cac:   nop               
+        505cb0:   nop               
+        505cb4:   nop               
+        505cb8:   nop               
+        505cbc:   nop               
+        505cc0:   nop               
+        505cc4:   nop               
+        505cc8:   nop               
+        505ccc:   nop               
+        505cd0:   nop               
+        505cd4:   nop               
+        505cd8:   nop               
+        505cdc:   nop               
+        505ce0:   nop               
+        505ce4:   nop               
+        505ce8:   nop               
+        505cec:   nop               
+        505cf0:   nop               
+        505cf4:   nop               
+        505cf8:   nop               
+        505cfc:   nop               
+        505d00:   nop               
+        505d04:   nop               
+        505d08:   nop               
+        505d0c:   nop               
+        505d10: → bl    503b60 <timer_stop>
+        505d14:   adrp  x8, bedb000 <rhoq+0x230>
+        505d18:   ldr   w8, [x8, #2516]
+        505d1c: ↓ cbz   w8, 505d2c <compute_rhs+0xe7c>
+        505d20:   mov   w0, #0x3                        // #3
+        505d24:   nop               
+        505d28: → bl    503b00 <timer_start>
+        505d2c:   adrp  x8, bedb000 <rhoq+0x230>
+        505d30:   ldr   w8, [x8, #2512]
+        505d34:   subs  w8, w8, #0x1
+        505d38: ↓ b.lt  506678 <compute_rhs+0x17c8>  // b.tstop
+        505d3c:   adrp  x8, bedb000 <rhoq+0x230>
+        505d40:   ldr   w3, [x8, #2508]
+        505d44:   adrp  x8, bedb000 <rhoq+0x230>
+        505d48:   ldr   w2, [x8, #2504]
+        505d4c:   adrp  x8, bedb000 <rhoq+0x230>
+        505d50:   ldr   d5, [x8, #2136]
+        505d54:   adrp  x8, bedb000 <rhoq+0x230>
+        505d58:   ldr   d1, [x8, #2336]
+        505d5c:   adrp  x8, bedb000 <rhoq+0x230>
+        505d60:   ldr   d6, [x8, #2152]
+        505d64:   adrp  x8, bedb000 <rhoq+0x230>
+        505d68:   ldr   d7, [x8, #2424]
+        505d6c:   adrp  x8, bedb000 <rhoq+0x230>
+        505d70:   ldr   d8, [x8, #2168]
+        505d74:   adrp  x8, bedb000 <rhoq+0x230>
+        505d78:   ldr   d0, [x8, #1928]
+        505d7c:   adrp  x8, bedb000 <rhoq+0x230>
+        505d80:   ldr   d10, [x8, #1776]
+        505d84:   adrp  x8, bedb000 <rhoq+0x230>
+        505d88:   ldr   d11, [x8, #2184]
+        505d8c:   adrp  x8, bedb000 <rhoq+0x230>
+        505d90:   ldr   d12, [x8, #2200]
+        505d94:   adrp  x8, bedb000 <rhoq+0x230>
+        505d98:   ldr   d15, [x8, #2432]
+        505d9c:   adrp  x8, bedb000 <rhoq+0x230>
+        505da0:   fmul  d9, d7, d0  
+        505da4:   ldr   d0, [x8, #2440]
+        505da8:   adrp  x8, bedb000 <rhoq+0x230>
+        505dac:   sxtw  x19, w2     
+        505db0:   adrp  x0, 5af6000 <u+0x66e20>
+        505db4:   stur  d0, [x29, #-128]
+        505db8:   ldr   d0, [x8, #2448]
+        505dbc:   adrp  x8, bedb000 <rhoq+0x230>
+        505dc0:   mov   x1, #0x1018                     // #4120
+        505dc4:   add   x0, x0, #0xbb0
+        505dc8:   stur  d0, [x29, #-136]
+        505dcc:   ldr   d0, [x8, #1744]
+        505dd0:   adrp  x8, bedb000 <rhoq+0x230>
+        505dd4:   ldr   d13, [x8, #1968]
+        505dd8:   adrp  x8, bedb000 <rhoq+0x230>
+        505ddc:   ldrsw x8, [x8, #2512]
+        505de0:   stur  d0, [x29, #-40]
+        505de4:   mov   x6, #0x4ec8                     // #20168
+        505de8:   mov   x20, #0x5200                    // #20992
+        505dec:   str   x8, [sp, #136]
+        505df0:   sxtw  x8, w3      
+        505df4:   stur  x8, [x29, #-216]
+        505df8:   mov   w8, w2      
+        505dfc:   stur  x2, [x29, #-192]
+        505e00:   add   w8, w8, #0x1
+        505e04:   adrp  x2, 31af000 <rhs+0x67710>
+        505e08:   stur  x8, [x29, #-144]
+        505e0c:   add   x2, x2, #0x2c0
+        505e10:   mov   x8, #0x1028                     // #4136
+        505e14:   add   x8, x8, x2  
+        505e18:   str   x8, [sp, #200]
+        505e1c:   mov   x8, #0x2030                     // #8240
+        505e20:   add   x8, x8, x2  
+        505e24:   str   x8, [sp, #168]
+        505e28:   mov   x8, #0x3048                     // #12360
+        505e2c:   add   x8, x8, x2  
+        505e30:   str   x8, [sp, #176]
+        505e34:   mov   x8, #0x1                        // #1
+        505e38:   stp   x3, x8, [sp, #144]
+        505e3c:   adrp  x8, 5af6000 <u+0x66e20>
+        505e40:   add   x8, x8, #0xbb0
+        505e44:   str   x8, [sp, #224]
+        505e48:   add   x8, x0, x1  
+        505e4c:   str   x8, [sp, #216]
+        505e50:   adrp  x8, 31af000 <rhs+0x67710>
+        505e54:   add   x8, x8, #0x2c0
+        505e58:   str   x8, [sp, #208]
+        505e5c:   add   x8, x2, x1  
+        505e60:   str   x8, [sp, #192]
+        505e64:   sxtw  x8, w3      
+        505e68:   str   x8, [sp, #160]
+        505e6c:   adrp  x8, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        505e70:   str   xzr, [sp, #184]
+        505e74:   stp   d10, d1, [x29, #-208]
+        505e78:   ldr   d14, [x8, #3344]
+        505e7c:   stur  d15, [x29, #-120]
+        505e80:   ldur  d15, [x29, #-200]
+        505e84:   mov   x7, #0x4b90                     // #19344
+        505e88:   adrp  x4, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        505e8c:   movk  x6, #0x1, lsl #16
+        505e90:   movk  x20, #0x1, lsl #16
+        505e94:   movk  x7, #0x1, lsl #16
+        505e98:   stur  x19, [x29, #-184]
+        505e9c:   stp   d6, d5, [x29, #-80]
+        505ea0:   stur  d7, [x29, #-32]
+  0.00  505ea4:   stp   d9, d8, [x29, #-96]
+        505ea8:   stp   d12, d11, [x29, #-112]
+        505eac: ↓ b     505f3c <compute_rhs+0x108c>
+        505eb0:   ldr   x1, [sp, #184]
+        505eb4:   mov   x3, #0x4b88                     // #19336
+        505eb8:   movk  x3, #0x1, lsl #16
+        505ebc:   ldr   x2, [sp, #152]
+  0.00  505ec0:   add   x1, x1, x3  
+        505ec4:   ldr   x3, [sp, #224]
+        505ec8:   str   x1, [sp, #184]
+        505ecc:   mov   x1, #0x79a8                     // #31144
+        505ed0:   movk  x1, #0x6, lsl #16
+  0.00  505ed4:   add   x3, x3, x1  
+        505ed8:   str   x3, [sp, #224]
+        505edc:   ldr   x3, [sp, #200]
+        505ee0:   mov   x8, x2      
+        505ee4:   add   x8, x8, #0x1
+        505ee8:   str   x8, [sp, #152]
+        505eec:   add   x3, x3, x1  
+        505ef0:   str   x3, [sp, #200]
+        505ef4:   ldr   x3, [sp, #192]
+        505ef8:   add   x3, x3, x1  
+        505efc:   str   x3, [sp, #192]
+        505f00:   ldr   x3, [sp, #216]
+        505f04:   add   x3, x3, x1  
+        505f08:   str   x3, [sp, #216]
+        505f0c:   ldr   x3, [sp, #168]
+        505f10:   add   x3, x3, x1  
+        505f14:   str   x3, [sp, #168]
+        505f18:   ldr   x3, [sp, #176]
+        505f1c:   add   x3, x3, x1  
+        505f20:   str   x3, [sp, #176]
+        505f24:   ldr   x3, [sp, #208]
+        505f28:   add   x3, x3, x1  
+        505f2c:   str   x3, [sp, #208]
+        505f30:   ldr   x3, [sp, #136]
+  0.00  505f34:   subs  x2, x2, x3  
+        505f38: ↓ b.ge  506678 <compute_rhs+0x17c8>  // b.tcont
+        505f3c:   ldr   x8, [sp, #144]
+        505f40:   subs  w8, w8, #0x1
+        505f44: ↓ b.lt  5062a8 <compute_rhs+0x13f8>  // b.tstop
+        505f48:   ldr   x8, [sp, #200]
+        505f4c:   mov   x3, #0x1                        // #1
+  0.00  505f50:   stur  x8, [x29, #-152]
+        505f54:   ldr   x8, [sp, #224]
+        505f58:   stur  x8, [x29, #-168]
+        505f5c:   ldr   x8, [sp, #184]
+        505f60:   stur  x8, [x29, #-160]
+        505f64: ↓ b     505fa8 <compute_rhs+0x10f8>
+        505f68:   ldur  x8, [x29, #-160]
+        505f6c:   mov   x0, #0x1018                     // #4120
+        505f70:   ldur  x2, [x29, #-176]
+  0.00  505f74:   add   x8, x8, #0x338
+        505f78:   stur  x8, [x29, #-160]
+        505f7c:   ldur  x8, [x29, #-168]
+        505f80:   mov   x3, x2      
+  0.00  505f84:   add   x3, x3, #0x1
+        505f88:   add   x8, x8, x0  
+        505f8c:   stur  x8, [x29, #-168]
+        505f90:   ldur  x8, [x29, #-152]
+  0.00  505f94:   add   x8, x8, x0  
+  0.00  505f98:   stur  x8, [x29, #-152]
+        505f9c:   ldur  x8, [x29, #-216]
+        505fa0:   subs  x2, x2, x8  
+        505fa4: ↓ b.ge  5062a8 <compute_rhs+0x13f8>  // b.tcont
+  0.00  505fa8:   ldp   x8, x18, [x29, #-192]
+        505fac:   ldp   d11, d3, [x29, #-80]
+  0.00  505fb0:   ldur  d6, [x29, #-88]
+        505fb4:   ldur  d2, [x29, #-208]
+        505fb8:   stur  x3, [x29, #-176]
+        505fbc:   mov   w3, w8      
+  0.00  505fc0:   adrp  x5, a4dc000 <square+0x840ca0>
+        505fc4:   adrp  x1, 9c9b000 <speed+0x8414d0>
+        505fc8:   adrp  x2, b55f000 <vs+0x840c40>
+        505fcc:   adrp  x8, 83d6000 <u+0x2946e20>
+  0.00  505fd0:   adrp  x19, 8c18000 <qs+0x841530>
+  0.00  505fd4:   subs  w3, w3, #0x1
+        505fd8:   add   x5, x5, #0xb90
+        505fdc:   add   x1, x1, #0x360
+  0.00  505fe0:   add   x2, x2, #0xbf0
+        505fe4:   add   x8, x8, #0xad0
+        505fe8:   add   x19, x19, #0x300
+        505fec: ↑ b.lt  505f68 <compute_rhs+0x10b8>  // b.tstop
+        505ff0:   ldp   x17, x16, [x29, #-160]
+  0.02  505ff4:   ldur  x30, [x29, #-168]
+        505ff8:   mov   x0, xzr     
+  0.49  505ffc:   adrp  x3, ad1e000 <us+0x841470>
+  0.00  506000:   add   x3, x3, #0x3c0
+        506004:   add   x3, x3, x17 
+        506008:   mov   v0.16b, v6.16b
+  0.10  50600c:   ldr   d6, [x3, x6]
+  0.00  506010:   ldr   d7, [x30, #4120]
+  0.00  506014:   ldr   d5, [x30, #8240]
+  0.10  506018:   ldur  d4, [x16, #-16]
+  0.00  50601c:   stur  d6, [x29, #-56]
+  0.01  506020:   fadd  d7, d7, d7  
+  0.27  506024:   fsub  d5, d5, d7  
+  0.92  506028:   ldp   d7, d10, [x30]
+  0.00  50602c:   ldr   d9, [x30, #4128]
+  0.00  506030:   ldr   d1, [x3, x20]
+  0.10  506034:   ldr   d12, [x3, x7]
+  0.03  506038:   fadd  d5, d7, d5  
+  0.24  50603c:   fmul  d5, d3, d5  
+  0.09  506040:   fadd  d7, d4, d5  
+  0.01  506044:   ldr   d4, [x30, #8256]
+        506048:   ldr   d5, [x30, #16]
+  0.07  50604c:   fadd  d9, d9, d9  
+  0.02  506050:   add   x3, x5, x17 
+  0.53  506054:   ldur  d3, [x29, #-32]
+  0.02  506058:   fsub  d8, d4, d5  
+  0.09  50605c:   fmul  d8, d15, d8 
+  0.15  506060:   fsub  d7, d7, d8  
+  0.00  506064:   ldr   d8, [x30, #8248]
+  0.00  506068:   stur  d7, [x16, #-16]
+  0.05  50606c:   ldur  d7, [x16, #-8]
+        506070:   add   x0, x0, #0x1
+  0.00  506074:   fsub  d9, d8, d9  
+  0.20  506078:   fadd  d9, d10, d9 
+  1.00  50607c:   fmul  d9, d11, d9 
+        506080:   ldr   d11, [x3, x6]
+  0.08  506084:   fadd  d7, d7, d9  
+  0.05  506088:   ldr   d9, [x3, x20]
+  0.00  50608c:   fmul  d8, d1, d8  
+  0.05  506090:   fadd  d11, d11, d11
+  0.16  506094:   fsub  d9, d9, d11 
+        506098:   ldr   d11, [x3, x7]
+  0.05  50609c:   add   x3, x1, x17 
+  0.06  5060a0:   fadd  d9, d11, d9 
+  0.05  5060a4:   fmul  d9, d3, d9  
+  0.23  5060a8:   fadd  d7, d7, d9  
+  0.03  5060ac:   fmul  d9, d12, d10
+  0.02  5060b0:   fsub  d8, d8, d9  
+  0.07  5060b4:   fmul  d8, d15, d8 
+  0.51  5060b8:   fsub  d7, d7, d8  
+  0.01  5060bc:   ldr   d8, [x30, #4136]
+  0.00  5060c0:   stur  d7, [x16, #-8]
+  0.02  5060c4:   ldr   d7, [x16]   
+  0.00  5060c8:   ldur  d3, [x29, #-96]
+  0.01  5060cc:   fadd  d8, d8, d8  
+  0.43  5060d0:   fsub  d8, d4, d8  
+  0.88  5060d4:   fadd  d8, d5, d8  
+  0.04  5060d8:   fmul  d8, d0, d8  
+  0.00  5060dc:   fadd  d0, d6, d6  
+  0.36  5060e0:   fadd  d7, d7, d8  
+  0.00  5060e4:   stur  d0, [x29, #-64]
+        5060e8:   fsub  d8, d1, d0  
+  0.00  5060ec:   ldr   d0, [x3, x20]
+  0.10  5060f0:   fmul  d4, d1, d4  
+        5060f4:   fmul  d5, d12, d5 
+  0.01  5060f8:   fsub  d11, d4, d5 
+  0.13  5060fc:   ldr   d4, [x30, #8272]
+  0.00  506100:   stur  d0, [x29, #-48]
+        506104:   fadd  d8, d8, d12 
+  0.03  506108:   mov   v9.16b, v12.16b
+  0.56  50610c:   ldp   d12, d5, [x30, #24]
+  0.00  506110:   fmul  d8, d8, d3  
+  0.21  506114:   fadd  d10, d8, d7 
+  0.03  506118:   fsub  d8, d4, d0  
+  0.05  50611c:   fsub  d3, d8, d5  
+        506120:   ldr   d8, [x3, x7]
+  0.08  506124:   ldur  d6, [x29, #-104]
+  0.02  506128:   add   x3, x2, x17 
+        50612c:   ldur  d0, [x29, #-32]
+  0.22  506130:   fadd  d3, d3, d8  
+  0.42  506134:   fmul  d3, d3, d2  
+  0.47  506138:   fadd  d3, d11, d3 
+  0.51  50613c:   fmul  d3, d15, d3 
+  0.01  506140:   ldr   d11, [x30, #4144]
+  0.53  506144:   fsub  d3, d10, d3 
+        506148:   ldr   d10, [x30, #8264]
+        50614c:   str   d3, [x16]   
+  0.03  506150:   ldr   d3, [x16, #8]
+  0.00  506154:   fadd  d11, d11, d11
+  0.00  506158:   fsub  d11, d10, d11
+  0.44  50615c:   fadd  d11, d12, d11
+  0.85  506160:   fmul  d11, d6, d11
+  0.00  506164:   ldr   d6, [x3, x6]
+  0.13  506168:   fadd  d3, d3, d11 
+        50616c:   ldr   d11, [x3, x20]
+  0.00  506170:   mov   v7.16b, v2.16b
+  0.10  506174:   fadd  d6, d6, d6  
+  0.11  506178:   fsub  d6, d11, d6 
+  0.00  50617c:   ldr   d11, [x3, x7]
+  0.09  506180:   add   x3, x8, x17 
+  0.04  506184:   fadd  d6, d11, d6 
+  0.03  506188:   fmul  d6, d0, d6  
+  0.08  50618c:   fadd  d3, d3, d6  
+  0.08  506190:   fmul  d6, d1, d10 
+        506194:   fmul  d10, d9, d12
+  0.00  506198:   fsub  d6, d6, d10 
+  0.02  50619c:   fmul  d6, d15, d6 
+  0.20  5061a0:   fsub  d3, d3, d6  
+  0.00  5061a4:   ldr   d6, [x30, #4152]
+  0.00  5061a8:   ldur  d0, [x29, #-112]
+  0.02  5061ac:   str   d3, [x16, #8]
+  0.05  5061b0:   ldr   d3, [x16, #16]
+  0.01  5061b4:   fadd  d6, d6, d6  
+  0.01  5061b8:   fsub  d10, d4, d6 
+  0.19  5061bc:   fadd  d10, d5, d10
+  0.76  5061c0:   fmul  d10, d0, d10
+        5061c4:   ldr   d11, [x3, x6]
+  0.17  5061c8:   fadd  d3, d3, d10 
+  0.03  5061cc:   ldr   d10, [x3, x20]
+  0.00  5061d0:   ldur  d0, [x29, #-120]
+  0.06  5061d4:   fadd  d11, d11, d11
+  0.03  5061d8:   mov   v12.16b, v9.16b
+  0.12  5061dc:   fsub  d10, d10, d11
+  0.00  5061e0:   ldr   d11, [x3, x7]
+  0.10  5061e4:   fmul  d9, d9, d9  
+        5061e8:   add   x3, x19, x17
+        5061ec:   add   x17, x17, #0x8
+  0.07  5061f0:   fadd  d10, d11, d10
+  0.07  5061f4:   fmul  d10, d0, d10
+        5061f8:   ldp   d2, d0, [x29, #-64]
+  0.22  5061fc:   fadd  d3, d3, d10 
+  0.02  506200:   fmul  d10, d1, d1 
+  0.00  506204:   add   x30, x30, #0x28
+  0.00  506208:   fmul  d2, d0, d2  
+  0.08  50620c:   fsub  d2, d10, d2 
+  0.02  506210:   ldur  d10, [x29, #-128]
+        506214:   fadd  d2, d2, d9  
+        506218:   ldr   d9, [x3, x6]
+  0.10  50621c:   ldur  d0, [x29, #-40]
+  0.01  506220:   fmul  d2, d2, d10 
+  0.36  506224:   fadd  d2, d2, d3  
+  0.01  506228:   ldr   d3, [x3, x20]
+  0.06  50622c:   fmul  d6, d6, d9  
+  0.05  506230:   ldur  d9, [x29, #-136]
+  0.27  506234:   fmul  d3, d4, d3  
+  0.34  506238:   fsub  d3, d3, d6  
+        50623c:   ldr   d6, [x3, x7]
+  0.04  506240:   mov   x3, x0      
+  0.06  506244:   subs  x3, x3, x18 
+  0.01  506248:   fmul  d6, d5, d6  
+  0.38  50624c:   fadd  d3, d3, d6  
+  0.47  506250:   fmul  d3, d9, d3  
+  0.55  506254:   fadd  d2, d2, d3  
+  0.00  506258:   fmul  d3, d4, d0  
+  0.00  50625c:   ldur  d0, [x29, #-48]
+  0.00  506260:   ldp   d6, d11, [x29, #-88]
+  0.09  506264:   fmul  d4, d0, d7  
+  0.00  506268:   fsub  d3, d3, d4  
+  0.01  50626c:   fmul  d0, d1, d3  
+  0.10  506270:   ldur  d1, [x29, #-40]
+        506274:   fmul  d4, d8, d7  
+  0.00  506278:   fmul  d3, d5, d1  
+  0.00  50627c:   fsub  d3, d3, d4  
+  0.12  506280:   fmul  d3, d12, d3 
+  0.06  506284:   fsub  d0, d0, d3  
+  0.00  506288:   ldur  d3, [x29, #-72]
+  0.47  50628c:   fmul  d0, d15, d0 
+  0.55  506290:   fsub  d0, d2, d0  
+        506294:   str   d0, [x16, #16]
+  0.00  506298:   mov   v2.16b, v7.16b
+        50629c:   add   x16, x16, #0x28
+  0.00  5062a0: ↑ b.lt  505ffc <compute_rhs+0x114c>  // b.tstop
+  0.01  5062a4: ↑ b     505f68 <compute_rhs+0x10b8>
+  0.00  5062a8:   ldur  x19, [x29, #-184]
+        5062ac:   adrp  x5, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        5062b0:   mov   w8, w19     
+        5062b4:   subs  w8, w8, #0x1
+        5062b8:   adrp  x8, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        5062bc: ↓ b.lt  5063bc <compute_rhs+0x150c>  // b.tstop
+        5062c0:   ldr   x3, [sp, #216]
+        5062c4:   ldr   x2, [sp, #192]
+        5062c8:   mov   x30, #0x1                       // #1
+        5062cc:   mov   x1, xzr     
+  0.02  5062d0:   add   x0, x3, x1  
+  0.00  5062d4:   ldr   d2, [x0]    
+        5062d8:   ldr   d3, [x5, #3336]
+  0.00  5062dc:   ldr   d4, [x8, #3360]
+  0.00  5062e0:   ldr   d0, [x2, x1]
+  0.00  5062e4:   fmul  d2, d2, d3  
+  0.00  5062e8:   ldr   d3, [x0, #4120]
+  0.01  5062ec:   fmul  d3, d3, d4  
+  0.00  5062f0:   fadd  d2, d2, d3  
+        5062f4:   ldr   d3, [x0, #8240]
+  0.01  5062f8:   fadd  d2, d3, d2  
+  0.01  5062fc:   fmul  d2, d13, d2 
+  0.01  506300:   fsub  d0, d0, d2  
+  0.00  506304:   str   d0, [x2, x1]
+  0.00  506308:   add   x1, x1, #0x8
+  0.00  50630c:   mov   x0, x1      
+        506310:   subs  x0, x0, #0x28
+        506314: ↑ b.ne  5062d0 <compute_rhs+0x1420>  // b.any
+  0.00  506318:   ldur  x0, [x29, #-144]
+  0.00  50631c:   add   x30, x30, #0x1
+        506320:   mov   x1, x30     
+        506324:   add   x2, x2, #0x28
+  0.00  506328:   add   x3, x3, #0x28
+        50632c:   subs  x1, x1, x0  
+        506330: ↑ b.ne  5062cc <compute_rhs+0x141c>  // b.any
+        506334:   mov   w8, w19     
+        506338:   subs  w8, w8, #0x1
+        50633c: ↓ b.lt  5063bc <compute_rhs+0x150c>  // b.tstop
+        506340:   ldr   x3, [sp, #216]
+        506344:   ldr   x2, [sp, #168]
+        506348:   mov   x8, #0x1                        // #1
+        50634c:   mov   x1, xzr     
+  0.01  506350:   add   x0, x3, x1  
+  0.00  506354:   ldr   d2, [x0]    
+        506358:   ldr   d3, [x0, #4120]
+  0.00  50635c:   ldr   d4, [x4, #3352]
+  0.00  506360:   ldr   d0, [x2, x1]
+  0.00  506364:   fmul  d2, d2, d14 
+  0.00  506368:   fmul  d3, d3, d4  
+  0.00  50636c:   fsub  d2, d3, d2  
+  0.00  506370:   ldr   d3, [x0, #8240]
+  0.00  506374:   fmul  d3, d3, d14 
+  0.00  506378:   fsub  d2, d2, d3  
+  0.00  50637c:   ldr   d3, [x0, #12360]
+  0.01  506380:   fadd  d2, d3, d2  
+  0.01  506384:   fmul  d2, d13, d2 
+  0.02  506388:   fsub  d0, d0, d2  
+  0.00  50638c:   str   d0, [x2, x1]
+        506390:   add   x1, x1, #0x8
+        506394:   mov   x0, x1      
+  0.00  506398:   subs  x0, x0, #0x28
+        50639c: ↑ b.ne  506350 <compute_rhs+0x14a0>  // b.any
+  0.00  5063a0:   ldur  x0, [x29, #-144]
+        5063a4:   add   x8, x8, #0x1
+        5063a8:   mov   x1, x8      
+        5063ac:   add   x2, x2, #0x28
+  0.00  5063b0:   add   x3, x3, #0x28
+        5063b4:   subs  x1, x1, x0  
+        5063b8: ↑ b.ne  50634c <compute_rhs+0x149c>  // b.any
+  0.00  5063bc:   ldr   x16, [sp, #160]
+        5063c0:   sub   x16, x16, #0x2
+        5063c4:   mov   w8, w16     
+        5063c8:   subs  w8, w8, #0x3
+        5063cc: ↓ b.lt  506500 <compute_rhs+0x1650>  // b.tstop
+        5063d0:   ldr   x8, [sp, #144]
+        5063d4:   mov   x0, #0x3                        // #3
+        5063d8:   sub   w8, w8, #0x1
+        5063dc:   stur  x8, [x29, #-152]
+        5063e0:   mov   w8, #0x5                        // #5
+        5063e4:   stur  w8, [x29, #-48]
+        5063e8:   mov   w8, #0x4                        // #4
+        5063ec:   stur  w8, [x29, #-56]
+        5063f0:   ldr   x8, [sp, #216]
+        5063f4:   stur  x8, [x29, #-64]
+        5063f8:   ldr   x18, [sp, #176]
+  0.00  5063fc: ↓ b     506444 <compute_rhs+0x1594>
+  0.00  506400:   ldur  w8, [x29, #-48]
+  0.00  506404:   ldur  x3, [x29, #-64]
+  0.00  506408:   ldur  x19, [x29, #-184]
+  0.00  50640c:   add   x0, x0, #0x1
+  0.00  506410:   add   w8, w8, #0x1
+  0.00  506414:   stur  w8, [x29, #-48]
+  0.00  506418:   ldur  w8, [x29, #-56]
+  0.00  50641c:   add   w8, w8, #0x1
+  0.00  506420:   stur  w8, [x29, #-56]
+  0.00  506424:   mov   x8, #0x1018                     // #4120
+        506428:   add   x3, x3, x8  
+  0.00  50642c:   stur  x3, [x29, #-64]
+        506430:   ldur  x3, [x29, #-152]
+  0.00  506434:   add   x18, x18, x8
+  0.00  506438:   mov   x8, x0      
+  0.00  50643c:   subs  x8, x8, x3  
+  0.00  506440: ↓ b.eq  506500 <compute_rhs+0x1650>  // b.none
+  0.00  506444:   mov   w8, w19     
+  0.00  506448:   subs  w8, w8, #0x1
+        50644c: ↑ b.lt  506400 <compute_rhs+0x1550>  // b.tstop
+  0.00  506450:   ldur  w2, [x29, #-56]
+  0.00  506454:   ldur  w8, [x29, #-48]
+        506458:   ldr   x3, [sp, #224]
+  0.00  50645c:   mov   x17, #0x1                       // #1
+  0.00  506460:   mov   w30, w2     
+  0.00  506464:   ldur  x2, [x29, #-64]
+  0.00  506468:   mov   w1, w8      
+        50646c:   mov   x8, #0x1018                     // #4120
+  0.00  506470:   madd  x1, x1, x8, x3
+  0.00  506474:   madd  x30, x30, x8, x3
+  0.00  506478:   mov   x3, x18     
+  0.08  50647c:   mov   x5, xzr     
+  1.60  506480:   add   x19, x2, x5 
+  0.00  506484:   ldr   d3, [x19, #4120]
+  0.00  506488:   ldr   d2, [x19]   
+  0.10  50648c:   ldr   d4, [x4, #3352]
+  0.36  506490:   ldr   d0, [x3, x5]
+  0.01  506494:   fmul  d3, d3, d14 
+  0.11  506498:   fsub  d2, d2, d3  
+  0.34  50649c:   ldr   d3, [x19, #8240]
+  0.13  5064a0:   fmul  d3, d3, d4  
+  0.02  5064a4:   fadd  d2, d2, d3  
+  0.10  5064a8:   ldr   d3, [x30, x5]
+  0.36  5064ac:   fmul  d3, d3, d14 
+  0.04  5064b0:   fsub  d2, d2, d3  
+  0.10  5064b4:   ldr   d3, [x1, x5]
+  0.62  5064b8:   fadd  d2, d3, d2  
+  0.98  5064bc:   fmul  d2, d13, d2 
+  2.13  5064c0:   fsub  d0, d0, d2  
+  0.07  5064c4:   str   d0, [x3, x5]
+  0.02  5064c8:   add   x5, x5, #0x8
+  0.00  5064cc:   mov   x19, x5     
+  0.01  5064d0:   subs  x19, x19, #0x28
+  0.00  5064d4: ↑ b.ne  506480 <compute_rhs+0x15d0>  // b.any
+  0.44  5064d8:   ldur  x19, [x29, #-144]
+  0.00  5064dc:   add   x17, x17, #0x1
+  0.00  5064e0:   mov   x8, x17     
+  0.00  5064e4:   add   x1, x1, #0x28
+  0.09  5064e8:   add   x30, x30, #0x28
+  0.00  5064ec:   add   x3, x3, #0x28
+  0.00  5064f0:   add   x2, x2, #0x28
+  0.00  5064f4:   subs  x8, x8, x19 
+        5064f8: ↑ b.ne  50647c <compute_rhs+0x15cc>  // b.any
+  0.01  5064fc: ↑ b     506400 <compute_rhs+0x1550>
+  0.00  506500:   mov   w8, w19     
+        506504:   subs  w8, w8, #0x1
+        506508:   adrp  x17, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        50650c: ↑ b.lt  505eb0 <compute_rhs+0x1000>  // b.tstop
+        506510:   ldr   x30, [sp, #160]
+        506514:   ldr   x2, [sp, #224]
+        506518:   mov   x3, #0x1018                     // #4120
+        50651c:   mov   x8, x16     
+  0.00  506520:   mov   x18, x30    
+        506524:   sub   x18, x18, #0x1
+        506528:   mov   x0, x18     
+        50652c:   madd  x30, x30, x3, x2
+        506530:   mul   x0, x0, x3  
+        506534:   add   x19, x2, x0 
+        506538:   madd  x8, x8, x3, x2
+        50653c:   mov   x3, x30     
+        506540:   mov   x2, #0xffffffffffffcfb8         // #-12360
+        506544:   add   x3, x3, x2  
+        506548:   ldr   x2, [sp, #208]
+        50654c:   mov   x5, #0x1                        // #1
+        506550:   add   x0, x0, x2  
+        506554:   mov   x1, xzr     
+  0.00  506558:   ldr   d3, [x8, x1]
+  0.00  50655c:   ldr   d2, [x3, x1]
+  0.00  506560:   ldr   d4, [x4, #3352]
+  0.00  506564:   ldr   d0, [x0, x1]
+  0.00  506568:   fmul  d3, d3, d14 
+        50656c:   fsub  d2, d2, d3  
+  0.00  506570:   ldr   d3, [x19, x1]
+  0.00  506574:   fmul  d3, d3, d4  
+  0.00  506578:   fadd  d2, d2, d3  
+  0.00  50657c:   ldr   d3, [x30, x1]
+  0.00  506580:   fmul  d3, d3, d14 
+  0.01  506584:   fsub  d2, d2, d3  
+  0.01  506588:   fmul  d2, d13, d2 
+  0.02  50658c:   fsub  d0, d0, d2  
+  0.00  506590:   str   d0, [x0, x1]
+  0.00  506594:   add   x1, x1, #0x8
+        506598:   mov   x2, x1      
+  0.00  50659c:   subs  x2, x2, #0x28
+  0.02  5065a0: ↑ b.ne  506558 <compute_rhs+0x16a8>  // b.any
+        5065a4:   ldur  x1, [x29, #-144]
+        5065a8:   add   x5, x5, #0x1
+        5065ac:   mov   x2, x5      
+  0.00  5065b0:   add   x30, x30, #0x28
+        5065b4:   add   x19, x19, #0x28
+        5065b8:   add   x8, x8, #0x28
+        5065bc:   add   x3, x3, #0x28
+  0.00  5065c0:   add   x0, x0, #0x28
+        5065c4:   subs  x2, x2, x1  
+        5065c8: ↑ b.ne  506554 <compute_rhs+0x16a4>  // b.any
+  0.00  5065cc:   ldur  x19, [x29, #-184]
+        5065d0:   adrp  x1, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        5065d4:   mov   w8, w19     
+        5065d8:   subs  w8, w8, #0x1
+        5065dc: ↑ b.lt  505eb0 <compute_rhs+0x1000>  // b.tstop
+        5065e0:   ldr   x8, [sp, #160]
+        5065e4:   ldr   x0, [sp, #224]
+        5065e8:   mov   x2, #0x1018                     // #4120
+        5065ec:   mov   x30, #0x1                       // #1
+        5065f0:   mul   x8, x8, x2  
+        5065f4:   madd  x18, x18, x2, x0
+        5065f8:   madd  x16, x16, x2, x0
+        5065fc:   ldr   x2, [sp, #208]
+        506600:   add   x3, x0, x8  
+        506604:   add   x8, x8, x2  
+        506608:   mov   x2, xzr     
+  0.01  50660c:   ldr   d3, [x18, x2]
+  0.00  506610:   ldr   d4, [x17, #3360]
+  0.00  506614:   ldr   d2, [x16, x2]
+  0.00  506618:   ldr   d0, [x8, x2]
+  0.00  50661c:   fmul  d3, d3, d4  
+  0.00  506620:   fadd  d2, d2, d3  
+        506624:   ldr   d3, [x3, x2]
+  0.00  506628:   ldr   d4, [x1, #3336]
+  0.00  50662c:   fmul  d3, d3, d4  
+        506630:   fadd  d2, d2, d3  
+  0.00  506634:   fmul  d2, d13, d2 
+  0.01  506638:   fsub  d0, d0, d2  
+  0.00  50663c:   str   d0, [x8, x2]
+  0.00  506640:   add   x2, x2, #0x8
+        506644:   mov   x0, x2      
+  0.00  506648:   subs  x0, x0, #0x28
+        50664c: ↑ b.ne  50660c <compute_rhs+0x175c>  // b.any
+  0.00  506650:   ldur  x0, [x29, #-144]
+        506654:   add   x30, x30, #0x1
+        506658:   mov   x2, x30     
+        50665c:   add   x3, x3, #0x28
+  0.00  506660:   add   x18, x18, #0x28
+        506664:   add   x16, x16, #0x28
+        506668:   add   x8, x8, #0x28
+        50666c:   subs  x2, x2, x0  
+  0.00  506670: ↑ b.ne  506608 <compute_rhs+0x1758>  // b.any
+        506674: ↑ b     505eb0 <compute_rhs+0x1000>
+        506678:   adrp  x8, bedb000 <rhoq+0x230>
+        50667c:   ldr   w8, [x8, #2516]
+        506680: ↓ cbz   w8, 506764 <compute_rhs+0x18b4>
+        506684:   mov   w0, #0x3                        // #3
+        506688:   nop               
+        50668c:   nop               
+        506690:   nop               
+        506694:   nop               
+        506698:   nop               
+        50669c:   nop               
+        5066a0:   nop               
+        5066a4:   nop               
+        5066a8:   nop               
+        5066ac:   nop               
+        5066b0:   nop               
+        5066b4:   nop               
+        5066b8:   nop               
+        5066bc:   nop               
+        5066c0:   nop               
+        5066c4:   nop               
+        5066c8:   nop               
+        5066cc:   nop               
+        5066d0:   nop               
+        5066d4:   nop               
+        5066d8:   nop               
+        5066dc:   nop               
+        5066e0:   nop               
+        5066e4:   nop               
+        5066e8:   nop               
+        5066ec:   nop               
+        5066f0:   nop               
+        5066f4:   nop               
+        5066f8:   nop               
+        5066fc:   nop               
+        506700:   nop               
+        506704:   nop               
+        506708:   nop               
+        50670c:   nop               
+        506710:   nop               
+        506714:   nop               
+        506718:   nop               
+        50671c:   nop               
+        506720:   nop               
+        506724:   nop               
+        506728:   nop               
+        50672c:   nop               
+        506730:   nop               
+        506734:   nop               
+        506738:   nop               
+        50673c:   nop               
+        506740:   nop               
+        506744:   nop               
+        506748: → bl    503b60 <timer_stop>
+        50674c:   adrp  x8, bedb000 <rhoq+0x230>
+        506750:   ldr   w8, [x8, #2516]
+        506754: ↓ cbz   w8, 506764 <compute_rhs+0x18b4>
+        506758:   mov   w0, #0x4                        // #4
+        50675c:   nop               
+        506760: → bl    503b00 <timer_start>
+        506764:   adrp  x8, bedb000 <rhoq+0x230>
+        506768:   ldr   w3, [x8, #2512]
+        50676c:   mov   w8, w3      
+        506770:   subs  w8, w8, #0x1
+        506774: ↓ b.lt  506efc <compute_rhs+0x204c>  // b.tstop
+        506778:   adrp  x8, bedb000 <rhoq+0x230>
+        50677c:   ldr   w3, [x8, #2508]
+        506780:   adrp  x8, bedb000 <rhoq+0x230>
+        506784:   ldr   w2, [x8, #2504]
+        506788:   adrp  x8, bedb000 <rhoq+0x230>
+        50678c:   ldr   d5, [x8, #2224]
+        506790:   adrp  x8, bedb000 <rhoq+0x230>
+        506794:   ldr   d0, [x8, #2360]
+        506798:   adrp  x8, bedb000 <rhoq+0x230>
+        50679c:   ldr   d3, [x8, #2240]
+        5067a0:   adrp  x8, bedb000 <rhoq+0x230>
+        5067a4:   ldr   d10, [x8, #2464]
+        5067a8:   adrp  x8, bedb000 <rhoq+0x230>
+        5067ac:   ldr   d7, [x8, #2256]
+        5067b0:   adrp  x8, bedb000 <rhoq+0x230>
+        5067b4:   ldr   d11, [x8, #2272]
+        5067b8:   adrp  x8, bedb000 <rhoq+0x230>
+        5067bc:   stur  d0, [x29, #-160]
+        5067c0:   ldr   d0, [x8, #1928]
+        5067c4:   adrp  x8, bedb000 <rhoq+0x230>
+        5067c8:   ldr   d8, [x8, #1776]
+        5067cc:   adrp  x8, bedb000 <rhoq+0x230>
+        5067d0:   fmul  d12, d10, d0
+        5067d4:   ldr   d0, [x8, #2288]
+        5067d8:   adrp  x8, bedb000 <rhoq+0x230>
+        5067dc:   mov   x1, #0x4ec8                     // #20168
+        5067e0:   movk  x1, #0x1, lsl #16
+        5067e4:   stur  d0, [x29, #-176]
+        5067e8:   ldr   d0, [x8, #2472]
+        5067ec:   adrp  x8, bedb000 <rhoq+0x230>
+        5067f0:   mov   x0, #0x9a50                     // #39504
+        5067f4:   movk  x0, #0x2, lsl #16
+        5067f8:   stur  d0, [x29, #-184]
+        5067fc:   ldr   d0, [x8, #2480]
+        506800:   adrp  x8, bedb000 <rhoq+0x230>
+        506804:   ldr   d9, [x8, #2488]
+        506808:   adrp  x8, bedb000 <rhoq+0x230>
+        50680c:   stur  d0, [x29, #-192]
+        506810:   str   x2, [sp, #184]
+        506814:   sxtw  x2, w2      
+        506818:   stur  x2, [x29, #-216]
+        50681c:   adrp  x2, 8c18000 <qs+0x841530>
+        506820:   str   x3, [sp, #16]
+        506824:   sxtw  x3, w3      
+        506828:   add   x2, x2, #0x300
+        50682c:   str   x3, [sp, #176]
+        506830:   add   x3, x2, x1  
+        506834:   str   x3, [sp, #152]
+        506838:   adrp  x3, 8c18000 <qs+0x841530>
+        50683c:   add   x3, x3, #0x300
+        506840:   str   x3, [sp, #168]
+        506844:   add   x3, x2, x0  
+        506848:   adrp  x2, 83d6000 <u+0x2946e20>
+        50684c:   add   x2, x2, #0xad0
+        506850:   str   x3, [sp, #136]
+        506854:   add   x3, x2, x1  
+        506858:   str   x3, [sp, #120]
+        50685c:   adrp  x3, 83d6000 <u+0x2946e20>
+        506860:   add   x3, x3, #0xad0
+        506864:   str   x3, [sp, #128]
+        506868:   add   x3, x2, x0  
+        50686c:   adrp  x2, b55f000 <vs+0x840c40>
+        506870:   add   x2, x2, #0xbf0
+        506874:   str   x3, [sp, #112]
+        506878:   add   x3, x2, x1  
+        50687c:   str   x3, [sp, #96]
+        506880:   adrp  x3, b55f000 <vs+0x840c40>
+        506884:   add   x3, x3, #0xbf0
+        506888:   str   x3, [sp, #104]
+        50688c:   add   x3, x2, x0  
+        506890:   str   x3, [sp, #88]
+        506894:   adrp  x2, 9c9b000 <speed+0x8414d0>
+        506898:   adrp  x3, 9c9b000 <speed+0x8414d0>
+        50689c:   add   x2, x2, #0x360
+        5068a0:   add   x3, x3, #0x360
+        5068a4:   str   x3, [sp, #80]
+        5068a8:   add   x3, x2, x0  
+        5068ac:   adrp  x2, ad1e000 <us+0x841470>
+        5068b0:   add   x2, x2, #0x3c0
+        5068b4:   ldr   d15, [x8, #1744]
+        5068b8:   adrp  x8, bedb000 <rhoq+0x230>
+        5068bc:   str   x3, [sp, #72]
+  0.00  5068c0:   add   x3, x2, x1  
+        5068c4:   ldr   w8, [x8, #2512]
+        5068c8:   str   x3, [sp, #56]
+        5068cc:   adrp  x3, ad1e000 <us+0x841470>
+        5068d0:   add   x3, x3, #0x3c0
+        5068d4:   str   x3, [sp, #64]
+        5068d8:   add   x3, x2, x0  
+        5068dc:   adrp  x2, a4dc000 <square+0x840ca0>
+        5068e0:   str   x3, [sp, #48]
+        5068e4:   add   x2, x2, #0xb90
+        5068e8:   adrp  x3, a4dc000 <square+0x840ca0>
+        5068ec:   add   x1, x1, x2  
+        5068f0:   add   x3, x3, #0xb90
+        5068f4:   add   x0, x0, x2  
+        5068f8:   str   x8, [sp]    
+        5068fc:   sxtw  x8, w8      
+        506900:   str   x1, [sp, #160]
+        506904:   stp   xzr, x3, [sp, #32]
+        506908:   str   x0, [sp, #144]
+        50690c:   str   x8, [sp, #8]
+        506910:   ldur  d1, [x29, #-160]
+        506914:   mov   x1, #0x89e8                     // #35304
+        506918:   mov   x8, #0x1                        // #1
+        50691c:   movk  x1, #0x6, lsl #16
+        506920:   stur  d5, [x29, #-152]
+        506924:   stur  d3, [x29, #-168]
+        506928:   stur  d8, [x29, #-32]
+        50692c:   stp   d15, d9, [x29, #-208]
+        506930: ↓ b     506a34 <compute_rhs+0x1b84>
+        506934:   ldr   x3, [sp, #168]
+        506938:   mov   x0, #0x4b88                     // #19336
+        50693c:   movk  x0, #0x1, lsl #16
+        506940:   ldr   x8, [sp, #32]
+        506944:   add   x3, x3, x0  
+        506948:   str   x3, [sp, #168]
+        50694c:   ldr   x3, [sp, #152]
+  0.00  506950:   ldr   x2, [sp, #24]
+        506954:   add   x3, x3, x0  
+        506958:   str   x3, [sp, #152]
+        50695c:   ldr   x3, [sp, #136]
+        506960:   mov   x30, x2     
+        506964:   add   x30, x30, #0x1
+  0.00  506968:   add   x3, x3, x0  
+        50696c:   str   x3, [sp, #136]
+        506970:   ldr   x3, [sp, #128]
+        506974:   add   x3, x3, x0  
+  0.00  506978:   str   x3, [sp, #128]
+        50697c:   ldr   x3, [sp, #120]
+        506980:   add   x3, x3, x0  
+        506984:   str   x3, [sp, #120]
+        506988:   ldr   x3, [sp, #112]
+        50698c:   add   x3, x3, x0  
+  0.00  506990:   str   x3, [sp, #112]
+        506994:   ldr   x3, [sp, #96]
+        506998:   add   x3, x3, x0  
+        50699c:   str   x3, [sp, #96]
+        5069a0:   ldr   x3, [sp, #88]
+        5069a4:   add   x3, x3, x0  
+        5069a8:   str   x3, [sp, #88]
+        5069ac:   ldr   x3, [sp, #80]
+        5069b0:   add   x3, x3, x0  
+        5069b4:   str   x3, [sp, #80]
+        5069b8:   mov   x3, #0x79a8                     // #31144
+        5069bc:   movk  x3, #0x6, lsl #16
+        5069c0:   add   x8, x8, x3  
+        5069c4:   ldr   x3, [sp, #72]
+        5069c8:   add   x3, x3, x0  
+        5069cc:   str   x3, [sp, #72]
+        5069d0:   ldr   x3, [sp, #104]
+        5069d4:   add   x3, x3, x0  
+        5069d8:   str   x3, [sp, #104]
+        5069dc:   ldr   x3, [sp, #64]
+        5069e0:   add   x3, x3, x0  
+        5069e4:   str   x3, [sp, #64]
+        5069e8:   ldr   x3, [sp, #56]
+        5069ec:   add   x3, x3, x0  
+        5069f0:   str   x3, [sp, #56]
+        5069f4:   ldr   x3, [sp, #48]
+        5069f8:   add   x3, x3, x0  
+        5069fc:   str   x3, [sp, #48]
+        506a00:   ldr   x3, [sp, #40]
+        506a04:   add   x3, x3, x0  
+        506a08:   stp   x8, x3, [sp, #32]
+        506a0c:   ldr   x3, [sp, #160]
+        506a10:   mov   x8, x30     
+        506a14:   add   x3, x3, x0  
+        506a18:   str   x3, [sp, #160]
+        506a1c:   ldr   x3, [sp, #144]
+        506a20:   add   x3, x3, x0  
+        506a24:   str   x3, [sp, #144]
+        506a28:   ldr   x3, [sp, #8]
+        506a2c:   subs  x2, x2, x3  
+        506a30: ↓ b.ge  506ef8 <compute_rhs+0x2048>  // b.tcont
+        506a34:   str   x8, [sp, #24]
+        506a38:   ldr   x8, [sp, #16]
+        506a3c:   subs  w8, w8, #0x1
+        506a40: ↑ b.lt  506934 <compute_rhs+0x1a84>  // b.tstop
+        506a44:   ldr   x8, [sp, #144]
+        506a48:   mov   x4, #0x1                        // #1
+        506a4c:   stur  x8, [x29, #-56]
+        506a50:   ldr   x8, [sp, #32]
+        506a54:   ldp   x5, x2, [sp, #40]
+  0.00  506a58:   ldp   x16, x7, [sp, #56]
+        506a5c:   ldp   x30, x20, [sp, #96]
+        506a60:   str   x8, [sp, #224]
+        506a64:   ldr   x8, [sp, #128]
+        506a68:   ldp   x17, x3, [sp, #72]
+        506a6c:   ldr   x18, [sp, #88]
+        506a70:   ldp   x0, x19, [sp, #112]
+        506a74:   str   x8, [sp, #216]
+        506a78:   ldr   x8, [sp, #136]
+        506a7c:   str   x8, [sp, #208]
+        506a80:   ldp   x8, x6, [sp, #152]
+        506a84:   stur  x8, [x29, #-64]
+        506a88:   ldr   x8, [sp, #168]
+        506a8c:   str   x8, [sp, #200]
+        506a90:   mov   x8, x5      
+        506a94: ↓ b     506b78 <compute_rhs+0x1cc8>
+  0.00  506a98:   ldr   x7, [sp, #192]
+  0.01  506a9c:   add   x4, x4, #0x338
+        506aa0:   add   x19, x19, #0x338
+        506aa4:   add   x0, x0, #0x338
+  0.00  506aa8:   mov   x8, x7      
+  0.00  506aac:   add   x8, x8, #0x1
+        506ab0:   stur  x8, [x29, #-40]
+        506ab4:   str   x4, [sp, #200]
+        506ab8:   ldur  x8, [x29, #-64]
+  0.00  506abc:   add   x30, x30, #0x338
+  0.00  506ac0:   mov   x2, #0x1018                     // #4120
+        506ac4:   add   x8, x8, #0x338
+        506ac8:   stur  x8, [x29, #-64]
+  0.00  506acc:   stp   x19, x0, [sp, #208]
+        506ad0:   ldp   x6, x5, [x29, #-88]
+        506ad4:   stur  x30, [x29, #-80]
+  0.00  506ad8:   ldr   x30, [sp, #224]
+        506adc:   ldur  x18, [x29, #-72]
+        506ae0:   ldur  x19, [x29, #-120]
+        506ae4:   add   x6, x6, #0x338
+  0.00  506ae8:   add   x30, x30, x2
+        506aec:   str   x30, [sp, #224]
+        506af0:   ldp   x3, x8, [x29, #-56]
+  0.00  506af4:   ldp   x17, x4, [x29, #-112]
+        506af8:   ldur  x30, [x29, #-96]
+        506afc:   ldp   x20, x16, [x29, #-136]
+  0.00  506b00:   add   x8, x8, #0x338
+        506b04:   add   x3, x3, #0x338
+        506b08:   stur  x8, [x29, #-48]
+  0.00  506b0c:   ldur  x8, [x29, #-144]
+        506b10:   stur  x3, [x29, #-56]
+        506b14:   ldr   x2, [sp, #176]
+        506b18:   ldur  x3, [x29, #-40]
+  0.00  506b1c:   add   x8, x8, #0x338
+        506b20:   add   x19, x19, #0x338
+        506b24:   add   x4, x4, #0x338
+        506b28:   add   x30, x30, #0x338
+  0.00  506b2c:   add   x20, x20, #0x338
+        506b30:   add   x16, x16, #0x338
+        506b34:   subs  x7, x7, x2  
+        506b38:   mov   x2, x8      
+  0.00  506b3c:   mov   x8, x16     
+  0.00  506b40:   mov   x16, x20    
+        506b44:   mov   x7, x30     
+  0.00  506b48:   mov   x20, x4     
+  0.00  506b4c:   mov   x4, x3      
+        506b50:   mov   x3, x19     
+        506b54:   ldur  x30, [x29, #-80]
+        506b58:   mov   x19, x6     
+  0.00  506b5c:   mov   x6, x2      
+  0.01  506b60:   ldur  x2, [x29, #-48]
+        506b64:   add   x5, x5, #0x338
+  0.00  506b68:   add   x18, x18, #0x338
+  0.00  506b6c:   add   x17, x17, #0x338
+  0.00  506b70:   mov   x0, x5      
+        506b74: ↑ b.ge  506934 <compute_rhs+0x1a84>  // b.tcont
+  0.00  506b78:   stur  x2, [x29, #-48]
+        506b7c:   stp   x6, x16, [x29, #-144]
+  0.00  506b80:   stp   x8, x3, [x29, #-128]
+  0.00  506b84:   stp   x17, x20, [x29, #-112]
+  0.00  506b88:   stp   x7, x19, [x29, #-96]
+  0.00  506b8c:   stp   x0, x18, [x29, #-80]
+  0.00  506b90:   str   x4, [sp, #192]
+        506b94:   ldp   x19, x0, [sp, #208]
+  0.00  506b98:   ldr   x4, [sp, #200]
+  0.00  506b9c:   ldr   x3, [sp, #184]
+  0.00  506ba0:   mov   x7, #0x89f8                     // #35320
+        506ba4:   mov   x18, #0x8a00                    // #35328
+        506ba8:   subs  w3, w3, #0x1
+  0.00  506bac:   movk  x7, #0x6, lsl #16
+        506bb0:   movk  x18, #0x6, lsl #16
+        506bb4: ↑ b.lt  506a98 <compute_rhs+0x1be8>  // b.tstop
+        506bb8:   ldr   x6, [sp, #224]
+  0.00  506bbc:   mov   x2, xzr     
+  0.00  506bc0:   ldur  x3, [x29, #-72]
+  0.00  506bc4:   lsl   x16, x2, #3 
+  0.46  506bc8:   ldr   d15, [x30, x16]
+  0.00  506bcc:   mov   x8, x30     
+        506bd0:   ldr   d14, [x3, x16]
+  0.12  506bd4:   ldur  x3, [x29, #-104]
+  0.00  506bd8:   stur  d15, [x29, #-40]
+        506bdc:   mov   x20, #0x8a08                    // #35336
+  0.22  506be0:   movk  x20, #0x6, lsl #16
+  0.00  506be4:   add   x30, x3, x16
+  0.00  506be8:   adrp  x3, 3147000 <forcing+0x2947000>
+        506bec:   add   x3, x3, #0x8f0
+  0.09  506bf0:   add   x5, x3, x6  
+  0.00  506bf4:   ldr   d0, [x5, x1]
+  0.00  506bf8:   adrp  x1, 5a8f000 <rhs+0x2947710>
+  0.09  506bfc:   mov   x3, #0x89e8                     // #35304
+  0.00  506c00:   add   x1, x1, #0x1e0
+  0.85  506c04:   movk  x3, #0x6, lsl #16
+        506c08:   add   x17, x1, x6 
+  0.09  506c0c:   mov   x1, #0x390                      // #912
+  0.00  506c10:   movk  x1, #0xd, lsl #16
+  0.01  506c14:   ldr   d4, [x17, x3]
+  0.09  506c18:   ldr   d2, [x17, x1]
+  0.00  506c1c:   mov   x1, #0x3a8                      // #936
+  0.20  506c20:   movk  x1, #0xd, lsl #16
+  0.11  506c24:   fadd  d4, d4, d4  
+  0.32  506c28:   fsub  d2, d2, d4  
+  0.01  506c2c:   ldr   d4, [x17, #4160]
+  0.01  506c30:   ldr   d8, [x17, #4168]
+  0.06  506c34:   ldr   d13, [x30, #832]
+  0.03  506c38:   add   x2, x2, #0x1
+  0.28  506c3c:   fadd  d2, d4, d2  
+  0.55  506c40:   fmul  d2, d5, d2  
+  0.52  506c44:   fadd  d4, d0, d2  
+        506c48:   ldr   d0, [x17, x1]
+  0.00  506c4c:   ldr   d2, [x17, #4184]
+  0.09  506c50:   mov   x1, #0x89f0                     // #35312
+        506c54:   movk  x1, #0x6, lsl #16
+  0.67  506c58:   ldr   d6, [x17, x1]
+  0.29  506c5c:   fsub  d5, d0, d2  
+  0.05  506c60:   fmul  d5, d1, d5  
+  0.39  506c64:   fsub  d4, d4, d5  
+  0.17  506c68:   str   d4, [x5, x3]
+  0.00  506c6c:   mov   x3, #0x398                      // #920
+  0.00  506c70:   movk  x3, #0xd, lsl #16
+  0.00  506c74:   ldr   d5, [x17, x3]
+  0.45  506c78:   ldr   d4, [x5, x1]
+  0.01  506c7c:   fadd  d6, d6, d6  
+  0.09  506c80:   ldur  x3, [x29, #-56]
+  0.02  506c84:   fsub  d6, d5, d6  
+  0.82  506c88:   fadd  d6, d8, d6  
+  0.02  506c8c:   fmul  d6, d3, d6  
+  0.14  506c90:   fadd  d4, d4, d6  
+        506c94:   ldr   d6, [x3, x16]
+  0.00  506c98:   ldur  x3, [x29, #-144]
+  0.09  506c9c:   fmul  d5, d14, d5 
+  0.00  506ca0:   ldur  d3, [x29, #-32]
+  0.08  506ca4:   add   x6, x6, #0x28
+  0.00  506ca8:   ldr   d9, [x3, x16]
+  0.10  506cac:   ldur  x3, [x29, #-128]
+  0.02  506cb0:   fadd  d9, d9, d9  
+        506cb4:   add   x30, x3, x16
+  0.10  506cb8:   fsub  d6, d6, d9  
+        506cbc:   ldr   d9, [x30, #832]
+  0.00  506cc0:   mov   x3, #0x3a0                      // #928
+        506cc4:   movk  x3, #0xd, lsl #16
+  0.12  506cc8:   fadd  d6, d9, d6  
+  0.02  506ccc:   fmul  d6, d10, d6 
+  0.09  506cd0:   fadd  d4, d4, d6  
+        506cd4:   fmul  d6, d13, d8 
+  0.07  506cd8:   fsub  d5, d5, d6  
+  0.00  506cdc:   fmul  d5, d1, d5  
+  0.03  506ce0:   ldr   d6, [x17, x7]
+  0.29  506ce4:   fsub  d4, d4, d5  
+        506ce8:   ldr   d5, [x17, x3]
+  0.10  506cec:   ldr   d8, [x17, #4176]
+  0.10  506cf0:   str   d4, [x5, x1]
+  0.00  506cf4:   ldr   d4, [x5, x7]
+  0.03  506cf8:   fadd  d6, d6, d6  
+  0.26  506cfc:   ldur  x3, [x29, #-48]
+  0.01  506d00:   fsub  d6, d5, d6  
+  1.03  506d04:   fadd  d6, d8, d6  
+  0.04  506d08:   fmul  d6, d7, d6  
+  0.11  506d0c:   fadd  d4, d4, d6  
+  0.00  506d10:   ldr   d6, [x3, x16]
+  0.02  506d14:   ldur  x3, [x29, #-136]
+  0.07  506d18:   fmul  d5, d14, d5 
+  0.00  506d1c:   mov   x1, #0x89e8                     // #35304
+  0.11  506d20:   movk  x1, #0x6, lsl #16
+  0.02  506d24:   ldr   d9, [x3, x16]
+  0.07  506d28:   ldur  x3, [x29, #-96]
+  0.01  506d2c:   fadd  d9, d9, d9  
+  0.03  506d30:   add   x30, x3, x16
+  0.08  506d34:   fsub  d6, d6, d9  
+  0.00  506d38:   ldr   d9, [x30, #832]
+        506d3c:   mov   x3, #0x3b0                      // #944
+  0.02  506d40:   movk  x3, #0xd, lsl #16
+  0.10  506d44:   fadd  d6, d9, d6  
+  0.04  506d48:   fmul  d6, d10, d6 
+  0.14  506d4c:   fadd  d4, d4, d6  
+  0.01  506d50:   fmul  d6, d13, d8 
+  0.05  506d54:   fsub  d5, d5, d6  
+  0.01  506d58:   fmul  d5, d1, d5  
+  0.29  506d5c:   fsub  d4, d4, d5  
+  0.01  506d60:   ldr   d5, [x17, x18]
+  0.03  506d64:   str   d4, [x5, x7]
+  0.01  506d68:   ldr   d4, [x5, x18]
+  0.11  506d6c:   fadd  d6, d15, d15
+  0.30  506d70:   fadd  d5, d5, d5  
+  0.02  506d74:   fsub  d5, d0, d5  
+  0.92  506d78:   fadd  d5, d2, d5  
+        506d7c:   fmul  d0, d14, d0 
+  0.06  506d80:   fmul  d2, d13, d2 
+  0.11  506d84:   fmul  d5, d11, d5 
+  0.02  506d88:   fsub  d9, d0, d2  
+        506d8c:   ldr   d2, [x17, x3]
+  0.08  506d90:   ldur  x3, [x29, #-112]
+  0.22  506d94:   fadd  d4, d4, d5  
+  0.00  506d98:   fsub  d5, d14, d6 
+  0.25  506d9c:   fadd  d5, d5, d13 
+  0.07  506da0:   fmul  d5, d5, d12 
+  0.44  506da4:   fadd  d8, d5, d4  
+        506da8:   ldr   d4, [x3, x16]
+  0.01  506dac:   ldur  x3, [x29, #-120]
+  0.08  506db0:   ldr   d0, [x17, #4192]
+        506db4:   mov   v15.16b, v12.16b
+  0.14  506db8:   fsub  d5, d2, d4  
+  0.01  506dbc:   add   x30, x3, x16
+  0.13  506dc0:   mov   v12.16b, v7.16b
+  0.00  506dc4:   mov   v7.16b, v10.16b
+  0.04  506dc8:   fsub  d10, d5, d0 
+  0.00  506dcc:   ldr   d5, [x30, #832]
+  0.08  506dd0:   ldur  x3, [x29, #-80]
+  0.00  506dd4:   add   x30, x0, x16
+  0.13  506dd8:   fadd  d10, d10, d5
+  0.32  506ddc:   fmul  d10, d10, d3
+  0.48  506de0:   fadd  d9, d9, d10 
+  0.50  506de4:   fmul  d9, d1, d9  
+  0.52  506de8:   fsub  d8, d8, d9  
+        506dec:   ldr   d9, [x17, x20]
+        506df0:   str   d8, [x5, x18]
+  0.01  506df4:   ldur  d3, [x29, #-176]
+  0.07  506df8:   ldr   d8, [x5, x20]
+  0.44  506dfc:   fadd  d9, d9, d9  
+  0.01  506e00:   fsub  d10, d2, d9 
+  0.01  506e04:   fadd  d10, d0, d10
+  0.74  506e08:   fmul  d10, d3, d10
+  0.13  506e0c:   fadd  d8, d8, d10 
+        506e10:   ldr   d10, [x3, x16]
+  0.00  506e14:   ldur  x3, [x29, #-88]
+  0.10  506e18:   mov   v3.16b, v11.16b
+  0.00  506e1c:   ldr   d11, [x3, x16]
+  0.12  506e20:   ldur  x3, [x29, #-64]
+  0.11  506e24:   fadd  d11, d11, d11
+  0.03  506e28:   fsub  d10, d10, d11
+        506e2c:   ldr   d11, [x30, #832]
+        506e30:   ldur  x30, [x29, #-216]
+  0.16  506e34:   fadd  d10, d11, d10
+  0.01  506e38:   mov   v11.16b, v3.16b
+  0.00  506e3c:   ldur  d3, [x29, #-184]
+  0.07  506e40:   fmul  d10, d3, d10
+  0.08  506e44:   ldur  d3, [x29, #-40]
+  0.14  506e48:   fadd  d8, d8, d10 
+        506e4c:   fmul  d10, d14, d14
+  0.00  506e50:   fmul  d6, d3, d6  
+  0.06  506e54:   ldur  d3, [x29, #-192]
+  0.04  506e58:   fsub  d6, d10, d6 
+        506e5c:   fmul  d10, d13, d13
+  0.00  506e60:   fadd  d6, d6, d10 
+  0.07  506e64:   fmul  d6, d6, d3  
+  0.22  506e68:   fadd  d6, d6, d8  
+        506e6c:   ldr   d8, [x19, x16]
+  0.04  506e70:   ldr   d10, [x3, x16]
+  0.05  506e74:   add   x16, x16, x4
+  0.13  506e78:   ldur  d3, [x29, #-168]
+  0.05  506e7c:   fmul  d8, d2, d8  
+  0.07  506e80:   fmul  d9, d9, d10 
+  0.01  506e84:   fsub  d8, d8, d9  
+  0.00  506e88:   ldr   d9, [x16, #832]
+  0.04  506e8c:   mov   v10.16b, v7.16b
+  0.06  506e90:   mov   v7.16b, v12.16b
+  0.00  506e94:   mov   v12.16b, v15.16b
+  0.03  506e98:   fmul  d9, d0, d9  
+  0.09  506e9c:   fadd  d8, d8, d9  
+  0.04  506ea0:   ldp   d15, d9, [x29, #-208]
+        506ea4:   mov   x3, x2      
+  0.05  506ea8:   subs  x3, x3, x30 
+  0.04  506eac:   mov   x30, x8     
+  0.08  506eb0:   fmul  d8, d9, d8  
+  0.21  506eb4:   fadd  d6, d6, d8  
+  0.03  506eb8:   ldur  d8, [x29, #-32]
+  0.00  506ebc:   fmul  d2, d2, d15 
+        506ec0:   fmul  d0, d0, d15 
+  0.07  506ec4:   fmul  d4, d4, d8  
+  0.03  506ec8:   fsub  d2, d2, d4  
+  0.00  506ecc:   fmul  d4, d5, d8  
+  0.03  506ed0:   fsub  d0, d0, d4  
+  0.12  506ed4:   fmul  d2, d14, d2 
+  0.01  506ed8:   ldur  d5, [x29, #-152]
+  0.18  506edc:   fmul  d0, d13, d0 
+  0.36  506ee0:   fsub  d0, d2, d0  
+  0.48  506ee4:   fmul  d0, d1, d0  
+  0.55  506ee8:   fsub  d0, d6, d0  
+        506eec:   str   d0, [x5, x20]
+        506ef0: ↑ b.lt  506bc0 <compute_rhs+0x1d10>  // b.tstop
+        506ef4: ↑ b     506a98 <compute_rhs+0x1be8>
+        506ef8:   ldr   x3, [sp]    
+        506efc:   adrp  x8, bedb000 <rhoq+0x230>
+        506f00:   ldr   w1, [x8, #2508]
+        506f04:   mov   w8, w1      
+        506f08:   subs  w8, w8, #0x1
+        506f0c: ↓ b.lt  507194 <compute_rhs+0x22e4>  // b.tstop
+        506f10:   adrp  x8, bedb000 <rhoq+0x230>
+        506f14:   str   x3, [sp]    
+        506f18:   ldr   w3, [x8, #2504]
+        506f1c:   adrp  x8, bedb000 <rhoq+0x230>
+        506f20:   ldr   d0, [x8, #1968]
+        506f24:   adrp  x8, bedb000 <rhoq+0x230>
+        506f28:   ldr   w8, [x8, #2508]
+        506f2c:   adrp  x7, 5af7000 <u+0x67e20>
+        506f30:   mov   x18, #0xf350                    // #62288
+        506f34:   mov   x16, #0x79a8                    // #31144
+        506f38:   stur  x8, [x29, #-120]
+        506f3c:   sxtw  x8, w8      
+        506f40:   stur  x8, [x29, #-40]
+        506f44:   adrp  x8, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        506f48:   ldr   d1, [x8, #3336]
+        506f4c:   adrp  x8, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        506f50:   ldr   d2, [x8, #3360]
+        506f54:   stur  w3, [x29, #-32]
+        506f58:   add   x7, x7, #0xbc8
+        506f5c:   movk  x18, #0xc, lsl #16
+        506f60:   movk  x16, #0x6, lsl #16
+        506f64:   adrp  x17, 31b0000 <rhs+0x68710>
+        506f68:   add   w3, w3, #0x1
+        506f6c:   add   x18, x18, x7
+        506f70:   add   x16, x16, x7
+        506f74:   mov   x19, #0x1                       // #1
+        506f78:   add   x17, x17, #0x2d8
+        506f7c:   mov   x6, #0x1018                     // #4120
+        506f80: ↓ b     506fac <compute_rhs+0x20fc>
+        506f84:   ldur  x2, [x29, #-40]
+        506f88:   mov   x8, x19     
+        506f8c:   add   x8, x8, #0x1
+        506f90:   add   x18, x18, x6
+        506f94:   subs  x19, x19, x2
+        506f98:   add   x16, x16, x6
+        506f9c:   add   x7, x7, x6  
+        506fa0:   add   x17, x17, x6
+        506fa4:   mov   x19, x8     
+        506fa8: ↓ b.ge  507030 <compute_rhs+0x2180>  // b.tcont
+        506fac:   ldur  w8, [x29, #-32]
+        506fb0:   subs  w8, w8, #0x1
+        506fb4: ↑ b.lt  506f84 <compute_rhs+0x20d4>  // b.tstop
+        506fb8:   mov   x20, #0x1                       // #1
+        506fbc:   mov   x8, x17     
+        506fc0:   mov   x0, x7      
+        506fc4:   mov   x30, x16    
+        506fc8:   mov   x1, x18     
+        506fcc:   mov   x5, xzr     
+  0.01  506fd0:   ldr   d4, [x0, x5]
+  0.00  506fd4:   ldr   d5, [x30, x5]
+  0.00  506fd8:   ldr   d3, [x8, x5]
+  0.01  506fdc:   fmul  d4, d4, d1  
+  0.01  506fe0:   fmul  d5, d5, d2  
+  0.00  506fe4:   fadd  d4, d4, d5  
+  0.01  506fe8:   ldr   d5, [x1, x5]
+  0.01  506fec:   fadd  d4, d5, d4  
+  0.01  506ff0:   fmul  d4, d0, d4  
+  0.01  506ff4:   fsub  d3, d3, d4  
+  0.00  506ff8:   str   d3, [x8, x5]
+  0.00  506ffc:   add   x5, x5, #0x8
+  0.00  507000:   mov   x4, x5      
+  0.00  507004:   subs  x4, x4, #0x28
+        507008: ↑ b.ne  506fd0 <compute_rhs+0x2120>  // b.any
+  0.00  50700c:   add   x20, x20, #0x1
+        507010:   mov   x2, x20     
+        507014:   add   x1, x1, #0x28
+        507018:   add   x30, x30, #0x28
+  0.00  50701c:   add   x0, x0, #0x28
+  0.00  507020:   add   x8, x8, #0x28
+        507024:   subs  x2, x2, x3  
+        507028: ↑ b.ne  506fcc <compute_rhs+0x211c>  // b.any
+  0.00  50702c: ↑ b     506f84 <compute_rhs+0x20d4>
+        507030:   ldur  x1, [x29, #-120]
+  0.00  507034:   mov   w8, w1      
+        507038:   subs  w8, w8, #0x1
+        50703c: ↓ b.lt  507190 <compute_rhs+0x22e0>  // b.tstop
+        507040:   adrp  x2, 3217000 <rhs+0xcf710>
+        507044:   adrp  x8, bedb000 <rhoq+0x230>
+        507048:   add   x2, x2, #0xc80
+        50704c:   ldr   w3, [x8, #2504]
+        507050:   stur  x2, [x29, #-32]
+        507054:   adrp  x2, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        507058:   adrp  x8, bedb000 <rhoq+0x230>
+        50705c:   ldr   d1, [x2, #3344]
+        507060:   adrp  x2, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        507064:   ldr   d0, [x8, #1968]
+        507068:   ldr   d2, [x2, #3352]
+        50706c:   adrp  x8, 5af7000 <u+0x67e20>
+        507070:   mov   x16, #0x6cf8                    // #27896
+        507074:   mov   x17, #0xf350                    // #62288
+        507078:   mov   x20, #0x79a8                    // #31144
+        50707c:   stur  w3, [x29, #-40]
+        507080:   add   x8, x8, #0xbc8
+        507084:   movk  x16, #0x13, lsl #16
+        507088:   movk  x17, #0xc, lsl #16
+        50708c:   movk  x20, #0x6, lsl #16
+        507090:   adrp  x4, 5af7000 <u+0x67e20>
+        507094:   add   w3, w3, #0x1
+        507098:   add   x1, x1, #0x1
+        50709c:   add   x16, x16, x8
+        5070a0:   add   x17, x17, x8
+        5070a4:   add   x4, x4, #0xbc8
+        5070a8:   add   x20, x20, x8
+        5070ac:   mov   x8, #0x1                        // #1
+        5070b0:   stur  x1, [x29, #-48]
+        5070b4: ↓ b     5070ec <compute_rhs+0x223c>
+        5070b8:   ldur  x1, [x29, #-32]
+        5070bc:   mov   x2, #0x1018                     // #4120
+        5070c0:   add   x8, x8, #0x1
+        5070c4:   add   x16, x16, x2
+        5070c8:   add   x1, x1, x2  
+  0.00  5070cc:   stur  x1, [x29, #-32]
+        5070d0:   ldur  x1, [x29, #-48]
+        5070d4:   add   x17, x17, x2
+        5070d8:   add   x20, x20, x2
+        5070dc:   add   x4, x4, x2  
+        5070e0:   mov   x2, x8      
+        5070e4:   subs  x2, x2, x1  
+        5070e8: ↓ b.eq  507184 <compute_rhs+0x22d4>  // b.none
+        5070ec:   ldur  w2, [x29, #-40]
+        5070f0:   subs  w2, w2, #0x1
+        5070f4: ↑ b.lt  5070b8 <compute_rhs+0x2208>  // b.tstop
+        5070f8:   ldur  x2, [x29, #-32]
+  0.00  5070fc:   mov   x7, #0x1                        // #1
+        507100:   mov   x30, x4     
+        507104:   mov   x19, x20    
+        507108:   mov   x0, x17     
+        50710c:   mov   x18, x16    
+  0.00  507110:   mov   x6, xzr     
+  0.02  507114:   ldr   d4, [x30, x6]
+  0.00  507118:   ldr   d5, [x19, x6]
+  0.00  50711c:   ldr   d3, [x2, x6]
+  0.00  507120:   fmul  d4, d4, d1  
+  0.00  507124:   fmul  d5, d5, d2  
+  0.00  507128:   fsub  d4, d5, d4  
+  0.01  50712c:   ldr   d5, [x0, x6]
+  0.00  507130:   fmul  d5, d5, d1  
+  0.00  507134:   fsub  d4, d4, d5  
+  0.00  507138:   ldr   d5, [x18, x6]
+  0.01  50713c:   fadd  d4, d5, d4  
+  0.01  507140:   fmul  d4, d0, d4  
+  0.01  507144:   fsub  d3, d3, d4  
+        507148:   str   d3, [x2, x6]
+  0.00  50714c:   add   x6, x6, #0x8
+  0.00  507150:   mov   x5, x6      
+        507154:   subs  x5, x5, #0x28
+        507158: ↑ b.ne  507114 <compute_rhs+0x2264>  // b.any
+  0.00  50715c:   add   x7, x7, #0x1
+        507160:   mov   x1, x7      
+        507164:   add   x18, x18, #0x28
+        507168:   add   x0, x0, #0x28
+  0.00  50716c:   add   x19, x19, #0x28
+  0.00  507170:   add   x30, x30, #0x28
+        507174:   add   x2, x2, #0x28
+        507178:   subs  x1, x1, x3  
+        50717c: ↑ b.ne  507110 <compute_rhs+0x2260>  // b.any
+        507180: ↑ b     5070b8 <compute_rhs+0x2208>
+        507184:   ldr   x3, [sp]    
+        507188:   ldur  x1, [x29, #-120]
+        50718c: ↓ b     507194 <compute_rhs+0x22e4>
+        507190:   ldr   x3, [sp]    
+        507194:   sxtw  x8, w3      
+        507198:   stp   x8, x1, [x29, #-128]
+        50719c:   sub   x8, x8, #0x2
+        5071a0:   stur  x8, [x29, #-136]
+        5071a4:   subs  w8, w8, #0x3
+        5071a8: ↓ b.lt  5073e4 <compute_rhs+0x2534>  // b.tstop
+        5071ac:   adrp  x8, bedb000 <rhoq+0x230>
+        5071b0:   ldr   w2, [x8, #2504]
+        5071b4:   adrp  x8, bedb000 <rhoq+0x230>
+        5071b8:   ldr   d0, [x8, #1968]
+        5071bc:   mov   w8, w1      
+        5071c0:   add   w8, w8, #0x1
+        5071c4:   stur  w2, [x29, #-48]
+        5071c8:   mov   w0, w2      
+        5071cc:   stur  x8, [x29, #-56]
+        5071d0:   adrp  x2, 5af7000 <u+0x67e20>
+        5071d4:   mov   x8, #0xf350                     // #62288
+        5071d8:   add   x2, x2, #0xbc8
+        5071dc:   movk  x8, #0xc, lsl #16
+        5071e0:   add   x8, x8, x2  
+        5071e4:   stur  x8, [x29, #-72]
+        5071e8:   mov   w8, #0x5                        // #5
+        5071ec:   stur  w8, [x29, #-80]
+        5071f0:   mov   w8, #0x4                        // #4
+        5071f4:   mov   x30, #0x79a8                    // #31144
+        5071f8:   stur  w8, [x29, #-88]
+        5071fc:   adrp  x8, 5af7000 <u+0x67e20>
+        507200:   movk  x30, #0x6, lsl #16
+        507204:   add   x8, x8, #0xbc8
+        507208:   stur  x8, [x29, #-64]
+        50720c:   add   x8, x2, x30 
+        507210:   stur  x8, [x29, #-96]
+        507214:   adrp  x8, 327f000 <rhs+0x137710>
+        507218:   add   x8, x8, #0x628
+        50721c:   stur  x8, [x29, #-104]
+        507220:   adrp  x8, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        507224:   ldr   d1, [x8, #3344]
+        507228:   adrp  x8, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        50722c:   ldr   d2, [x8, #3352]
+        507230:   add   w0, w0, #0x1
+        507234:   sub   w3, w3, #0x1
+        507238:   mov   x19, #0x3                       // #3
+        50723c:   str   x3, [sp]    
+        507240: ↓ b     5072b0 <compute_rhs+0x2400>
+  0.00  507244:   ldur  w8, [x29, #-80]
+        507248:   mov   x3, #0x79a8                     // #31144
+        50724c:   movk  x3, #0x6, lsl #16
+        507250:   ldur  x19, [x29, #-112]
+        507254:   add   w8, w8, #0x1
+        507258:   stur  w8, [x29, #-80]
+        50725c:   ldur  w8, [x29, #-88]
+        507260:   ldur  x1, [x29, #-120]
+        507264:   add   x19, x19, #0x1
+        507268:   add   w8, w8, #0x1
+        50726c:   stur  w8, [x29, #-88]
+  0.00  507270:   ldur  x8, [x29, #-72]
+        507274:   add   x8, x8, x3  
+        507278:   stur  x8, [x29, #-72]
+        50727c:   ldur  x8, [x29, #-96]
+  0.00  507280:   add   x8, x8, x3  
+        507284:   stur  x8, [x29, #-96]
+        507288:   ldur  x8, [x29, #-64]
+        50728c:   add   x8, x8, x3  
+        507290:   stur  x8, [x29, #-64]
+        507294:   ldur  x8, [x29, #-104]
+        507298:   add   x8, x8, x3  
+        50729c:   stur  x8, [x29, #-104]
+        5072a0:   ldr   x3, [sp]    
+        5072a4:   mov   x8, x19     
+  0.00  5072a8:   subs  x8, x8, x3  
+        5072ac: ↓ b.eq  5073e4 <compute_rhs+0x2534>  // b.none
+        5072b0:   mov   w8, w1      
+        5072b4:   subs  w8, w8, #0x1
+        5072b8:   stur  x19, [x29, #-112]
+        5072bc: ↑ b.lt  507244 <compute_rhs+0x2394>  // b.tstop
+        5072c0:   ldur  w8, [x29, #-80]
+        5072c4:   adrp  x2, 5a90000 <u+0xe20>
+        5072c8:   add   x2, x2, #0x220
+        5072cc:   ldp   x7, x30, [x29, #-104]
+        5072d0:   mov   w3, w8      
+        5072d4:   mov   x8, #0x79a8                     // #31144
+        5072d8:   movk  x8, #0x6, lsl #16
+        5072dc:   madd  x3, x3, x8, x2
+        5072e0:   stur  x3, [x29, #-32]
+        5072e4:   ldur  w3, [x29, #-88]
+        5072e8:   ldp   x1, x16, [x29, #-72]
+        5072ec:   mov   x20, #0x1                       // #1
+        5072f0:   mov   w3, w3      
+        5072f4:   madd  x3, x3, x8, x2
+        5072f8:   stur  x3, [x29, #-40]
+        5072fc: ↓ b     507340 <compute_rhs+0x2490>
+  0.00  507300:   ldur  x3, [x29, #-32]
+        507304:   mov   x8, #0x1018                     // #4120
+  0.00  507308:   add   x20, x20, #0x1
+        50730c:   add   x1, x1, x8  
+  0.00  507310:   add   x3, x3, x8  
+  0.00  507314:   stur  x3, [x29, #-32]
+        507318:   ldur  x3, [x29, #-40]
+  0.00  50731c:   add   x30, x30, x8
+  0.00  507320:   add   x16, x16, x8
+  0.00  507324:   add   x7, x7, x8  
+  0.00  507328:   add   x3, x3, x8  
+        50732c:   stur  x3, [x29, #-40]
+  0.00  507330:   ldur  x3, [x29, #-56]
+        507334:   mov   x8, x20     
+  0.00  507338:   subs  x8, x8, x3  
+        50733c: ↑ b.eq  507244 <compute_rhs+0x2394>  // b.none
+  0.00  507340:   ldur  w8, [x29, #-48]
+  0.00  507344:   subs  w8, w8, #0x1
+        507348: ↑ b.lt  507300 <compute_rhs+0x2450>  // b.tstop
+        50734c:   ldp   x6, x5, [x29, #-40]
+  0.02  507350:   mov   x19, #0x1                       // #1
+        507354:   mov   x2, x7      
+        507358:   mov   x18, x16    
+  0.00  50735c:   mov   x8, x30     
+        507360:   mov   x17, x1     
+        507364:   mov   x3, xzr     
+  1.42  507368:   ldr   d5, [x8, x3]
+  0.13  50736c:   ldr   d4, [x18, x3]
+  0.33  507370:   ldr   d3, [x2, x3]
+  0.22  507374:   fmul  d5, d5, d1  
+  0.10  507378:   fsub  d4, d4, d5  
+  0.32  50737c:   ldr   d5, [x17, x3]
+  0.88  507380:   fmul  d5, d5, d2  
+  0.07  507384:   fadd  d4, d4, d5  
+  0.33  507388:   ldr   d5, [x6, x3]
+  0.26  50738c:   fmul  d5, d5, d1  
+  0.19  507390:   fsub  d4, d4, d5  
+  0.31  507394:   ldr   d5, [x5, x3]
+  1.15  507398:   fadd  d4, d5, d4  
+  1.00  50739c:   fmul  d4, d0, d4  
+  1.78  5073a0:   fsub  d3, d3, d4  
+        5073a4:   str   d3, [x2, x3]
+  0.05  5073a8:   add   x3, x3, #0x8
+  0.04  5073ac:   mov   x4, x3      
+  0.00  5073b0:   subs  x4, x4, #0x28
+  0.00  5073b4: ↑ b.ne  507368 <compute_rhs+0x24b8>  // b.any
+  0.42  5073b8:   add   x19, x19, #0x1
+        5073bc:   mov   x3, x19     
+  0.00  5073c0:   add   x5, x5, #0x28
+        5073c4:   add   x6, x6, #0x28
+  0.09  5073c8:   add   x17, x17, #0x28
+        5073cc:   add   x8, x8, #0x28
+  0.00  5073d0:   add   x18, x18, #0x28
+        5073d4:   add   x2, x2, #0x28
+  0.09  5073d8:   subs  x3, x3, x0  
+        5073dc: ↑ b.ne  507364 <compute_rhs+0x24b4>  // b.any
+  0.01  5073e0: ↑ b     507300 <compute_rhs+0x2450>
+        5073e4:   mov   w8, w1      
+        5073e8:   subs  w8, w8, #0x1
+        5073ec: ↓ b.lt  50769c <compute_rhs+0x27ec>  // b.tstop
+        5073f0:   adrp  x8, bedb000 <rhoq+0x230>
+        5073f4:   ldur  x0, [x29, #-128]
+        5073f8:   ldr   w3, [x8, #2504]
+        5073fc:   ldur  x17, [x29, #-136]
+        507400:   adrp  x8, bedb000 <rhoq+0x230>
+        507404:   add   w1, w1, #0x1
+        507408:   mov   x19, x0     
+        50740c:   ldr   d0, [x8, #1968]
+        507410:   sxtw  x2, w3      
+        507414:   stp   x1, x3, [x29, #-48]
+        507418:   mov   x8, #0x79a8                     // #31144
+        50741c:   adrp  x3, 5a8f000 <rhs+0x2947710>
+        507420:   sub   x19, x19, #0x1
+        507424:   movk  x8, #0x6, lsl #16
+        507428:   add   x3, x3, #0x1e0
+        50742c:   mov   x1, x0      
+        507430:   madd  x1, x1, x8, x3
+        507434:   stur  x19, [x29, #-56]
+        507438:   mul   x19, x19, x8
+        50743c:   madd  x17, x17, x8, x3
+        507440:   adrp  x8, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        507444:   ldr   d1, [x8, #3344]
+        507448:   adrp  x8, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        50744c:   adrp  x5, 3147000 <forcing+0x2947000>
+        507450:   ldr   d2, [x8, #3352]
+        507454:   mov   x20, #0xffffffffffffa348        // #-23736
+        507458:   add   x5, x5, #0x8f0
+        50745c:   mov   x0, #0x1040                     // #4160
+        507460:   add   x4, x3, x19 
+        507464:   movk  x20, #0xffec, lsl #16
+        507468:   add   x5, x5, x19 
+        50746c:   add   x30, x1, x0 
+        507470:   add   x4, x4, x0  
+        507474:   add   x17, x17, x0
+        507478:   add   x20, x20, x1
+        50747c:   add   x5, x5, x0  
+        507480:   mov   x1, #0x1                        // #1
+        507484:   stur  x30, [x29, #-32]
+        507488: ↓ b     5074c0 <compute_rhs+0x2610>
+        50748c:   ldur  x8, [x29, #-32]
+        507490:   mov   x3, #0x1018                     // #4120
+        507494:   add   x4, x4, x3  
+        507498:   add   x17, x17, x3
+        50749c:   add   x8, x8, x3  
+        5074a0:   add   x20, x20, x3
+        5074a4:   add   x5, x5, x3  
+        5074a8:   ldur  x3, [x29, #-48]
+        5074ac:   add   x1, x1, #0x1
+        5074b0:   stur  x8, [x29, #-32]
+        5074b4:   mov   x8, x1      
+        5074b8:   subs  x8, x8, x3  
+        5074bc: ↓ b.eq  50755c <compute_rhs+0x26ac>  // b.none
+        5074c0:   ldur  x8, [x29, #-40]
+        5074c4:   subs  w8, w8, #0x1
+        5074c8: ↑ b.lt  50748c <compute_rhs+0x25dc>  // b.tstop
+        5074cc:   ldur  x18, [x29, #-32]
+  0.00  5074d0:   mov   x0, #0x1                        // #1
+        5074d4:   mov   x3, x5      
+        5074d8:   mov   x8, x20     
+  0.00  5074dc:   mov   x19, x17    
+        5074e0:   mov   x16, x4     
+  0.00  5074e4:   mov   x7, xzr     
+  0.01  5074e8:   ldr   d5, [x19, x7]
+  0.00  5074ec:   ldr   d4, [x8, x7]
+  0.00  5074f0:   ldr   d3, [x3, x7]
+  0.00  5074f4:   fmul  d5, d5, d1  
+  0.00  5074f8:   fsub  d4, d4, d5  
+  0.00  5074fc:   ldr   d5, [x16, x7]
+  0.01  507500:   fmul  d5, d5, d2  
+  0.00  507504:   fadd  d4, d4, d5  
+  0.00  507508:   ldr   d5, [x18, x7]
+  0.00  50750c:   fmul  d5, d5, d1  
+  0.00  507510:   fsub  d4, d4, d5  
+  0.01  507514:   fmul  d4, d0, d4  
+  0.02  507518:   fsub  d3, d3, d4  
+  0.00  50751c:   str   d3, [x3, x7]
+  0.00  507520:   add   x7, x7, #0x8
+        507524:   mov   x6, x7      
+  0.00  507528:   subs  x6, x6, #0x28
+        50752c: ↑ b.ne  5074e8 <compute_rhs+0x2638>  // b.any
+  0.00  507530:   mov   x30, x0     
+        507534:   add   x30, x30, #0x1
+        507538:   subs  x0, x0, x2  
+        50753c:   add   x18, x18, #0x28
+  0.00  507540:   add   x16, x16, #0x28
+  0.00  507544:   add   x19, x19, #0x28
+        507548:   add   x8, x8, #0x28
+        50754c:   add   x3, x3, #0x28
+  0.00  507550:   mov   x0, x30     
+        507554: ↑ b.lt  5074e4 <compute_rhs+0x2634>  // b.tstop
+  0.00  507558: ↑ b     50748c <compute_rhs+0x25dc>
+        50755c:   ldur  x4, [x29, #-120]
+        507560:   mov   w8, w4      
+        507564:   subs  w8, w8, #0x1
+        507568: ↓ b.lt  50769c <compute_rhs+0x27ec>  // b.tstop
+        50756c:   adrp  x8, bedb000 <rhoq+0x230>
+        507570:   ldr   w3, [x8, #2504]
+        507574:   adrp  x8, bedb000 <rhoq+0x230>
+        507578:   ldr   d0, [x8, #1968]
+        50757c:   ldp   x8, x0, [x29, #-136]
+        507580:   stur  w3, [x29, #-32]
+        507584:   mov   w1, w3      
+        507588:   adrp  x3, 5a8f000 <rhs+0x2947710>
+        50758c:   sxtw  x6, w8      
+        507590:   ldur  x8, [x29, #-56]
+        507594:   add   x3, x3, #0x1e0
+        507598:   adrp  x16, 3147000 <forcing+0x2947000>
+        50759c:   add   x16, x16, #0x8f0
+        5075a0:   sxtw  x7, w8      
+        5075a4:   mov   x8, #0x79a8                     // #31144
+        5075a8:   movk  x8, #0x6, lsl #16
+        5075ac:   mul   x0, x0, x8  
+        5075b0:   madd  x7, x7, x8, x3
+        5075b4:   madd  x6, x6, x8, x3
+        5075b8:   adrp  x8, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        5075bc:   ldr   d1, [x8, #3360]
+        5075c0:   adrp  x8, 602000 <___src_stdio_vfprintf__str_8___+0x4d>
+        5075c4:   ldr   d2, [x8, #3336]
+        5075c8:   add   x18, x3, x0 
+        5075cc:   mov   x2, #0x1040                     // #4160
+        5075d0:   add   x16, x16, x0
+        5075d4:   add   w1, w1, #0x1
+        5075d8:   add   w4, w4, #0x1
+        5075dc:   add   x18, x18, x2
+        5075e0:   add   x7, x7, x2  
+        5075e4:   add   x6, x6, x2  
+        5075e8:   add   x16, x16, x2
+        5075ec:   mov   x20, #0x1                       // #1
+        5075f0: ↓ b     507618 <compute_rhs+0x2768>
+        5075f4:   add   x20, x20, #0x1
+        5075f8:   mov   x8, #0x1018                     // #4120
+        5075fc:   add   x18, x18, x8
+        507600:   add   x7, x7, x8  
+        507604:   add   x6, x6, x8  
+        507608:   add   x16, x16, x8
+        50760c:   mov   x8, x20     
+        507610:   subs  x8, x8, x4  
+        507614: ↓ b.eq  50769c <compute_rhs+0x27ec>  // b.none
+        507618:   ldur  w8, [x29, #-32]
+        50761c:   subs  w8, w8, #0x1
+        507620: ↑ b.lt  5075f4 <compute_rhs+0x2744>  // b.tstop
+        507624:   mov   x17, #0x1                       // #1
+        507628:   mov   x30, x16    
+        50762c:   mov   x8, x6      
+        507630:   mov   x0, x7      
+        507634:   mov   x2, x18     
+        507638:   mov   x5, xzr     
+  0.01  50763c:   ldr   d5, [x0, x5]
+  0.00  507640:   ldr   d4, [x8, x5]
+  0.00  507644:   ldr   d3, [x30, x5]
+  0.00  507648:   fmul  d5, d5, d1  
+  0.00  50764c:   fadd  d4, d4, d5  
+  0.00  507650:   ldr   d5, [x2, x5]
+  0.01  507654:   fmul  d5, d5, d2  
+  0.00  507658:   fadd  d4, d4, d5  
+  0.01  50765c:   fmul  d4, d0, d4  
+  0.01  507660:   fsub  d3, d3, d4  
+        507664:   str   d3, [x30, x5]
+  0.00  507668:   add   x5, x5, #0x8
+  0.00  50766c:   mov   x19, x5     
+  0.00  507670:   subs  x19, x19, #0x28
+        507674: ↑ b.ne  50763c <compute_rhs+0x278c>  // b.any
+  0.00  507678:   add   x17, x17, #0x1
+  0.00  50767c:   mov   x3, x17     
+  0.00  507680:   add   x2, x2, #0x28
+        507684:   add   x0, x0, #0x28
+  0.00  507688:   add   x8, x8, #0x28
+  0.00  50768c:   add   x30, x30, #0x28
+        507690:   subs  x3, x3, x1  
+        507694: ↑ b.ne  507638 <compute_rhs+0x2788>  // b.any
+  0.00  507698: ↑ b     5075f4 <compute_rhs+0x2744>
+        50769c:   adrp  x8, bedb000 <rhoq+0x230>
+        5076a0:   ldr   w8, [x8, #2516]
+  0.00  5076a4: ↓ cbz   w8, 507748 <compute_rhs+0x2898>
+        5076a8:   mov   w0, #0x4                        // #4
+        5076ac:   nop               
+        5076b0:   nop               
+        5076b4:   nop               
+        5076b8:   nop               
+        5076bc:   nop               
+        5076c0:   nop               
+        5076c4:   nop               
+        5076c8:   nop               
+        5076cc:   nop               
+        5076d0:   nop               
+        5076d4:   nop               
+        5076d8:   nop               
+        5076dc:   nop               
+        5076e0:   nop               
+        5076e4:   nop               
+        5076e8:   nop               
+        5076ec:   nop               
+        5076f0:   nop               
+        5076f4:   nop               
+        5076f8:   nop               
+        5076fc:   nop               
+        507700:   nop               
+        507704:   nop               
+        507708:   nop               
+        50770c:   nop               
+        507710:   nop               
+        507714:   nop               
+        507718:   nop               
+        50771c:   nop               
+        507720:   nop               
+        507724:   nop               
+        507728:   nop               
+        50772c:   nop               
+        507730:   nop               
+        507734:   nop               
+        507738:   nop               
+        50773c:   nop               
+        507740:   nop               
+        507744: → bl    503b60 <timer_stop>
+  0.00  507748:   adrp  x8, bedb000 <rhoq+0x230>
+        50774c:   ldr   w8, [x8, #2512]
+        507750:   subs  w8, w8, #0x1
+        507754: ↓ b.lt  507834 <compute_rhs+0x2984>  // b.tstop
+        507758:   adrp  x8, bedb000 <rhoq+0x230>
+        50775c:   ldr   w5, [x8, #2508]
+        507760:   adrp  x8, bedb000 <rhoq+0x230>
+        507764:   ldr   w20, [x8, #2504]
+        507768:   adrp  x8, bedb000 <rhoq+0x230>
+        50776c:   ldr   d0, [x8, #1976]
+        507770:   adrp  x8, bedb000 <rhoq+0x230>
+        507774:   ldrsw x6, [x8, #2512]
+        507778:   mov   w1, w20     
+        50777c:   mov   w0, w5      
+        507780:   adrp  x7, 31b0000 <rhs+0x68710>
+        507784:   mov   x17, #0x79a8                    // #31144
+        507788:   add   w1, w1, #0x1
+        50778c:   add   w0, w0, #0x1
+        507790:   mov   x18, #0x1                       // #1
+        507794:   add   x7, x7, #0x2d8
+        507798:   movk  x17, #0x6, lsl #16
+        50779c:   mov   x16, #0x1018                    // #4120
+        5077a0: ↓ b     5077bc <compute_rhs+0x290c>
+  0.00  5077a4:   mov   x8, x18     
+        5077a8:   add   x8, x8, #0x1
+        5077ac:   subs  x18, x18, x6
+        5077b0:   add   x7, x7, x17 
+        5077b4:   mov   x18, x8     
+        5077b8: ↓ b.ge  507834 <compute_rhs+0x2984>  // b.tcont
+        5077bc:   mov   w8, w5      
+  0.00  5077c0:   subs  w8, w8, #0x1
+        5077c4: ↑ b.lt  5077a4 <compute_rhs+0x28f4>  // b.tstop
+        5077c8:   mov   x2, #0x1                        // #1
+        5077cc:   mov   x8, x7      
+        5077d0: ↓ b     5077e8 <compute_rhs+0x2938>
+  0.00  5077d4:   add   x2, x2, #0x1
+  0.00  5077d8:   mov   x3, x2      
+  0.00  5077dc:   add   x8, x8, x16 
+  0.00  5077e0:   subs  x3, x3, x0  
+  0.00  5077e4: ↑ b.eq  5077a4 <compute_rhs+0x28f4>  // b.none
+  0.00  5077e8:   mov   w3, w20     
+  0.00  5077ec:   subs  w3, w3, #0x1
+        5077f0: ↑ b.lt  5077d4 <compute_rhs+0x2924>  // b.tstop
+  0.00  5077f4:   mov   x30, #0x1                       // #1
+  0.00  5077f8:   mov   x19, x8     
+  0.03  5077fc:   mov   x4, xzr     
+  1.93  507800:   ldr   d1, [x19, x4]
+  1.35  507804:   fmul  d1, d1, d0  
+  0.04  507808:   str   d1, [x19, x4]
+  0.15  50780c:   add   x4, x4, #0x8
+  0.03  507810:   mov   x3, x4      
+  0.03  507814:   subs  x3, x3, #0x28
+        507818: ↑ b.ne  507800 <compute_rhs+0x2950>  // b.any
+  0.41  50781c:   add   x30, x30, #0x1
+  0.02  507820:   mov   x3, x30     
+  0.02  507824:   add   x19, x19, #0x28
+  0.02  507828:   subs  x3, x3, x1  
+  0.01  50782c: ↑ b.ne  5077fc <compute_rhs+0x294c>  // b.any
+  0.01  507830: ↑ b     5077d4 <compute_rhs+0x2924>
+        507834:   adrp  x8, bedb000 <rhoq+0x230>
+        507838:   ldr   w8, [x8, #2516]
+        50783c: ↓ cbz   w8, 507854 <compute_rhs+0x29a4>
+        507840:   ldp   x29, x30, [sp, #448]
+        507844:   ldp   x20, x19, [sp, #432]
+        507848:   mov   w0, #0x5                        // #5
+        50784c:   add   sp, sp, #0x1d0
+        507850: → b     503b60 <timer_stop>
+        507854:   ldp   x29, x30, [sp, #448]
+  0.00  507858:   ldp   x20, x19, [sp, #432]
+        50785c:   add   sp, sp, #0x1d0
+        507860: ← ret               
