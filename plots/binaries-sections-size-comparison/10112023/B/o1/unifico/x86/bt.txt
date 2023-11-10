@@ -1,0 +1,30 @@
+bt/bt_x86_64_aligned.out  :
+section                                                  size        addr
+.text                                                  102224     5242880
+.rodata                                                 11384     6291456
+.rodata.cst8                                              288     6302840
+.rodata.cst16                                             192     6303136
+.rodata.___src_stdio_vfprintf_c_xdigits                    16     6303328
+.rodata.___src_errno_strerror_c_errid                      89     6303344
+.rodata.cst4                                               20     6303436
+.rodata.___src_internal_floatscan_c_decfloat_p10s          32     6303456
+.data                                                    4360     7340032
+.bss                                                181915696     8388608
+.ldata                                                      0   190312496
+.eh_frame                                                1048   190312496
+.tdata                                                   4096   190840832
+.tbss                                                    4096   191889408
+.comment                                                  225           0
+.debug_str                                               6895           0
+.debug_loc                                              72162           0
+.debug_abbrev                                           17298           0
+.debug_info                                             61868           0
+.debug_ranges                                            5056           0
+.debug_macinfo                                             75           0
+.debug_frame                                             6056           0
+.debug_line                                             34158           0
+.debug_aranges                                            288           0
+.note.gnu.gold-version                                     28           0
+Total                                               182247650
+
+

@@ -1,0 +1,30 @@
+lu/lu_x86_64_aligned.out  :
+section                                                  size        addr
+.text                                                  100032     5242880
+.rodata                                                 12056     6291456
+.rodata.cst8                                              488     6303512
+.rodata.cst16                                             192     6304000
+.rodata.___src_stdio_vfprintf_c_xdigits                    16     6304192
+.rodata.___src_errno_strerror_c_errid                      89     6304208
+.rodata.cst4                                               20     6304300
+.rodata.___src_internal_floatscan_c_decfloat_p10s          32     6304320
+.data                                                    4360     7340032
+.bss                                                155582512     8388608
+.ldata                                                      0   163979312
+.eh_frame                                                1064   163979312
+.tdata                                                   4096   164626432
+.tbss                                                    4096   165675008
+.comment                                                  225           0
+.debug_str                                               6900           0
+.debug_loc                                              72978           0
+.debug_abbrev                                           17544           0
+.debug_info                                             63110           0
+.debug_ranges                                            5152           0
+.debug_macinfo                                             75           0
+.debug_frame                                             6104           0
+.debug_line                                             34458           0
+.debug_aranges                                            288           0
+.note.gnu.gold-version                                     28           0
+Total                                               155915915
+
+
