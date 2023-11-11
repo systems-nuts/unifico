@@ -1,0 +1,2030 @@
+compute_rhs() /home/nikos/phd/unified_abi/npb/runs/experiments/performance-regression/o1/vanilla/sole/bin/sp_aarch64_init.out
+Event: cycles
+
+Percent 40323c:   sub    sp, sp, #0x1c0
+        403240:   stp    d15, d14, [sp, #288]
+        403244:   stp    d13, d12, [sp, #304]
+        403248:   stp    d11, d10, [sp, #320]
+        40324c:   stp    d9, d8, [sp, #336]
+        403250:   stp    x28, x27, [sp, #352]
+        403254:   stp    x26, x25, [sp, #368]
+        403258:   stp    x24, x23, [sp, #384]
+        40325c:   stp    x22, x21, [sp, #400]
+        403260:   stp    x20, x19, [sp, #416]
+        403264:   stp    x29, x30, [sp, #432]
+        403268:   add    x29, sp, #0x1b0
+        40326c:   adrp   x8, bb0c000 <rhoq+0xf0>
+        403270:   ldr    w8, [x8, #2836]
+        403274: ↓ cbz    w8, 403280 <compute_rhs+0x44>
+        403278:   mov    w0, #0x5                        // #5
+        40327c: → bl     4022c4 <timer_start>
+        403280:   adrp   x8, bb0c000 <rhoq+0xf0>
+        403284:   ldr    w8, [x8, #2032]
+        403288:   cmp    w8, #0x1   
+        40328c: ↓ b.lt   403580 <compute_rhs+0x344>  // b.tstop
+        403290:   adrp   x8, 908a000 <rho_i+0x840bc0>
+        403294:   add    x8, x8, #0xc70
+        403298:   stur   x8, [x29, #-184]
+        40329c:   adrp   x8, 8849000 <qs+0x8413f0>
+        4032a0:   add    x8, x8, #0x440
+        4032a4:   stur   x8, [x29, #-192]
+        4032a8:   adrp   x8, 8007000 <u+0x2946ce0>
+        4032ac:   add    x8, x8, #0xc10
+        4032b0:   stur   x8, [x29, #-200]
+        4032b4:   adrp   x8, 98cc000 <speed+0x841390>
+        4032b8:   add    x8, x8, #0x4a0
+        4032bc:   stur   x8, [x29, #-208]
+        4032c0:   adrp   x8, b190000 <vs+0x840b00>
+        4032c4:   add    x8, x8, #0xd30
+        4032c8:   str    x8, [sp, #216]
+        4032cc:   adrp   x8, a10d000 <square+0x840b60>
+        4032d0:   add    x8, x8, #0xcd0
+        4032d4:   str    x8, [sp, #208]
+        4032d8:   adrp   x8, a94f000 <us+0x841330>
+        4032dc:   add    x8, x8, #0x500
+        4032e0:   str    x8, [sp, #200]
+        4032e4:   adrp   x8, 56c0000 <rhs+0x29475d0>
+        4032e8:   mov    x9, xzr    
+        4032ec:   add    x8, x8, #0x330
+        4032f0:   adrp   x27, bb0c000 <rhoq+0xf0>
+        4032f4:   fmov   d8, #1.000000000000000000e+00
+        4032f8:   fmov   d9, #5.000000000000000000e-01
+        4032fc:   adrp   x21, bb0c000 <rhoq+0xf0>
+        403300:   str    x8, [sp, #192]
+        403304: ↓ b      403390 <compute_rhs+0x154>
+  0.00  403308:   ldur   x10, [x29, #-184]
+        40330c:   mov    w13, #0x4b88                    // #19336
+        403310:   movk   w13, #0x1, lsl #16
+        403314:   ldr    x9, [sp, #184]
+        403318:   add    x10, x10, x13
+        40331c:   stur   x10, [x29, #-184]
+        403320:   ldur   x10, [x29, #-192]
+        403324:   adrp   x8, bb0c000 <rhoq+0xf0>
+        403328:   ldrsw  x8, [x8, #2032]
+        40332c:   add    x9, x9, #0x1
+        403330:   add    x10, x10, x13
+        403334:   stur   x10, [x29, #-192]
+        403338:   ldur   x10, [x29, #-200]
+        40333c:   cmp    x9, x8     
+        403340:   add    x10, x10, x13
+        403344:   stur   x10, [x29, #-200]
+        403348:   ldur   x10, [x29, #-208]
+        40334c:   add    x10, x10, x13
+        403350:   stur   x10, [x29, #-208]
+        403354:   ldr    x10, [sp, #216]
+        403358:   add    x10, x10, x13
+        40335c:   str    x10, [sp, #216]
+        403360:   ldr    x10, [sp, #208]
+        403364:   add    x10, x10, x13
+        403368:   str    x10, [sp, #208]
+        40336c:   ldr    x10, [sp, #200]
+        403370:   add    x10, x10, x13
+        403374:   str    x10, [sp, #200]
+        403378:   ldr    x10, [sp, #192]
+        40337c:   mov    w13, #0x79a8                    // #31144
+        403380:   movk   w13, #0x6, lsl #16
+        403384:   add    x10, x10, x13
+        403388:   str    x10, [sp, #192]
+        40338c: ↓ b.ge   4034c4 <compute_rhs+0x288>  // b.tcont
+  0.00  403390:   adrp   x8, bb0c000 <rhoq+0xf0>
+        403394:   ldr    w8, [x8, #2028]
+        403398:   str    x9, [sp, #184]
+        40339c:   cmp    w8, #0x1   
+        4033a0: ↑ b.lt   403308 <compute_rhs+0xcc>  // b.tstop
+        4033a4:   ldr    x8, [sp, #192]
+        4033a8:   ldp    x23, x19, [x29, #-208]
+  0.00  4033ac:   ldp    x28, x0, [x29, #-192]
+        4033b0:   mov    x9, xzr    
+        4033b4:   stur   x8, [x29, #-168]
+        4033b8:   ldp    x26, x25, [sp, #200]
+  0.00  4033bc:   ldr    x20, [sp, #216]
+        4033c0: ↓ b      403404 <compute_rhs+0x1c8>
+  0.00  4033c4:   ldp    x9, x10, [x29, #-176]
+  0.00  4033c8:   adrp   x8, bb0c000 <rhoq+0xf0>
+  0.00  4033cc:   ldrsw  x8, [x8, #2028]
+  0.00  4033d0:   add    x0, x0, #0x338
+  0.00  4033d4:   add    x9, x9, #0x1
+  0.00  4033d8:   add    x28, x28, #0x338
+  0.00  4033dc:   cmp    x9, x8     
+        4033e0:   mov    w8, #0x1018                     // #4120
+  0.00  4033e4:   add    x19, x19, #0x338
+  0.00  4033e8:   add    x23, x23, #0x338
+  0.00  4033ec:   add    x20, x20, #0x338
+        4033f0:   add    x25, x25, #0x338
+        4033f4:   add    x26, x26, #0x338
+  0.00  4033f8:   add    x10, x10, x8
+  0.00  4033fc:   stur   x10, [x29, #-168]
+  0.00  403400: ↑ b.ge   403308 <compute_rhs+0xcc>  // b.tcont
+  0.00  403404:   ldr    w8, [x27, #2024]
+        403408:   stur   x9, [x29, #-176]
+  0.00  40340c:   cmp    w8, #0x1   
+  0.00  403410: ↑ b.lt   4033c4 <compute_rhs+0x188>  // b.tstop
+  0.00  403414:   ldur   x24, [x29, #-168]
+  0.00  403418:   mov    x22, xzr   
+  0.00  40341c:   stur   x0, [x29, #-160]
+        403420: ↓ b      40343c <compute_rhs+0x200>
+  0.02  403424:   ldrsw  x8, [x27, #2024]
+  0.00  403428:   str    d0, [x0, x22, lsl #3]
+  0.14  40342c:   add    x22, x22, #0x1
+        403430:   add    x24, x24, #0x28
+  0.12  403434:   cmp    x22, x8    
+  0.00  403438: ↑ b.ge   4033c4 <compute_rhs+0x188>  // b.tcont
+  0.02  40343c:   ldur   d2, [x24, #-16]
+  0.03  403440:   ldp    d0, d1, [x24, #-8]
+  0.48  403444:   ldr    d3, [x24, #8]
+  0.05  403448:   lsl    x8, x22, #3
+  0.39  40344c:   fdiv   d2, d8, d2 
+  0.44  403450:   fmul   d5, d1, d1 
+  0.46  403454:   fmul   d1, d2, d1 
+  0.00  403458:   fmul   d4, d0, d0 
+  0.01  40345c:   fmul   d0, d2, d0 
+  0.00  403460:   str    d1, [x26, x8]
+  0.13  403464:   fmul   d1, d2, d3 
+  0.02  403468:   fadd   d4, d4, d5 
+  0.00  40346c:   str    d0, [x25, x8]
+  0.15  403470:   ldr    d0, [x21, #2080]
+  0.00  403474:   str    d1, [x20, x8]
+  0.12  403478:   ldr    d1, [x24, #16]
+  0.00  40347c:   fmul   d3, d3, d3 
+  0.04  403480:   fadd   d3, d4, d3 
+  0.05  403484:   fmul   d3, d3, d9 
+  0.37  403488:   fmul   d3, d2, d3 
+  0.00  40348c:   fmul   d0, d2, d0 
+  0.07  403490:   fsub   d1, d1, d3 
+  0.11  403494:   fmul   d1, d0, d1 
+  1.88  403498:   fsqrt  d0, d1     
+  0.00  40349c:   str    d2, [x28, x8]
+  0.00  4034a0:   fmul   d2, d2, d3 
+  0.57  4034a4:   fcmp   d0, d0     
+  0.00  4034a8:   str    d3, [x23, x8]
+  0.02  4034ac:   str    d2, [x19, x8]
+  0.13  4034b0:   b.vc   403424 <compute_rhs+0x1e8>
+        4034b4:   mov    v0.16b, v1.16b
+        4034b8: → bl     4094ac <sqrt>
+        4034bc:   ldur   x0, [x29, #-160]
+        4034c0: ↑ b      403424 <compute_rhs+0x1e8>
+        4034c4:   and    x8, x8, #0xffffffff
+        4034c8:   cmp    w8, #0x1   
+        4034cc: ↓ b.lt   403580 <compute_rhs+0x344>  // b.tstop
+        4034d0:   adrp   x11, bb0c000 <rhoq+0xf0>
+        4034d4:   add    x11, x11, #0x7e8
+        4034d8:   ldp    w10, w11, [x11]
+        4034dc:   adrp   x12, 431000 <mal+0x4f8>
+        4034e0:   adrp   x13, 2d78000 <forcing+0x2946ec0>
+        4034e4:   mov    w15, #0x79a8                    // #31144
+        4034e8:   mov    x9, xzr    
+        4034ec:   add    x12, x12, #0x140
+        4034f0:   add    x13, x13, #0xa30
+        4034f4:   mov    w14, #0x1018                    // #4120
+        4034f8:   movk   w15, #0x6, lsl #16
+        4034fc:   cmp    w11, #0x1  
+        403500: ↓ b.ge   403520 <compute_rhs+0x2e4>  // b.tcont
+        403504:   add    x9, x9, #0x1
+        403508:   add    x12, x12, x15
+        40350c:   cmp    x9, x8     
+        403510:   add    x13, x13, x15
+        403514: ↓ b.eq   403580 <compute_rhs+0x344>  // b.none
+        403518:   cmp    w11, #0x1  
+        40351c: ↑ b.lt   403504 <compute_rhs+0x2c8>  // b.tstop
+        403520:   mov    x16, xzr   
+        403524:   mov    x17, x13   
+        403528:   mov    x18, x12   
+        40352c:   cmp    w10, #0x1  
+        403530: ↓ b.ge   403550 <compute_rhs+0x314>  // b.tcont
+  0.00  403534:   add    x16, x16, #0x1
+  0.00  403538:   add    x18, x18, x14
+  0.00  40353c:   cmp    x16, x11   
+  0.00  403540:   add    x17, x17, x14
+        403544: ↑ b.eq   403504 <compute_rhs+0x2c8>  // b.none
+  0.00  403548:   cmp    w10, #0x1  
+        40354c: ↑ b.lt   403534 <compute_rhs+0x2f8>  // b.tstop
+        403550:   mov    x0, x17    
+  0.00  403554:   mov    x1, x18    
+        403558:   mov    x2, x10    
+  0.13  40355c:   ldr    x3, [x1, #32]
+  0.36  403560:   ldp    q0, q1, [x1]
+  0.17  403564:   subs   x2, x2, #0x1
+  0.62  403568:   add    x1, x1, #0x28
+  0.11  40356c:   str    x3, [x0, #32]
+  0.61  403570:   stp    q0, q1, [x0]
+  0.07  403574:   add    x0, x0, #0x28
+        403578: ↑ b.ne   40355c <compute_rhs+0x320>  // b.any
+  0.00  40357c: ↑ b      403534 <compute_rhs+0x2f8>
+        403580:   adrp   x8, bb0c000 <rhoq+0xf0>
+        403584:   ldr    w8, [x8, #2836]
+        403588: ↓ cbz    w8, 403594 <compute_rhs+0x358>
+        40358c:   mov    w0, #0x2                        // #2
+        403590: → bl     4022c4 <timer_start>
+        403594:   adrp   x8, bb0c000 <rhoq+0xf0>
+        403598:   ldr    w8, [x8, #2832]
+        40359c:   adrp   x9, a10d000 <square+0x840b60>
+        4035a0:   fmov   d10, #4.000000000000000000e+00
+        4035a4:   fmov   d11, #6.000000000000000000e+00
+        4035a8:   fmov   d8, #-4.000000000000000000e+00
+        4035ac:   fmov   d9, #5.000000000000000000e+00
+        4035b0:   add    x9, x9, #0xcd0
+        4035b4:   cmp    w8, #0x1   
+        4035b8:   str    x9, [sp, #168]
+        4035bc: ↓ b.lt   403d14 <compute_rhs+0xad8>  // b.tstop
+        4035c0:   adrp   x13, bb0c000 <rhoq+0xf0>
+        4035c4:   ldr    d21, [x13, #2248]
+        4035c8:   adrp   x13, bb0c000 <rhoq+0xf0>
+        4035cc:   ldr    d0, [x13, #2096]
+        4035d0:   adrp   x13, bb0c000 <rhoq+0xf0>
+        4035d4:   adrp   x8, bb0c000 <rhoq+0xf0>
+        4035d8:   ldr    d1, [x13, #2064]
+        4035dc:   adrp   x13, bb0c000 <rhoq+0xf0>
+        4035e0:   ldr    w5, [x8, #2828]
+        4035e4:   adrp   x8, bb0c000 <rhoq+0xf0>
+        4035e8:   ldr    d2, [x13, #2288]
+        4035ec:   adrp   x13, bb0c000 <rhoq+0xf0>
+        4035f0:   ldr    w10, [x8, #2824]
+        4035f4:   ldrsw  x13, [x13, #2832]
+        4035f8:   adrp   x6, 5728000 <u+0x67ce0>
+        4035fc:   adrp   x8, bb0c000 <rhoq+0xf0>
+        403600:   adrp   x9, bb0c000 <rhoq+0xf0>
+        403604:   adrp   x12, bb0c000 <rhoq+0xf0>
+        403608:   add    x6, x6, #0xce0
+        40360c:   adrp   x20, 2de1000 <rhs+0x685d0>
+        403610:   adrp   x11, bb0c000 <rhoq+0xf0>
+        403614:   adrp   x1, bb0c000 <rhoq+0xf0>
+        403618:   adrp   x3, bb0c000 <rhoq+0xf0>
+        40361c:   str    x13, [sp, #112]
+        403620:   mov    w13, #0x28                      // #40
+        403624:   add    x20, x20, #0x3f0
+        403628:   ldr    d24, [x8, #2368]
+        40362c:   ldr    d4, [x9, #2632]
+        403630:   ldr    d13, [x12, #2704]
+        403634:   mov    x12, x6    
+        403638:   sub    w8, w10, #0x3
+        40363c:   sub    w9, w10, #0x2
+        403640:   adrp   x17, bb0c000 <rhoq+0xf0>
+        403644:   adrp   x0, bb0c000 <rhoq+0xf0>
+        403648:   adrp   x2, bb0c000 <rhoq+0xf0>
+        40364c:   adrp   x4, bb0c000 <rhoq+0xf0>
+        403650:   ldr    d7, [x11, #2384]
+        403654:   ldr    d18, [x1, #2432]
+        403658:   ldr    d20, [x3, #2720]
+        40365c:   add    x1, x6, #0x38
+        403660:   add    x11, x20, #0x28
+        403664:   add    x3, x6, #0x28
+        403668:   sub    w6, w10, #0x1
+        40366c:   sxtw   x7, w10    
+        403670:   smaddl x9, w9, w13, x12
+        403674:   smaddl x8, w8, w13, x12
+        403678:   ldr    d12, [x17, #2400]
+        40367c:   ldr    d17, [x0, #2416]
+        403680:   ldr    d19, [x2, #2712]
+        403684:   ldr    d31, [x4, #2728]
+        403688:   sxtw   x19, w5    
+        40368c:   str    x5, [sp, #120]
+        403690:   add    x22, x5, #0x1
+        403694:   mov    x5, x11    
+        403698:   add    x11, x7, w10, sxtw #2
+        40369c:   stp    x8, x9, [x29, #-208]
+        4036a0:   smaddl x8, w6, w13, x20
+        4036a4:   str    x8, [sp, #216]
+        4036a8:   lsl    x8, x11, #3
+        4036ac:   fmul   d6, d13, d21
+        4036b0:   add    x9, x12, x8
+        4036b4:   add    x8, x20, x8
+        4036b8:   stp    x8, x9, [sp, #200]
+        4036bc:   stp    d0, d1, [x29, #-184]
+  0.00  4036c0:   stur   d6, [x29, #-192]
+        4036c4:   stp    d7, d24, [x29, #-168]
+        4036c8:   ldp    d7, d6, [x29, #-184]
+        4036cc:   ldur   d16, [x29, #-192]
+        4036d0:   mov    w16, #0x4ec8                    // #20168
+        4036d4:   mov    w18, #0x4ed0                    // #20176
+        4036d8:   adrp   x17, a94f000 <us+0x841330>
+        4036dc:   mov    w8, #0x4ec0                     // #20160
+        4036e0:   mov    x14, xzr   
+        4036e4:   mov    w15, #0x1018                    // #4120
+        4036e8:   movk   w16, #0x1, lsl #16
+        4036ec:   movk   w18, #0x1, lsl #16
+        4036f0:   add    x17, x17, #0x500
+        4036f4:   mov    w2, #0x1                        // #1
+        4036f8:   add    x4, x20, #0x38
+        4036fc:   add    x25, x20, #0x50
+        403700:   add    x28, x20, #0x78
+        403704:   smaddl x30, w6, w13, x12
+        403708:   movk   w8, #0x1, lsl #16
+        40370c: ↓ b      403794 <compute_rhs+0x558>
+        403710:   mov    w11, #0x4b88                    // #19336
+        403714:   ldr    x0, [sp, #208]
+        403718:   movk   w11, #0x1, lsl #16
+        40371c:   add    x14, x14, x11
+        403720:   mov    w11, #0x79a8                    // #31144
+  0.00  403724:   movk   w11, #0x6, lsl #16
+        403728:   add    x0, x0, x11
+        40372c:   str    x0, [sp, #208]
+        403730:   ldur   x0, [x29, #-200]
+        403734:   ldr    x9, [sp, #112]
+        403738:   add    x4, x4, x11
+        40373c:   add    x1, x1, x11
+        403740:   add    x0, x0, x11
+  0.00  403744:   stur   x0, [x29, #-200]
+        403748:   ldur   x0, [x29, #-208]
+        40374c:   cmp    x2, x9     
+        403750:   add    x9, x2, #0x1
+  0.00  403754:   add    x5, x5, x11
+        403758:   add    x0, x0, x11
+        40375c:   stur   x0, [x29, #-208]
+        403760:   ldr    x0, [sp, #216]
+        403764:   add    x3, x3, x11
+        403768:   add    x25, x25, x11
+        40376c:   add    x12, x12, x11
+        403770:   add    x0, x0, x11
+  0.00  403774:   str    x0, [sp, #216]
+        403778:   ldr    x0, [sp, #200]
+        40377c:   add    x28, x28, x11
+        403780:   add    x30, x30, x11
+        403784:   mov    x2, x9     
+        403788:   add    x0, x0, x11
+        40378c:   str    x0, [sp, #200]
+        403790: ↓ b.ge   403d14 <compute_rhs+0xad8>  // b.tcont
+  0.00  403794:   ldr    x9, [sp, #120]
+        403798:   cmp    w9, #0x1   
+        40379c: ↑ b.lt   403710 <compute_rhs+0x4d4>  // b.tstop
+        4037a0:   stp    x30, x28, [sp, #176]
+        4037a4:   mov    x23, x1    
+        4037a8:   mov    x0, x4     
+        4037ac:   mov    x30, x14   
+        4037b0:   mov    w27, #0x1                       // #1
+        4037b4:   str    x25, [sp, #192]
+        4037b8:   stp    x5, x4, [sp, #128]
+        4037bc:   stp    x2, x12, [sp, #144]
+        4037c0:   str    x14, [sp, #160]
+        4037c4: ↓ b      4037e0 <compute_rhs+0x5a4>
+  0.00  4037c8:   cmp    x27, x19   
+        4037cc:   add    x27, x27, #0x1
+        4037d0:   add    x30, x30, #0x338
+        4037d4:   add    x0, x0, x15
+  0.00  4037d8:   add    x23, x23, x15
+        4037dc: ↓ b.ge   403a94 <compute_rhs+0x858>  // b.tcont
+        4037e0:   adrp   x5, a10d000 <square+0x840b60>
+  0.00  4037e4:   adrp   x14, 98cc000 <speed+0x841390>
+  0.00  4037e8:   adrp   x2, b190000 <vs+0x840b00>
+  0.00  4037ec:   adrp   x4, 8007000 <u+0x2946ce0>
+        4037f0:   adrp   x12, 8849000 <qs+0x8413f0>
+  0.00  4037f4:   cmp    w10, #0x1  
+        4037f8:   add    x5, x5, #0xcd0
+  0.00  4037fc:   add    x14, x14, #0x4a0
+        403800:   add    x2, x2, #0xd30
+        403804:   add    x4, x4, #0xc10
+  0.00  403808:   add    x12, x12, #0x440
+        40380c: ↑ b.lt   4037c8 <compute_rhs+0x58c>  // b.tstop
+  0.00  403810:   mov    x28, xzr   
+        403814:   mov    x21, x23   
+  0.00  403818:   mov    x24, x0    
+        40381c:   mov    x26, x30   
+  0.00  403820:   mov    x20, x23   
+  0.00  403824:   ldp    d22, d30, [x21, #-24]
+  0.41  403828:   add    x9, x5, x26
+  0.03  40382c:   mov    v1.16b, v31.16b
+  0.02  403830:   ldp    d31, d8, [x21, #24]
+  0.10  403834:   ldur   d15, [x21, #-8]
+  0.02  403838:   add    x11, x14, x26
+  0.21  40383c:   mov    v21.16b, v20.16b
+  0.34  403840:   mov    v20.16b, v19.16b
+  0.00  403844:   mov    v19.16b, v18.16b
+  0.01  403848:   mov    v18.16b, v17.16b
+  0.00  40384c:   mov    v17.16b, v12.16b
+  0.10  403850:   ldp    d9, d12, [x21, #-56]
+  0.01  403854:   ldr    d24, [x21, #56]
+  0.00  403858:   ldr    d26, [x9, x18]
+  0.10  40385c:   ldr    d25, [x9, x8]
+  0.64  403860:   ldr    d29, [x11, x18]
+  0.26  403864:   fadd   d30, d30, d30
+  0.02  403868:   fadd   d15, d15, d15
+  0.00  40386c:   fsub   d30, d31, d30
+  0.27  403870:   fsub   d3, d8, d12
+  0.00  403874:   fsub   d31, d8, d15
+  0.02  403878:   fmul   d8, d26, d8
+  0.00  40387c:   fmul   d5, d25, d12
+  0.10  403880:   fadd   d30, d9, d30
+  0.01  403884:   fsub   d9, d24, d29
+  0.04  403888:   fsub   d5, d8, d5 
+  0.03  40388c:   fsub   d8, d9, d22
+  0.09  403890:   ldur   d9, [x29, #-160]
+  0.00  403894:   ldr    d27, [x9, x16]
+  0.02  403898:   ldr    d28, [x11, x8]
+  0.10  40389c:   mov    v0.16b, v13.16b
+  0.00  4038a0:   ldp    d13, d14, [x24, #-16]
+  0.12  4038a4:   fmul   d30, d9, d30
+        4038a8:   ldur   d9, [x29, #-168]
+  0.47  4038ac:   fadd   d15, d27, d27
+  0.26  4038b0:   fadd   d31, d12, d31
+  0.12  4038b4:   fsub   d12, d26, d15
+  0.02  4038b8:   fadd   d8, d8, d28
+  0.01  4038bc:   fmul   d3, d4, d3 
+  0.00  4038c0:   fmul   d31, d9, d31
+  0.28  4038c4:   fadd   d9, d12, d25
+  0.02  4038c8:   fadd   d30, d13, d30
+  0.08  4038cc:   fmul   d8, d8, d7 
+  0.02  4038d0:   fadd   d31, d14, d31
+  0.32  4038d4:   fmul   d9, d9, d16
+  0.02  4038d8:   fsub   d3, d30, d3
+  0.09  4038dc:   fadd   d5, d5, d8 
+  0.52  4038e0:   fadd   d30, d9, d31
+  0.00  4038e4:   stur   d3, [x24, #-16]
+  0.15  4038e8:   fmul   d3, d4, d5 
+  0.72  4038ec:   fsub   d3, d30, d3
+  0.00  4038f0:   add    x9, x17, x26
+  0.00  4038f4:   stur   d3, [x24, #-8]
+        4038f8:   fmul   d9, d22, d6
+        4038fc:   fmul   d12, d26, d26
+        403900:   fmul   d28, d28, d7
+  0.58  403904:   fmul   d27, d27, d15
+  0.00  403908:   ldr    d23, [x24] 
+        40390c:   ldr    d3, [x20, #40]!
+  0.12  403910:   ldr    d30, [x9, x16]
+  0.33  403914:   fmul   d13, d25, d25
+  0.00  403918:   fsub   d28, d9, d28
+  0.12  40391c:   fsub   d27, d12, d27
+  0.01  403920:   ldp    d9, d12, [x21]
+        403924:   ldr    d5, [x9, x18]
+  0.20  403928:   fadd   d27, d27, d13
+        40392c:   ldp    d13, d14, [x21, #-40]
+  0.31  403930:   fmul   d8, d24, d6
+  0.05  403934:   fmul   d29, d29, d7
+        403938:   fadd   d9, d9, d9 
+  0.00  40393c:   fadd   d30, d30, d30
+  0.06  403940:   add    x25, x2, x26
+  0.05  403944:   fsub   d29, d8, d29
+  0.00  403948:   fsub   d9, d3, d9 
+  0.00  40394c:   fmul   d3, d26, d3
+  0.08  403950:   fsub   d5, d5, d30
+  0.04  403954:   fmul   d30, d25, d13
+  0.09  403958:   fmul   d29, d26, d29
+        40395c:   fmul   d28, d25, d28
+  0.07  403960:   fsub   d3, d3, d30
+  0.00  403964:   ldr    d30, [x25, x16]
+  0.33  403968:   fsub   d28, d29, d28
+  0.02  40396c:   ldr    d29, [x25, x18]
+  0.01  403970:   ldr    d8, [x21, #48]
+  0.09  403974:   ldr    d31, [x9, x8]
+  0.27  403978:   add    x9, x4, x26
+        40397c:   fadd   d30, d30, d30
+  0.09  403980:   fadd   d12, d12, d12
+  0.03  403984:   fsub   d29, d29, d30
+  0.00  403988:   ldr    d30, [x9, x16]
+  0.08  40398c:   fmul   d26, d26, d8
+  0.03  403990:   fsub   d8, d8, d12
+  0.00  403994:   ldr    d12, [x9, x18]
+  0.09  403998:   ldr    d15, [x21, #16]
+  0.03  40399c:   add    x11, x12, x26
+  0.00  4039a0:   fmul   d25, d25, d14
+  0.23  4039a4:   fadd   d30, d30, d30
+  0.08  4039a8:   fsub   d25, d26, d25
+  0.03  4039ac:   ldr    d26, [x11, x18]
+  0.01  4039b0:   fsub   d30, d12, d30
+  0.08  4039b4:   ldr    d12, [x11, x16]
+  0.18  4039b8:   fadd   d5, d31, d5
+  0.00  4039bc:   ldr    d31, [x11, x8]
+  0.11  4039c0:   fadd   d8, d14, d8
+  0.00  4039c4:   ldr    d14, [x9, x8]
+  0.17  4039c8:   fadd   d15, d15, d15
+  0.04  4039cc:   fmul   d26, d24, d26
+  0.29  4039d0:   fmul   d12, d15, d12
+  0.20  4039d4:   fsub   d24, d24, d15
+  0.01  4039d8:   fadd   d9, d13, d9
+  0.45  4039dc:   fsub   d26, d26, d12
+  0.29  4039e0:   mov    v12.16b, v17.16b
+  0.00  4039e4:   ldr    d13, [x25, x8]
+  0.02  4039e8:   fmul   d31, d22, d31
+  0.16  4039ec:   fadd   d22, d22, d24
+  0.00  4039f0:   fadd   d24, d14, d30
+  0.49  4039f4:   fmul   d30, d12, d9
+  0.02  4039f8:   fadd   d26, d26, d31
+  0.65  4039fc:   fadd   d23, d23, d30
+  0.00  403a00:   ldp    d30, d31, [x24, #8]
+  0.01  403a04:   mov    v17.16b, v18.16b
+  0.12  403a08:   mov    v18.16b, v19.16b
+  0.27  403a0c:   fadd   d29, d13, d29
+  0.49  403a10:   mov    v19.16b, v20.16b
+  0.10  403a14:   fmul   d8, d17, d8
+  0.06  403a18:   fmul   d22, d18, d22
+  0.00  403a1c:   fmul   d5, d0, d5 
+  0.00  403a20:   fmul   d29, d0, d29
+  0.25  403a24:   fmul   d24, d19, d24
+  0.17  403a28:   fadd   d30, d30, d8
+  0.02  403a2c:   fadd   d22, d31, d22
+  0.00  403a30:   fmul   d27, d27, d21
+  0.00  403a34:   fmul   d3, d4, d3 
+  0.10  403a38:   fmul   d25, d4, d25
+  0.10  403a3c:   fadd   d5, d23, d5
+  0.38  403a40:   fadd   d23, d30, d29
+  0.02  403a44:   fadd   d22, d22, d24
+  0.00  403a48:   fmul   d26, d1, d26
+  0.22  403a4c:   fsub   d3, d5, d3 
+  0.45  403a50:   fsub   d5, d23, d25
+  0.02  403a54:   fadd   d22, d27, d22
+  0.00  403a58:   fmul   d28, d4, d28
+  0.00  403a5c:   stp    d3, d5, [x24]
+  0.45  403a60:   fadd   d3, d22, d26
+        403a64:   add    x28, x28, #0x1
+  0.54  403a68:   fsub   d3, d3, d28
+  0.05  403a6c:   mov    v13.16b, v0.16b
+  0.00  403a70:   mov    v20.16b, v21.16b
+        403a74:   add    x26, x26, #0x8
+  0.11  403a78:   cmp    x28, x7    
+  0.01  403a7c:   mov    v31.16b, v1.16b
+  0.01  403a80:   str    d3, [x24, #16]
+        403a84:   add    x24, x24, #0x28
+  0.01  403a88:   mov    x21, x20   
+        403a8c: ↑ b.lt   403824 <compute_rhs+0x5e8>  // b.tstop
+        403a90: ↑ b      4037c8 <compute_rhs+0x58c>
+  0.00  403a94:   ldp    x12, x14, [sp, #152]
+  0.00  403a98:   ldp    x4, x2, [sp, #136]
+  0.00  403a9c:   ldr    x5, [sp, #128]
+        403aa0:   ldp    x28, x25, [sp, #184]
+        403aa4:   ldr    x30, [sp, #176]
+        403aa8:   cmp    w19, #0x1  
+        403aac:   fmov   d8, #-4.000000000000000000e+00
+        403ab0:   fmov   d9, #5.000000000000000000e+00
+        403ab4: ↑ b.lt   403710 <compute_rhs+0x4d4>  // b.tstop
+        403ab8:   mov    x0, x25    
+        403abc:   mov    x20, x3    
+        403ac0:   mov    x21, x5    
+  0.00  403ac4:   mov    w23, #0x1                       // #1
+        403ac8:   mov    x9, xzr    
+        403acc:   add    x11, x20, x9
+  0.01  403ad0:   ldr    d3, [x11]  
+  0.02  403ad4:   ldr    d5, [x11, #40]
+  0.01  403ad8:   ldr    d23, [x11, #80]
+        403adc:   ldr    d22, [x21, x9]
+  0.02  403ae0:   fmul   d3, d3, d9 
+  0.01  403ae4:   fmul   d5, d5, d8 
+  0.01  403ae8:   fadd   d3, d3, d5 
+  0.02  403aec:   fadd   d3, d23, d3
+  0.01  403af0:   fmul   d3, d2, d3 
+  0.01  403af4:   fsub   d3, d22, d3
+        403af8:   str    d3, [x21, x9]
+  0.00  403afc:   add    x9, x9, #0x8
+        403b00:   cmp    x9, #0x28  
+        403b04: ↑ b.ne   403acc <compute_rhs+0x890>  // b.any
+        403b08:   mov    x9, xzr    
+  0.02  403b0c:   add    x11, x20, x9
+        403b10:   ldr    d3, [x11]  
+        403b14:   ldr    d5, [x11, #40]
+        403b18:   ldr    d22, [x11, #80]
+  0.01  403b1c:   ldr    d23, [x11, #120]
+        403b20:   fmul   d3, d3, d10
+        403b24:   fmul   d5, d5, d11
+  0.00  403b28:   fsub   d3, d5, d3 
+  0.01  403b2c:   ldr    d5, [x0, x9]
+        403b30:   fmul   d22, d22, d10
+  0.00  403b34:   fsub   d3, d3, d22
+  0.01  403b38:   fadd   d3, d23, d3
+  0.02  403b3c:   fmul   d3, d2, d3 
+  0.02  403b40:   fsub   d3, d5, d3 
+        403b44:   str    d3, [x0, x9]
+  0.00  403b48:   add    x9, x9, #0x8
+        403b4c:   cmp    x9, #0x28  
+        403b50: ↑ b.ne   403b0c <compute_rhs+0x8d0>  // b.any
+  0.01  403b54:   add    x23, x23, #0x1
+        403b58:   add    x21, x21, x15
+        403b5c:   add    x20, x20, x15
+        403b60:   cmp    x23, x22   
+  0.00  403b64:   add    x0, x0, x15
+        403b68: ↑ b.ne   403ac8 <compute_rhs+0x88c>  // b.any
+  0.00  403b6c:   cmp    w19, #0x1  
+        403b70: ↑ b.lt   403710 <compute_rhs+0x4d4>  // b.tstop
+        403b74:   mov    x0, x3     
+        403b78:   mov    x20, x28   
+        403b7c:   mov    x21, x12   
+        403b80:   mov    w23, #0x1                       // #1
+        403b84:   cmp    w7, #0x5   
+        403b88: ↓ b.ge   403bac <compute_rhs+0x970>  // b.tcont
+  0.00  403b8c:   add    x23, x23, #0x1
+        403b90:   add    x21, x21, x15
+        403b94:   add    x20, x20, x15
+  0.00  403b98:   cmp    x23, x22   
+  0.00  403b9c:   add    x0, x0, x15
+        403ba0: ↓ b.eq   403c3c <compute_rhs+0xa00>  // b.none
+        403ba4:   cmp    w7, #0x5   
+        403ba8: ↑ b.lt   403b8c <compute_rhs+0x950>  // b.tstop
+  0.00  403bac:   mov    w24, #0x5                       // #5
+        403bb0:   mov    w25, #0x4                       // #4
+  0.00  403bb4:   mov    x26, x0    
+  0.00  403bb8:   mov    x27, x20   
+  0.00  403bbc:   mov    w28, #0x3                       // #3
+  0.11  403bc0:   mov    x30, xzr   
+  0.00  403bc4:   umaddl x11, w24, w13, x21
+  0.00  403bc8:   umaddl x9, w25, w13, x21
+  0.11  403bcc:   add    x28, x28, #0x1
+
+  0.01  403bd0:   add    x17, x26, x30
+  1.91  403bd4:   ldr    d3, [x17, #40]
+  0.11  403bd8:   ldr    d5, [x17]  
+  0.01  403bdc:   ldr    d23, [x17, #80]
+  0.01  403be0:   ldr    d22, [x9, x30]
+  0.56  403be4:   fmul   d3, d3, d10
+  0.01  403be8:   fsub   d3, d5, d3 
+  0.01  403bec:   ldr    d5, [x11, x30]
+  0.54  403bf0:   fmul   d23, d23, d11
+  0.03  403bf4:   fadd   d3, d3, d23
+  0.01  403bf8:   ldr    d23, [x27, x30]
+  0.72  403bfc:   fmul   d22, d22, d10
+  0.07  403c00:   fsub   d3, d3, d22
+  0.17  403c04:   fadd   d3, d5, d3 
+  1.82  403c08:   fmul   d3, d2, d3 
+  2.28  403c0c:   fsub   d3, d23, d3
+
+  0.01  403c10:   str    d3, [x27, x30]
+  0.02  403c14:   add    x30, x30, #0x8
+  0.01  403c18:   cmp    x30, #0x28 
+        403c1c: ↑ b.ne   403bd0 <compute_rhs+0x994>  // b.any
+
+  0.00  403c20:   add    w24, w24, #0x1
+  0.54  403c24:   add    w25, w25, #0x1
+  0.00  403c28:   add    x27, x27, #0x28
+  0.00  403c2c:   cmp    x28, x6    
+  0.00  403c30:   add    x26, x26, #0x28
+        403c34: ↑ b.ne   403bc0 <compute_rhs+0x984>  // b.any
+  0.01  403c38: ↑ b      403b8c <compute_rhs+0x950>
+        403c3c:   ldp    x28, x25, [sp, #184]
+  0.00  403c40:   ldr    x30, [sp, #176]
+        403c44:   adrp   x17, a94f000 <us+0x841330>
+        403c48:   cmp    w19, #0x1  
+        403c4c:   add    x17, x17, #0x500
+        403c50: ↑ b.lt   403710 <compute_rhs+0x4d4>  // b.tstop
+        403c54:   ldp    x0, x26, [sp, #200]
+        403c58:   ldr    x20, [sp, #216]
+        403c5c:   ldp    x21, x23, [x29, #-208]
+        403c60:   mov    x24, x30   
+        403c64:   mov    w27, #0x1                       // #1
+        403c68:   mov    x9, xzr    
+  0.00  403c6c:   ldr    d3, [x23, x9]
+  0.01  403c70:   ldr    d5, [x21, x9]
+  0.00  403c74:   ldr    d22, [x24, x9]
+  0.03  403c78:   fmul   d3, d3, d10
+  0.02  403c7c:   fsub   d3, d5, d3 
+  0.00  403c80:   ldr    d5, [x26, x9]
+  0.01  403c84:   fmul   d22, d22, d11
+  0.01  403c88:   fadd   d3, d3, d22
+        403c8c:   ldr    d22, [x20, x9]
+  0.01  403c90:   fmul   d5, d5, d10
+  0.01  403c94:   fsub   d3, d3, d5 
+  0.01  403c98:   fmul   d3, d2, d3 
+  0.02  403c9c:   fsub   d3, d22, d3
+        403ca0:   str    d3, [x20, x9]
+  0.00  403ca4:   add    x9, x9, #0x8
+  0.00  403ca8:   cmp    x9, #0x28  
+        403cac: ↑ b.ne   403c6c <compute_rhs+0xa30>  // b.any
+        403cb0:   mov    x9, xzr    
+  0.01  403cb4:   ldr    d3, [x24, x9]
+  0.02  403cb8:   ldr    d5, [x26, x9]
+  0.00  403cbc:   ldr    d22, [x23, x9]
+  0.00  403cc0:   ldr    d23, [x0, x9]
+  0.00  403cc4:   fmul   d3, d3, d8 
+  0.00  403cc8:   fmul   d5, d5, d9 
+  0.00  403ccc:   fadd   d3, d22, d3
+  0.01  403cd0:   fadd   d3, d3, d5 
+  0.01  403cd4:   fmul   d3, d2, d3 
+  0.01  403cd8:   fsub   d3, d23, d3
+  0.00  403cdc:   str    d3, [x0, x9]
+  0.00  403ce0:   add    x9, x9, #0x8
+  0.00  403ce4:   cmp    x9, #0x28  
+        403ce8: ↑ b.ne   403cb4 <compute_rhs+0xa78>  // b.any
+        403cec:   add    x27, x27, #0x1
+  0.00  403cf0:   add    x26, x26, x15
+        403cf4:   add    x24, x24, x15
+  0.00  403cf8:   add    x23, x23, x15
+        403cfc:   add    x21, x21, x15
+  0.00  403d00:   add    x20, x20, x15
+        403d04:   cmp    x27, x22   
+  0.00  403d08:   add    x0, x0, x15
+        403d0c: ↑ b.ne   403c68 <compute_rhs+0xa2c>  // b.any
+  0.00  403d10: ↑ b      403710 <compute_rhs+0x4d4>
+        403d14:   adrp   x8, bb0c000 <rhoq+0xf0>
+        403d18:   ldr    w8, [x8, #2836]
+  0.00  403d1c: ↓ cbz    w8, 403d3c <compute_rhs+0xb00>
+        403d20:   mov    w0, #0x2                        // #2
+        403d24: → bl     402314 <timer_stop>
+        403d28:   adrp   x8, bb0c000 <rhoq+0xf0>
+        403d2c:   ldr    w8, [x8, #2836]
+        403d30: ↓ cbz    w8, 403d3c <compute_rhs+0xb00>
+        403d34:   mov    w0, #0x3                        // #3
+        403d38: → bl     4022c4 <timer_start>
+        403d3c:   adrp   x8, bb0c000 <rhoq+0xf0>
+        403d40:   ldr    w8, [x8, #2832]
+        403d44:   adrp   x22, a10d000 <square+0x840b60>
+        403d48:   add    x22, x22, #0xcd0
+        403d4c:   cmp    w8, #0x1   
+        403d50: ↓ b.lt   404494 <compute_rhs+0x1258>  // b.tstop
+        403d54:   adrp   x11, bb0c000 <rhoq+0xf0>
+        403d58:   ldr    d3, [x11, #2248]
+        403d5c:   adrp   x11, bb0c000 <rhoq+0xf0>
+        403d60:   ldr    d0, [x11, #2096]
+        403d64:   adrp   x8, bb0c000 <rhoq+0xf0>
+        403d68:   ldr    w15, [x8, #2828]
+        403d6c:   adrp   x8, bb0c000 <rhoq+0xf0>
+        403d70:   adrp   x12, bb0c000 <rhoq+0xf0>
+        403d74:   ldr    w10, [x8, #2824]
+        403d78:   adrp   x8, bb0c000 <rhoq+0xf0>
+        403d7c:   adrp   x11, bb0c000 <rhoq+0xf0>
+        403d80:   ldr    d2, [x12, #2288]
+        403d84:   adrp   x12, bb0c000 <rhoq+0xf0>
+        403d88:   str    d0, [sp, #216]
+        403d8c:   ldr    d1, [x11, #2064]
+        403d90:   ldrsw  x11, [x12, #2832]
+        403d94:   ldr    d0, [x8, #2456]
+        403d98:   adrp   x16, bb0c000 <rhoq+0xf0>
+        403d9c:   adrp   x1, bb0c000 <rhoq+0xf0>
+        403da0:   str    xzr, [sp, #208]
+        403da4:   adrp   x14, bb0c000 <rhoq+0xf0>
+        403da8:   adrp   x4, bb0c000 <rhoq+0xf0>
+        403dac:   adrp   x6, bb0c000 <rhoq+0xf0>
+        403db0:   stur   d1, [x29, #-208]
+        403db4:   str    x11, [sp, #144]
+        403db8:   stur   d0, [x29, #-192]
+        403dbc:   ldr    d4, [x16, #2744]
+        403dc0:   ldr    d0, [x1, #2488]
+        403dc4:   adrp   x12, 2de0000 <rhs+0x675d0>
+        403dc8:   ldr    d14, [x14, #2472]
+        403dcc:   ldr    d27, [x4, #2752]
+        403dd0:   ldr    d28, [x6, #2768]
+        403dd4:   add    x12, x12, #0x400
+        403dd8:   mov    w7, #0x1028                     // #4136
+        403ddc:   add    x8, x12, x7
+        403de0:   adrp   x9, bb0c000 <rhoq+0xf0>
+        403de4:   adrp   x2, bb0c000 <rhoq+0xf0>
+        403de8:   adrp   x3, bb0c000 <rhoq+0xf0>
+        403dec:   adrp   x5, bb0c000 <rhoq+0xf0>
+        403df0:   stur   d0, [x29, #-200]
+        403df4:   str    x8, [sp, #200]
+        403df8:   sxtw   x8, w15    
+        403dfc:   fmul   d29, d4, d3
+        403e00:   ldr    d6, [x9, #2656]
+        403e04:   ldr    d15, [x2, #2504]
+        403e08:   ldr    d20, [x3, #2520]
+        403e0c:   ldr    d21, [x5, #2760]
+        403e10:   str    x15, [sp, #152]
+        403e14:   str    x8, [sp, #192]
+        403e18:   stp    d14, d27, [x29, #-168]
+        403e1c:   stp    d29, d28, [x29, #-184]
+        403e20:   ldr    d0, [sp, #216]
+        403e24:   adrp   x17, 5727000 <u+0x66ce0>
+        403e28:   mov    w19, #0x2030                    // #8240
+        403e2c:   mov    w13, #0x1018                    // #4120
+        403e30:   add    x17, x17, #0xcf0
+        403e34:   mov    w20, #0x3048                    // #12360
+        403e38:   mov    w18, #0x4ec8                    // #20168
+        403e3c:   mov    w0, #0x5200                     // #20992
+        403e40:   add    x1, x12, x19
+        403e44:   mov    w19, #0x4b90                    // #19344
+        403e48:   mov    w11, #0x1                       // #1
+        403e4c:   movk   w18, #0x1, lsl #16
+        403e50:   movk   w0, #0x1, lsl #16
+        403e54:   add    x2, x12, x13
+        403e58:   add    x3, x17, x13
+        403e5c:   add    x4, x12, x20
+        403e60:   sxtw   x6, w10    
+        403e64:   sxtw   x7, w15    
+        403e68:   add    w30, w10, #0x1
+        403e6c:   movk   w19, #0x1, lsl #16
+        403e70: ↓ b      403ec8 <compute_rhs+0xc8c>
+  0.00  403e74:   ldr    x8, [sp, #144]
+        403e78:   ldr    x11, [sp, #208]
+  0.00  403e7c:   cmp    x9, x8     
+        403e80:   add    x8, x9, #0x1
+        403e84:   mov    w9, #0x4b88                     // #19336
+        403e88:   movk   w9, #0x1, lsl #16
+        403e8c:   add    x11, x11, x9
+        403e90:   str    x11, [sp, #208]
+        403e94:   ldr    x11, [sp, #200]
+        403e98:   mov    w9, #0x79a8                     // #31144
+        403e9c:   movk   w9, #0x6, lsl #16
+        403ea0:   add    x17, x17, x9
+        403ea4:   add    x11, x11, x9
+        403ea8:   str    x11, [sp, #200]
+        403eac:   add    x2, x2, x9 
+        403eb0:   add    x3, x3, x9 
+        403eb4:   add    x1, x1, x9 
+        403eb8:   add    x4, x4, x9 
+        403ebc:   add    x12, x12, x9
+        403ec0:   mov    x11, x8    
+        403ec4: ↓ b.ge   404494 <compute_rhs+0x1258>  // b.tcont
+        403ec8:   ldr    x8, [sp, #152]
+        403ecc:   str    x4, [sp, #160]
+        403ed0:   stp    x1, x11, [sp, #176]
+        403ed4:   subs   w20, w8, #0x1
+        403ed8: ↓ b.lt   4041a8 <compute_rhs+0xf6c>  // b.tstop
+        403edc:   ldp    x23, x8, [sp, #200]
+        403ee0:   mov    x14, x17   
+        403ee4:   mov    w26, #0x1                       // #1
+        403ee8: ↓ b      403f04 <compute_rhs+0xcc8>
+  0.00  403eec:   cmp    x26, x7    
+        403ef0:   add    x26, x26, #0x1
+        403ef4:   add    x8, x8, #0x338
+        403ef8:   add    x14, x14, x13
+  0.00  403efc:   add    x23, x23, x13
+        403f00: ↓ b.ge   4041a8 <compute_rhs+0xf6c>  // b.tcont
+  0.00  403f04:   ldur   d1, [x29, #-208]
+        403f08:   adrp   x15, a94f000 <us+0x841330>
+  0.00  403f0c:   adrp   x11, 98cc000 <speed+0x841390>
+        403f10:   adrp   x4, b190000 <vs+0x840b00>
+        403f14:   adrp   x9, 8007000 <u+0x2946ce0>
+        403f18:   adrp   x1, 8849000 <qs+0x8413f0>
+  0.00  403f1c:   cmp    w10, #0x1  
+        403f20:   add    x15, x15, #0x500
+        403f24:   add    x11, x11, #0x4a0
+        403f28:   add    x4, x4, #0xd30
+  0.00  403f2c:   add    x9, x9, #0xc10
+        403f30:   add    x1, x1, #0x440
+        403f34: ↑ b.lt   403eec <compute_rhs+0xcb0>  // b.tstop
+        403f38:   mov    x27, xzr   
+        403f3c:   mov    x28, x23   
+  0.00  403f40:   mov    x24, x14   
+        403f44:   mov    x25, x8    
+        403f48:   add    x5, x22, x25
+  0.34  403f4c:   ldr    d24, [x24, #4120]
+  0.00  403f50:   ldr    d17, [x5, x18]
+  0.01  403f54:   ldr    d23, [x24, #8240]
+  0.12  403f58:   ldr    d16, [x5, x0]
+  0.00  403f5c:   ldp    d29, d28, [x24]
+  1.30  403f60:   ldr    d27, [x24, #4128]
+  0.13  403f64:   add    x16, x15, x25
+  0.00  403f68:   ldr    d25, [x24, #8248]
+  0.01  403f6c:   ldr    d13, [x24, #4136]
+  0.12  403f70:   add    x21, x4, x25
+  0.00  403f74:   fadd   d24, d24, d24
+  1.08  403f78:   fadd   d17, d17, d17
+  0.01  403f7c:   ldr    d22, [x24, #8256]
+  0.10  403f80:   ldr    d30, [x16, x0]
+  0.00  403f84:   ldr    d26, [x16, x19]
+  1.19  403f88:   ldr    d3, [x24, #4144]
+  0.11  403f8c:   fsub   d23, d23, d24
+  0.00  403f90:   fsub   d16, d16, d17
+  0.01  403f94:   ldr    d17, [x21, x18]
+  0.10  403f98:   ldr    d9, [x24, #8264]
+  0.00  403f9c:   ldp    d5, d7, [x24, #16]
+  0.12  403fa0:   fadd   d23, d29, d23
+  1.22  403fa4:   ldr    d29, [x21, x0]
+  0.01  403fa8:   ldr    d31, [x16, x18]
+  0.10  403fac:   add    x16, x11, x25
+  0.06  403fb0:   fadd   d27, d27, d27
+  0.01  403fb4:   ldr    d8, [x16, x0]
+  0.15  403fb8:   mov    v10.16b, v20.16b
+  0.01  403fbc:   mov    v20.16b, v15.16b
+  0.00  403fc0:   ldr    d15, [x16, x19]
+  0.25  403fc4:   add    x16, x1, x25
+  0.01  403fc8:   fsub   d27, d25, d27
+  0.00  403fcc:   fadd   d13, d13, d13
+  0.08  403fd0:   ldr    d18, [x16, x0]
+  0.03  403fd4:   ldr    d19, [x16, x18]
+  0.09  403fd8:   ldr    d24, [x16, x19]
+  0.17  403fdc:   add    x16, x9, x25
+  0.01  403fe0:   fmul   d25, d30, d25
+  0.10  403fe4:   fadd   d27, d28, d27
+  0.03  403fe8:   fmul   d28, d26, d28
+  0.01  403fec:   fsub   d13, d22, d13
+  0.00  403ff0:   fadd   d17, d17, d17
+  0.08  403ff4:   fadd   d3, d3, d3 
+  0.03  403ff8:   fsub   d25, d25, d28
+  0.01  403ffc:   fsub   d28, d22, d5
+  0.01  404000:   fmul   d22, d30, d22
+  0.09  404004:   fadd   d13, d5, d13
+  0.02  404008:   fmul   d5, d26, d5
+  0.01  40400c:   fsub   d17, d29, d17
+  0.00  404010:   ldr    d29, [x16, x18]
+  0.13  404014:   fsub   d3, d9, d3 
+  0.01  404018:   fsub   d5, d22, d5
+        40401c:   ldr    d22, [x16, x0]
+  0.16  404020:   fmul   d9, d30, d9
+  0.37  404024:   fadd   d3, d7, d3 
+  0.09  404028:   fmul   d7, d26, d7
+  0.66  40402c:   fsub   d7, d9, d7 
+  0.00  404030:   ldr    d9, [x24, #4152]
+  0.00  404034:   ldr    d12, [x24, #8272]
+  0.00  404038:   fadd   d29, d29, d29
+  0.15  40403c:   fsub   d22, d22, d29
+  0.00  404040:   ldr    d29, [x24, #32]
+  1.01  404044:   fadd   d9, d9, d9 
+        404048:   ldr    d14, [x5, x19]
+  0.16  40404c:   fmul   d18, d12, d18
+  0.21  404050:   fmul   d19, d9, d19
+  0.66  404054:   fsub   d18, d18, d19
+  0.02  404058:   fmul   d19, d12, d1
+  0.00  40405c:   fsub   d9, d12, d9
+  0.00  404060:   fsub   d12, d12, d8
+  0.11  404064:   fmul   d8, d8, d0 
+  0.01  404068:   fmul   d24, d29, d24
+  0.04  40406c:   fsub   d12, d12, d29
+  0.00  404070:   fadd   d9, d29, d9
+  0.10  404074:   fmul   d29, d29, d1
+  0.01  404078:   fsub   d19, d19, d8
+  0.03  40407c:   fmul   d8, d15, d0
+  0.06  404080:   fsub   d29, d29, d8
+  0.09  404084:   ldr    d8, [x21, x19]
+  0.00  404088:   fadd   d16, d14, d16
+  0.03  40408c:   ldr    d14, [x16, x19]
+  0.16  404090:   fadd   d12, d12, d15
+  0.00  404094:   fadd   d17, d8, d17
+  0.02  404098:   fadd   d8, d31, d31
+  0.97  40409c:   mov    v15.16b, v1.16b
+  0.01  4040a0:   ldp    d1, d11, [x29, #-200]
+  0.01  4040a4:   fadd   d22, d14, d22
+  0.09  4040a8:   fmul   d14, d30, d30
+  0.02  4040ac:   fmul   d31, d31, d8
+  0.09  4040b0:   fsub   d31, d14, d31
+        4040b4:   ldur   d14, [x29, #-168]
+  0.08  4040b8:   fsub   d8, d30, d8
+  0.01  4040bc:   fadd   d18, d18, d24
+  0.02  4040c0:   fmul   d19, d30, d19
+  0.00  4040c4:   ldp    d24, d30, [x28, #-16]
+  0.09  4040c8:   fmul   d23, d11, d23
+  0.02  4040cc:   fmul   d27, d14, d27
+  0.33  4040d0:   fmul   d29, d26, d29
+  0.57  4040d4:   fadd   d23, d24, d23
+  0.02  4040d8:   fmul   d28, d6, d28
+  0.04  4040dc:   fadd   d27, d30, d27
+        4040e0:   ldp    d24, d30, [x28]
+  0.10  4040e4:   fsub   d19, d19, d29
+  0.05  4040e8:   fsub   d23, d23, d28
+  0.35  4040ec:   ldp    d29, d28, [x29, #-184]
+  0.41  4040f0:   fmul   d13, d1, d13
+  0.02  4040f4:   fadd   d8, d8, d26
+  0.00  4040f8:   fmul   d16, d4, d16
+  0.11  4040fc:   fadd   d24, d24, d13
+  0.10  404100:   fadd   d16, d27, d16
+  0.00  404104:   fmul   d27, d8, d29
+  0.25  404108:   fadd   d24, d27, d24
+  0.04  40410c:   fmul   d27, d12, d0
+  0.00  404110:   ldr    d13, [x28, #16]
+  0.01  404114:   fadd   d5, d5, d27
+  0.07  404118:   ldur   d27, [x29, #-160]
+  0.05  40411c:   fmul   d3, d20, d3
+  0.61  404120:   fadd   d3, d30, d3
+  0.00  404124:   fmul   d30, d10, d9
+  0.05  404128:   fmul   d26, d26, d26
+  0.16  40412c:   fadd   d30, d13, d30
+  0.04  404130:   fadd   d26, d31, d26
+  0.00  404134:   fmul   d17, d4, d17
+  0.02  404138:   fmul   d22, d27, d22
+  0.07  40413c:   fmul   d7, d6, d7 
+  0.31  404140:   fadd   d3, d3, d17
+  0.20  404144:   fadd   d17, d30, d22
+  0.06  404148:   fmul   d22, d26, d21
+  0.00  40414c:   fmul   d5, d6, d5 
+  0.00  404150:   fmul   d18, d28, d18
+  0.41  404154:   fsub   d3, d3, d7 
+  0.30  404158:   fadd   d7, d22, d17
+  0.00  40415c:   fsub   d5, d24, d5
+  0.00  404160:   fmul   d25, d6, d25
+  0.01  404164:   fmul   d19, d6, d19
+  0.10  404168:   stp    d5, d3, [x28]
+  0.59  40416c:   fadd   d3, d7, d18
+        404170:   add    x27, x27, #0x1
+  0.00  404174:   fsub   d16, d16, d25
+  0.67  404178:   fsub   d3, d3, d19
+        40417c:   mov    v1.16b, v15.16b
+        404180:   mov    v15.16b, v20.16b
+        404184:   mov    v20.16b, v10.16b
+  0.13  404188:   add    x25, x25, #0x8
+  0.00  40418c:   add    x24, x24, #0x28
+        404190:   cmp    x27, x6    
+        404194:   stp    d23, d16, [x28, #-16]
+  0.11  404198:   str    d3, [x28, #16]
+        40419c:   add    x28, x28, #0x28
+        4041a0: ↑ b.lt   403f48 <compute_rhs+0xd0c>  // b.tstop
+        4041a4: ↑ b      403eec <compute_rhs+0xcb0>
+  0.00  4041a8:   ldr    x1, [sp, #176]
+        4041ac:   ldr    x4, [sp, #160]
+        4041b0:   cmp    w6, #0x1   
+        4041b4:   fmov   d8, #-4.000000000000000000e+00
+  0.00  4041b8:   fmov   d9, #5.000000000000000000e+00
+        4041bc:   fmov   d11, #6.000000000000000000e+00
+  0.00  4041c0:   fmov   d10, #4.000000000000000000e+00
+        4041c4: ↓ b.lt   40429c <compute_rhs+0x1060>  // b.tstop
+        4041c8:   mov    x8, x3     
+        4041cc:   mov    x14, x2    
+        4041d0:   mov    w16, #0x1                       // #1
+  0.00  4041d4:   mov    x5, xzr    
+  0.01  4041d8:   add    x21, x8, x5
+  0.00  4041dc:   ldr    d3, [x21]  
+  0.00  4041e0:   ldr    d5, [x21, #4120]
+  0.00  4041e4:   ldr    d16, [x21, #8240]
+  0.00  4041e8:   ldr    d7, [x14, x5]
+  0.00  4041ec:   fmul   d3, d3, d9 
+  0.00  4041f0:   fmul   d5, d5, d8 
+  0.00  4041f4:   fadd   d3, d3, d5 
+  0.01  4041f8:   fadd   d3, d16, d3
+  0.00  4041fc:   fmul   d3, d2, d3 
+  0.02  404200:   fsub   d3, d7, d3 
+  0.00  404204:   str    d3, [x14, x5]
+  0.00  404208:   add    x5, x5, #0x8
+  0.00  40420c:   cmp    x5, #0x28  
+  0.00  404210: ↑ b.ne   4041d8 <compute_rhs+0xf9c>  // b.any
+  0.00  404214:   add    x16, x16, #0x1
+        404218:   add    x14, x14, #0x28
+  0.00  40421c:   cmp    x16, x30   
+  0.00  404220:   add    x8, x8, #0x28
+        404224: ↑ b.ne   4041d4 <compute_rhs+0xf98>  // b.any
+        404228:   cmp    w6, #0x1   
+        40422c: ↓ b.lt   40429c <compute_rhs+0x1060>  // b.tstop
+        404230:   mov    x8, x3     
+        404234:   mov    x14, x1    
+        404238:   mov    w5, #0x1                        // #1
+        40423c:   mov    x16, xzr   
+  0.00  404240:   add    x21, x8, x16
+  0.02  404244:   ldr    d3, [x21]  
+  0.00  404248:   ldr    d5, [x21, #4120]
+        40424c:   ldr    d7, [x21, #8240]
+  0.00  404250:   ldr    d16, [x21, #12360]
+  0.00  404254:   fmul   d3, d3, d10
+  0.00  404258:   fmul   d5, d5, d11
+  0.00  40425c:   fsub   d3, d5, d3 
+  0.00  404260:   ldr    d5, [x14, x16]
+  0.00  404264:   fmul   d7, d7, d10
+  0.00  404268:   fsub   d3, d3, d7 
+  0.00  40426c:   fadd   d3, d16, d3
+  0.01  404270:   fmul   d3, d2, d3 
+  0.02  404274:   fsub   d3, d5, d3 
+        404278:   str    d3, [x14, x16]
+  0.00  40427c:   add    x16, x16, #0x8
+        404280:   cmp    x16, #0x28 
+        404284: ↑ b.ne   404240 <compute_rhs+0x1004>  // b.any
+        404288:   add    x5, x5, #0x1
+  0.01  40428c:   add    x14, x14, #0x28
+        404290:   cmp    x5, x30    
+        404294:   add    x8, x8, #0x28
+        404298: ↑ b.ne   40423c <compute_rhs+0x1000>  // b.any
+        40429c:   ldp    x9, x8, [sp, #184]
+        4042a0:   sub    x23, x8, #0x2
+        4042a4:   cmp    w23, #0x3  
+        4042a8: ↓ b.lt   404374 <compute_rhs+0x1138>  // b.tstop
+        4042ac:   mov    w8, #0x5                        // #5
+        4042b0:   mov    w14, #0x4                       // #4
+        4042b4:   mov    x21, x3    
+        4042b8:   mov    x5, x4     
+        4042bc:   mov    w25, #0x3                       // #3
+        4042c0:   cmp    w6, #0x1   
+        4042c4: ↓ b.ge   4042ec <compute_rhs+0x10b0>  // b.tcont
+        4042c8:   add    x25, x25, #0x1
+        4042cc:   add    w8, w8, #0x1
+        4042d0:   add    w14, w14, #0x1
+        4042d4:   add    x5, x5, x13
+        4042d8:   cmp    x25, x20   
+  0.00  4042dc:   add    x21, x21, x13
+        4042e0: ↓ b.eq   404374 <compute_rhs+0x1138>  // b.none
+  0.00  4042e4:   cmp    w6, #0x1   
+  0.00  4042e8: ↑ b.lt   4042c8 <compute_rhs+0x108c>  // b.tstop
+        4042ec:   umaddl x26, w8, w13, x17
+  0.00  4042f0:   umaddl x27, w14, w13, x17
+  0.00  4042f4:   mov    x28, x21   
+        4042f8:   mov    x24, x5    
+  0.00  4042fc:   mov    w22, #0x1                       // #1
+        404300:   mov    x16, xzr   
+  1.64  404304:   add    x15, x28, x16
+  0.12  404308:   ldr    d3, [x15, #4120]
+  0.00  40430c:   ldr    d5, [x15]  
+  0.00  404310:   ldr    d16, [x15, #8240]
+  0.44  404314:   ldr    d7, [x27, x16]
+  0.12  404318:   fmul   d3, d3, d10
+  0.00  40431c:   fsub   d3, d5, d3 
+  0.46  404320:   ldr    d5, [x26, x16]
+  0.11  404324:   fmul   d16, d16, d11
+  0.02  404328:   fadd   d3, d3, d16
+  0.44  40432c:   ldr    d16, [x24, x16]
+  0.25  404330:   fmul   d7, d7, d10
+  0.10  404334:   fsub   d3, d3, d7 
+  1.01  404338:   fadd   d3, d5, d3 
+  1.57  40433c:   fmul   d3, d2, d3 
+  2.04  404340:   fsub   d3, d16, d3
+        404344:   str    d3, [x24, x16]
+  0.14  404348:   add    x16, x16, #0x8
+        40434c:   cmp    x16, #0x28 
+  0.00  404350: ↑ b.ne   404304 <compute_rhs+0x10c8>  // b.any
+  0.55  404354:   add    x22, x22, #0x1
+        404358:   add    x26, x26, #0x28
+        40435c:   add    x27, x27, #0x28
+  0.00  404360:   add    x24, x24, #0x28
+  0.11  404364:   cmp    x22, x30   
+        404368:   add    x28, x28, #0x28
+        40436c: ↑ b.ne   404300 <compute_rhs+0x10c4>  // b.any
+  0.01  404370: ↑ b      4042c8 <compute_rhs+0x108c>
+        404374:   adrp   x22, a10d000 <square+0x840b60>
+        404378:   cmp    w6, #0x1   
+        40437c:   add    x22, x22, #0xcd0
+        404380: ↑ b.lt   403e74 <compute_rhs+0xc38>  // b.tstop
+        404384:   ldr    x11, [sp, #192]
+        404388:   madd   x20, x23, x13, x17
+        40438c:   mov    w5, #0x1                        // #1
+  0.00  404390:   sub    x8, x11, #0x1
+  0.00  404394:   madd   x14, x11, x13, x17
+        404398:   mul    x15, x8, x13
+        40439c:   mov    x11, #0xffffffffffffcfb8        // #-12360
+        4043a0:   add    x21, x14, x11
+        4043a4:   add    x24, x17, x15
+        4043a8:   add    x25, x12, x15
+  0.00  4043ac:   mov    x16, xzr   
+  0.02  4043b0:   ldr    d3, [x20, x16]
+  0.00  4043b4:   ldr    d5, [x21, x16]
+  0.01  4043b8:   ldr    d7, [x24, x16]
+  0.00  4043bc:   fmul   d3, d3, d10
+  0.00  4043c0:   fsub   d3, d5, d3 
+  0.01  4043c4:   ldr    d5, [x14, x16]
+  0.00  4043c8:   fmul   d7, d7, d11
+  0.00  4043cc:   fadd   d3, d3, d7 
+  0.00  4043d0:   ldr    d7, [x25, x16]
+  0.00  4043d4:   fmul   d5, d5, d10
+  0.00  4043d8:   fsub   d3, d3, d5 
+  0.01  4043dc:   fmul   d3, d2, d3 
+  0.02  4043e0:   fsub   d3, d7, d3 
+        4043e4:   str    d3, [x25, x16]
+  0.00  4043e8:   add    x16, x16, #0x8
+        4043ec:   cmp    x16, #0x28 
+        4043f0: ↑ b.ne   4043b0 <compute_rhs+0x1174>  // b.any
+  0.00  4043f4:   add    x5, x5, #0x1
+  0.00  4043f8:   add    x14, x14, #0x28
+        4043fc:   add    x24, x24, #0x28
+        404400:   add    x20, x20, #0x28
+  0.00  404404:   add    x21, x21, #0x28
+        404408:   cmp    x5, x30    
+        40440c:   add    x25, x25, #0x28
+        404410: ↑ b.ne   4043ac <compute_rhs+0x1170>  // b.any
+        404414:   cmp    w6, #0x1   
+        404418: ↑ b.lt   403e74 <compute_rhs+0xc38>  // b.tstop
+  0.00  40441c:   ldr    x11, [sp, #192]
+        404420:   madd   x8, x8, x13, x17
+        404424:   madd   x14, x23, x13, x17
+        404428:   mov    w21, #0x1                       // #1
+        40442c:   mul    x15, x11, x13
+        404430:   add    x20, x17, x15
+        404434:   add    x5, x12, x15
+        404438:   mov    x16, xzr   
+  0.02  40443c:   ldr    d3, [x8, x16]
+  0.00  404440:   ldr    d5, [x20, x16]
+  0.00  404444:   ldr    d7, [x14, x16]
+  0.00  404448:   ldr    d16, [x5, x16]
+  0.00  40444c:   fmul   d3, d3, d8 
+  0.00  404450:   fmul   d5, d5, d9 
+  0.00  404454:   fadd   d3, d7, d3 
+  0.00  404458:   fadd   d3, d3, d5 
+  0.01  40445c:   fmul   d3, d2, d3 
+  0.01  404460:   fsub   d3, d16, d3
+  0.00  404464:   str    d3, [x5, x16]
+  0.00  404468:   add    x16, x16, #0x8
+  0.00  40446c:   cmp    x16, #0x28 
+        404470: ↑ b.ne   40443c <compute_rhs+0x1200>  // b.any
+  0.00  404474:   add    x21, x21, #0x1
+  0.00  404478:   add    x20, x20, #0x28
+        40447c:   add    x8, x8, #0x28
+        404480:   add    x14, x14, #0x28
+  0.00  404484:   cmp    x21, x30   
+        404488:   add    x5, x5, #0x28
+        40448c: ↑ b.ne   404438 <compute_rhs+0x11fc>  // b.any
+  0.00  404490: ↑ b      403e74 <compute_rhs+0xc38>
+        404494:   adrp   x8, bb0c000 <rhoq+0xf0>
+        404498:   ldr    w8, [x8, #2836]
+        40449c: ↓ cbz    w8, 4044bc <compute_rhs+0x1280>
+        4044a0:   mov    w0, #0x3                        // #3
+        4044a4: → bl     402314 <timer_stop>
+        4044a8:   adrp   x8, bb0c000 <rhoq+0xf0>
+        4044ac:   ldr    w8, [x8, #2836]
+        4044b0: ↓ cbz    w8, 4044bc <compute_rhs+0x1280>
+        4044b4:   mov    w0, #0x4                        // #4
+        4044b8: → bl     4022c4 <timer_start>
+        4044bc:   adrp   x11, bb0c000 <rhoq+0xf0>
+        4044c0:   ldr    w19, [x11, #2832]
+        4044c4:   cmp    w19, #0x1  
+        4044c8: ↓ b.lt   404ac4 <compute_rhs+0x1888>  // b.tstop
+        4044cc:   adrp   x14, bb0c000 <rhoq+0xf0>
+        4044d0:   ldr    d20, [x14, #2248]
+        4044d4:   adrp   x14, bb0c000 <rhoq+0xf0>
+        4044d8:   adrp   x8, bb0c000 <rhoq+0xf0>
+        4044dc:   ldr    d0, [x14, #2096]
+        4044e0:   adrp   x14, bb0c000 <rhoq+0xf0>
+        4044e4:   adrp   x0, bb0c000 <rhoq+0xf0>
+        4044e8:   ldr    w5, [x8, #2828]
+        4044ec:   adrp   x8, bb0c000 <rhoq+0xf0>
+        4044f0:   ldr    d12, [x0, #2064]
+        4044f4:   mov    w0, #0x4ec8                     // #20168
+        4044f8:   ldr    d26, [x14, #2608]
+        4044fc:   adrp   x14, 8849000 <qs+0x8413f0>
+        404500:   ldr    w19, [x8, #2824]
+        404504:   adrp   x8, bb0c000 <rhoq+0xf0>
+        404508:   adrp   x13, bb0c000 <rhoq+0xf0>
+        40450c:   movk   w0, #0x1, lsl #16
+        404510:   mov    w1, #0x9a50                     // #39504
+        404514:   add    x14, x14, #0x440
+        404518:   movk   w1, #0x2, lsl #16
+        40451c:   ldr    d8, [x8, #2544]
+        404520:   ldr    d25, [x13, #2592]
+        404524:   add    x8, x14, x0
+        404528:   adrp   x13, 8007000 <u+0x2946ce0>
+        40452c:   adrp   x12, bb0c000 <rhoq+0xf0>
+        404530:   str    x8, [sp, #152]
+        404534:   add    x8, x14, x1
+        404538:   add    x13, x13, #0xc10
+        40453c:   ldr    d24, [x12, #2576]
+        404540:   str    x8, [sp, #144]
+        404544:   add    x8, x13, x0
+        404548:   adrp   x12, b190000 <vs+0x840b00>
+        40454c:   mov    x18, x11   
+        404550:   adrp   x11, bb0c000 <rhoq+0xf0>
+        404554:   str    x8, [sp, #136]
+        404558:   add    x8, x13, x1
+        40455c:   add    x12, x12, #0xd30
+        404560:   adrp   x9, bb0c000 <rhoq+0xf0>
+        404564:   ldr    d13, [x11, #2784]
+        404568:   str    x8, [sp, #128]
+        40456c:   add    x8, x12, x0
+        404570:   adrp   x11, 98cc000 <speed+0x841390>
+        404574:   ldr    d3, [x9, #2680]
+        404578:   str    x8, [sp, #120]
+        40457c:   add    x8, x12, x1
+        404580:   add    x11, x11, #0x4a0
+        404584:   adrp   x9, a94f000 <us+0x841330>
+        404588:   str    x8, [sp, #112]
+        40458c:   add    x8, x11, x1
+        404590:   add    x9, x9, #0x500
+        404594:   str    x8, [sp, #104]
+        404598:   add    x8, x9, x0 
+        40459c:   ldr    w3, [x18, #2832]
+        4045a0:   str    x8, [sp, #96]
+        4045a4:   add    x8, x9, x1 
+        4045a8:   str    x8, [sp, #88]
+        4045ac:   add    x8, x22, x0
+        4045b0:   adrp   x10, bb0c000 <rhoq+0xf0>
+        4045b4:   adrp   x15, bb0c000 <rhoq+0xf0>
+        4045b8:   adrp   x16, bb0c000 <rhoq+0xf0>
+        4045bc:   adrp   x17, bb0c000 <rhoq+0xf0>
+        4045c0:   str    x8, [sp, #80]
+        4045c4:   add    x8, x22, x1
+        4045c8:   ldr    d5, [x10, #2560]
+        4045cc:   ldr    d27, [x15, #2792]
+        4045d0:   ldr    d21, [x16, #2800]
+        4045d4:   ldr    d16, [x17, #2808]
+        4045d8:   str    x8, [sp, #72]
+        4045dc:   sxtw   x8, w5     
+        4045e0:   stp    x8, x19, [sp, #176]
+        4045e4:   sxtw   x8, w3     
+        4045e8:   mov    w20, #0x89e8                    // #35304
+        4045ec:   mov    w2, #0x89f0                     // #35312
+        4045f0:   mov    w4, #0x89f8                     // #35320
+        4045f4:   mov    w6, #0x8a00                     // #35328
+        4045f8:   stp    x8, x5, [sp, #8]
+        4045fc:   mov    w22, #0x8a08                    // #35336
+        404600:   adrp   x5, 2d78000 <forcing+0x2946ec0>
+        404604:   mov    w21, #0x1                       // #1
+        404608:   movk   w20, #0x6, lsl #16
+        40460c:   movk   w2, #0x6, lsl #16
+        404610:   movk   w4, #0x6, lsl #16
+        404614:   movk   w6, #0x6, lsl #16
+        404618:   sxtw   x18, w19   
+        40461c:   fmul   d29, d13, d20
+        404620:   movk   w22, #0x6, lsl #16
+        404624:   add    x5, x5, #0xa30
+        404628:   str    xzr, [sp, #160]
+        40462c:   str    x3, [sp]   
+        404630:   stp    d24, d5, [x29, #-176]
+        404634:   stp    d26, d25, [x29, #-192]
+        404638:   stp    d21, d27, [x29, #-208]
+        40463c:   stp    d29, d13, [sp, #208]
+  0.00  404640: ↓ b      404724 <compute_rhs+0x14e8>
+  0.00  404644:   ldp    x8, x14, [sp, #24]
+  0.00  404648:   ldr    x9, [sp, #8]
+        40464c:   mov    w15, #0x4b88                    // #19336
+        404650:   movk   w15, #0x1, lsl #16
+        404654:   mov    w10, #0x79a8                    // #31144
+        404658:   cmp    x8, x9     
+        40465c:   ldr    x9, [sp, #152]
+        404660:   movk   w10, #0x6, lsl #16
+        404664:   ldr    x13, [sp, #40]
+  0.00  404668:   ldp    x12, x11, [sp, #48]
+        40466c:   add    x9, x9, x15
+        404670:   str    x9, [sp, #152]
+        404674:   ldr    x9, [sp, #144]
+        404678:   add    x8, x8, #0x1
+        40467c:   add    x14, x14, x15
+        404680:   add    x13, x13, x15
+        404684:   add    x9, x9, x15
+        404688:   str    x9, [sp, #144]
+        40468c:   ldr    x9, [sp, #136]
+        404690:   add    x11, x11, x15
+        404694:   add    x12, x12, x15
+        404698:   mov    x21, x8    
+        40469c:   add    x9, x9, x15
+        4046a0:   str    x9, [sp, #136]
+        4046a4:   ldr    x9, [sp, #128]
+        4046a8:   add    x9, x9, x15
+        4046ac:   str    x9, [sp, #128]
+        4046b0:   ldr    x9, [sp, #120]
+        4046b4:   add    x9, x9, x15
+        4046b8:   str    x9, [sp, #120]
+        4046bc:   ldr    x9, [sp, #112]
+  0.00  4046c0:   add    x9, x9, x15
+        4046c4:   str    x9, [sp, #112]
+        4046c8:   ldr    x9, [sp, #160]
+        4046cc:   add    x9, x9, x10
+        4046d0:   str    x9, [sp, #160]
+        4046d4:   ldp    x10, x9, [sp, #96]
+        4046d8:   add    x10, x10, x15
+        4046dc:   str    x10, [sp, #96]
+        4046e0:   ldr    x10, [sp, #88]
+        4046e4:   add    x9, x9, x15
+        4046e8:   str    x9, [sp, #104]
+        4046ec:   ldr    x9, [sp, #64]
+        4046f0:   add    x10, x10, x15
+        4046f4:   str    x10, [sp, #88]
+        4046f8:   ldr    x10, [sp, #168]
+        4046fc:   add    x9, x9, x15
+        404700:   add    x10, x10, x15
+        404704:   str    x10, [sp, #168]
+        404708:   ldr    x10, [sp, #80]
+        40470c:   add    x10, x10, x15
+        404710:   str    x10, [sp, #80]
+        404714:   ldr    x10, [sp, #72]
+        404718:   add    x10, x10, x15
+        40471c:   str    x10, [sp, #72]
+        404720: ↓ b.ge   404ab0 <compute_rhs+0x1874>  // b.tcont
+  0.00  404724:   ldr    x8, [sp, #16]
+        404728:   stp    x21, x14, [sp, #24]
+        40472c:   stp    x13, x12, [sp, #40]
+        404730:   stp    x11, x9, [sp, #56]
+        404734:   cmp    w8, #0x1   
+        404738: ↑ b.lt   404644 <compute_rhs+0x1408>  // b.tstop
+        40473c:   ldp    x8, x25, [sp, #160]
+  0.00  404740:   ldp    x19, x11, [sp, #72]
+        404744:   ldp    x17, x12, [sp, #88]
+        404748:   ldp    x26, x24, [sp, #56]
+        40474c:   ldp    x28, x27, [sp, #40]
+        404750:   ldp    x10, x14, [sp, #104]
+        404754:   str    x8, [sp, #200]
+        404758:   ldp    x16, x13, [sp, #120]
+        40475c:   ldp    x15, x8, [sp, #136]
+        404760:   ldr    x9, [sp, #152]
+        404764:   ldr    x23, [sp, #32]
+        404768:   mov    w0, #0x1                        // #1
+        40476c: ↓ b      4047d4 <compute_rhs+0x1598>
+  0.00  404770:   ldr    x0, [sp, #176]
+  0.00  404774:   ldp    x1, x3, [sp, #192]
+        404778:   add    x23, x23, #0x338
+        40477c:   add    x9, x9, #0x338
+  0.00  404780:   add    x8, x8, #0x338
+        404784:   cmp    x1, x0     
+        404788:   add    x0, x1, #0x1
+        40478c:   mov    w1, #0x1018                     // #4120
+  0.00  404790:   add    x28, x28, #0x338
+        404794:   add    x15, x15, #0x338
+        404798:   add    x13, x13, #0x338
+        40479c:   add    x16, x16, #0x338
+  0.00  4047a0:   add    x14, x14, #0x338
+        4047a4:   add    x26, x26, #0x338
+        4047a8:   add    x3, x3, x1 
+        4047ac:   add    x10, x10, #0x338
+  0.00  4047b0:   add    x27, x27, #0x338
+        4047b4:   add    x24, x24, #0x338
+        4047b8:   add    x12, x12, #0x338
+        4047bc:   add    x17, x17, #0x338
+  0.00  4047c0:   add    x25, x25, #0x338
+        4047c4:   add    x11, x11, #0x338
+        4047c8:   add    x19, x19, #0x338
+        4047cc:   str    x3, [sp, #200]
+  0.00  4047d0: ↑ b.ge   404644 <compute_rhs+0x1408>  // b.tcont
+        4047d4:   str    x0, [sp, #192]
+        4047d8:   ldr    x0, [sp, #184]
+        4047dc:   cmp    w0, #0x1   
+  0.00  4047e0: ↑ b.lt   404770 <compute_rhs+0x1534>  // b.tstop
+  0.00  4047e4:   ldr    x30, [sp, #200]
+        4047e8:   mov    x21, xzr   
+        4047ec:   adrp   x1, 56c0000 <rhs+0x29475d0>
+  0.00  4047f0:   add    x1, x1, #0x320
+  0.50  4047f4:   add    x1, x1, x30
+        4047f8:   mov    w7, #0x390                      // #912
+        4047fc:   movk   w7, #0xd, lsl #16
+  0.00  404800:   ldr    d28, [x1, x20]
+  0.12  404804:   ldr    d27, [x1, x7]
+  0.00  404808:   mov    w3, #0x3a8                      // #936
+  0.26  40480c:   ldr    d23, [x1, #4160]
+  0.00  404810:   movk   w3, #0xd, lsl #16
+  0.28  404814:   mov    w7, #0x3a0                      // #928
+  0.00  404818:   ldr    d21, [x1, x3]
+  0.20  40481c:   mov    w3, #0x3b0                      // #944
+  0.00  404820:   mov    w20, #0x398                     // #920
+  0.00  404824:   lsl    x0, x21, #3
+  1.09  404828:   movk   w7, #0xd, lsl #16
+        40482c:   movk   w3, #0xd, lsl #16
+  0.00  404830:   movk   w20, #0xd, lsl #16
+  0.00  404834:   ldr    d25, [x1, x2]
+  0.11  404838:   fadd   d28, d28, d28
+  0.01  40483c:   ldr    d22, [x1, #4184]
+  0.00  404840:   ldr    d24, [x1, x20]
+  0.25  404844:   ldr    d26, [x1, #4168]
+  0.66  404848:   ldr    d29, [x1, x7]
+  0.09  40484c:   ldr    d30, [x1, x4]
+  0.03  404850:   ldr    d31, [x1, #4176]
+  0.02  404854:   ldr    d1, [x1, x6]
+  0.33  404858:   ldr    d13, [x1, x3]
+  0.04  40485c:   mov    v5.16b, v3.16b
+  0.35  404860:   mov    v3.16b, v8.16b
+  0.01  404864:   ldr    d8, [x1, #4192]
+  0.35  404868:   ldr    d14, [x1, x22]
+  0.07  40486c:   add    x1, x27, x0
+  0.11  404870:   fsub   d27, d27, d28
+  0.02  404874:   ldr    d9, [x1, #832]
+  0.28  404878:   fadd   d23, d23, d27
+  0.07  40487c:   ldr    d27, [x14, x0]
+  0.06  404880:   fadd   d25, d25, d25
+  0.03  404884:   stur   d1, [x29, #-160]
+  0.05  404888:   mov    v1.16b, v16.16b
+  0.17  40488c:   ldr    d16, [x11, x0]
+  0.06  404890:   ldr    d18, [x12, x0]
+  0.07  404894:   fsub   d25, d24, d25
+  0.07  404898:   add    x1, x25, x0
+  0.03  40489c:   ldr    d7, [x19, x0]
+  0.09  4048a0:   ldr    d17, [x17, x0]
+  0.05  4048a4:   fmul   d24, d27, d24
+  0.26  4048a8:   fadd   d25, d26, d25
+  0.01  4048ac:   fmul   d26, d9, d26
+  0.16  4048b0:   ldr    d15, [x1, #832]
+  0.02  4048b4:   add    x1, x24, x0
+  0.09  4048b8:   fsub   d24, d24, d26
+  0.00  4048bc:   fadd   d26, d30, d30
+  0.05  4048c0:   ldr    d2, [x1, #832]
+  0.02  4048c4:   fsub   d26, d29, d26
+  0.07  4048c8:   fadd   d16, d16, d16
+  0.01  4048cc:   fadd   d18, d18, d18
+  0.15  4048d0:   fadd   d26, d31, d26
+  0.01  4048d4:   fmul   d30, d9, d31
+  0.05  4048d8:   ldur   d31, [x29, #-160]
+  0.03  4048dc:   fsub   d7, d7, d16
+  0.05  4048e0:   ldr    d16, [x8, x0]
+  0.08  4048e4:   fsub   d17, d17, d18
+  0.02  4048e8:   ldr    d18, [x9, x0]
+  0.20  4048ec:   add    x1, x26, x0
+  0.05  4048f0:   ldr    d28, [x15, x0]
+  0.10  4048f4:   ldr    d4, [x1, #832]
+  0.00  4048f8:   add    x1, x28, x0
+  0.05  4048fc:   ldr    d19, [x10, x0]
+  0.15  404900:   ldr    d20, [x13, x0]
+  0.09  404904:   fadd   d2, d2, d17
+  0.18  404908:   ldr    d17, [x16, x0]
+  0.20  40490c:   ldr    d6, [x1, #832]
+  0.06  404910:   fadd   d14, d14, d14
+  0.05  404914:   fadd   d31, d31, d31
+  0.08  404918:   fmul   d16, d13, d16
+  0.17  40491c:   fmul   d18, d14, d18
+  0.06  404920:   fmul   d29, d27, d29
+  0.15  404924:   fsub   d31, d21, d31
+  0.01  404928:   add    x0, x23, x0
+  0.02  40492c:   fadd   d28, d28, d28
+  0.24  404930:   fsub   d29, d29, d30
+  0.03  404934:   fsub   d30, d21, d22
+  0.01  404938:   fmul   d21, d27, d21
+  0.24  40493c:   fadd   d31, d22, d31
+  0.02  404940:   fmul   d22, d9, d22
+  0.02  404944:   fsub   d16, d16, d18
+  0.01  404948:   ldr    d18, [x0, #832]
+  0.08  40494c:   mov    w20, #0x89e8                    // #35304
+  0.03  404950:   fsub   d20, d20, d28
+  0.01  404954:   fsub   d28, d13, d19
+  0.03  404958:   fsub   d14, d13, d14
+  0.09  40495c:   fmul   d13, d13, d12
+  0.03  404960:   fmul   d19, d19, d0
+  0.03  404964:   fsub   d21, d21, d22
+  0.02  404968:   fadd   d22, d17, d17
+  0.07  40496c:   movk   w20, #0x6, lsl #16
+  0.19  404970:   fsub   d19, d13, d19
+  0.09  404974:   fadd   d6, d6, d20
+  0.00  404978:   fmul   d20, d27, d27
+  0.11  40497c:   fmul   d17, d17, d22
+  0.00  404980:   add    x0, x5, x30
+  0.63  404984:   fsub   d17, d20, d17
+  0.00  404988:   fsub   d20, d27, d22
+  0.00  40498c:   fmul   d19, d27, d19
+  0.00  404990:   ldr    d22, [x0, x20]
+  0.11  404994:   fsub   d27, d28, d8
+  0.00  404998:   fmul   d18, d8, d18
+  0.00  40499c:   fadd   d28, d8, d14
+  1.35  4049a0:   fmul   d8, d8, d12
+  0.01  4049a4:   fadd   d27, d27, d4
+  0.01  4049a8:   fmul   d4, d4, d0 
+  0.04  4049ac:   fsub   d4, d8, d4 
+  0.71  4049b0:   mov    v8.16b, v3.16b
+  0.09  4049b4:   mov    v3.16b, v5.16b
+  0.46  4049b8:   fmul   d23, d8, d23
+  0.64  4049bc:   fadd   d22, d22, d23
+  0.02  4049c0:   fmul   d23, d3, d30
+  0.68  4049c4:   fsub   d22, d22, d23
+  0.00  4049c8:   ldur   d5, [x29, #-168]
+        4049cc:   str    d22, [x0, x20]
+  0.00  4049d0:   ldr    d13, [sp, #216]
+  0.02  4049d4:   ldr    d22, [x0, x2]
+  0.54  4049d8:   fadd   d7, d15, d7
+  0.01  4049dc:   fadd   d16, d16, d18
+  0.00  4049e0:   fmul   d18, d5, d25
+  1.11  4049e4:   fadd   d18, d22, d18
+  0.10  4049e8:   fmul   d7, d13, d7
+  0.05  4049ec:   fadd   d7, d18, d7
+  0.00  4049f0:   fmul   d18, d3, d24
+  0.06  4049f4:   fsub   d7, d7, d18
+  0.09  4049f8:   ldp    d25, d24, [x29, #-184]
+  0.00  4049fc:   str    d7, [x0, x2]
+  0.10  404a00:   ldr    d7, [x0, x4]
+  0.00  404a04:   fadd   d18, d20, d9
+  0.10  404a08:   fmul   d20, d24, d26
+  0.08  404a0c:   fmul   d2, d13, d2
+  1.07  404a10:   fadd   d7, d7, d20
+  0.03  404a14:   fadd   d2, d7, d2 
+  0.03  404a18:   fmul   d7, d3, d29
+  0.14  404a1c:   fsub   d2, d2, d7 
+        404a20:   fmul   d22, d27, d0
+  0.00  404a24:   ldp    d27, d26, [x29, #-200]
+  0.11  404a28:   str    d2, [x0, x4]
+  0.00  404a2c:   ldr    d29, [sp, #208]
+  0.01  404a30:   ldr    d2, [x0, x6]
+  0.18  404a34:   fmul   d20, d25, d31
+  0.00  404a38:   fadd   d7, d21, d22
+  0.01  404a3c:   fmul   d18, d18, d29
+  1.25  404a40:   fadd   d2, d2, d20
+  0.03  404a44:   fmul   d7, d3, d7 
+  0.03  404a48:   fadd   d2, d18, d2
+  0.10  404a4c:   fsub   d2, d2, d7 
+  0.07  404a50:   str    d2, [x0, x6]
+  0.03  404a54:   ldr    d2, [x0, x22]
+  0.06  404a58:   ldur   d21, [x29, #-208]
+  0.16  404a5c:   fmul   d23, d9, d9
+        404a60:   fadd   d17, d17, d23
+  1.08  404a64:   fmul   d23, d26, d28
+  0.06  404a68:   fmul   d6, d27, d6
+  0.07  404a6c:   fadd   d2, d2, d23
+        404a70:   fmul   d4, d9, d4 
+  0.00  404a74:   fmul   d17, d17, d21
+  0.10  404a78:   fadd   d2, d2, d6 
+  0.05  404a7c:   fmul   d7, d1, d16
+        404a80:   fsub   d4, d19, d4
+  0.12  404a84:   fadd   d2, d17, d2
+  0.04  404a88:   fmul   d4, d3, d4 
+  0.41  404a8c:   fadd   d2, d2, d7 
+        404a90:   add    x21, x21, #0x1
+  0.00  404a94:   mov    v16.16b, v1.16b
+  0.60  404a98:   fsub   d2, d2, d4 
+  0.00  404a9c:   cmp    x21, x18   
+        404aa0:   add    x30, x30, #0x28
+        404aa4:   str    d2, [x0, x22]
+  0.01  404aa8: ↑ b.lt   4047ec <compute_rhs+0x15b0>  // b.tstop
+        404aac: ↑ b      404770 <compute_rhs+0x1534>
+        404ab0:   ldr    x19, [sp]  
+        404ab4:   adrp   x9, bb0c000 <rhoq+0xf0>
+        404ab8:   fmov   d8, #-4.000000000000000000e+00
+        404abc:   fmov   d9, #5.000000000000000000e+00
+        404ac0: ↓ b      404ac8 <compute_rhs+0x188c>
+        404ac4:   adrp   x9, bb0c000 <rhoq+0xf0>
+        404ac8:   ldr    w11, [x9, #2828]
+        404acc:   adrp   x12, 5728000 <u+0x67ce0>
+        404ad0:   add    x12, x12, #0xd08
+  0.00  404ad4:   cmp    w11, #0x1  
+        404ad8: ↓ b.lt   404ccc <compute_rhs+0x1a90>  // b.tstop
+        404adc:   adrp   x8, bb0c000 <rhoq+0xf0>
+        404ae0:   ldr    w8, [x8, #2824]
+        404ae4:   adrp   x10, bb0c000 <rhoq+0xf0>
+        404ae8:   ldr    w11, [x9, #2828]
+        404aec:   ldr    d0, [x10, #2288]
+        404af0:   mov    w10, #0xf350                    // #62288
+        404af4:   mov    w13, #0x79a8                    // #31144
+        404af8:   movk   w10, #0xc, lsl #16
+        404afc:   movk   w13, #0x6, lsl #16
+        404b00:   adrp   x9, 2de1000 <rhs+0x685d0>
+        404b04:   add    x9, x9, #0x418
+        404b08:   mov    w17, #0x1                       // #1
+        404b0c:   add    x10, x12, x10
+        404b10:   add    x13, x12, x13
+        404b14:   add    w14, w8, #0x1
+        404b18:   sxtw   x15, w11   
+        404b1c:   mov    w16, #0x1018                    // #4120
+        404b20:   mov    x18, x12   
+        404b24:   cmp    w8, #0x1   
+        404b28: ↓ b.ge   404b50 <compute_rhs+0x1914>  // b.tcont
+        404b2c:   cmp    x17, x15   
+        404b30:   add    x17, x17, #0x1
+        404b34:   add    x10, x10, x16
+        404b38:   add    x13, x13, x16
+        404b3c:   add    x18, x18, x16
+        404b40:   add    x9, x9, x16
+        404b44: ↓ b.ge   404bc0 <compute_rhs+0x1984>  // b.tcont
+        404b48:   cmp    w8, #0x1   
+        404b4c: ↑ b.lt   404b2c <compute_rhs+0x18f0>  // b.tstop
+        404b50:   mov    x0, x9     
+        404b54:   mov    x1, x18    
+        404b58:   mov    x2, x13    
+        404b5c:   mov    x3, x10    
+  0.00  404b60:   mov    w4, #0x1                        // #1
+        404b64:   mov    x5, xzr    
+  0.00  404b68:   ldr    d1, [x1, x5]
+  0.02  404b6c:   ldr    d2, [x2, x5]
+  0.00  404b70:   ldr    d4, [x3, x5]
+  0.01  404b74:   ldr    d3, [x0, x5]
+  0.01  404b78:   fmul   d1, d1, d9 
+  0.01  404b7c:   fmul   d2, d2, d8 
+  0.00  404b80:   fadd   d1, d1, d2 
+  0.01  404b84:   fadd   d1, d4, d1 
+  0.00  404b88:   fmul   d1, d0, d1 
+  0.02  404b8c:   fsub   d1, d3, d1 
+  0.00  404b90:   str    d1, [x0, x5]
+  0.00  404b94:   add    x5, x5, #0x8
+  0.00  404b98:   cmp    x5, #0x28  
+        404b9c: ↑ b.ne   404b68 <compute_rhs+0x192c>  // b.any
+        404ba0:   add    x4, x4, #0x1
+  0.00  404ba4:   add    x3, x3, #0x28
+        404ba8:   add    x2, x2, #0x28
+  0.00  404bac:   add    x1, x1, #0x28
+        404bb0:   cmp    x4, x14    
+  0.00  404bb4:   add    x0, x0, #0x28
+        404bb8: ↑ b.ne   404b64 <compute_rhs+0x1928>  // b.any
+        404bbc: ↑ b      404b2c <compute_rhs+0x18f0>
+        404bc0:   cmp    w11, #0x1  
+        404bc4: ↓ b.lt   404ccc <compute_rhs+0x1a90>  // b.tstop
+        404bc8:   adrp   x8, bb0c000 <rhoq+0xf0>
+        404bcc:   ldr    w8, [x8, #2824]
+        404bd0:   adrp   x9, bb0c000 <rhoq+0xf0>
+        404bd4:   ldr    d0, [x9, #2288]
+        404bd8:   mov    w14, #0x6cf8                    // #27896
+        404bdc:   mov    w15, #0xf350                    // #62288
+        404be0:   mov    w16, #0x79a8                    // #31144
+        404be4:   movk   w14, #0x13, lsl #16
+        404be8:   movk   w15, #0xc, lsl #16
+        404bec:   movk   w16, #0x6, lsl #16
+        404bf0:   adrp   x10, 2e48000 <rhs+0xcf5d0>
+        404bf4:   add    x9, x11, #0x1
+        404bf8:   add    x10, x10, #0xdc0
+        404bfc:   mov    w13, #0x1                       // #1
+        404c00:   add    x14, x12, x14
+        404c04:   add    x15, x12, x15
+        404c08:   add    x16, x12, x16
+        404c0c:   add    w17, w8, #0x1
+        404c10:   mov    w18, #0x1018                    // #4120
+        404c14:   mov    x0, x12    
+        404c18:   cmp    w8, #0x1   
+        404c1c: ↓ b.ge   404c48 <compute_rhs+0x1a0c>  // b.tcont
+        404c20:   add    x13, x13, #0x1
+        404c24:   add    x14, x14, x18
+        404c28:   add    x15, x15, x18
+        404c2c:   add    x16, x16, x18
+        404c30:   add    x0, x0, x18
+  0.00  404c34:   cmp    x13, x9    
+        404c38:   add    x10, x10, x18
+        404c3c: ↓ b.eq   404ccc <compute_rhs+0x1a90>  // b.none
+        404c40:   cmp    w8, #0x1   
+        404c44: ↑ b.lt   404c20 <compute_rhs+0x19e4>  // b.tstop
+        404c48:   mov    x1, x10    
+        404c4c:   mov    x2, x0     
+        404c50:   mov    x3, x16    
+        404c54:   mov    x4, x15    
+        404c58:   mov    x5, x14    
+        404c5c:   mov    w6, #0x1                        // #1
+        404c60:   mov    x7, xzr    
+  0.00  404c64:   ldr    d1, [x2, x7]
+  0.02  404c68:   ldr    d2, [x3, x7]
+  0.00  404c6c:   ldr    d3, [x4, x7]
+  0.01  404c70:   ldr    d4, [x5, x7]
+  0.00  404c74:   fmul   d1, d1, d10
+  0.01  404c78:   fmul   d2, d2, d11
+  0.00  404c7c:   fsub   d1, d2, d1 
+  0.01  404c80:   ldr    d2, [x1, x7]
+  0.01  404c84:   fmul   d3, d3, d10
+  0.00  404c88:   fsub   d1, d1, d3 
+  0.00  404c8c:   fadd   d1, d4, d1 
+  0.02  404c90:   fmul   d1, d0, d1 
+  0.02  404c94:   fsub   d1, d2, d1 
+        404c98:   str    d1, [x1, x7]
+  0.00  404c9c:   add    x7, x7, #0x8
+  0.00  404ca0:   cmp    x7, #0x28  
+        404ca4: ↑ b.ne   404c64 <compute_rhs+0x1a28>  // b.any
+        404ca8:   add    x6, x6, #0x1
+  0.00  404cac:   add    x5, x5, #0x28
+        404cb0:   add    x4, x4, #0x28
+        404cb4:   add    x3, x3, #0x28
+        404cb8:   add    x2, x2, #0x28
+  0.00  404cbc:   cmp    x6, x17    
+        404cc0:   add    x1, x1, #0x28
+        404cc4: ↑ b.ne   404c60 <compute_rhs+0x1a24>  // b.any
+        404cc8: ↑ b      404c20 <compute_rhs+0x19e4>
+        404ccc:   sxtw   x8, w19    
+        404cd0:   stur   x8, [x29, #-160]
+        404cd4:   sub    x8, x8, #0x2
+        404cd8:   cmp    w8, #0x3   
+        404cdc:   stur   x8, [x29, #-168]
+        404ce0: ↓ b.lt   404e50 <compute_rhs+0x1c14>  // b.tstop
+        404ce4:   adrp   x8, bb0c000 <rhoq+0xf0>
+        404ce8:   ldr    w8, [x8, #2824]
+        404cec:   adrp   x9, bb0c000 <rhoq+0xf0>
+        404cf0:   ldr    d0, [x9, #2288]
+        404cf4:   mov    w13, #0xf350                    // #62288
+        404cf8:   mov    w15, #0x79a8                    // #31144
+        404cfc:   movk   w13, #0xc, lsl #16
+        404d00:   movk   w15, #0x6, lsl #16
+        404d04:   adrp   x18, 2eb0000 <rhs+0x1375d0>
+        404d08:   adrp   x1, 56c1000 <u+0xce0>
+        404d0c:   add    w9, w11, #0x1
+        404d10:   sub    w10, w19, #0x1
+        404d14:   mov    w16, #0x5                       // #5
+        404d18:   mov    w17, #0x4                       // #4
+        404d1c:   add    x18, x18, #0x768
+        404d20:   mov    w0, #0x3                        // #3
+        404d24:   add    x1, x1, #0x360
+        404d28:   add    x2, x12, x13
+        404d2c:   add    x3, x12, x15
+        404d30:   add    w4, w8, #0x1
+        404d34:   mov    w5, #0x1018                     // #4120
+        404d38:   cmp    w11, #0x1  
+        404d3c: ↓ b.ge   404d6c <compute_rhs+0x1b30>  // b.tcont
+  0.00  404d40:   add    x0, x0, #0x1
+        404d44:   add    w16, w16, #0x1
+        404d48:   add    w17, w17, #0x1
+        404d4c:   add    x2, x2, x15
+        404d50:   add    x3, x3, x15
+        404d54:   add    x12, x12, x15
+        404d58:   cmp    x0, x10    
+        404d5c:   add    x18, x18, x15
+        404d60: ↓ b.eq   404e50 <compute_rhs+0x1c14>  // b.none
+        404d64:   cmp    w11, #0x1  
+        404d68: ↑ b.lt   404d40 <compute_rhs+0x1b04>  // b.tstop
+        404d6c:   umaddl x6, w16, w15, x1
+        404d70:   umaddl x7, w17, w15, x1
+        404d74:   mov    x19, x18   
+        404d78:   mov    x20, x12   
+        404d7c:   mov    x21, x3    
+        404d80:   mov    x22, x2    
+        404d84:   mov    w23, #0x1                       // #1
+        404d88:   cmp    w8, #0x1   
+        404d8c: ↓ b.ge   404dbc <compute_rhs+0x1b80>  // b.tcont
+        404d90:   add    x23, x23, #0x1
+        404d94:   add    x6, x6, x5 
+        404d98:   add    x7, x7, x5 
+  0.00  404d9c:   add    x22, x22, x5
+        404da0:   add    x21, x21, x5
+  0.00  404da4:   add    x20, x20, x5
+        404da8:   cmp    x23, x9    
+  0.00  404dac:   add    x19, x19, x5
+  0.00  404db0: ↑ b.eq   404d40 <compute_rhs+0x1b04>  // b.none
+  0.00  404db4:   cmp    w8, #0x1   
+        404db8: ↑ b.lt   404d90 <compute_rhs+0x1b54>  // b.tstop
+        404dbc:   mov    x24, x19   
+  0.00  404dc0:   mov    x25, x20   
+        404dc4:   mov    x26, x21   
+  0.00  404dc8:   mov    x27, x22   
+        404dcc:   mov    x28, x7    
+  0.00  404dd0:   mov    x30, x6    
+  0.00  404dd4:   mov    w14, #0x1                       // #1
+  0.01  404dd8:   mov    x13, xzr
+
+
+  0.15  404ddc:   ldr    d1, [x26, x13]
+  1.70  404de0:   ldr    d2, [x25, x13]
+  0.17  404de4:   ldr    d3, [x27, x13]
+  0.49  404de8:   ldr    d4, [x28, x13]
+  0.25  404dec:   fmul   d1, d1, d10
+  0.51  404df0:   fsub   d1, d2, d1 
+  0.01  404df4:   ldr    d2, [x30, x13]
+  0.28  404df8:   fmul   d3, d3, d11
+  0.48  404dfc:   fadd   d1, d1, d3 
+  0.01  404e00:   ldr    d3, [x24, x13]
+  0.92  404e04:   fmul   d4, d4, d10
+  0.59  404e08:   fsub   d1, d1, d4 
+  0.61  404e0c:   fadd   d1, d2, d1 
+  2.10  404e10:   fmul   d1, d0, d1 
+  2.03  404e14:   fsub   d1, d3, d1 
+  0.13  404e18:   str    d1, [x24, x13]
+  0.05  404e1c:   add    x13, x13, #0x8
+  0.02  404e20:   cmp    x13, #0x28 
+        404e24: ↑ b.ne   404ddc <compute_rhs+0x1ba0>  // b.any
+
+
+  0.01  404e28:   add    x14, x14, #0x1
+  0.50  404e2c:   add    x30, x30, #0x28
+  0.00  404e30:   add    x28, x28, #0x28
+  0.00  404e34:   add    x27, x27, #0x28
+  0.01  404e38:   add    x26, x26, #0x28
+  0.10  404e3c:   add    x25, x25, #0x28
+  0.00  404e40:   cmp    x14, x4    
+  0.00  404e44:   add    x24, x24, #0x28
+        404e48: ↑ b.ne   404dd8 <compute_rhs+0x1b9c>  // b.any
+  0.01  404e4c: ↑ b      404d90 <compute_rhs+0x1b54>
+        404e50:   adrp   x19, 2d78000 <forcing+0x2946ec0>
+        404e54:   adrp   x20, 56c0000 <rhs+0x29475d0>
+        404e58:   cmp    w11, #0x1  
+        404e5c:   add    x19, x19, #0xa30
+        404e60:   add    x20, x20, #0x320
+        404e64: ↓ b.lt   40507c <compute_rhs+0x1e40>  // b.tstop
+        404e68:   ldur   x15, [x29, #-160]
+        404e6c:   mov    w13, #0x79a8                    // #31144
+        404e70:   movk   w13, #0x6, lsl #16
+        404e74:   adrp   x9, bb0c000 <rhoq+0xf0>
+  0.00  404e78:   sub    x8, x15, #0x1
+        404e7c:   madd   x18, x15, x13, x20
+        404e80:   ldur   x15, [x29, #-168]
+        404e84:   ldr    w9, [x9, #2824]
+        404e88:   adrp   x10, bb0c000 <rhoq+0xf0>
+        404e8c:   ldr    d0, [x10, #2288]
+        404e90:   mov    w14, #0x1040                    // #4160
+        404e94:   mov    x17, #0xffffffffffffa348        // #-23736
+        404e98:   mul    x0, x8, x13
+        404e9c:   madd   x13, x15, x13, x20
+        404ea0:   movk   x17, #0xffec, lsl #16
+        404ea4:   add    x1, x20, x0
+        404ea8:   add    x16, x13, x14
+        404eac:   add    x13, x19, x0
+        404eb0:   add    w10, w11, #0x1
+        404eb4:   mov    w12, #0x1                       // #1
+        404eb8:   add    x15, x18, x14
+        404ebc:   add    x17, x18, x17
+        404ec0:   add    x18, x1, x14
+        404ec4:   add    x0, x13, x14
+        404ec8:   sxtw   x1, w9     
+        404ecc:   mov    w2, #0x1018                     // #4120
+        404ed0:   cmp    w9, #0x1   
+        404ed4: ↓ b.ge   404f00 <compute_rhs+0x1cc4>  // b.tcont
+        404ed8:   add    x12, x12, #0x1
+        404edc:   add    x15, x15, x2
+        404ee0:   add    x18, x18, x2
+        404ee4:   add    x16, x16, x2
+        404ee8:   add    x17, x17, x2
+        404eec:   cmp    x12, x10   
+  0.00  404ef0:   add    x0, x0, x2 
+        404ef4: ↓ b.eq   404f84 <compute_rhs+0x1d48>  // b.none
+        404ef8:   cmp    w9, #0x1   
+        404efc: ↑ b.lt   404ed8 <compute_rhs+0x1c9c>  // b.tstop
+        404f00:   mov    x14, x0    
+        404f04:   mov    x3, x17    
+        404f08:   mov    x4, x16    
+        404f0c:   mov    x5, x18    
+        404f10:   mov    x6, x15    
+        404f14:   mov    w7, #0x1                        // #1
+  0.00  404f18:   mov    x13, xzr   
+  0.00  404f1c:   ldr    d1, [x4, x13]
+  0.02  404f20:   ldr    d2, [x3, x13]
+  0.00  404f24:   ldr    d3, [x5, x13]
+  0.01  404f28:   fmul   d1, d1, d10
+  0.00  404f2c:   fsub   d1, d2, d1 
+        404f30:   ldr    d2, [x6, x13]
+  0.01  404f34:   fmul   d3, d3, d11
+  0.00  404f38:   fadd   d1, d1, d3 
+        404f3c:   ldr    d3, [x14, x13]
+  0.01  404f40:   fmul   d2, d2, d10
+  0.00  404f44:   fsub   d1, d1, d2 
+  0.01  404f48:   fmul   d1, d0, d1 
+  0.03  404f4c:   fsub   d1, d3, d1 
+        404f50:   str    d1, [x14, x13]
+        404f54:   add    x13, x13, #0x8
+  0.00  404f58:   cmp    x13, #0x28 
+        404f5c: ↑ b.ne   404f1c <compute_rhs+0x1ce0>  // b.any
+        404f60:   cmp    x7, x1     
+  0.00  404f64:   add    x7, x7, #0x1
+        404f68:   add    x6, x6, #0x28
+        404f6c:   add    x5, x5, #0x28
+        404f70:   add    x4, x4, #0x28
+  0.00  404f74:   add    x3, x3, #0x28
+        404f78:   add    x14, x14, #0x28
+        404f7c: ↑ b.lt   404f18 <compute_rhs+0x1cdc>  // b.tstop
+  0.00  404f80: ↑ b      404ed8 <compute_rhs+0x1c9c>
+        404f84:   cmp    w11, #0x1  
+        404f88: ↓ b.lt   40507c <compute_rhs+0x1e40>  // b.tstop
+        404f8c:   ldp    x15, x13, [x29, #-168]
+        404f90:   adrp   x9, bb0c000 <rhoq+0xf0>
+        404f94:   ldr    w9, [x9, #2824]
+        404f98:   adrp   x10, bb0c000 <rhoq+0xf0>
+        404f9c:   mov    w12, #0x79a8                    // #31144
+        404fa0:   ldr    d0, [x10, #2288]
+        404fa4:   movk   w12, #0x6, lsl #16
+        404fa8:   mul    x13, x13, x12
+        404fac:   mov    w14, #0x1040                    // #4160
+        404fb0:   smaddl x8, w8, w12, x20
+        404fb4:   smaddl x12, w15, w12, x20
+        404fb8:   add    x15, x20, x13
+        404fbc:   add    x16, x19, x13
+  0.00  404fc0:   add    w10, w11, #0x1
+        404fc4:   mov    w11, #0x1                       // #1
+        404fc8:   add    x8, x8, x14
+        404fcc:   add    x12, x12, x14
+        404fd0:   add    x13, x15, x14
+        404fd4:   add    x14, x16, x14
+        404fd8:   add    w15, w9, #0x1
+        404fdc:   mov    w16, #0x1018                    // #4120
+        404fe0:   cmp    w9, #0x1   
+        404fe4: ↓ b.ge   40500c <compute_rhs+0x1dd0>  // b.tcont
+        404fe8:   add    x11, x11, #0x1
+        404fec:   add    x13, x13, x16
+        404ff0:   add    x8, x8, x16
+        404ff4:   add    x12, x12, x16
+        404ff8:   cmp    x11, x10   
+        404ffc:   add    x14, x14, x16
+        405000: ↓ b.eq   40507c <compute_rhs+0x1e40>  // b.none
+        405004:   cmp    w9, #0x1   
+        405008: ↑ b.lt   404fe8 <compute_rhs+0x1dac>  // b.tstop
+  0.00  40500c:   mov    x17, x14   
+        405010:   mov    x18, x12   
+        405014:   mov    x0, x8     
+        405018:   mov    x1, x13    
+        40501c:   mov    w2, #0x1                        // #1
+        405020:   mov    x3, xzr    
+  0.00  405024:   ldr    d1, [x0, x3]
+  0.02  405028:   ldr    d2, [x1, x3]
+  0.00  40502c:   ldr    d3, [x18, x3]
+  0.01  405030:   ldr    d4, [x17, x3]
+  0.00  405034:   fmul   d1, d1, d8 
+  0.01  405038:   fmul   d2, d2, d9 
+  0.00  40503c:   fadd   d1, d3, d1 
+  0.01  405040:   fadd   d1, d1, d2 
+  0.00  405044:   fmul   d1, d0, d1 
+  0.01  405048:   fsub   d1, d4, d1 
+  0.00  40504c:   str    d1, [x17, x3]
+  0.00  405050:   add    x3, x3, #0x8
+  0.00  405054:   cmp    x3, #0x28  
+        405058: ↑ b.ne   405024 <compute_rhs+0x1de8>  // b.any
+        40505c:   add    x2, x2, #0x1
+  0.00  405060:   add    x1, x1, #0x28
+        405064:   add    x0, x0, #0x28
+  0.00  405068:   add    x18, x18, #0x28
+        40506c:   cmp    x2, x15    
+  0.00  405070:   add    x17, x17, #0x28
+        405074: ↑ b.ne   405020 <compute_rhs+0x1de4>  // b.any
+  0.00  405078: ↑ b      404fe8 <compute_rhs+0x1dac>
+        40507c:   adrp   x8, bb0c000 <rhoq+0xf0>
+  0.00  405080:   ldr    w8, [x8, #2836]
+        405084: ↓ cbz    w8, 405090 <compute_rhs+0x1e54>
+        405088:   mov    w0, #0x4                        // #4
+        40508c: → bl     402314 <timer_stop>
+        405090:   adrp   x10, bb0c000 <rhoq+0xf0>
+        405094:   ldr    w8, [x10, #2832]
+        405098:   cmp    w8, #0x1   
+        40509c: ↓ b.lt   40515c <compute_rhs+0x1f20>  // b.tstop
+        4050a0:   adrp   x8, bb0c000 <rhoq+0xf0>
+        4050a4:   adrp   x9, bb0c000 <rhoq+0xf0>
+        4050a8:   ldr    w8, [x8, #2828]
+        4050ac:   ldr    w9, [x9, #2824]
+        4050b0:   adrp   x14, bb0c000 <rhoq+0xf0>
+        4050b4:   ldrsw  x10, [x10, #2832]
+        4050b8:   ldr    d0, [x14, #2296]
+        4050bc:   adrp   x11, 2de1000 <rhs+0x685d0>
+        4050c0:   mov    w13, #0x79a8                    // #31144
+        4050c4:   add    x11, x11, #0x418
+        4050c8:   mov    w12, #0x1                       // #1
+        4050cc:   movk   w13, #0x6, lsl #16
+        4050d0:   add    w14, w9, #0x1
+        4050d4:   add    w15, w8, #0x1
+        4050d8:   mov    w16, #0x1018                    // #4120
+        4050dc:   cmp    w8, #0x1   
+        4050e0: ↓ b.ge   4050fc <compute_rhs+0x1ec0>  // b.tcont
+  0.00  4050e4:   cmp    x12, x10   
+        4050e8:   add    x12, x12, #0x1
+        4050ec:   add    x11, x11, x13
+        4050f0: ↓ b.ge   40515c <compute_rhs+0x1f20>  // b.tcont
+        4050f4:   cmp    w8, #0x1   
+        4050f8: ↑ b.lt   4050e4 <compute_rhs+0x1ea8>  // b.tstop
+        4050fc:   mov    x17, x11   
+        405100:   mov    w18, #0x1                       // #1
+        405104:   cmp    w9, #0x1   
+        405108: ↓ b.ge   405124 <compute_rhs+0x1ee8>  // b.tcont
+  0.00  40510c:   add    x18, x18, #0x1
+  0.00  405110:   cmp    x18, x15   
+  0.00  405114:   add    x17, x17, x16
+        405118: ↑ b.eq   4050e4 <compute_rhs+0x1ea8>  // b.none
+  0.00  40511c:   cmp    w9, #0x1   
+        405120: ↑ b.lt   40510c <compute_rhs+0x1ed0>  // b.tstop
+  0.00  405124:   mov    x0, x17    
+  0.00  405128:   mov    w1, #0x1                        // #1
+  0.01  40512c:   mov    x2, xzr    
+  0.09  405130:   ldr    d1, [x0, x2]
+  1.77  405134:   fmul   d1, d1, d0 
+  0.08  405138:   str    d1, [x0, x2]
+  0.26  40513c:   add    x2, x2, #0x8
+  0.09  405140:   cmp    x2, #0x28  
+        405144: ↑ b.ne   405130 <compute_rhs+0x1ef4>  // b.any
+  0.01  405148:   add    x1, x1, #0x1
+  0.16  40514c:   cmp    x1, x14    
+  0.04  405150:   add    x0, x0, #0x28
+        405154: ↑ b.ne   40512c <compute_rhs+0x1ef0>  // b.any
+  0.01  405158: ↑ b      40510c <compute_rhs+0x1ed0>
+        40515c:   adrp   x8, bb0c000 <rhoq+0xf0>
+        405160:   ldr    w8, [x8, #2836]
+  0.00  405164: ↓ cbz    w8, 40519c <compute_rhs+0x1f60>
+        405168:   ldp    x29, x30, [sp, #432]
+        40516c:   ldp    x20, x19, [sp, #416]
+        405170:   ldp    x22, x21, [sp, #400]
+        405174:   ldp    x24, x23, [sp, #384]
+        405178:   ldp    x26, x25, [sp, #368]
+        40517c:   ldp    x28, x27, [sp, #352]
+        405180:   ldp    d9, d8, [sp, #336]
+        405184:   ldp    d11, d10, [sp, #320]
+        405188:   ldp    d13, d12, [sp, #304]
+        40518c:   ldp    d15, d14, [sp, #288]
+        405190:   mov    w0, #0x5                        // #5
+        405194:   add    sp, sp, #0x1c0
+        405198: → b      402314 <timer_stop>
+        40519c:   ldp    x29, x30, [sp, #432]
+        4051a0:   ldp    x20, x19, [sp, #416]
+        4051a4:   ldp    x22, x21, [sp, #400]
+  0.00  4051a8:   ldp    x24, x23, [sp, #384]
+        4051ac:   ldp    x26, x25, [sp, #368]
+        4051b0:   ldp    x28, x27, [sp, #352]
+        4051b4:   ldp    d9, d8, [sp, #336]
+        4051b8:   ldp    d11, d10, [sp, #320]
+        4051bc:   ldp    d13, d12, [sp, #304]
+        4051c0:   ldp    d15, d14, [sp, #288]
+        4051c4:   add    sp, sp, #0x1c0
+        4051c8: ← ret               
