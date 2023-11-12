@@ -1,21 +1,22 @@
 make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/ua'
 {
-"LLVM VERSION": "clang version 9.0.1 (git@github.com:blackgeorge-boom/llvm-project.git faf5dbf23c358a06098838f33a23f8ccb66f82ff) Target: x86_64-unknown-linux-gnu Thread model: posix InstalledDir: /home/nikos/llvm-9.0.1/toolchain/bin"
-"LLVM BIN DIR": "/home/nikos/llvm-9.0.1/toolchain/bin"
-"LLVM LIB DIR": "/home/nikos/llvm-9.0.1/toolchain/lib"
-"CFLAGS": "-O1 -Wall -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer",
-"OPT_FLAGS": "",
-"LLC_FLAGS": "",
-"LLC_FLAGS_ARM64": "",
-"LLC_FLAGS_X86": ""
+"LLVM VERSION": "clang version 9.0.1 (git@github.com:blackgeorge-boom/llvm-project.git 75c66716fb1e4bb4d54d29e93246416ccaac2876) Target: x86_64-unknown-linux-gnu Thread model: posix InstalledDir: /home/nikos/llvm-9/toolchain/bin"
+"LLVM BIN DIR": "/home/nikos/llvm-9/toolchain/bin"
+"LLVM LIB DIR": "/home/nikos/llvm-9/toolchain/lib"
+"LLVM UNIFICO FLAGS": "-DUNIFICO_GPR_CALLING_CONV -DUNIFICO_FPR_CALLING_CONV -DUNIFICO_REGALLOC_RULES -DUNIFICO_REMAT_RULES -DUNIFICO_REG_COST -DUNIFICO_AARCH64_TWOADDR -DUNIFICO_INSTR_EXTENSION -DUNIFICO_CHEAP_MOVES "
+"CFLAGS": "-O1 -Wall -Xclang -disable-O0-optnone -mno-red-zone -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -mllvm -align-bytes-to-four",
+"OPT_FLAGS": "-name-string-literals -static-var-sections -live-values",
+"LLC_FLAGS": "-disable-block-align --mc-relax-all -aarch64-csr-alignment=8 -align-bytes-to-four -reg-scavenging-slot -align-objects-to-four -enable-misched=false -pack-indexes -function-sections -data-sections -relocation-model=pic --trap-unreachable -optimize-regalloc -fast-isel=false -disable-machine-cse",
+"LLC_FLAGS_ARM64": "-mattr=+disable-fp-imm-materialize,+avoid-wide-mul,+copy-zr-temp,-disable-hoist-in-lowering,-avoid-f128,-x86-fabs-fneg,+x86-select,+advanced-ra-split-cost,-mov-64-imm32",
+"LLC_FLAGS_X86": "-mattr=+simple-reg-offset-addr,+aarch64-legal-addr,-multiply-with-imm,+aarch64-sized-imm,-non-zero-imm-to-mem,+aarch64-constant-cost-model,+force-vector-mem-op,+avoid-opt-mul-1,+avoid-select-to-fsetcc,+aarch64-legal-addr -x86-enable-simplify-cfg -no-x86-call-frame-opt -disable-x86-frame-obj-order -enable-lea32 -mul-constant-optimization=false -disable-gr32temp-inflate -aarch64-fcmp-cost"
 }
- [IR] ua.ll
  [IR] adapt.ll
+ [IR] ua.ll
  [IR] diffuse.ll
  [IR] move.ll
  [IR] setup.ll
- [IR] c_timers.ll
  [IR] print_results.ll
+ [IR] c_timers.ll
  [IR] randdp.ll
  [IR] c_print_results.ll
  [IR] wtime.ll

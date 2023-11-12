@@ -58,6 +58,7 @@ precond.c:757:9: note: include the header <stdio.h> or explicitly provide a decl
  [LLC] verify_aarch64_init.o
  [LLC] convect_aarch64_init.o
  [LLC] utils_aarch64_init.o
+ [LLC] ua_aarch64_init.o
  [LLC] adapt_aarch64_init.o
  [LLC] precond_aarch64_init.o
  [LLC] transfer_aarch64_init.o

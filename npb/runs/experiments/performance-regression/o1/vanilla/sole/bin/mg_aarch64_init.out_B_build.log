@@ -21,6 +21,9 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/mg'
  [OPT] randdp_opt.ll
  [OPT] c_print_results_opt.ll
  [OPT] mg_opt.ll
+ [OPT] wtime_opt.ll
+ [OPT] randdp_opt.ll
+ [LLC] c_print_results_aarch64_init.o
  [LLC] c_timers_aarch64_init.o
  [LLC] wtime_aarch64_init.o
  [LLC] c_print_results_aarch64_init.o
