@@ -9,10 +9,10 @@ make: Entering directory '/home/nikos/phd/unified_abi/layout/npb/ua'
 "LLC_FLAGS_ARM64": "",
 "LLC_FLAGS_X86": ""
 }
- [IR] adapt.ll
  [IR] ua.ll
- [IR] move.ll
+ [IR] adapt.ll
  [IR] diffuse.ll
+ [IR] move.ll
  [IR] setup.ll
  [IR] c_timers.ll
  [IR] print_results.ll
@@ -46,8 +46,10 @@ precond.c:757:9: note: include the header <stdio.h> or explicitly provide a decl
  [OPT] precond_opt.ll
  [OPT] transfer_opt.ll
  [OPT] utils_opt.ll
+ [LLC] ua_aarch64_init.o
  [LLC] diffuse_aarch64_init.o
  [LLC] move_aarch64_init.o
+ [LLC] setup_aarch64_init.o
  [LLC] c_timers_aarch64_init.o
  [LLC] print_results_aarch64_init.o
  [LLC] randdp_aarch64_init.o
@@ -55,12 +57,10 @@ precond.c:757:9: note: include the header <stdio.h> or explicitly provide a decl
  [LLC] wtime_aarch64_init.o
  [LLC] verify_aarch64_init.o
  [LLC] convect_aarch64_init.o
- [LLC] utils_aarch64_init.o
- [LLC] ua_aarch64_init.o
- [LLC] adapt_aarch64_init.o
- [LLC] setup_aarch64_init.o
  [LLC] precond_aarch64_init.o
  [LLC] transfer_aarch64_init.o
+ [LLC] utils_aarch64_init.o
+ [LLC] adapt_aarch64_init.o
  [LLC] mason_aarch64_init.o
  [LD] ua_aarch64_init.out
 rm wtime_opt.ll print_results_opt.ll setup_opt.ll c_print_results_opt.ll adapt_opt.ll precond_opt.ll mason_opt.ll convect_opt.ll c_timers_opt.ll randdp_opt.ll utils_opt.ll diffuse_opt.ll move_opt.ll transfer_opt.ll verify_opt.ll
