@@ -1,4 +1,4 @@
-benchmark,time_overhead,time_speedup
+benchmark,A,time_speedup
 bt,4.76,0.95
 cg,-0.71,1.01
 ep,0.19,1.0
