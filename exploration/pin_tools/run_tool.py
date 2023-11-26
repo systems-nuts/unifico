@@ -106,7 +106,10 @@ class PinToolRunner:
         arg_parser.add_argument("-d", "--tool-dir", required=True, type=str)
         arg_parser.add_argument("-f", "--functions", required=False, type=str)
         arg_parser.add_argument(
-            "--all-functions", required=False, action="store_true"
+            "--all-functions",
+            required=False,
+            action="store_true",
+            default=True,
         )
         arg_parser.add_argument(
             "-s", "--stack-profile", required=False, action="store_true"
