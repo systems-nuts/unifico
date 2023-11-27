@@ -10,8 +10,9 @@ from pathlib import Path
 OBJ_DIR = "obj-intel64"
 OUT_DIR = "out"
 JSON_LOG = "out.log"
-AWK_CMD = 'awk \'($2 == "T" || $2 == "t") && $1 !~ /^_/ {print "b " $1}\' '
-SED_CMD = "sed 's/\\ /,/g'"
+AWK_CMD = 'awk \'($2 == "T" || $2 == "t") && $1 {print "b " $1}\' '
+SED_CMD1 = "sed 's/\.[^ ]*//g'"
+SED_CMD2 = "sed 's/\\ /,/g'"
 EMPTY_THRESHOLD = 5
 
 
@@ -33,7 +34,7 @@ class PinToolRunner:
         self.args, self.unknown_args = arg_parser.parse_known_args(args=args)
         self.unknown_args.remove("--")
         if self.args.all_functions:
-            cmd = f"nm -P {self.args.app_path} | {AWK_CMD} | cut -c2- | xargs | {SED_CMD}"
+            cmd = f"nm -P {self.args.app_path} | {SED_CMD1} | {AWK_CMD} | cut -c2- | xargs | {SED_CMD2}"
             if self.args.dry_run:
                 print(cmd)
                 print(self.execute_bash_command(cmd))
