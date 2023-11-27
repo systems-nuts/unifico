@@ -109,7 +109,7 @@ class PinToolRunner:
             "--all-functions",
             required=False,
             action="store_true",
-            default=True,
+            default=False,
         )
         arg_parser.add_argument(
             "-s", "--stack-profile", required=False, action="store_true"
