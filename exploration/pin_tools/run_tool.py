@@ -13,7 +13,7 @@ JSON_LOG = "out.log"
 AWK_CMD = 'awk \'($2 == "T" || $2 == "t") && $1 {print "b " $1}\' '
 SED_CMD1 = "sed 's/\.[^ ]*//g'"
 SED_CMD2 = "sed 's/\\ /,/g'"
-EMPTY_THRESHOLD = 5
+EMPTY_THRESHOLD = 10
 
 
 class PinToolRunner:
@@ -61,9 +61,6 @@ class PinToolRunner:
         now = datetime.now()
         time_stamp = now.strftime("%Y%m%d") + "_" + now.strftime("%H%M%S")
         out_dir = os.path.join(OUT_DIR, self.args.app_name, time_stamp)
-        out_dir_empty_files = os.path.join(
-            OUT_DIR, self.args.app_name, time_stamp, "empty"
-        )
         Path(out_dir).mkdir(parents=True, exist_ok=False)
 
         self.log(out_dir)
@@ -87,10 +84,7 @@ class PinToolRunner:
             num_lines = sum(1 for _ in open(csv_file))
             # If a csv file has less than certain points, the plot will look empty.
             if num_lines < EMPTY_THRESHOLD:
-                Path(out_dir_empty_files).mkdir(parents=True, exist_ok=True)
-                png_file = os.path.join(
-                    out_dir_empty_files, out_file_stem + ".png"
-                )
+                continue
 
             plot_scatter_df(csv_file, png_file, self.args.keep_csv)
 
