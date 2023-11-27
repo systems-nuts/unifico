@@ -60,6 +60,9 @@ static VOID dumpAccess(ADDRINT addr, ADDRINT *init_addr)
 VOID Routine(RTN rtn, VOID *v)
 {
     std::string rtnName = RTN_Name(rtn);
+    if (rtnName[0] == '.' || (rtnName[0] == '_' && rtnName[1] != 'Z')) {
+        return;
+    }
     if (rtnName.find(FunctionName.Value()) == std::string::npos) {
         return;
     }
