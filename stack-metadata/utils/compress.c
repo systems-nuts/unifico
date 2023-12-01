@@ -57,7 +57,7 @@ static void parse_args(int argc, char **argv)
     }
 }
 
-#define PAGE_MASK(val) ((val)&0xfff)
+#define PAGE_MASK(val) ((val) & 0xfff)
 
 ret_t compress_bss(bin *b)
 {

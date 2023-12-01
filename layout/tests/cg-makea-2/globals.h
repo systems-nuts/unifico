@@ -55,65 +55,65 @@
 //----------
 //  Class S:
 //----------
-//#define NA        1400
-//#define NONZER    7
-//#define SHIFT     10
-//#define NITER     15
-//#define RCOND     1.0e-1
+// #define NA        1400
+// #define NONZER    7
+// #define SHIFT     10
+// #define NITER     15
+// #define RCOND     1.0e-1
 
 //----------
 //  Class W:
 //----------
-//#define NA        7000
-//#define NONZER    8
-//#define SHIFT     12
-//#define NITER     15
-//#define RCOND     1.0e-1
+// #define NA        7000
+// #define NONZER    8
+// #define SHIFT     12
+// #define NITER     15
+// #define RCOND     1.0e-1
 
 //----------
 //  Class A:
 //----------
-//#define NA        14000
-//#define NONZER    11
-//#define SHIFT     20
-//#define NITER     15
-//#define RCOND     1.0e-1
+// #define NA        14000
+// #define NONZER    11
+// #define SHIFT     20
+// #define NITER     15
+// #define RCOND     1.0e-1
 
 //----------
 //  Class B:
 //----------
-//#define NA        75000
-//#define NONZER    13
-//#define SHIFT     60
-//#define NITER     75
-//#define RCOND     1.0e-1
+// #define NA        75000
+// #define NONZER    13
+// #define SHIFT     60
+// #define NITER     75
+// #define RCOND     1.0e-1
 
 //----------
 //  Class C:
 //----------
-//#define NA        150000
-//#define NONZER    15
-//#define SHIFT     110
-//#define NITER     75
-//#define RCOND     1.0e-1
+// #define NA        150000
+// #define NONZER    15
+// #define SHIFT     110
+// #define NITER     75
+// #define RCOND     1.0e-1
 
 //----------
 //  Class D:
 //----------
-//#define NA        1500000
-//#define NONZER    21
-//#define SHIFT     500
-//#define NITER     100
-//#define RCOND     1.0e-1
+// #define NA        1500000
+// #define NONZER    21
+// #define SHIFT     500
+// #define NITER     100
+// #define RCOND     1.0e-1
 
 //----------
 //  Class E:
 //----------
-//#define NA        9000000
-//#define NONZER    26
-//#define SHIFT     1500
-//#define NITER     100
-//#define RCOND     1.0e-1
+// #define NA        9000000
+// #define NONZER    26
+// #define SHIFT     1500
+// #define NITER     100
+// #define RCOND     1.0e-1
 
 #define NZ (NA * (NONZER + 1) * (NONZER + 1))
 #define NAZ (NA * (NONZER + 1))
