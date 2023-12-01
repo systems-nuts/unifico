@@ -225,7 +225,6 @@ class ProgramState:
 
 
 def parse_arm_asm(input_file, func_name="main", callsite=1):
-
     program_state = ProgramState("arm")
 
     with open(input_file, "r") as objdump_file:
@@ -235,7 +234,6 @@ def parse_arm_asm(input_file, func_name="main", callsite=1):
         found_function = False
 
         for line in lines:
-
             # Parse function
             match_result = FUNCTION_REGEX.match(line)
             if match_result:
@@ -333,7 +331,6 @@ def parse_arm_asm(input_file, func_name="main", callsite=1):
 
 
 def parse_x86_asm(input_file, func_name="main", callsite=1):
-
     program_state = ProgramState("x86")
 
     with open(input_file, "r") as objdump_file:
@@ -343,7 +340,6 @@ def parse_x86_asm(input_file, func_name="main", callsite=1):
         found_function = False
 
         for line in lines:
-
             # Parse function
             match_result = FUNCTION_REGEX.match(line)
             if match_result:

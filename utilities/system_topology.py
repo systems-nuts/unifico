@@ -28,7 +28,6 @@ class SystemTopology:
             # Scanning file
             self.packages = []
             for line in fp:
-
                 package_match = package_pattern.search(line)
                 if package_match:
                     cur_package = package_match.group(1)

@@ -26,11 +26,9 @@ def parse_perf_output(src):
     """
     result = {}
     with open(src, "r") as fp:
-
         lines = fp.readlines()
 
         for line in lines:
-
             match_result = re.search(PERF_STATS_REGEX, line)
 
             if match_result:

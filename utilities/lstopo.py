@@ -28,7 +28,6 @@ def digest_lstopo(file_path):
     # Scanning file
     result = {"packages": []}
     for line in file_desc:
-
         package_match = package_pattern.search(line)
         if package_match:
             cur_package = package_match.group(1)
@@ -62,12 +61,11 @@ def digest_lstopo(file_path):
 
 
 if __name__ == "__main__":
-
     # Check command line arguments
     if len(sys.argv) != 2:
         print("Usage: " + sys.argv[0] + " input file")
         sys.exit(1)
 
     # Iterate through each logical CPU's details
-    for (processing_unit, core, package) in digest_lstopo(sys.argv[1]):
+    for processing_unit, core, package in digest_lstopo(sys.argv[1]):
         print(processing_unit, core, package)

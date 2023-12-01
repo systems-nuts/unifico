@@ -75,11 +75,9 @@ def get_return_addresses(objdump_output, arch):
     result = {}
 
     with open(objdump_output, "r") as objdump_file:
-
         lines = objdump_file.readlines()
 
         for index, line in enumerate(lines):
-
             match_result = FUNCTION_REGEX.match(line)
 
             if match_result:  # Inside a function's code
@@ -91,7 +89,6 @@ def get_return_addresses(objdump_output, arch):
             match_result2 = re.search(CALLSITE_REGEX[arch], line)
 
             if match_result2:  # Found a call instruction
-
                 nextLine = lines[index + 1]
                 match_result3 = RETURN_ADDRESS_REGEX.match(
                     nextLine
@@ -136,7 +133,6 @@ def check_callsite_number(d1, d2):
         exit(1)
 
     for function in d1.keys():
-
         callsites1 = d1[function]
         callsites2 = d2[function]
 
@@ -184,13 +180,11 @@ def align(text1, text2):
 
     padding_dict = {"aarch64": {}, "x86-64": {}}
     for function in d1.keys():
-
         # Accumulated paddings for each function in both architectures
         total_padding_arm = 0
         total_padding_x86 = 0
 
         for label in d1[function].keys():
-
             # Offsets of call instructions from the caller function's symbol
             offset_arm = int(d1[function][label], 16) + total_padding_arm
             offset_x86 = int(d2[function][label], 16) + total_padding_x86
@@ -224,7 +218,6 @@ def align(text1, text2):
 
 
 if __name__ == "__main__":
-
     if len(sys.argv) < 3:
         print(
             "Usage: ./callsite_align <objdump_input_arm> <objdump_input_x86>"

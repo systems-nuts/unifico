@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 from npb.plot_results import get_overhead_df
 
 if __name__ == "__main__":
-
     arg_parser = argparse.ArgumentParser(
         description="Compare NPB results for two different LLVM versions, with one "
         "being the baseline."

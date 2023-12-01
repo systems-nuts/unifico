@@ -258,7 +258,6 @@ def plot_by_pressure(folder_path, target_resources):
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser(
         description="Utility script for extracting hardware pressure, "
         "as JSON, from assembly files."
@@ -276,7 +275,6 @@ if __name__ == "__main__":
 
     FLAGS = "O0 O1 O2 O3"
     for flag in FLAGS.split(" "):
-
         print("Flag: ", flag)
 
         directory = os.path.join(

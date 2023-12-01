@@ -46,7 +46,6 @@ def combine_dataframes_column(df1, df2, column):
 
 
 if __name__ == "__main__":
-
     df_unifico_x86 = pd.read_csv(
         "/home/blackgeorge/Documents/phd/unified_abi/npb/runs/experiments/performance-regression/20230619_211239/run/results.csv",
         index_col="benchmark",

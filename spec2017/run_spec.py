@@ -5,7 +5,6 @@ from utilities.system_topology import SystemTopology
 
 # TODO: write tests
 if __name__ == "__main__":
-
     spec_dir = os.getenv("SPEC_DIR")
     if spec_dir is None:
         print(
@@ -100,7 +99,6 @@ if __name__ == "__main__":
     run_command = ""
     for config_file in config_list:
         for thread_num in thread_list:
-
             if (
                 args.compact_affinity or args.full_thread_run
             ) and not args.full_core_run:

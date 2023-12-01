@@ -8,7 +8,6 @@ from unified_abi.utilities.switch_cpu import switch_cpu
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser(
         description="Utility script for running PARSEC benchmarks for various numbers "
         "of threads and cores."

@@ -64,7 +64,6 @@ def get_pressure_sets(
         pressure_sets_list = {}
 
         for index, line in enumerate(lines):
-
             if line.find(":%bb.") != -1:
                 block_name = line
                 if function_block and not line.startswith(function_block):

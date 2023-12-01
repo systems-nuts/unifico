@@ -196,7 +196,6 @@ def parallel_experiments_overhead(df1, df2, out_plot="reports/plots/temp"):
     )
 
     for bench in set(df["Benchmark"]):
-
         title = "{}: {} overhead to {} {}".format(bench, exp2, exp1, flag)
 
         fig, axes = plt.subplots(nrows=1, ncols=2)
@@ -303,7 +302,6 @@ def compare_parallel_experiments(
 
 
 if __name__ == "__main__":
-
     compare_experiments(
         "results/c617fca",
         "results/a6440f8",

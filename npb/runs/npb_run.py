@@ -217,7 +217,6 @@ class NPBRunner:
         return df_results
 
     def build_benchmark(self, config, executable, dryrun=False):
-
         commands = config["build"]
 
         for c in commands:
@@ -270,7 +269,6 @@ class NPBRunner:
             self.build_benchmark(bench_cfg, benchmark, self.args.dryrun)
 
     def execute_benchmark(self, config, executable, dryrun=False):
-
         commands = config["run"]
 
         for c in commands:
@@ -327,7 +325,6 @@ class NPBRunner:
             self.execute_benchmark(bench_cfg, benchmark, self.args.dryrun)
 
     def post_process_benchmark(self, config, executable, dryrun=False):
-
         commands = config["post_process"]
 
         for c in commands:

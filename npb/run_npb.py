@@ -25,7 +25,6 @@ def parse_suite(suite_file):
 
 # TODO: write tests
 if __name__ == "__main__":
-
     npb_dir = os.getenv("NPB_DIR")
     if npb_dir is None:
         print("Set NBP_DIR environment first.")
@@ -135,7 +134,6 @@ if __name__ == "__main__":
             os.chdir(config_dir)
             name_class_list = parse_suite(suite_file)
             for name_class in name_class_list:
-
                 bench_name, bench_class = name_class.split()
 
                 os.chdir(npb_dir)
@@ -148,7 +146,6 @@ if __name__ == "__main__":
                     os.system(make_command)
 
                 for iteration in range(iterations):
-
                     run_command_fmt = (
                         "./bin/{0}.{1}.x > {2}/{0}.{1}_out.{3}.{4}.{5}"
                     )
