@@ -67,9 +67,8 @@ class PinToolRunner:
 
         for func_name in self.args.functions.split(","):
             print(func_name)
-            out_file_stem = f"{self.args.app_name}_{func_name}_{self.granularity}_{access_type}"
-            csv_file = os.path.join(out_dir, out_file_stem + ".csv")
-            png_file = os.path.join(out_dir, out_file_stem + ".png")
+            csv_file = os.path.join(out_dir, func_name + ".csv")
+            png_file = os.path.join(out_dir, func_name + ".png")
 
             cmd = (
                 f"{self.pin_path} -t {OBJ_DIR}/{self.args.tool} -o {csv_file} -f {func_name} "
