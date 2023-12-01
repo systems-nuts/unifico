@@ -4,7 +4,7 @@ import os
 import sys
 import json
 from datetime import datetime
-from pin_postprocess.plot_accesses import plot_scatter_df
+from pin_postprocess.plot_accesses import scatter_csv_plot
 from pathlib import Path
 
 OBJ_DIR = "obj-intel64"
@@ -85,7 +85,7 @@ class PinToolRunner:
             if num_lines < EMPTY_THRESHOLD:
                 continue
 
-            plot_scatter_df(csv_file, png_file, self.args.keep_csv)
+            scatter_csv_plot(csv_file, png_file, self.args.keep_csv)
 
     @staticmethod
     def cmd_line_arguments(arg_parser: argparse.ArgumentParser):
