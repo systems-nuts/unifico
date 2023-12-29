@@ -1,0 +1,28 @@
+ep/ep_aarch64_aligned.out  :
+section                                      size       addr
+.text                                       36768    5242880
+.rodata                                     13689    6291456
+.rodata.cst8                                  152    6305152
+.rodata.___src_stdio_vfprintf_c_xdigits        16    6305304
+.rodata.___src_errno_strerror_c_errid          89    6305320
+.eh_frame                                     552    6305416
+.data                                        4360    7340032
+.bss                                      1056864    8388608
+.tdata                                       4096   10485760
+.tbss                                        4096   11534336
+.got                                           64   11538432
+.got.plt                                       24   11538496
+.debug_str                                   7050          0
+.debug_loc                                  71072          0
+.debug_abbrev                               15421          0
+.debug_info                                 58301          0
+.debug_macinfo                                 73          0
+.comment                                      225          0
+.debug_line                                 27503          0
+.debug_ranges                                4928          0
+.debug_frame                                 4648          0
+.debug_aranges                                 48          0
+.note.gnu.gold-version                         28          0
+Total                                     1310067
+
+

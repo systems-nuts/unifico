@@ -1,0 +1,24 @@
+is/is_aarch64_init.out  :
+section                        size      addr
+.note.gnu.build-id               36   4194648
+.text                         36704   4194688
+.rodata                        4265   4231392
+.eh_frame                       896   4235664
+.got                             64   4325288
+.got.plt                         24   4325352
+.data                           632   4325376
+.bss                     1107308844   4326016
+.debug_str                     6725         0
+.debug_loc                    61521         0
+.debug_abbrev                 13710         0
+.debug_info                   52554         0
+.debug_ranges                  4496         0
+.debug_macinfo                   63         0
+.comment                        225         0
+.debug_line                   24414         0
+.debug_frame                   4480         0
+.debug_aranges                   48         0
+.note.gnu.gold-version           28         0
+Total                    1107519729
+
+

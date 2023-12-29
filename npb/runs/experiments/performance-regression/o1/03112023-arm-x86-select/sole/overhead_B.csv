@@ -1,0 +1,6 @@
+benchmark,time_overhead,time_speedup
+lu,9.82,0.91
+sp,17.99,0.85
+ua,-4.39,1.05
+Mean,7.81,0.93
+Geomean,,0.93

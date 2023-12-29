@@ -1,0 +1,28 @@
+is/is_x86_64_aligned.out  :
+section                                       size       addr
+.text                                        33604    5242880
+.rodata                                       8617    6291456
+.rodata.cst8                                   128    6300080
+.rodata.cst16                                   48    6300208
+.rodata.___src_stdio_vfprintf_c_xdigits         16    6300256
+.rodata.___src_errno_strerror_c_errid           89    6300272
+.data                                         4728    7340032
+.bss                                      69222464    8388608
+.ldata                                           0   77619264
+.eh_frame                                      456   77619264
+.tdata                                        4096   78643200
+.tbss                                         4096   79691776
+.debug_str                                    6743          0
+.debug_loc                                   53597          0
+.debug_abbrev                                13453          0
+.debug_info                                  49469          0
+.debug_ranges                                 3904          0
+.debug_macinfo                                  59          0
+.comment                                       225          0
+.debug_line                                  24859          0
+.debug_frame                                  4632          0
+.debug_aranges                                 144          0
+.note.gnu.gold-version                          28          0
+Total                                     69435455
+
+

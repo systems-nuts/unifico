@@ -1,0 +1,22 @@
+ep/ep_x86_64_init.out  :
+section                     size      addr
+.note.gnu.build-id            36   4194592
+.text                      26493   4194640
+.rodata                     9552   4221136
+.eh_frame                    432   4230688
+.data                        264   4231168
+.bss                     1052904   4231440
+.debug_str                  6727         0
+.debug_loc                 52028         0
+.debug_abbrev              14986         0
+.debug_info                51288         0
+.debug_macinfo                72         0
+.comment                     225         0
+.debug_line                26209         0
+.debug_frame                5576         0
+.debug_ranges               3792         0
+.debug_aranges               192         0
+.note.gnu.gold-version        28         0
+Total                    1250804
+
+

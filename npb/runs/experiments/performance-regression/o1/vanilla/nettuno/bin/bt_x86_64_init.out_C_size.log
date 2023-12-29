@@ -1,0 +1,22 @@
+bt/bt_x86_64_init.out  :
+section                       size      addr
+.note.gnu.build-id              36   4194592
+.text                        87597   4194640
+.rodata                       7484   4282240
+.eh_frame                     1144   4289728
+.data                          264   4292608
+.bss                     723286212   4292880
+.comment                       225         0
+.debug_str                    6761         0
+.debug_loc                   67454         0
+.debug_abbrev                17273         0
+.debug_info                  60311         0
+.debug_macinfo                  77         0
+.debug_frame                  6624         0
+.debug_line                  33299         0
+.debug_ranges                 5168         0
+.debug_aranges                 288         0
+.note.gnu.gold-version          28         0
+Total                    723580245
+
+

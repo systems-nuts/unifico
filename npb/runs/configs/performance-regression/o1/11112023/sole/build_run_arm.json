@@ -1,0 +1,111 @@
+{
+    "info": {},
+    "tags": [
+        "exec_time"
+    ],
+    "executables": [
+        "bt_aarch64_aligned.out",
+        "cg_aarch64_aligned.out",
+        "ep_aarch64_aligned.out",
+        "ft_aarch64_aligned.out",
+        "is_aarch64_aligned.out",
+        "lu_aarch64_aligned.out",
+        "mg_aarch64_aligned.out",
+        "sp_aarch64_aligned.out",
+        "ua_aarch64_init.out"
+    ],
+    "env": {},
+
+    "*": {
+        "iterations": 3,
+        "output": "run_${executable}_${npb_class}_${iteration}.log",
+        "prepend": [],
+        "append": [],
+        "build": [
+            {
+                "before": false,
+                "args": [
+                    "sshpass",
+                    "-f",
+                    "/home/nikos/phd/unified_abi/npb/runs/file.txt",
+                    "scp",
+                    "-r",
+                    "nikos@nettuno:${dest_dir}/${executable}",
+                    "${dest_dir}"
+                ]
+            }
+        ],
+        "run": [
+            {
+                "before": false,
+                "args": [
+                    "grep",
+                    "-vzq",
+                    "\"UNSUCCESSFUL\"",
+                    "run_${executable}*.log"
+                ],
+                "output": ""
+            },
+            {
+                "before": false,
+                "args": [
+                    "grep",
+                    "-h",
+                    "\"Time in\"",
+                    "run_${executable}*.log"
+                ],
+                "output": "time_${executable}_${npb_class}.log"
+            },
+            {
+                "before": false,
+                "args": [
+                    "rm",
+                    "-rf",
+                    "run_${executable}*.log"
+                ],
+                "output": ""
+            }
+        ],
+        "post_process": [
+            {
+                "args": [
+                    "grep",
+                    "-o",
+                    "'[0-9\\.][0-9\\.]*'",
+                    "time_${executable}_${npb_class}.log"
+                ],
+                "output": "data.log"
+            },
+            {
+                "args": [
+                    "LC_NUMERIC=\"C\"",
+                    "awk",
+                    "'{sum+=sprintf(\"%f\",$1)}END{printf \"%.2f\\n\",sum/NR}'",
+                    "data.log"
+                ],
+                "output": "avg.log"
+            },
+            {
+                "args": [
+                    "echo -n",
+                    "${benchmark},",
+                    ">>results_${npb_class}.csv"
+                ]
+            },
+            {
+                "args": [
+                    "cat",
+                    "avg.log",
+                    ">>results_${npb_class}.csv"
+                ]
+            },
+            {
+                "args": [
+                    "rm",
+                    "data.log",
+                    "avg.log"
+                ]
+            }
+        ]
+    }
+}

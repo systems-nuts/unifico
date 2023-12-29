@@ -1,0 +1,30 @@
+mg/mg_x86_64_aligned.out  :
+section                                                  size        addr
+.text                                                   66896     5242880
+.rodata                                                 11368     6291456
+.rodata.cst8                                              304     6302824
+.rodata.cst16                                             192     6303136
+.rodata.___src_stdio_vfprintf_c_xdigits                    16     6303328
+.rodata.___src_errno_strerror_c_errid                      89     6303344
+.rodata.cst4                                               20     6303436
+.rodata.___src_internal_floatscan_c_decfloat_p10s          32     6303456
+.data                                                    4360     7340032
+.bss                                                472916368     8388608
+.ldata                                                      0   481313168
+.eh_frame                                                 976   481313168
+.tdata                                                   4096   482344960
+.tbss                                                    4096   483393536
+.comment                                                  225           0
+.debug_str                                               6895           0
+.debug_loc                                              72162           0
+.debug_abbrev                                           17298           0
+.debug_info                                             61868           0
+.debug_ranges                                            5056           0
+.debug_macinfo                                             75           0
+.debug_frame                                             6056           0
+.debug_line                                             34158           0
+.debug_aranges                                            288           0
+.note.gnu.gold-version                                     28           0
+Total                                               473212922
+
+

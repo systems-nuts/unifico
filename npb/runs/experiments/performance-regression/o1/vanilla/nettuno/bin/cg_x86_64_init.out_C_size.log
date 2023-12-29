@@ -1,0 +1,22 @@
+cg/cg_x86_64_init.out  :
+section                       size      addr
+.note.gnu.build-id              36   4194592
+.text                        30381   4194640
+.rodata                      11936   4225024
+.eh_frame                      688   4236960
+.data                          264   4239360
+.bss                     497404392   4239632
+.debug_str                    7442         0
+.debug_loc                   59918         0
+.debug_abbrev                16107         0
+.debug_info                  57327         0
+.debug_ranges                 4224         0
+.debug_macinfo                  76         0
+.comment                       225         0
+.debug_line                  29243         0
+.debug_frame                  5816         0
+.debug_aranges                 240         0
+.note.gnu.gold-version          28         0
+Total                    497628343
+
+
