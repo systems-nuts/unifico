@@ -2220,11 +2220,12 @@ static void mortar_vertex(int i, int iel, int count)
         }
         else {
             if (ntemp != -1) {
-                volatile i;
+                __asm__ __volatile__("" ::: "memory");
                 if (ifsame(ntemp, c_f[jjface[face_a[1]]][lc], iel, i)) {
                     ifntempx[temp] = ntemp;
                     ntempx[temp] = ntemp;
                 }
+                __asm__ __volatile__("" ::: "memory");
             }
         }
     }
