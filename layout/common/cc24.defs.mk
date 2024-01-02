@@ -30,7 +30,6 @@ ARM64_LIBGCC   ?= $(shell dirname \
 									$(shell aarch64-linux-gnu-gcc -print-libgcc-file-name))
 
 # Various configurations
-SSHPASS_IGNORE =
 UNMODIFIED ?=
 LLC_PASSES_TO_DEBUG =
 CCACHE =
