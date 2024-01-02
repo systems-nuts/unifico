@@ -3,7 +3,7 @@
 MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 MKFILE_DIR := $(dir $(MKFILE_PATH))
 
-DEFS_MKFILE ?= cc24.defs.mk
+DEFS_MKFILE ?= $(MKFILE_DIR)/cc24.defs.mk
 
 $(if $(shell test -s $(DEFS_MKFILE)), $(error "file $(DEFS_MKFILE) does not exist"),)
 
