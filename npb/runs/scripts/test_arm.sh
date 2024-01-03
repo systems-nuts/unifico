@@ -9,7 +9,7 @@ export NPB_PATH=/home/nikos/phd/unified_abi/layout/npb
 
 # Test experiment
 echo "====================[ Running the test experiment ]===================="
-npb \
+python npb_run.py \
     --config configs/performance-regression/o1/${experiment}/sole/build_run_arm.json \
     --dest experiments/performance-regression/o1/${experiment}/sole \
     --npb-class S \
