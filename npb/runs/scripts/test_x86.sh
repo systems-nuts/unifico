@@ -10,7 +10,7 @@ source ../../venv/bin/activate || exit 1
 # Build arm
 if [ -z ${skip_arm} ]; then
   echo "====================[ Building the arm test experiment ]===================="
-  npb \
+  python npb_run.py \
       --config configs/performance-regression/o1/${experiment}/nettuno/build_arm.json \
       --dest experiments/performance-regression/o1/${experiment}/sole \
       --npb-class S \
@@ -19,7 +19,7 @@ fi
 
 # Regression experiment
 echo "====================[ Running the test experiment ]===================="
-npb \
+python npb_run.py \
     --config configs/performance-regression/o1/${experiment}/nettuno/build_run_x86.json \
     --dest experiments/performance-regression/o1/${experiment}/nettuno \
     --npb-class S \
