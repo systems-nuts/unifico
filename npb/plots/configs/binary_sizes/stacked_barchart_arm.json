@@ -1,0 +1,85 @@
+{
+    "plot": {
+        "title": "AArch64 - Class B",
+        "stacked": true,
+        "sharey": true,
+        "sharex": true,
+        "logy": false,
+        "figsize": [
+            8,
+            5
+        ],
+        "color": [
+            "#5e3c99",
+            "#e66101",
+            "#f7f7f7",
+            "#fdb863"
+        ]
+    },
+    "bar": {
+        "width": 0.20
+    },
+    "axis": {
+        "grid": "y",
+        "xlabel": "",
+        "ylabel": "Section Size (MB)",
+        "yscale": "linear",
+        "ylim": [
+            0,
+            0.70
+        ],
+        "xticks": {
+            "rotation": 0
+        },
+        "yticks": {
+            "values": [
+                0,
+                0.20,
+                0.40,
+                0.60
+            ]
+        },
+        "xticks_expand_by": 0.5
+    },
+    "legend": {
+        "ncol": 2,
+        "title": "Binary Sections",
+        "frame_linewidth": 0.1,
+        "bbox_to_anchor": [
+            0,
+            1.04,
+            1,
+            0
+        ]
+    },
+    "group": {
+        "by": [
+            "class"
+        ],
+        "hatches": [
+            "..",
+            "\\",
+            ""
+        ],
+        "alphas": [
+            1,
+            1,
+            1
+        ],
+        "legend": {
+            "ncol": 2,
+            "title": "Compiler",
+            "loc": "lower center",
+            "bbox_to_anchor": [
+                -0.08,
+                1.04,
+                1.8,
+                0.2
+            ],
+            "alignment": "center"
+        },
+        "patches_to_label": [
+            2
+        ]
+    }
+}
