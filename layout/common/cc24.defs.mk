@@ -8,7 +8,7 @@ endif
 
 # LLVM Toolchain
 ifdef UNMODIFIED_LLVM
-LLVM_TOOLCHAIN ?= ~/llvm-9.0.1/toolchain/bin
+LLVM_TOOLCHAIN ?= /usr/local/llvm-9.0.1/toolchain/bin
 else
 LLVM_TOOLCHAIN ?= /usr/local/llvm-9/toolchain/bin
 endif
@@ -17,7 +17,7 @@ PROJECT_DIR ?= ../..
 
 # Lib musl directories per architecture
 ifdef UNMODIFIED_MUSL
-MUSL_TOOLCHAIN ?= ~/musl-toolchains/unmodified
+MUSL_TOOLCHAIN ?= /usr/local/musl-toolchains/unmodified
 else
 MUSL_TOOLCHAIN ?= /usr/local/musl-toolchains/unifico
 endif
