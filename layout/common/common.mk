@@ -50,7 +50,7 @@ endif
 
 # Show rich assembly output, with jump arrows (only in x86 currently).
 # Supress by setting OBJDUMP_FLAGS with the empty string.
-OBJDUMP_FLAGS ?= --visualize-jumps
+OBJDUMP_FLAGS ?=
 # Supress debug info in assembly.
 ifndef DEBUG_ASM
   override LLC_FLAGS += --disable-debug-info-print
