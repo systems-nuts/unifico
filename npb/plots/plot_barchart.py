@@ -62,7 +62,9 @@ def plot(datafile, stylefile, configfile, interactive=False, sort=False):
 
     group_cfg = cfg.get("group", None)
 
-    groupby = group_cfg.get("by", None)
+    groupby = None
+    if group_cfg:
+        groupby = group_cfg.get("by", None)
     if group_cfg and groupby:
         df_grouped = df.groupby(groupby)
         for dfg in df_grouped:
@@ -154,7 +156,9 @@ def plot(datafile, stylefile, configfile, interactive=False, sort=False):
                 for j in range(i, i + len(axis.containers) - ncolumns, nstack)
             ]
 
-    patch_label_cfg = group_cfg.get("patch_label", None)
+    patch_label_cfg = None
+    if group_cfg:
+        patch_label_cfg = group_cfg.get("patch_label", None)
     if to_label and patch_label_cfg:
         for j, p in enumerate(axis.containers):
             if j in to_label:
