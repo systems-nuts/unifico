@@ -33,11 +33,7 @@ def parse_sizes(arch):
         for benchmark in BENCHMARKS:
             sections[compiler][benchmark] = {}
             with open(
-                "./10112023/B/o1/"
-                + compiler
-                + f"/{arch}/"
-                + benchmark
-                + ".txt",
+                "./B/o1/" + compiler + f"/{arch}/" + benchmark + ".txt",
                 "r",
             ) as reader:
                 lines = reader.readlines()
@@ -178,6 +174,6 @@ if __name__ == "__main__":
 
     # print(json.dumps(sizes, indent=4, sort_keys=True))
     with open(
-        f"../../npb/data/cc2024/binary_sizes_o1_B_{args.arch}_temp.csv", "w"
+        f"../../npb/data/cc2024/binary_sizes_o1_B_{args.arch}.csv", "w"
     ) as f:  # You will need 'wb' mode in Python 2.x
         merged_df.to_csv(f, index=False)
