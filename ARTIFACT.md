@@ -1,13 +1,10 @@
 # Unifico Artifact Evaluation
 
-## Get docker image
+## Get the docker image
 
 ```bash
 docker pull unificocc24/unifico
 docker run -it unifico
-cd /code/unifico-cc24
-source venv/bin/activate
-pip install -r requirements.txt
 ```
 
 ## Build and run experiments
