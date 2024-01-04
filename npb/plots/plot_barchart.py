@@ -16,6 +16,7 @@ def eprint(*args, **kwargs):
 
 
 def fill_color(color, expected_color):
+    return
     if len(color) < expected_color:
         eprint("warning: using default values for color")
 

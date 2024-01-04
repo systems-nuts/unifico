@@ -14,7 +14,6 @@ patch.linewidth: 0.4
 
 xtick.top: False
 xtick.bottom: False
-xtick.alignment: center
 
 ytick.left: True
 ytick.right: True
