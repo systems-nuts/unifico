@@ -31,6 +31,10 @@ cd /code/unifico/npb/runs/
 
 # Run the unifico and vanilla arm binaries for class S (on the arm machine)
 ./scripts/perf_x86.sh unifico vanilla S
+
+# Merge csvs for all classes (remove a class from {A,B,C} depending on what was run)
+python ./plots/merge_csv.py data/cc2024/x86_overhead.csv runs/experiments/performance-regression/o1/vanilla/sole/overhead_{A,B,C}.csv
+python ./plots/merge_csv.py data/cc2024/arm_overhead.csv runs/experiments/performance-regression/o1/vanilla/sole/overhead_{A,B,C}.csv
 ```
 
 * Class `S` is for testing.
@@ -39,22 +43,51 @@ cd /code/unifico/npb/runs/
 
 ### Get the binary sizes from the binaries
 
+* Build the binaries for the class B (as in the paper).
+
+```bash
+cd /code/unifico-cc24/npb/runs
+source ../../venv/bin/activate
+
+# Build vanilla binaries
+python npb_run.py \
+  --config configs/performance-regression/o1/vanilla/nettuno/build_run_x86.json \
+  --dest experiments/performance-regression/o1/vanilla/nettuno \
+  --npb-class B \
+  --build
+  
+# Build unifico binaries
+python npb_run.py \
+  --config configs/performance-regression/o1/unifico/nettuno/build_run_x86.json \
+  --dest experiments/performance-regression/o1/unifico/nettuno \
+  --npb-class B \
+  --build
+```
+
+* Aggregate the results in one csv.
+
 ```bash
 cd /code/unifico-cc24/npb/runs/experiments/performance-regression
 
+# x86 machine
+
 mkdir -p ../../../../plots/binaries-sections-size-comparison/B/o1/unifico/x86/
 for npb in bt cg ep ft is lu mg sp ua; do
-  cp o1/unifico/nettuno/bin/${npb}_x86_64_aligned.out_S_size.log ../../../../plots/binaries-sections-size-comparison/B/o1/unifico/x86/${npb}.txt
-done
-
-mkdir -p ../../../../plots/binaries-sections-size-comparison/B/o1/unifico/arm/
-for npb in bt cg ep ft is lu mg sp ua; do
-  cp o1/unifico/sole/bin/${npb}_aarch64_aligned.out_B_size.log ../../../../plots/binaries-sections-size-comparison/B/o1/unifico/arm/${npb}.txt
+  cp o1/unifico/nettuno/bin/${npb}_x86_64_aligned.out_B_size.log ../../../../plots/binaries-sections-size-comparison/B/o1/unifico/x86/${npb}.txt
 done
 
 mkdir -p ../../../../plots/binaries-sections-size-comparison/B/o1/vanilla/x86
 for npb in bt cg ep ft is lu mg sp ua; do
   cp o1/vanilla/nettuno/bin/${npb}_x86_64_init.out_B_size.log ../../../../plots/binaries-sections-size-comparison/B/o1/vanilla/x86/${npb}.txt
+done
+
+cd /code/unifico-cc24/plots/binaries-sections-size-comparison
+
+# arm machine
+
+mkdir -p ../../../../plots/binaries-sections-size-comparison/B/o1/unifico/arm/
+for npb in bt cg ep ft is lu mg sp ua; do
+  cp o1/unifico/sole/bin/${npb}_aarch64_aligned.out_B_size.log ../../../../plots/binaries-sections-size-comparison/B/o1/unifico/arm/${npb}.txt
 done
 
 mkdir -p ../../../../plots/binaries-sections-size-comparison/B/o1/vanilla/arm/
@@ -66,15 +99,18 @@ done
 ## Plot the results
 
 ```bash
-cd /code/unifico/npb
+cd /code/unifico-cc24/npb
+source ../venv/bin/activate
 
 # Plot binary sizes
-for arch in arm x86; do
-    plots/plot_barchart.py -f data/cc2024/binary_sizes_o1_B_${arch}.csv -s plots/configs/binary_sizes/stacked_barchart.mplstyle -c plots/configs/binary_sizes/stacked_barchart_${arch}.json
-done
+# x86
+plots/plot_barchart.py -f data/cc2024/binary_sizes_o1_B_x86.csv -s plots/configs/binary_sizes/stacked_barchart.mplstyle -c plots/configs/binary_sizes/stacked_barchart_x86.json
+# arm
+plots/plot_barchart.py -f data/cc2024/binary_sizes_o1_B_arm.csv -s plots/configs/binary_sizes/stacked_barchart.mplstyle -c plots/configs/binary_sizes/stacked_barchart_arm.json
 
 # Plot overheads
-for arch in arm x86; do
-    plots/plot_barchart.py -f data/cc2024/${arch}_overhead.csv -s plots/configs/overhead/barchart_${arch}.mplstyle -c plots/configs/overhead/barchart_${arch}.json
-done
+# x86
+plots/plot_barchart.py -f data/cc2024/x86_overhead.csv -s plots/configs/overhead/barchart_x86.mplstyle -c plots/configs/overhead/barchart_x86.json
+# arm
+plots/plot_barchart.py -f data/cc2024/arm_overhead.csv -s plots/configs/overhead/barchart_arm.mplstyle -c plots/configs/overhead/barchart_arm.json
 ```
