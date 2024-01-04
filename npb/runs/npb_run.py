@@ -203,14 +203,14 @@ class NPBRunner:
                 exit(1)
 
     @staticmethod
-    def combine_dataframes_column(df1, df2, column=None):
+    def combine_dataframes_column(df1, df2, column=None, npb="S"):
         if not column:
             column = df1.columns[0]
             assert (
                 column in df2.columns
             ), f"{column} missing in second dataframe"
         df_results = pd.DataFrame(index=df1.index)
-        df_results["{}_overhead".format(column)] = df1[column].combine(
+        df_results[npb] = df1[column].combine(
             df2[column], lambda x1, x2: (x2 / x1 - 1) * 100
         )
         df_results["{}_speedup".format(column)] = df1[column].combine(
@@ -408,7 +408,9 @@ class NPBRunner:
             os.path.join(self.compare_dir, results_csv),
             index_col="benchmark",
         )
-        df_overhead = self.combine_dataframes_column(df_base, df_current)
+        df_overhead = self.combine_dataframes_column(
+            df_base, df_current, npb=self.args.npb_class
+        )
         df_overhead = df_overhead.drop("Geomean", axis=0)
         mean_metric = df_overhead.mean(axis=0)
         geomean_metric = df_overhead.apply(gmean, axis=0)
