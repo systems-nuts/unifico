@@ -62,7 +62,8 @@ def plot(datafile, stylefile, configfile, interactive=False, sort=False):
 
     group_cfg = cfg.get("group", None)
 
-    if group_cfg and (groupby := group_cfg.get("by", None)):
+    groupby = group_cfg.get("by", None)
+    if group_cfg and groupby:
         df_grouped = df.groupby(groupby)
         for dfg in df_grouped:
             for w in dfg[0]:
@@ -96,8 +97,8 @@ def plot(datafile, stylefile, configfile, interactive=False, sort=False):
     ncolumns = len(df_all)
 
     xticks = axis.xaxis.get_major_locator().locs
-
-    if cfg_legend := cfg.get("legend", None):
+    cfg_legend = cfg.get("legend", None)
+    if cfg_legend:
         frame_linewidth = cfg_legend.get("frame_linewidth", 0.5)
         del cfg_legend["frame_linewidth"]
 
@@ -138,8 +139,8 @@ def plot(datafile, stylefile, configfile, interactive=False, sort=False):
             axis.add_artist(legend1)
     else:
         axis.get_legend().remove()
-
-    if v := cfg_axis.get("xticks_expand_by", 0):
+    v = cfg_axis.get("xticks_expand_by", 0)
+    if v:
         xticks_cfg["ticks"] = [xticks[0] - v, *xticks, xticks[-1] + v]
         plt.xticks(**xticks_cfg)
 
@@ -153,7 +154,8 @@ def plot(datafile, stylefile, configfile, interactive=False, sort=False):
                 for j in range(i, i + len(axis.containers) - ncolumns, nstack)
             ]
 
-    if to_label and (patch_label_cfg := group_cfg.get("patch_label", None)):
+    patch_label_cfg = group_cfg.get("patch_label", None)
+    if to_label and patch_label_cfg:
         for j, p in enumerate(axis.containers):
             if j in to_label:
                 axis.bar_label(p, **patch_label_cfg)
