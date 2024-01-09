@@ -14,7 +14,7 @@
 FROM ubuntu:bionic
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
   bison cmake flex g++ gcc git zip make patch texinfo \
-  python3 ca-certificates libelf-dev gcc-aarch64-linux-gnu locales vim
+  python3 ca-certificates libelf-dev locales vim
 RUN apt-get install -y python-minimal 
 
 # Set the locale
