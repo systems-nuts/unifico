@@ -41,7 +41,7 @@
                     "make",
                     "-C",
                     "${build_dir}",
-                    "-j10",
+                    "-j`nproc`",
                     "${executable}",
                     "OPT_LEVEL=-O1",
                     "NO_STACKMAPS=1",
