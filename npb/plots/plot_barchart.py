@@ -169,7 +169,7 @@ def plot(datafile, stylefile, configfile, interactive=False, sort=False):
         plt.show()
     else:
         pp = PdfPages(filename + ".pdf")
-        plt.savefig(pp, format="pdf")
+        plt.savefig(pp, format="pdf", bbox_inches="tight")
         pp.close()
 
 
