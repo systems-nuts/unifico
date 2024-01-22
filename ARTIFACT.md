@@ -56,7 +56,7 @@ python npb_run.py \
   --build
   
 python npb_run.py \
-  --config configs/performance-regression/o1/vanilla/nettuno/build_run_arm.json \
+  --config configs/performance-regression/o1/vanilla/nettuno/build_arm.json \
   --dest experiments/performance-regression/o1/vanilla/sole \
   --npb-class B \
   --build
@@ -69,7 +69,7 @@ python npb_run.py \
   --build
  
 python npb_run.py \
-  --config configs/performance-regression/o1/unifico/nettuno/build_run_arm.json \
+  --config configs/performance-regression/o1/unifico/nettuno/build_arm.json \
   --dest experiments/performance-regression/o1/unifico/sole \
   --npb-class B \
   --build
