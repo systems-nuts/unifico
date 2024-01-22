@@ -125,7 +125,7 @@ $(info })
 ###############################################################################
 # Linker and Flags
 ###############################################################################
-LD       := $(POPCORN)/bin/ld.gold
+LD       := $(POPCORN)/bin/x86_64-popcorn-linux-gnu-ld.gold
 ARM64_LD := $(POPCORN)/bin/aarch64-popcorn-linux-gnu-ld.gold
 #LD       := ~/musl-cross-make/output/x86_64-linux-musl/bin/ld
 #ARM64_LD := ~/musl-cross-make/output/aarch64-linux-musl/bin/ld
