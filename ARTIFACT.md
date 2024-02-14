@@ -3,7 +3,7 @@
 ## Get the docker image
 
 ```bash
-docker pull unificocc24/unifico
+docker pull unificocc24/unifico:v2
 docker run -it unificocc24/unifico
 ```
 
