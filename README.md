@@ -33,6 +33,7 @@ Once you clone the repo locally, run `pre-commit install` to install the configu
 ```
 
 * Use `llvm-config --unifico-flags` to check which of these are enabled in the current build.
+* The LLVM repo for Unifico is currently hosted at: https://github.com/blackgeorge-boom/llvm-unifico
 
 
 ### How to build `init` and `aligned` binaries
