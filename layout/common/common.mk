@@ -331,7 +331,7 @@ src_changed: *.c
 	touch $@
 	$(QUIET) { \
 		if [ -z ${SSHPASS_IGNORE} ]; then \
-			$(SSHPASS_IGNORE)sshpass -f "/home/nikos/docs/pass.txt" scp $^ nikos@sole:`pwd`; \
+			$(SSHPASS_IGNORE)scp -i /home/nikos/.ssh/id_ed25519.pub $^ nikos@sole:`pwd`; \
 		fi \
 		}
 
@@ -372,7 +372,7 @@ $(ARM64_INIT): $(ARM64_OBJ_INIT)
 	$(QUIET) $(LD) -o $@ $^ $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_MAP)
 	$(QUIET) { \
 		if [ -z ${SSHPASS_IGNORE} ]; then \
-			$(SSHPASS_IGNORE)sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`; \
+			$(SSHPASS_IGNORE)scp -i /home/nikos/.ssh/id_ed25519.pub $@ nikos@sole:`pwd`; \
 		fi \
 		}
 	$(QUIET) $(ARM64_OBJDUMP) -ldSrwC --no-show-raw-insn --print-imm-hex $@ >$(ARM64_BUILD)/aarch64_objdump.asm
@@ -389,7 +389,7 @@ $(ARM64_ALIGNED): $(ARM64_LD_SCRIPT)
 	$(QUIET) $(LD) -o $@ $(ARM64_OBJ) $(LDFLAGS) $(ARM64_LDFLAGS) -Map $(ARM64_ALIGNED_MAP) -T $<
 	$(QUIET) { \
 		if [ -z ${SSHPASS_IGNORE} ]; then \
-			$(SSHPASS_IGNORE)sshpass -f "/home/nikos/docs/pass.txt" scp $@ nikos@sole:`pwd`; \
+			$(SSHPASS_IGNORE)scp -i /home/nikos/.ssh/id_ed25519.pub $@ nikos@sole:`pwd`; \
 		fi \
 		}
 	$(QUIET) $(ARM64_OBJDUMP) -ldSrwC --no-show-raw-insn --print-imm-hex $@ >$(ARM64_BUILD)/aarch64_objdump.asm
