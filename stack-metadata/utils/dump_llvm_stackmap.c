@@ -200,7 +200,7 @@ static inline bool dump_call_site(call_site_record *cs, uint64_t func)
             return false;
 
     for (i = 0; i < cs->num_live_outs; i++)
-        printf("    Live-out: register %u (size=%u bytes)",
+        printf("    Live-out: register %u (size=%u bytes)\n",
                cs->live_outs[i].regnum, cs->live_outs[i].size);
 
     for (i = 0; i < cs->num_arch_live; i++)

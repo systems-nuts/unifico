@@ -310,6 +310,37 @@ ret_t check_stackmaps(bin *a, stack_map_section *sm_a, size_t num_sm_a, bin *b,
                         l++;
                 }
 
+                /*
+                 * Check the number of live-out registers.
+                 */
+                num_a = sm_a[i].call_sites[j].num_live_outs;
+                num_b = sm_b[i].call_sites[j].num_live_outs;
+
+                if (num_a != num_b) {
+                    snprintf(
+                        buf, BUF_SIZE,
+                        "%s: callsite %lu has "
+                        "different number of live out registers (%u vs %u)",
+                        sym_b_name, sm_b[i].call_sites[j].id, num_a, num_b);
+                    warn(buf);
+                    ret = DIFFERENT_STACK_LAYOUT;
+                }
+
+                for (k = 0, l = 0; k < num_a && l < num_b; k++, l++) {
+                    flag_a = sm_a[i].call_sites[j].live_outs[k].size;
+                    flag_b = sm_b[i].call_sites[j].live_outs[l].size;
+                    if (flag_a != flag_b) {
+                        snprintf(buf, BUF_SIZE,
+                                 "%s, callsite %lu: live out registers"
+                                 "%lu/%lu have "
+                                 "different size (%d vs. %d)",
+                                 sym_a_name, sm_a[i].call_sites[j].id, k, l,
+                                 flag_a, flag_b);
+                        warn(buf);
+                        ret = DIFFERENT_STACK_LAYOUT;
+                    }
+                }
+
                 num_a = sm_a[i].call_sites[j].num_arch_live;
                 num_b = sm_b[i].call_sites[j].num_arch_live;
 
