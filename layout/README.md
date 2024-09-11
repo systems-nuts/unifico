@@ -1,5 +1,7 @@
 # Useful LLVM flags
 
+Note: These flags are outdated. Refer to the build files and the LLVM repository for the most recent flags.
+
 | Flag                        | Description                                                                     |   Type | Custom |
 |:----------------------------|:--------------------------------------------------------------------------------|-------:|-------:|
 | disable-lsr-solver          | Disable loop strength reduction solver                                          |   bool |    Yes |
